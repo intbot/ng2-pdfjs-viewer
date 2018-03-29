@@ -1,19 +1,32 @@
-# @angular/ng2-pdfjs-viewer
+# ng2-pdfjs-viewer
 
 ## Installation
 
-To install this library, run:
+1. To use this library you need a copy ofpdfjs/ viewerJs/viewer.html
+
+  A. Using pdf-js-gh-pages
+    a. Download pdfjs-gh-pages from here: https://github.com/mozilla/pdf.js/archive/gh-pages.zip and extract it.
+    b. Create a `pdfjs` folder under your angular2+ applications `assets` folder
+    c. Copy `pdf.js-gh-pages/build` and `pdf.js-gh-pages/web` folders from extracted package to `pdfjs` folder.
+    d. The web/ directory contains a 1 MB PDF file called "compressed.tracemonkey-pldi-09.pdf". This file is a sample and can safely  be removed.
+    ps: More info can be found here: https://github.com/mozilla/pdf.js/wiki/setup-pdf.js-in-a-website
+
+  OR
+
+  B. Using modified version of viewerJs (Recommended approach)
+    a. Download/copy the folder pdfjs from https://github.com/intbot/ng2-pdfjs-viewer/tree/master/pdfjs and put it under your   angular2+ application's `assets` folder.
+    b. Now you can use additional settings such as 
+     [pdfJsFolder]: To set the folder path under `web` and `build` resides.
+     [externalWindow]: To decide pdf should be inline or in a new tab
+     [openFile]: Show/hide open file icon
+     [viewBookmark]: Show/hide bookmark icon
+     [download]: Show/hide download icon
+     [showSpinner]: Show a simple css based spinner/progress before the pdf loads
+
+2. Install this library, run:
 
 ```bash
-$ npm install @angular/ng2-pdfjs-viewer --save
-```
-
-## Consuming your library
-
-Once you have published your library to npm, you can import your library in any Angular application by running:
-
-```bash
-$ npm install @angular/ng2-pdfjs-viewer
+$ npm install ng2-pdfjs-viewer --save
 ```
 
 and then from your Angular `AppModule`:
@@ -25,7 +38,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 
 // Import PdfJsViewerComponent component
-import { PdfJsViewerComponent } from '@angular/ng2-pdfjs-viewer';
+import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
 
 @NgModule({
   declarations: [
@@ -52,16 +65,18 @@ Once your PdfJsViewerComponent is imported  you can use it in your Angular appli
 <ng2-pdfjs-viewer pdfSrc="your pdf file path"></ng2-pdfjs-viewer>
 ```
 
-Here is a use case to open the pdf as byte array embedded in same page:
-
-Please note, pdfSrc can be a Blob() or Uint8Array as well
+Here is a use case to download and open the pdf as byte array and open in new tab/window:
+Please note, pdfSrc can be a Blob or Uint8Array as well
+For [externalWindow]="true" to work, pop-ups needs to be enabled at browser level
 
 ```xml
 <!-- your.component.html -->
 <button (click)="openPdf();"></button>
 
+<!-- Please note, you need a copy of https://github.com/intbot/ng2-pdfjs-viewer/tree/master/pdfjs for some of the below features to work -->
 <ng2-pdfjs-viewer #pdfViewer style="width: 800px; height: 400px"
-                  [externalWindow]="false"
+                  [pdfJsFolder]="pdfjs"
+                  [externalWindow]="true"
                   [openFile]="false"
                   [viewBookmark]="false"
                   [download]="false"></ng2-pdfjs-viewer>
@@ -85,7 +100,7 @@ export class RateCardComponent implements OnInit {
 
     this.downloadFile(url).subscribe(
       (res) => {
-        this.pdfViewer.pdfSrc = res;
+        this.pdfViewer.pdfSrc = res; // pdfSrc can be Blob or Uint8Array
       }
     );
   }
@@ -93,4 +108,4 @@ export class RateCardComponent implements OnInit {
 
 ## License
 
-MIT © [Code1](mailto:codehippie1@gmail.com)
+MIT © [Code Hippie](mailto:codehippie1@gmail.com)

@@ -5,6 +5,7 @@ export declare class PdfJsViewerComponent {
     src: string | Blob | Uint8Array;
     showSpinner: boolean;
     viewerTab: any;
+    pdfJsFolder: string;
     downloadFileName: string;
     openFile: boolean;
     download: boolean;

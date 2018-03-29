@@ -27,7 +27,7 @@
       // other libraries
       rxjs: 'npm:rxjs',
       'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
-      '@angular/ng2-pdfjs-viewer': '../dist'
+      'ng2-pdfjs-viewer': '../dist'
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
@@ -45,7 +45,7 @@
       rxjs: {
         defaultExtension: 'js'
       },
-      '@angular/ng2-pdfjs-viewer': {
+      'ng2-pdfjs-viewer': {
         main: 'ng2-pdfjs-viewer.umd.js',
         defaultExtension: 'js'
       }

@@ -12,6 +12,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
     function PdfJsViewerComponent() {
         this.externalWindow = false;
         this.showSpinner = true;
+        this.pdfJsFolder = "pdfjs";
         this.openFile = true;
         this.download = true;
         this.viewBookmark = true;
@@ -83,7 +84,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
         else {
             fileUrl = this.src;
         }
-        var /** @type {?} */ viewerUrl = "assets/pdfjs/web/viewer.html?file=" + fileUrl;
+        var /** @type {?} */ viewerUrl = "assets/" + this.pdfJsFolder + "/web/viewer.html?file=" + fileUrl;
         if (this.downloadFileName) {
             viewerUrl += "&fileName=" + this.downloadFileName + ".pdf";
         }
@@ -116,6 +117,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
         "externalWindow": [{ type: core.Input },],
         "src": [{ type: core.Input },],
         "showSpinner": [{ type: core.Input },],
+        "pdfJsFolder": [{ type: core.Input },],
         "downloadFileName": [{ type: core.Input },],
         "openFile": [{ type: core.Input },],
         "download": [{ type: core.Input },],
