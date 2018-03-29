@@ -1,0 +1,75 @@
+{
+  "name": "ng2-pdfjs-viewer",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "gulp build",
+    "build:watch": "gulp",
+    "docs": "npm run docs:build",
+    "docs:build": "compodoc -p tsconfig.json -n ng2-pdfjs-viewer -d docs --hideGenerator",
+    "docs:serve": "npm run docs:build -- -s",
+    "docs:watch": "npm run docs:build -- -s -w",
+    "lint": "tslint --type-check --project tsconfig.json src/**/*.ts",
+    "lite": "lite-server",
+    "playground:build": "tsc -p playground -w",
+    "playground": "concurrently \"npm run build:watch\" \"npm run playground:build\" \"npm run lite\"",
+    "test": "tsc && karma start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/intbot/ng2-pdfjs-viewer"
+  },
+  "author": {
+    "name": "Code1",
+    "email": "codehippie1@gmail.com"
+  },
+  "keywords": [
+    "angular"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/intbot/ng2-pdfjs-viewer/issues"
+  },
+  "devDependencies": {
+    "@angular/common": "^5.2.9",
+    "@angular/compiler": "^5.2.9",
+    "@angular/compiler-cli": "^5.2.9",
+    "@angular/core": "^5.2.9",
+    "@angular/platform-browser": "^5.2.9",
+    "@angular/platform-browser-dynamic": "^5.2.9",
+    "@compodoc/compodoc": "^1.0.9",
+    "@types/jasmine": "2.8.6",
+    "@types/node": "~9.6.1",
+    "angular-in-memory-web-api": "^0.6.0",
+    "codelyzer": "~4.2.1",
+    "concurrently": "^3.5.1",
+    "core-js": "^2.5.4",
+    "fs-extra": "^5.0.0",
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-rollup": "^2.16.2",
+    "jasmine-core": "~3.1.0",
+    "jasmine-spec-reporter": "~4.2.1",
+    "karma": "~2.0.0",
+    "karma-chrome-launcher": "~2.2.0",
+    "karma-cli": "~1.0.1",
+    "karma-coverage-istanbul-reporter": "^1.4.2",
+    "karma-jasmine": "~1.1.1",
+    "karma-jasmine-html-reporter": "^1.0.0",
+    "lite-server": "^2.3.0",
+    "node-sass": "^4.8.3",
+    "node-sass-tilde-importer": "^1.0.2",
+    "node-watch": "^0.5.8",
+    "protractor": "~5.3.0",
+    "rollup": "^0.57.1",
+    "run-sequence": "^2.2.1",
+    "rxjs": "^5.5.8",
+    "systemjs": "^0.21.0",
+    "ts-node": "~5.0.1",
+    "tslint": "~5.9.1",
+    "typescript": "~2.8.1",
+    "zone.js": "^0.8.20"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  }
+}
