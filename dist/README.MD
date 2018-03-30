@@ -1,5 +1,9 @@
 # ng2-pdfjs-viewer
 
+This is a simple library wraps mozilla's pdfjs and viewerjs into an angular2+ component.
+
+<img src="/sampledoc/viewerImage.JPG" alt="angular2+ pdfjs viewer"/>
+
 ## Installation
 
 ## Step 1: To use this library you need a copy of pdfjs
