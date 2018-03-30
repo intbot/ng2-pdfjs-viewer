@@ -159,6 +159,7 @@ public IActionResult GetMyPdf()
    return File(stream, "application/pdf")); // FileStreamResult
    
   // OR
+  //var bytes = await {{__get_bytes_here__}}
   // return File(bytes, "application/pdf")
 }
 ```
