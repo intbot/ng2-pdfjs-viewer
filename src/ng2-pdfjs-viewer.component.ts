@@ -6,16 +6,17 @@ import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 })
 export class PdfJsViewerComponent {
   @ViewChild('iframe') iframe: ElementRef;
-  @Input() public externalWindow: boolean = false;
-  @Input() public src: string | Blob | Uint8Array;
-  @Input() public showSpinner: boolean = true;
-  public viewerTab: any;
 
   @Input() public pdfJsFolder: string = "pdfjs";
+  @Input() public externalWindow: boolean = false;
+  @Input() public showSpinner: boolean = true;
   @Input() public downloadFileName: string;
   @Input() public openFile: boolean = true;
   @Input() public download: boolean = true;
   @Input() public viewBookmark: boolean = true;
+
+  public viewerTab: any;
+  private src: string | Blob | Uint8Array;
 
   @Input() public set pdfSrc(src: string | Blob | Uint8Array) {
     this.src = src;
