@@ -113,7 +113,7 @@ export class RateCardComponent implements OnInit {
 ```
 
 # Additional Information
-Given below are examples of writing server apis which returns pdfs as byte array
+Given below are examples of writing server apis(In aspnetcore c#) which returns pdfs as byte array. You can choose any server side technology as long as pdf is returned as byte array
 
 Use case 1. As a RDLC local report viewer
 ```c#
