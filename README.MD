@@ -112,6 +112,58 @@ export class RateCardComponent implements OnInit {
   }
 ```
 
+# Additional Information
+Given below are examples of writing server apis which returns pdfs as byte array
+
+Use case 1. As a RDLC local report viewer
+```c#
+[HttpGet]
+[Route("MyReport")]
+public IActionResult GetReport()
+{
+   // var reportObjectList1
+   // var reportObjectList2
+   var reportViewer = new ReportViewer {ProcessingMode = ProcessingMode.Local};
+   reportViewer.LocalReport.ReportPath = "Reports/MyReport.rdlc";
+
+   reportViewer.LocalReport.DataSources.Add(new ReportDataSource("NameOfDataSource1", reportObjectList1));
+   reportViewer.LocalReport.DataSources.Add(new ReportDataSource("NameOfDataSource2", reportObjectList1));
+
+   Warning[] warnings;
+   string[] streamids;
+   string mimeType;
+   string encoding;
+   string extension;
+
+   var bytes = reportViewer.LocalReport.Render("application/pdf", null, out mimeType, out encoding, out extension, out streamids, out warnings);
+
+   // The below content-disposition is lost when we create Blob() object in client browser. Hence commented out
+   //var cd = new System.Net.Mime.ContentDisposition
+   //{
+   //    FileName = "somepdf.pdf",
+   //    Inline = true
+   //};
+   //Response.Headers.Add("Content-Disposition", cd.ToString());
+   
+   return File(bytes, "application/pdf")
+}
+```
+
+Use case 2. Return a physical pdf from server
+```c#
+[HttpGet]
+[Route("GetMyPdf")]
+public IActionResult GetMyPdf()
+{
+   var stream = await {{__get_stream_here__}}
+   return File(stream, "application/pdf")); // FileStreamResult
+   
+  // OR
+  // return File(bytes, "application/pdf")
+}
+```
+
+
 ## License
 
 MIT © [Code Hippie](mailto:codehippie1@gmail.com)
