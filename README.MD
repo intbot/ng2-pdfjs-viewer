@@ -75,8 +75,9 @@ For [externalWindow]="true" to work, pop-ups needs to be enabled at browser leve
 
 <!-- Please note, you need a copy of https://github.com/intbot/ng2-pdfjs-viewer/tree/master/pdfjs for some of the below features to work -->
 <ng2-pdfjs-viewer #pdfViewer style="width: 800px; height: 400px"
-                  [pdfJsFolder]="pdfjs"
+                  [pdfJsFolder]="'pdfjs'"
                   [externalWindow]="true"
+                  [downloadFileName]="'mytestfile.pdf'"
                   [openFile]="false"
                   [viewBookmark]="false"
                   [download]="false"></ng2-pdfjs-viewer>
@@ -97,6 +98,11 @@ export class RateCardComponent implements OnInit {
 
   public openPdf() {
     let url = "url to fetch pdf as byte array";
+    // url can be local url or remote http request to an api/pdf file. 
+    // E.g: let url = "assets/pdf-sample.pdf";
+    // E.g: https://github.com/intbot/ng2-pdfjs-viewer/tree/master/sampledoc/pdf-sample.pdf
+    // E.g: http://localhost:3000/api/GetMyPdf
+    // Please note, for remote urls to work, CORS should be enabled at the server. Read: https://enable-cors.org/server.html
 
     this.downloadFile(url).subscribe(
       (res) => {
