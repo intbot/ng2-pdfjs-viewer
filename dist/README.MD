@@ -168,6 +168,9 @@ public IActionResult GetMyPdf()
 }
 ```
 
+## Other projects worth mentioning
+1. Angular 5+ [ng2-pdf-viewer](https://github.com/VadimDez/ng2-pdf-viewer)
+2. AngularJS [angular-pdfjs-viewer](https://github.com/legalthings/angular-pdfjs-viewer)
 
 ## License
 
