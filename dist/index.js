@@ -7,9 +7,9 @@ import { CommonModule } from '@angular/common';
  */
 var PdfJsViewerComponent = /** @class */ (function () {
     function PdfJsViewerComponent() {
+        this.pdfJsFolder = "pdfjs";
         this.externalWindow = false;
         this.showSpinner = true;
-        this.pdfJsFolder = "pdfjs";
         this.openFile = true;
         this.download = true;
         this.viewBookmark = true;
@@ -111,10 +111,9 @@ var PdfJsViewerComponent = /** @class */ (function () {
     PdfJsViewerComponent.ctorParameters = function () { return []; };
     PdfJsViewerComponent.propDecorators = {
         "iframe": [{ type: ViewChild, args: ['iframe',] },],
-        "externalWindow": [{ type: Input },],
-        "src": [{ type: Input },],
-        "showSpinner": [{ type: Input },],
         "pdfJsFolder": [{ type: Input },],
+        "externalWindow": [{ type: Input },],
+        "showSpinner": [{ type: Input },],
         "downloadFileName": [{ type: Input },],
         "openFile": [{ type: Input },],
         "download": [{ type: Input },],

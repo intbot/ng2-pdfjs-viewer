@@ -42,12 +42,12 @@ import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    // Add to declarations
+    PdfJsViewerComponent
   ],
   imports: [
     BrowserModule,
-    // Add to imports
-    PdfJsViewerComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -71,12 +71,13 @@ For [externalWindow]="true" to work, pop-ups needs to be enabled at browser leve
 
 ```xml
 <!-- your.component.html -->
-<button (click)="openPdf();"></button>
+<button (click)="openPdf();">Open Pdf</button>
 
 <!-- Please note, you need a copy of https://github.com/intbot/ng2-pdfjs-viewer/tree/master/pdfjs for some of the below features to work -->
 <ng2-pdfjs-viewer #pdfViewer style="width: 800px; height: 400px"
-                  [pdfJsFolder]="pdfjs"
+                  [pdfJsFolder]="'pdfjs'"
                   [externalWindow]="true"
+                  [downloadFileName]="'mytestfile.pdf'"
                   [openFile]="false"
                   [viewBookmark]="false"
                   [download]="false"></ng2-pdfjs-viewer>
@@ -97,6 +98,11 @@ export class RateCardComponent implements OnInit {
 
   public openPdf() {
     let url = "url to fetch pdf as byte array";
+    // url can be local url or remote http request to an api/pdf file. 
+    // E.g: let url = "assets/pdf-sample.pdf";
+    // E.g: https://github.com/intbot/ng2-pdfjs-viewer/tree/master/sampledoc/pdf-sample.pdf
+    // E.g: http://localhost:3000/api/GetMyPdf
+    // Please note, for remote urls to work, CORS should be enabled at the server. Read: https://enable-cors.org/server.html
 
     this.downloadFile(url).subscribe(
       (res) => {
@@ -105,6 +111,59 @@ export class RateCardComponent implements OnInit {
     );
   }
 ```
+
+# Additional Information
+Given below are examples of writing server apis(In aspnetcore c#) which returns pdfs as byte array. You can choose any server side technology as long as pdf is returned as byte array
+
+Use case 1. As a RDLC local report viewer
+```c#
+[HttpGet]
+[Route("MyReport")]
+public IActionResult GetReport()
+{
+   // var reportObjectList1
+   // var reportObjectList2
+   var reportViewer = new ReportViewer {ProcessingMode = ProcessingMode.Local};
+   reportViewer.LocalReport.ReportPath = "Reports/MyReport.rdlc";
+
+   reportViewer.LocalReport.DataSources.Add(new ReportDataSource("NameOfDataSource1", reportObjectList1));
+   reportViewer.LocalReport.DataSources.Add(new ReportDataSource("NameOfDataSource2", reportObjectList1));
+
+   Warning[] warnings;
+   string[] streamids;
+   string mimeType;
+   string encoding;
+   string extension;
+
+   var bytes = reportViewer.LocalReport.Render("application/pdf", null, out mimeType, out encoding, out extension, out streamids, out warnings);
+
+   // The below content-disposition is lost when we create Blob() object in client browser. Hence commented out
+   //var cd = new System.Net.Mime.ContentDisposition
+   //{
+   //    FileName = "somepdf.pdf",
+   //    Inline = true
+   //};
+   //Response.Headers.Add("Content-Disposition", cd.ToString());
+   
+   return File(bytes, "application/pdf")
+}
+```
+
+Use case 2. Return a physical pdf from server
+```c#
+[HttpGet]
+[Route("GetMyPdf")]
+public IActionResult GetMyPdf()
+{
+   var stream = await {{__get_stream_here__}}
+   return File(stream, "application/pdf")); // FileStreamResult
+   
+  // OR
+  // var bytes = await {{__get_bytes_here__}}
+  // return File(bytes, "application/pdf")
+}
+```
+
 
 ## License
 

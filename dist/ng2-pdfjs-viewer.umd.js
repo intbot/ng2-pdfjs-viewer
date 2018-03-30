@@ -10,9 +10,9 @@
  */
 var PdfJsViewerComponent = /** @class */ (function () {
     function PdfJsViewerComponent() {
+        this.pdfJsFolder = "pdfjs";
         this.externalWindow = false;
         this.showSpinner = true;
-        this.pdfJsFolder = "pdfjs";
         this.openFile = true;
         this.download = true;
         this.viewBookmark = true;
@@ -114,10 +114,9 @@ var PdfJsViewerComponent = /** @class */ (function () {
     PdfJsViewerComponent.ctorParameters = function () { return []; };
     PdfJsViewerComponent.propDecorators = {
         "iframe": [{ type: core.ViewChild, args: ['iframe',] },],
-        "externalWindow": [{ type: core.Input },],
-        "src": [{ type: core.Input },],
-        "showSpinner": [{ type: core.Input },],
         "pdfJsFolder": [{ type: core.Input },],
+        "externalWindow": [{ type: core.Input },],
+        "showSpinner": [{ type: core.Input },],
         "downloadFileName": [{ type: core.Input },],
         "openFile": [{ type: core.Input },],
         "download": [{ type: core.Input },],
