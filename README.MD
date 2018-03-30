@@ -42,12 +42,12 @@ import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    // Add to declarations
+    PdfJsViewerComponent
   ],
   imports: [
     BrowserModule,
-    // Add to imports
-    PdfJsViewerComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -71,7 +71,7 @@ For [externalWindow]="true" to work, pop-ups needs to be enabled at browser leve
 
 ```xml
 <!-- your.component.html -->
-<button (click)="openPdf();"></button>
+<button (click)="openPdf();">Open Pdf</button>
 
 <!-- Please note, you need a copy of https://github.com/intbot/ng2-pdfjs-viewer/tree/master/pdfjs for some of the below features to work -->
 <ng2-pdfjs-viewer #pdfViewer style="width: 800px; height: 400px"
