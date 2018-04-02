@@ -10,6 +10,7 @@ var gulp = require('gulp'),
 
 const rootFolder = path.join(__dirname);
 const srcFolder = path.join(rootFolder, 'src');
+const pdfJsFolder = path.join(rootFolder, 'pdfjs');
 const tmpFolder = path.join(rootFolder, '.tmp');
 const buildFolder = path.join(rootFolder, 'build');
 const distFolder = path.join(rootFolder, 'dist');
@@ -152,6 +153,14 @@ gulp.task('copy:build', function () {
 });
 
 /**
+ * 7.1. Copy modified version of pdfJs from /pdfjs to /dist, including all js files and html.
+ */
+gulp.task('copy:pdfjs', function () {
+  return gulp.src([`${pdfJsFolder}/**/*`], {base: '.'})
+    .pipe(gulp.dest(distFolder));
+});
+
+/**
  * 8. Copy package.json from /src to /dist
  */
 gulp.task('copy:manifest', function () {
@@ -190,6 +199,7 @@ gulp.task('compile', function () {
     'rollup:fesm',
     'rollup:umd',
     'copy:build',
+    'copy:pdfjs',
     'copy:manifest',
     'copy:readme',
     'clean:build',

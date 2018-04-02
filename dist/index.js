@@ -81,7 +81,9 @@ var PdfJsViewerComponent = /** @class */ (function () {
         else {
             fileUrl = this.src;
         }
-        var /** @type {?} */ viewerUrl = "assets/" + this.pdfJsFolder + "/web/viewer.html?file=" + fileUrl;
+        var /** @type {?} */ viewerUrl = "assets/" + this.pdfJsFolder + "/web/viewer.html";
+        //var viewerUrl = "./pdfjs/web/viewer.html";
+        viewerUrl += "?file=" + fileUrl;
         if (this.downloadFileName) {
             viewerUrl += "&fileName=" + this.downloadFileName + ".pdf";
         }
