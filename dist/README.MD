@@ -8,17 +8,18 @@ This is a simple library wraps mozilla's pdfjs and viewerjs into an angular2+ co
 
 ## Step 1: To use this library you need a copy of pdfjs
 
-1. Using pdf-js-gh-pages  
-    a. Download pdfjs-gh-pages from here: https://github.com/mozilla/pdf.js/archive/gh-pages.zip and extract it.  
-    b. Create a `pdfjs` folder under your angular2+ applications `assets` folder  
-    c. Copy `pdf.js-gh-pages/build` and `pdf.js-gh-pages/web` folders from extracted package to `pdfjs` folder.  
-    d. The web/ directory contains a 1 MB PDF file called "compressed.tracemonkey-pldi-09.pdf". This file is a sample and can safely  be removed.  
-    ps: More info can be found here: https://github.com/mozilla/pdf.js/wiki/setup-pdf.js-in-a-website
-
-  OR
-
-2. Using modified version of viewerJs (Recommended approach)  </b>
-    a. Download/copy the folder pdfjs from https://github.com/intbot/ng2-pdfjs-viewer/tree/master/pdfjs and put it under your   angular2+ application's `assets` folder.  
+1. Using modified version of viewerJs available in the package (Recommended approach)  </b>
+    a. Use `TransferWebpackPlugin` to make viewer.html accessible from webserver  
+    Sample code  
+    ```typescript
+    var TransferWebpackPlugin = require('transfer-webpack-plugin');
+    ...
+    plugins: [
+      new TransferWebpackPlugin([
+        { from: 'node_modules\ng2-pdfjs-viewer\pdfjs', to: path.join(__dirname, 'assets') }
+      ])
+    ]
+    ```
     b. Now you can use additional settings such as   
      `[pdfJsFolder]`: To set the folder path under `web` and `build` resides.  
      `[externalWindow]`: To decide pdf should be inline or in a new tab  
@@ -26,6 +27,16 @@ This is a simple library wraps mozilla's pdfjs and viewerjs into an angular2+ co
      `[viewBookmark]`: Show/hide bookmark icon  
      `[download]`: Show/hide download icon  
      `[showSpinner]`: Show a simple css based spinner/progress before the pdf loads  
+
+OR  
+
+2. Using pdf-js-gh-pages  
+    a. Download pdfjs-gh-pages from here: https://github.com/mozilla/pdf.js/archive/gh-pages.zip and extract it.  
+    b. Create a `pdfjs` folder under your angular2+ applications `assets` folder  
+    c. Copy `pdf.js-gh-pages/build` and `pdf.js-gh-pages/web` folders from extracted package to `pdfjs` folder.  
+    d. The web/ directory contains a 1 MB PDF file called "compressed.tracemonkey-pldi-09.pdf". This file is a sample and can safely  be removed.  
+    ps: More info can be found here: https://github.com/mozilla/pdf.js/wiki/setup-pdf.js-in-a-website
+
 
 ## Step 2: To install `ng2-pdfjs-viewer`, run:
 

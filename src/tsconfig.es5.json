@@ -15,7 +15,12 @@
       "dom"
     ],
     "skipLibCheck": true,
-    "types": []
+    "types": [
+      "node"
+    ],
+    "typeRoots": [
+    "node_modules/@types"
+    ]
   },
   "angularCompilerOptions": {
     "annotateForClosureCompiler": true,

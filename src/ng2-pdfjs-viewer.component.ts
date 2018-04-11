@@ -1,4 +1,10 @@
 import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+//import viewerHtml from 'pdfjs/web/viewer.html';
+
+//declare var require: any
+//require('static-reference')('./pdfjs/web/viewer.html');
+
+//declare var path: any;
 
 @Component({
   selector: 'ng2-pdfjs-viewer',
@@ -6,6 +12,17 @@ import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 })
 export class PdfJsViewerComponent {
   @ViewChild('iframe') iframe: ElementRef;
+
+
+//   var TransferWebpackPlugin = require('transfer-webpack-plugin');
+
+// ...
+// plugins: [
+//   new TransferWebpackPlugin([
+//     { from: 'node_modules/my-package/assets', to: path.join(__dirname, 'my/public') }
+//   ])
+// ]
+
 
   @Input() public pdfJsFolder: string = "pdfjs";
   @Input() public externalWindow: boolean = false;
@@ -86,7 +103,9 @@ export class PdfJsViewerComponent {
     }
 
     var viewerUrl = `assets/${this.pdfJsFolder}/web/viewer.html`;
-    //var viewerUrl = "./pdfjs/web/viewer.html";
+    //console.log("__dirname" + __dirname);
+    //console.log("__dirname" + path.join(__dirname, 'my/public'));
+    var viewerUrl = __dirname + "/pdfjs/web/viewer.html";
     viewerUrl += `?file=${fileUrl}`;
 
     if (this.downloadFileName) {

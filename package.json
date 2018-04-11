@@ -1,6 +1,6 @@
 {
   "name": "ng2-pdfjs-viewer",
-  "version": "0.2.4",
+  "version": "0.2.12",
   "scripts": {
     "build": "gulp build",
     "build:watch": "gulp",
@@ -43,7 +43,7 @@
     "@angular/platform-browser-dynamic": "^5.2.9",
     "@compodoc/compodoc": "^1.0.9",
     "@types/jasmine": "2.8.6",
-    "@types/node": "~9.6.1",
+    "@types/node": "^9.6.4",
     "angular-in-memory-web-api": "^0.6.0",
     "codelyzer": "~4.2.1",
     "concurrently": "^3.5.1",

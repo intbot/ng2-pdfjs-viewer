@@ -9,6 +9,8 @@
       "dom"
     ],
     "skipLibCheck": true,
-    "types": []
+    "types": [
+      "node"
+    ]
   }
 }
