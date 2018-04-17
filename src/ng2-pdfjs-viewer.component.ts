@@ -1,9 +1,8 @@
 import { Component, Input, ViewChild, ElementRef } from '@angular/core';
-//import viewerHtml from 'pdfjs/web/viewer.html';
 
+//import viewerHtml from 'pdfjs/web/viewer.html';
 //declare var require: any
 //require('static-reference')('./pdfjs/web/viewer.html');
-
 //declare var path: any;
 
 @Component({
@@ -24,7 +23,7 @@ export class PdfJsViewerComponent {
 // ]
 
 
-  @Input() public pdfJsFolder: string = "pdfjs";
+  @Input() public pdfJsFolder: string;
   @Input() public externalWindow: boolean = false;
   @Input() public showSpinner: boolean = true;
   @Input() public downloadFileName: string;
@@ -94,18 +93,23 @@ export class PdfJsViewerComponent {
     //}
     if (this.src instanceof Blob) {
       fileUrl = encodeURIComponent(URL.createObjectURL(this.src));
-    }
-    else if (this.src instanceof Uint8Array) {
+    } else if (this.src instanceof Uint8Array) {
       let blob = new Blob([this.src], { type: "application/pdf" });
       fileUrl = encodeURIComponent(URL.createObjectURL(blob));
     } else {
       fileUrl = this.src;
     }
 
-    var viewerUrl = `assets/${this.pdfJsFolder}/web/viewer.html`;
+    let viewerUrl;
+    if (this.pdfJsFolder) {
+      viewerUrl = `${this.pdfJsFolder}/web/viewer.html`;
+    } else {
+      viewerUrl = `assets/pdfjs/web/viewer.html`;
+    }
+
     //console.log("__dirname" + __dirname);
     //console.log("__dirname" + path.join(__dirname, 'my/public'));
-    var viewerUrl = __dirname + "/pdfjs/web/viewer.html";
+    //var viewerUrl = __dirname + "/pdfjs/web/viewer.html";
     viewerUrl += `?file=${fileUrl}`;
 
     if (this.downloadFileName) {
