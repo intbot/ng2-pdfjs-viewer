@@ -7,14 +7,6 @@ import { CommonModule } from '@angular/common';
  */
 var PdfJsViewerComponent = /** @class */ (function () {
     function PdfJsViewerComponent() {
-        //   var TransferWebpackPlugin = require('transfer-webpack-plugin');
-        // ...
-        // plugins: [
-        //   new TransferWebpackPlugin([
-        //     { from: 'node_modules/my-package/assets', to: path.join(__dirname, 'my/public') }
-        //   ])
-        // ]
-        this.pdfJsFolder = "pdfjs";
         this.externalWindow = false;
         this.showSpinner = true;
         this.openFile = true;
@@ -88,10 +80,16 @@ var PdfJsViewerComponent = /** @class */ (function () {
         else {
             fileUrl = this.src;
         }
-        var /** @type {?} */ viewerUrl = "assets/" + this.pdfJsFolder + "/web/viewer.html";
+        var /** @type {?} */ viewerUrl;
+        if (this.pdfJsFolder) {
+            viewerUrl = this.pdfJsFolder + "/web/viewer.html";
+        }
+        else {
+            viewerUrl = "assets/pdfjs/web/viewer.html";
+        }
         //console.log("__dirname" + __dirname);
         //console.log("__dirname" + path.join(__dirname, 'my/public'));
-        var /** @type {?} */ viewerUrl = __dirname + "/pdfjs/web/viewer.html";
+        //var viewerUrl = __dirname + "/pdfjs/web/viewer.html";
         viewerUrl += "?file=" + fileUrl;
         if (this.downloadFileName) {
             viewerUrl += "&fileName=" + this.downloadFileName + ".pdf";
