@@ -1,6 +1,9 @@
 # Ng6SampleApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.1.
+This is a sample app showcasing usage of ng2-pdfjs-viewer. This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.1. 
+
+`1. Please note that pdfjs folder should be copied from node_modules/ng2-pdfjs-viewer to assets folder.
+2. A sample pdf file should be provided under assets/pdfjs/web/<<sample-pdf.pdf>> for testing.`
 
 ## Development server
 
