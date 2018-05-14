@@ -71,7 +71,7 @@ OR
 
 ## Usage    
 
-'For your convenience a sample app using angular6 is available under this repository, if you would like to see it in action (Folder ng6SampleApp)'
+`For your convenience a sample app using angular6 is available under this repository, if you would like to see it in action (Folder ng6SampleApp)`
 
 Once your PdfJsViewerComponent is imported  you can use it in your Angular application like this:
 
