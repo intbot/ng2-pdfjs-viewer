@@ -70,6 +70,9 @@ OR
     ps: More info can be found here: https://github.com/mozilla/pdf.js/wiki/setup-pdf.js-in-a-website
 
 ## Usage    
+
+'For your convenience a sample app using angular6 is available under this repository, if you would like to see it in action (Folder ng6SampleApp)'
+
 Once your PdfJsViewerComponent is imported  you can use it in your Angular application like this:
 
 ```xml
