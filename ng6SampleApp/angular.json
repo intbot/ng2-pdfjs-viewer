@@ -6,7 +6,7 @@
     "ng6SampleApp": {
       "root": "",
       "sourceRoot": "src",
-      "projectType": "application",
+      "projectType": "application", 
       "prefix": "app",
       "schematics": {
         "@schematics/angular:component": {
