@@ -1,4 +1,18 @@
-# ng2-pdfjs-viewer
+# Angular 2+ PDFJS viewer with Mozilla's ViewerJS
+<p align="center">
+  <a href="https://www.npmjs.com/package/ng2-pdfjs-viewer">
+    <img src="https://img.shields.io/npm/dm/ng2-pdfjs-viewer.svg?style=flat" alt="downloads">
+  </a>
+  <a href="https://badge.fury.io/js/ng2-pdfjs-viewer">
+    <img src="https://badge.fury.io/js/ng2-pdfjs-viewer.svg" alt="npm version">
+  </a>
+  <a href="https://david-dm.org/intbot/ng2-pdfjs-viewer" title="dependencies status">
+    <img src="https://david-dm.org/intbot/ng2-pdfjs-viewer/status.svg"/>
+  </a>
+  <a href="https://travis-ci.org/intbot/ng2-pdfjs-viewer" title="test">
+    <img src="https://travis-ci.org/intbot/ng2-pdfjs-viewer.svg?branch=master"/>
+  </a>
+</p>
 
 This is a simple library wraps mozilla's pdfjs and viewerjs into an angular2+ component.
 
