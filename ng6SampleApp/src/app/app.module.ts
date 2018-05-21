@@ -4,16 +4,18 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
+// ----> Import PdfJsViewerModule here
+import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    PdfJsViewerComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    // ----> Import PdfJsViewerModule here
+    PdfJsViewerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
