@@ -10,7 +10,8 @@
 
 This is a simple library wraps mozilla's pdfjs and viewerjs into an angular2+ component.
 
-<img src="/sampledoc/viewerImage.JPG" alt="angular2+ pdfjs viewer"/>
+<img src="/sampledoc/viewerImage.JPG" alt="angular2+ pdfjs viewer in new window"/>
+<img src="/sampledoc/viewerImageEmbedded.JPG" alt="angular2+ pdfjs viewer embedded"/>
 
 ## Installation
 
