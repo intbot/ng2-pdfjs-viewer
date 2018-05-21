@@ -28,17 +28,17 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 
-// Import PdfJsViewerComponent component
-import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
+// Import PdfJsViewerModule module
+import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 
 @NgModule({
   declarations: [
     AppComponent,
-    // Add to declarations
-    PdfJsViewerComponent
   ],
   imports: [
     BrowserModule,
+    // Add to declarations
+    PdfJsViewerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

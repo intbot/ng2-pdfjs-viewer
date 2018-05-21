@@ -9,7 +9,7 @@ export declare class PdfJsViewerComponent {
     download: boolean;
     viewBookmark: boolean;
     viewerTab: any;
-    private src;
+    private innerSrc;
     pdfSrc: string | Blob | Uint8Array;
     ngOnInit(): void;
     refresh(): void;

@@ -7,14 +7,13 @@ import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'ng2-pdfjs-viewer',
-  template: `<iframe [hidden]="externalWindow || (!externalWindow && !src)" #iframe width="100%" height="100%"></iframe>`
+  template: `<iframe [hidden]="externalWindow || (!externalWindow && !pdfSrc)" #iframe width="100%" height="100%"></iframe>`
 })
 export class PdfJsViewerComponent {
   @ViewChild('iframe') iframe: ElementRef;
 
 
 //   var TransferWebpackPlugin = require('transfer-webpack-plugin');
-
 // ...
 // plugins: [
 //   new TransferWebpackPlugin([
@@ -32,11 +31,16 @@ export class PdfJsViewerComponent {
   @Input() public viewBookmark: boolean = true;
 
   public viewerTab: any;
-  private src: string | Blob | Uint8Array;
+  private innerSrc: string | Blob | Uint8Array;
 
-  @Input() public set pdfSrc(src: string | Blob | Uint8Array) {
-    this.src = src;
+  @Input()
+  public set pdfSrc(innerSrc: string | Blob | Uint8Array) {
+    this.innerSrc = innerSrc;
     this.loadPdf();
+  }
+  
+  public get pdfSrc() {
+    return this.innerSrc;
   }
 
   ngOnInit(): void {
@@ -48,7 +52,7 @@ export class PdfJsViewerComponent {
   }
 
   private loadPdf() {
-    if (!this.src) {
+    if (!this.innerSrc) {
       return;
     }
 
@@ -91,13 +95,13 @@ export class PdfJsViewerComponent {
     //if (typeof this.src === "string") {
     //  fileUrl = this.src;
     //}
-    if (this.src instanceof Blob) {
-      fileUrl = encodeURIComponent(URL.createObjectURL(this.src));
-    } else if (this.src instanceof Uint8Array) {
-      let blob = new Blob([this.src], { type: "application/pdf" });
+    if (this.innerSrc instanceof Blob) {
+      fileUrl = encodeURIComponent(URL.createObjectURL(this.innerSrc));
+    } else if (this.innerSrc instanceof Uint8Array) {
+      let blob = new Blob([this.innerSrc], { type: "application/pdf" });
       fileUrl = encodeURIComponent(URL.createObjectURL(blob));
     } else {
-      fileUrl = this.src;
+      fileUrl = this.innerSrc;
     }
 
     let viewerUrl;

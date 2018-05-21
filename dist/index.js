@@ -14,12 +14,18 @@ var PdfJsViewerComponent = /** @class */ (function () {
         this.viewBookmark = true;
     }
     Object.defineProperty(PdfJsViewerComponent.prototype, "pdfSrc", {
-        set: /**
-         * @param {?} src
+        get: /**
          * @return {?}
          */
-        function (src) {
-            this.src = src;
+        function () {
+            return this.innerSrc;
+        },
+        set: /**
+         * @param {?} innerSrc
+         * @return {?}
+         */
+        function (innerSrc) {
+            this.innerSrc = innerSrc;
             this.loadPdf();
         },
         enumerable: true,
@@ -50,7 +56,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
      * @return {?}
      */
     function () {
-        if (!this.src) {
+        if (!this.innerSrc) {
             return;
         }
         if (this.externalWindow && typeof this.viewerTab === 'undefined') {
@@ -70,15 +76,15 @@ var PdfJsViewerComponent = /** @class */ (function () {
         //if (typeof this.src === "string") {
         //  fileUrl = this.src;
         //}
-        if (this.src instanceof Blob) {
-            fileUrl = encodeURIComponent(URL.createObjectURL(this.src));
+        if (this.innerSrc instanceof Blob) {
+            fileUrl = encodeURIComponent(URL.createObjectURL(this.innerSrc));
         }
-        else if (this.src instanceof Uint8Array) {
-            var /** @type {?} */ blob = new Blob([this.src], { type: "application/pdf" });
+        else if (this.innerSrc instanceof Uint8Array) {
+            var /** @type {?} */ blob = new Blob([this.innerSrc], { type: "application/pdf" });
             fileUrl = encodeURIComponent(URL.createObjectURL(blob));
         }
         else {
-            fileUrl = this.src;
+            fileUrl = this.innerSrc;
         }
         var /** @type {?} */ viewerUrl;
         if (this.pdfJsFolder) {
@@ -113,7 +119,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
     PdfJsViewerComponent.decorators = [
         { type: Component, args: [{
                     selector: 'ng2-pdfjs-viewer',
-                    template: "<iframe [hidden]=\"externalWindow || (!externalWindow && !src)\" #iframe width=\"100%\" height=\"100%\"></iframe>"
+                    template: "<iframe [hidden]=\"externalWindow || (!externalWindow && !pdfSrc)\" #iframe width=\"100%\" height=\"100%\"></iframe>"
                 },] },
     ];
     /** @nocollapse */
