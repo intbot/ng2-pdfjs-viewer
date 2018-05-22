@@ -26,7 +26,6 @@ var PdfJsViewerComponent = /** @class */ (function () {
          */
         function (innerSrc) {
             this.innerSrc = innerSrc;
-            this.loadPdf();
         },
         enumerable: true,
         configurable: true
@@ -38,7 +37,10 @@ var PdfJsViewerComponent = /** @class */ (function () {
      * @return {?}
      */
     function () {
-        this.loadPdf();
+        if (!this.externalWindow) { // Load pdf for embedded views
+            // Load pdf for embedded views
+            this.loadPdf();
+        }
     };
     /**
      * @return {?}
@@ -47,6 +49,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
      * @return {?}
      */
     function () {
+        // Needs to be invoked for external window or when needs to reload pdf
         this.loadPdf();
     };
     /**

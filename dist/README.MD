@@ -10,10 +10,10 @@
 
 This is a simple library wraps mozilla's pdfjs and viewerjs into an angular2+ component.
 
-Open in a new tab/window
+### Open in a new tab/window
 <img src="/sampledoc/viewerImage.JPG" alt="angular2+ pdfjs viewer in new window"/>
 
-Embed pdf into any angular component/page
+### Embed pdf into any angular component/page
 <img src="/sampledoc/viewerImageEmbedded.jpg" alt="angular2+ pdfjs viewer embedded"/>
 
 ## Installation
@@ -137,6 +137,7 @@ export class RateCardComponent implements OnInit {
     this.downloadFile(url).subscribe(
       (res) => {
         this.pdfViewer.pdfSrc = res; // pdfSrc can be Blob or Uint8Array
+        this.pdfViewer.refresh(); // Ask pdf viewer to load/reresh pdf
       }
     );
   }

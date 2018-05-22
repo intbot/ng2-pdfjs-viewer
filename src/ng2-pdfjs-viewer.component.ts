@@ -43,7 +43,7 @@ export class PdfJsViewerComponent {
   }
 
   ngOnInit(): void {
-    if (!externalWindow) { // Load pdf for embedded views
+    if (!this.externalWindow) { // Load pdf for embedded views
       this.loadPdf();
     }
   }
