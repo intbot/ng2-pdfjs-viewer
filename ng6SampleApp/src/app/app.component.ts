@@ -8,8 +8,8 @@ import { Component, ViewChild } from '@angular/core';
 export class AppComponent {
   title = 'app';
 
-  @ViewChild('pdfViewer') public externalPdfViewer;
-  @ViewChild('pdfViewer') public embeddedPdfViewer;
+  @ViewChild('externalPdfViewer') public externalPdfViewer;
+  @ViewChild('embeddedPdfViewer') public embeddedPdfViewer;
 
   public openPdf() {
     console.log("opening pdf in new tab!");
