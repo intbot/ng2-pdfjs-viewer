@@ -36,7 +36,6 @@ export class PdfJsViewerComponent {
   @Input()
   public set pdfSrc(innerSrc: string | Blob | Uint8Array) {
     this.innerSrc = innerSrc;
-    this.loadPdf();
   }
   
   public get pdfSrc() {
@@ -44,10 +43,12 @@ export class PdfJsViewerComponent {
   }
 
   ngOnInit(): void {
-    this.loadPdf();
+    if (!externalWindow) { // Load pdf for embedded views
+      this.loadPdf();
+    }
   }
 
-  public refresh(): void {
+  public refresh(): void { // Needs to be invoked for external window or when needs to reload pdf
     this.loadPdf();
   }
 

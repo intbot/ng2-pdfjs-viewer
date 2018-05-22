@@ -18,7 +18,13 @@
   </li>
 </ul>
 
-<ng2-pdfjs-viewer pdfSrc="pdf-sample.pdf" style="position:fixed; left:815px; width: 800px; height: 400px"></ng2-pdfjs-viewer>
+<button (click)="openPdf()">Open PDF in new tab</button>
+
+<!-- <ng2-pdfjs-viewer #pdfViewer pdfSrc="pdf-sample.pdf" [externalWindow]="true"></ng2-pdfjs-viewer> -->
+<ng2-pdfjs-viewer #externalPdfViewer [externalWindow]="true"></ng2-pdfjs-viewer>
+
+<button (click)="changePdf()">Click to change PDF url</button>
+<ng2-pdfjs-viewer #embeddedPdfViewer pdfSrc="pdf-sample.pdf" style="position:fixed; left:815px; width: 800px; height: 400px"></ng2-pdfjs-viewer>
 
 <br />
 
