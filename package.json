@@ -1,6 +1,6 @@
 {
   "name": "ng2-pdfjs-viewer",
-  "version": "0.2.24",
+  "version": "0.2.25",
   "scripts": {
     "build": "gulp build",
     "build:watch": "gulp",
