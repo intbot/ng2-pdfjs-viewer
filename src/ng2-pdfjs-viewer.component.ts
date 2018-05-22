@@ -57,7 +57,12 @@ export class PdfJsViewerComponent {
       return;
     }
 
-    if (this.externalWindow && typeof this.viewerTab === 'undefined') {
+    // console.log(`Tab is - ${this.viewerTab}`);
+    // if (this.viewerTab) {
+    //   console.log(`Status of window - ${this.viewerTab.closed}`);
+    // }
+
+    if (this.externalWindow && (typeof this.viewerTab === 'undefined' || this.viewerTab.closed)) {
       this.viewerTab = window.open('', '_blank');
       if (this.viewerTab == null) {
         console.log("ng2-pdfjs-viewer: For 'externalWindow = true'. i.e opening in new tab, to work, pop-ups should be enabled.");
