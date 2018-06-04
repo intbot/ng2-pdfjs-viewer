@@ -83,7 +83,7 @@ OR
 
 ## Usage    
 
-`For your convenience a sample app using angular6 is available under this repository, if you would like to see it in action (Folder ng6SampleApp)`
+`For your convenience a sample app using angular6 is available under this repository, if you would like to see it in action (Folder ng6SampleApp). It shows many ways to configure this component for different needs.`
 
 Once your PdfJsViewerComponent is imported  you can use it in your Angular application like this:
 
@@ -104,13 +104,16 @@ For [externalWindow]="true" to work, pop-ups needs to be enabled at browser leve
 <button (click)="openPdf();">Open Pdf</button>
 
 <!-- Please note, you need a copy of https://github.com/intbot/ng2-pdfjs-viewer/tree/master/pdfjs for some of the below features to work -->
-<ng2-pdfjs-viewer #pdfViewer style="width: 800px; height: 400px"
-                  [pdfJsFolder]="'pdfjs'"
-                  [externalWindow]="true"
-                  [downloadFileName]="'mytestfile.pdf'"
-                  [openFile]="false"
-                  [viewBookmark]="false"
-                  [download]="false"></ng2-pdfjs-viewer>
+<div style="width: 800px; height: 400px">
+  <ng2-pdfjs-viewer 
+    #pdfViewer
+    [pdfJsFolder]="'pdfjs'"
+    [externalWindow]="true"
+    [downloadFileName]="'mytestfile.pdf'"
+    [openFile]="false"
+    [viewBookmark]="false"
+    [download]="false"></ng2-pdfjs-viewer>
+</div>
 ```
 
 ```typescript
