@@ -33,15 +33,20 @@ button:focus {
   </li>
 </ul> -->
 
+<div [hidden]="!isPdfLoaded" style="height: 600px">
+  <ng2-pdfjs-viewer #inlinePdfViewer></ng2-pdfjs-viewer>
+</div>
+<button (click)="loadAndDisplayPdf()" style="background-color:cadetblue;" >Load/Hide Inline PDF</button>
 <button (click)="openPdf()" style="background-color: orange" >Open PDF in new tab</button>
 <button (click)="changePdf()" style="float: right; background-color: green">Click to change PDF url</button>
 
 <br />
 <ng2-pdfjs-viewer #externalPdfViewer [externalWindow]="true"></ng2-pdfjs-viewer>
-<ng2-pdfjs-viewer #embeddedPdfViewer pdfSrc="pdf-sample.pdf" style="position:fixed; left:845px; width: 825px; height: 400px"></ng2-pdfjs-viewer>
-<ng2-pdfjs-viewer
-  pdfSrc="pdf-sample.pdf"
-  style="position:absolute; width: 825px; height: 900px">
-</ng2-pdfjs-viewer>
-
+<div style="position:fixed; left:845px; width: 825px; height: 400px">
+  <ng2-pdfjs-viewer #embeddedPdfViewer pdfSrc="pdf-sample.pdf"></ng2-pdfjs-viewer>
+</div>
+<div style="position:absolute; width: 825px; height: 900px">
+  <ng2-pdfjs-viewer pdfSrc="pdf-sample.pdf">
+  </ng2-pdfjs-viewer>
+</div>
 <router-outlet></router-outlet>
