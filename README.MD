@@ -198,6 +198,9 @@ public IActionResult GetMyPdf()
 }
 ```
 
+## Questions?
+There are several how to questions being posted in issues section of this repository. Questions would be better answered if posted on  www.stackoverflow.com with tag <b>ng2-pdfjs-viewer</b>
+
 ## Other projects worth mentioning
 1. Angular 5+ [ng2-pdf-viewer](https://github.com/VadimDez/ng2-pdf-viewer)
 2. AngularJS [angular-pdfjs-viewer](https://github.com/legalthings/angular-pdfjs-viewer)
