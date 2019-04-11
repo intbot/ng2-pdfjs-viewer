@@ -138,7 +138,8 @@ export class RateCardComponent implements OnInit {
     // Please note, for remote urls to work, CORS should be enabled at the server. Read: https://enable-cors.org/server.html
 
     this.downloadFile(url).subscribe(
-      (res) => {
+
+(res) => {
         this.pdfViewer.pdfSrc = res; // pdfSrc can be Blob or Uint8Array
         this.pdfViewer.refresh(); // Ask pdf viewer to load/reresh pdf
       }
@@ -204,6 +205,7 @@ There are several how to questions being posted in issues section of this reposi
 ## Other projects worth mentioning
 1. Angular 5+ [ng2-pdf-viewer](https://github.com/VadimDez/ng2-pdf-viewer)
 2. AngularJS [angular-pdfjs-viewer](https://github.com/legalthings/angular-pdfjs-viewer)
+3. Angular [ngx-extended-pdf-viewer](https://github.com/stephanrauh/ngx-extended-pdf-viewer)
 
 ## License
 
