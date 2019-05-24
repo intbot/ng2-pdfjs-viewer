@@ -71,7 +71,7 @@ plugins: [
 | `[download]` | Show/hide download icon | |
 | `[showSpinner]` | Show a simple css based spinner/progress before the pdf loads | |
 
-**Please note, this step is necessary to enjoy all the different options listed below. You may also avoid this step and could directly use https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website if you do not wish to use any of the options provided below**  
+**_Please note, copy step is mandatory to enjoy all of the different options listed above. You may also avoid this step and could directly use https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website if you wish to just use the default viewer_**  
 
 ## Usage    
 
