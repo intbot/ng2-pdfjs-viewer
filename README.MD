@@ -48,8 +48,6 @@ export class AppModule { }
 ```
 
 ## Step 2: Copy task for pdfjs
-**Please note, this step is necessary to enjoy all the different options listed below. You may also avoid this step and could directly use https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website if you do not wish to use any of the options provided below**   
-
 Copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your public or asset folder Or use _`TransferWebpackPlugin`_ or similar plugins/task/build task to make sure the static files are accessible from the public folder in your application/webserver. Please note, if you decide to put _`pdfjs`_ folder anywhere else other than the _`assets`_ folder, make sure you also set _`[pdfJsFolder]`_ property to help locate the folder.  
 
 **_`TransferWebpackPlugin` Sample code_**  
@@ -72,6 +70,8 @@ plugins: [
 | `[viewBookmark]` | Show/hide bookmark icon | |
 | `[download]` | Show/hide download icon | |
 | `[showSpinner]` | Show a simple css based spinner/progress before the pdf loads | |
+
+**Please note, this step is necessary to enjoy all the different options listed below. You may also avoid this step and could directly use https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website if you do not wish to use any of the options provided below**  
 
 ## Usage    
 
