@@ -131,7 +131,7 @@ export class RateCardComponent implements OnInit {
 
     this.downloadFile(url).subscribe(
 
-(res) => {
+    (res) => {
         this.pdfViewer.pdfSrc = res; // pdfSrc can be Blob or Uint8Array
         this.pdfViewer.refresh(); // Ask pdf viewer to load/reresh pdf
       }
@@ -192,9 +192,9 @@ public IActionResult GetMyPdf()
 ```
 
 ## Questions?
-There are several how to questions being posted in issues section of this repository. Questions would be better answered if posted on  www.stackoverflow.com with tag <b>ng2-pdfjs-viewer</b> (Please create this tag if not already present)
+There are several how to questions being posted in issues section of this repository. Questions would be better answered if posted on  www.stackoverflow.com with tag **_ng2-pdfjs-viewer_** (Please create this tag if not already present)
 
-## If you are looking for a similar component in AngularJS, This library is quite useful
+## Looking for old AngularJS? - The below library is quite useful
 AngularJS [angular-pdfjs-viewer](https://github.com/legalthings/angular-pdfjs-viewer)
 
 ## License
