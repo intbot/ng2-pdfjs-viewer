@@ -50,18 +50,18 @@ export class AppModule { }
 ## Step 2: Copy task for pdfjs
 **Please note, this step is necessary to enjoy all the different options listed below. You may also avoid this step and could directly use https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website if you do not wish to use any of the options provided below**   
 
-    Copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your public or asset folder Or use `TransferWebpackPlugin` or something similar to make sure the static files are accessible from the public folder in your application/webserver. Please note, if you decide to put `pdfjs` folder anywhere else other than the `assets` folder, make sure you also set `[pdfJsFolder]` property to help locate the folder.  
+Copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your public or asset folder Or use `TransferWebpackPlugin` or something similar to make sure the static files are accessible from the public folder in your application/webserver. Please note, if you decide to put `pdfjs` folder anywhere else other than the `assets` folder, make sure you also set `[pdfJsFolder]` property to help locate the folder.  
 
-    `TransferWebpackPlugin` Sample code  
-    ```typescript
-    var TransferWebpackPlugin = require('transfer-webpack-plugin');
-    ...
-    plugins: [
-      new TransferWebpackPlugin([
-        { from: 'node_modules\ng2-pdfjs-viewer\pdfjs', to: path.join(__dirname, 'assets') }
-      ])
-    ]
-    ```
+`TransferWebpackPlugin` Sample code  
+```typescript
+var TransferWebpackPlugin = require('transfer-webpack-plugin');
+...
+plugins: [
+  new TransferWebpackPlugin([
+    { from: 'node_modules\ng2-pdfjs-viewer\pdfjs', to: path.join(__dirname, 'assets') }
+  ])
+]
+```
 
 *Options*   
 | Command | Description | Default
@@ -75,7 +75,7 @@ export class AppModule { }
 
 ## Usage    
 
-`For your convenience a sample app using angular6 is available under this repository, if you would like to see it in action (Folder ng6SampleApp). It shows many ways to configure this component for different needs.`
+_For your convenience a sample app using angular6 is available under this repository, if you would like to see it in action (Folder ng6SampleApp). It shows many ways to configure this component for different needs._
 
 Once your PdfJsViewerComponent is imported  you can use it in your Angular application like this:
 
@@ -192,7 +192,7 @@ public IActionResult GetMyPdf()
 ```
 
 ## Questions?
-There are several how to questions being posted in issues section of this repository. Questions would be better answered if posted on  www.stackoverflow.com with tag **_ng2-pdfjs-viewer_** (Please create **_ng2-pdfjs-viewer_** tag if not already present on so)
+There are several how to questions being posted in issues section of this repository. Questions would be better answered if posted on  www.stackoverflow.com with tag **_ng2-pdfjs-viewer_** (Please create **_ng2-pdfjs-viewer_** tag if not already present on SO)
 
 ## Looking for old AngularJS? - The below library is quite useful
 AngularJS [angular-pdfjs-viewer](https://github.com/legalthings/angular-pdfjs-viewer)
