@@ -48,7 +48,7 @@ export class AppModule { }
 ```
 
 ## Step 2: Copy task for pdfjs
-    **asterisks and _underscores_**
+**Please note, this step is necessary to enjoy all the different options listed below. You may also avoid this step and could directly use https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website if you do not wish to use any of the options provided below**
     - Copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your public or asset folder Or use `TransferWebpackPlugin` or something similar to make sure the static files are accessible from the public folder in your application/webserver. Please note, if you decide to put `pdfjs` folder anywhere else other than the `assets` folder, make sure you also set `[pdfJsFolder]` property to help locate the folder.  
 
     `TransferWebpackPlugin` Sample code  
