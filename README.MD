@@ -18,7 +18,7 @@ This is a simple library wraps mozilla's pdfjs and viewerjs into an angular(2/4/
 
 ## Installation
 
-## Step 1: To install `ng2-pdfjs-viewer`, run:
+## Step 1: Install `ng2-pdfjs-viewer`
 
 ```bash
 $ npm install ng2-pdfjs-viewer --save
@@ -29,11 +29,9 @@ And then configure it in your Angular `AppModule`:
 ```typescript
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppComponent } from './app.component';
 
-// Import PdfJsViewerModule module
-import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
+import { PdfJsViewerModule } from 'ng2-pdfjs-viewer'; // <-- Import PdfJsViewerModule module
 
 @NgModule({
   declarations: [
@@ -41,8 +39,7 @@ import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
   ],
   imports: [
     BrowserModule,
-    // Add to declarations
-    PdfJsViewerModule
+    PdfJsViewerModule // <-- Add to declarations
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -50,7 +47,8 @@ import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 export class AppModule { }
 ```
 
-## Step 2: Copy task for pdfjs (available in this package)
+## Step 2: Copy task for pdfjs
+    **asterisks and _underscores_**
     - Copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your public or asset folder Or use `TransferWebpackPlugin` or something similar to make sure the static files are accessible from the public folder in your application/webserver. Please note, if you decide to put `pdfjs` folder anywhere else other than the `assets` folder, make sure you also set `[pdfJsFolder]` property to help locate the folder.  
 
     `TransferWebpackPlugin` Sample code  
