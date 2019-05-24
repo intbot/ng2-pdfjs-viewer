@@ -1,4 +1,4 @@
-# Angular 2+ PDFJS viewer with Mozilla's ViewerJS (Supports Angular 2/4/6/7)
+# Angular 2+ PDFJS viewer with Mozilla's ViewerJS (Supports Angular 2/4/5/6/7)
 <p align="center">
   <a href="https://www.npmjs.com/package/ng2-pdfjs-viewer">
     <img src="https://img.shields.io/npm/dm/ng2-pdfjs-viewer.svg?style=flat" alt="downloads">
@@ -8,7 +8,7 @@
   </a>
 </p>
 
-This is a simple library wraps mozilla's pdfjs and viewerjs into an angular(2/4/6/7) component.
+This is a super simple library for displaying pdf inline/embedded or in a new tab along with a feature wrich viewer. It uses mozilla's pdfjs viewer behind the scenes and supports angular(2/4/5/6/7). Extremely lightweight, easiest to integrate and use, this library have only one dependancy (@angular/core).
 
 ### Open in a new tab/window
 <img src="/sampledoc/viewerImage.JPG" alt="angular2+ pdfjs viewer in new window"/>
@@ -64,7 +64,7 @@ plugins: [
 ### Options
 | Command | Description | Type | Default
 | --- | --- | --- | --- |
-| **[pdfJsFolder]** | Set path to _pdfjs's_ `web` and `build` folders. | `string` | `assets` folder path |
+| **`[pdfJsFolder]`** | Set path to _pdfjs's_ `web` and `build` folders. | `string` | `assets` folder path |
 | `[externalWindow]` | Open in new tab. Set to `true` to open document in a new tab | `boolean` | `false` |
 | `downloadFileName` | Sets/Changes the name of document to be downloaded. If the file name does not ends in `.pdf`, the component will automatically add it for you. | `string` | Actual name of the document |
 | `[page]` | Show specific page. E.g _page=3_ | `number` | `1` |
