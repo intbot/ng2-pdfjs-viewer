@@ -63,7 +63,7 @@ plugins: [
 
 ### Options
 | Command | Description | Type | Default
-| --- | --- | --- |
+| --- | --- | --- | --- |
 | `[pdfJsFolder]` | Set path to _pdfjs's_ `web` and `build` folders. | `string` | `assets` folder path |
 | `[externalWindow]` | Open in new tab. Set to `true` to open document in a new tab | `boolean` | `false` |
 | `downloadFileName` | Sets/Changes the name of document to be downloaded. If the file name does not ends in `.pdf`, the component will automatically add it for you. | `string` | Actual name of the document |
