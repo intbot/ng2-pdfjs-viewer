@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^7.2.15",
     "@angular/router": "^7.2.15",
     "core-js": "^3.0.1",
+    "ng2-pdfjs-viewer": "^3.2.0",
     "rxjs": "^6.5.2",
     "zone.js": "^0.9.1"
   },
