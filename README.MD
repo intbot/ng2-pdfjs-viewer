@@ -192,7 +192,7 @@ public IActionResult GetMyPdf()
 ```
 
 ## Questions?
-There are several how to questions being posted in issues section of this repository. Questions would be better answered if posted on  www.stackoverflow.com with tag **_ng2-pdfjs-viewer_** (Please create this tag if not already present)
+There are several how to questions being posted in issues section of this repository. Questions would be better answered if posted on  www.stackoverflow.com with tag **_ng2-pdfjs-viewer_** (Please create **_ng2-pdfjs-viewer_** tag if not already present on so)
 
 ## Looking for old AngularJS? - The below library is quite useful
 AngularJS [angular-pdfjs-viewer](https://github.com/legalthings/angular-pdfjs-viewer)
