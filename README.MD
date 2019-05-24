@@ -62,14 +62,30 @@ plugins: [
 ```
 
 ### Options
-| Command | Description | Default
+| Command | Description | Type | Default
 | --- | --- | --- |
-| `[pdfJsFolder]` | To set the folder path under `web` and `build` resides. | |
-| `[externalWindow]` | To decide pdf should be inline or in a new tab | |
-| `[openFile]` | Show/hide open file icon | |
-| `[viewBookmark]` | Show/hide bookmark icon | |
-| `[download]` | Show/hide download icon | |
-| `[showSpinner]` | Show a simple css based spinner/progress before the pdf loads | |
+| `[pdfJsFolder]` | Set path to _pdfjs's_ `web` and `build` folders. | `string` | `assets` folder path |
+| `[externalWindow]` | Open in new tab. Set to `true` to open document in a new tab | `boolean` | `false` |
+| `downloadFileName` | Sets/Changes the name of document to be downloaded. If the file name does not ends in `.pdf`, the component will automatically add it for you. | `string` | Actual name of the document |
+| `[page]` | Show specific page. E.g _page=3_ | `number` | `1` |
+| `[lastPage]` | Show last page of the document once it is loaded(If set to `true`). If you use this option along with _`page`_ option, undesired effects might occur | `boolean` | `false` |
+| `nameddest` | Go to a named destination. E.g. To go to section _5.1_ use like nameddest=5.1. Do not mix this option with _`page`_ and _`lastPage`_ options | `string` |  |
+| `zoom` | Set zoom level of document. Applicable values are `auto`, `page-width`, `page-height`, `page-fit`, `200`_(As a zoom percentage)_, `left offset`_(As in "auto,18,827")_, `top offset`_(As in "auto,18,127")_  | `string` | `auto` |
+| `[print]` | Show/hide print button. Set `false` to hide | `boolean` | `true` |
+| `[startPrint]` | Start print preview of document. This combined with _`externalWindow`_ could mimic a print preview functionality just like the one in gmail. | `boolean` |  |
+| `[download]` | Show/hide download button. Set `false` to hide | boolean | `true` |
+| `[startDownload]` | Download document as soon as it opens. You may put this to good use. | `boolean` |  |
+| `[rotatecw]` | Rotate document clock wise 90° | `boolean` |  |
+| `[rotateccw]` | Rotate document anti-clock wise 90° | `boolean` |  |
+| `cursor` | Type of cursor. Available options are _`HAND`/`H`_, _`SELECT`/`S`_,_`ZOOM`/`Z`_. Case is irrelevant. | _`SELECT`/`S`_ |  |
+| `scroll` | Sets scroll. Available options are _`VERTICAL`/`V`_, _`HORIZONTAL`/`H`_,_`WRAPPED`/`W`_. Case is irrelevant. | _`VERTICAL`/`V`_ |  |
+| `spread` | Sets Odd or Even spread. Available options are _`ODD`/`O`_, _`EVEN`/`E`_,_`NONE`/`N`_. Case is irrelevant. | _`NONE`/`N`_ |  |
+| `[fullScreen]` | Show/hide presentation(full screen) button. Set `false` to hide | `boolean` | `true` |
+| `cursor` | Type of cursor. Available options are _`HAND`/`H`_, _`SELECT`/`S`_,_`ZOOM`/`Z`_. Case is irrelevant. | _`SELECT`/`S`_ |  |
+| `pagemode` | State of sidebar. Available options are _`none`_, _`thumbs`_,_`bookmarks`_,_`attachments`_. E.g. `pagemode=attachments`. | _`none`_ |  |
+| `[openFile]` | Show/hide open file button. Set `false` to hide | boolean | `true` |
+| `[viewBookmark]` | Show/hide bookmark button. Set `false` to hide | boolean | `true` |
+| `[showSpinner]` | Show a simple css based spinner/progress before the pdf loads | boolean | `true` |
 
 **_Please note, copy step is mandatory to enjoy all of the different options listed above. You may also avoid this step and could directly use https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website if you wish to just use the default viewer_**  
 
