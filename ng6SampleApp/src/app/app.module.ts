@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 // ----> Import PdfJsViewerModule here
-import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
+import { PdfJsViewerModule } from 'ng2-pdfjs-viewer'
 
 @NgModule({
   declarations: [

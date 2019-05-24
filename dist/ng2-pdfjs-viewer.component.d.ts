@@ -7,11 +7,26 @@ export declare class PdfJsViewerComponent {
     downloadFileName: string;
     openFile: boolean;
     download: boolean;
+    startDownload: boolean;
     viewBookmark: boolean;
+    print: boolean;
+    startPrint: boolean;
+    fullScreen: boolean;
+    find: boolean;
+    page: number;
+    zoom: string;
+    nameddest: string;
+    pagemode: string;
+    lastPage: boolean;
+    rotatecw: boolean;
+    rotateccw: boolean;
+    cursor: string;
+    scroll: string;
+    spread: string;
     viewerTab: any;
     private innerSrc;
     pdfSrc: string | Blob | Uint8Array;
     ngOnInit(): void;
     refresh(): void;
-    private loadPdf();
+    private loadPdf;
 }

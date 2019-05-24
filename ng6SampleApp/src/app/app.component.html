@@ -15,10 +15,7 @@ button:focus {
 }
 </style>
 <div style="text-align:center">
-  <!-- <h1>
-    Welcome to {{ title }}!
-  </h1> -->
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+  <!-- <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="> -->
 </div>
 <!-- <h2>Here are some links to help you start: </h2>
 <ul>
@@ -33,20 +30,22 @@ button:focus {
   </li>
 </ul> -->
 
-<div [hidden]="!isPdfLoaded" style="height: 600px">
-  <ng2-pdfjs-viewer #inlinePdfViewer></ng2-pdfjs-viewer>
-</div>
+
+<!-- <div [hidden]="!isPdfLoaded" style="height: 600px">
+  <ng2-pdfjs-viewer #inlinePdfViewer [print]="false" [fullScreen]="false" [find]="false"></ng2-pdfjs-viewer>
+</div> -->
 <button (click)="loadAndDisplayPdf()" style="background-color:cadetblue;" >Load/Hide Inline PDF</button>
 <button (click)="openPdf()" style="background-color: orange" >Open PDF in new tab</button>
 <button (click)="changePdf()" style="float: right; background-color: green">Click to change PDF url</button>
 
 <br />
-<ng2-pdfjs-viewer #externalPdfViewer [externalWindow]="true"></ng2-pdfjs-viewer>
-<div style="position:fixed; left:845px; width: 825px; height: 400px">
-  <ng2-pdfjs-viewer #embeddedPdfViewer pdfSrc="pdf-sample.pdf"></ng2-pdfjs-viewer>
+
+<!-- <ng2-pdfjs-viewer #externalPdfViewer [externalWindow]="true" [zoom]="150" [cursor]=HAND></ng2-pdfjs-viewer> -->
+<div style="position:fixed; left:845px; width: 1000px; height: 900px">
+  <ng2-pdfjs-viewer #embeddedPdfViewer pdfSrc="gre_research_validity_data.pdf" cursor="HAND" downloadFileName="abcdef.pdf" scroll="W" spred="E"></ng2-pdfjs-viewer>
 </div>
-<div style="position:absolute; width: 825px; height: 900px">
+<!-- <div style="position:absolute; width: 825px; height: 900px">
   <ng2-pdfjs-viewer pdfSrc="pdf-sample.pdf">
   </ng2-pdfjs-viewer>
-</div>
+</div> -->
 <router-outlet></router-outlet>

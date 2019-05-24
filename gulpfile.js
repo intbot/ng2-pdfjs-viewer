@@ -8,6 +8,8 @@ var gulp = require('gulp'),
   runSequence = require('run-sequence'),
   inlineResources = require('./tools/gulp/inline-resources');
 
+const minify = require('gulp-minify');
+
 const rootFolder = path.join(__dirname);
 const srcFolder = path.join(rootFolder, 'src');
 const pdfJsFolder = path.join(rootFolder, 'pdfjs');
@@ -156,8 +158,16 @@ gulp.task('copy:build', function () {
  * 7.1. Copy modified version of pdfJs from /pdfjs to /dist, including all js files and html.
  */
 gulp.task('copy:pdfjs', function () {
-  return gulp.src([`${pdfJsFolder}/**/*`], {base: '.'})
+  return gulp.src([`${pdfJsFolder}/**/!(*.js)*`], {base: '.'})
     .pipe(gulp.dest(distFolder));
+});
+gulp.task('copy:compress', function() {
+  gulp.src([`${pdfJsFolder}/build/*.js`])
+    .pipe(minify({ noSource: true,  ext: { min: '.js' } }))
+    .pipe(gulp.dest(`${distFolder}/pdfjs/build`))
+  gulp.src([`${pdfJsFolder}/web/*.js`])
+    .pipe(minify({ noSource: true,  ext: { min: '.js' } }))
+    .pipe(gulp.dest(`${distFolder}/pdfjs/web`))
 });
 
 /**
@@ -200,6 +210,7 @@ gulp.task('compile', function () {
     'rollup:umd',
     'copy:build',
     'copy:pdfjs',
+    'copy:compress',
     'copy:manifest',
     'copy:readme',
     'clean:build',

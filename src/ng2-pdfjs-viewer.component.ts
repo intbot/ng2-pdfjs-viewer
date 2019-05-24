@@ -23,13 +23,29 @@ export class PdfJsViewerComponent {
 
 
   @Input() public pdfJsFolder: string;
-  @Input() public externalWindow: boolean = false;
+  @Input() public externalWindow: boolean;
   @Input() public showSpinner: boolean = true;
   @Input() public downloadFileName: string;
-  @Input() public openFile: boolean = true;
-  @Input() public download: boolean = true;
-  @Input() public viewBookmark: boolean = true;
-
+  @Input() public openFile: boolean;
+  @Input() public download: boolean;
+  @Input() public startDownload: boolean;
+  @Input() public viewBookmark: boolean;
+  @Input() public print: boolean;
+  @Input() public startPrint: boolean;
+  @Input() public fullScreen: boolean;
+  //@Input() public showFullScreen: boolean;
+  @Input() public find: boolean;
+  @Input() public page: number;
+  @Input() public zoom: string;
+  @Input() public nameddest: string;
+  @Input() public pagemode: string;
+  @Input() public lastPage: boolean;
+  @Input() public rotatecw: boolean;
+  @Input() public rotateccw: boolean;
+  @Input() public cursor: string;
+  @Input() public scroll: string;
+  @Input() public spread: string;
+  
   public viewerTab: any;
   private innerSrc: string | Blob | Uint8Array;
 
@@ -123,16 +139,69 @@ export class PdfJsViewerComponent {
     viewerUrl += `?file=${fileUrl}`;
 
     if (this.downloadFileName) {
-      viewerUrl += `&fileName=${this.downloadFileName}.pdf`;
+      if(!this.downloadFileName.endsWith(".pdf")) {
+        this.downloadFileName += ".pdf";
+      }
+      viewerUrl += `&fileName=${this.downloadFileName}`;
     }
-    if (typeof this.openFile !== 'undefined') {
+    if (this.openFile) {
       viewerUrl += `&openFile=${this.openFile}`;
     }
-    if (typeof this.download !== 'undefined') {
+    if (this.download) {
       viewerUrl += `&download=${this.download}`;
     }
-    if (typeof this.viewBookmark !== 'undefined') {
+    if (this.startDownload) {
+      viewerUrl += `&startDownload=${this.startDownload}`;
+    }
+    if (this.viewBookmark) {
       viewerUrl += `&viewBookmark=${this.viewBookmark}`;
+    }
+    if (this.print) {
+      viewerUrl += `&print=${this.print}`;
+    }
+    if (this.startPrint) {
+      viewerUrl += `&startPrint=${this.startPrint}`;
+    }
+    if (this.fullScreen) {
+      viewerUrl += `&fullScreen=${this.fullScreen}`;
+    }
+    // if (this.showFullScreen) {
+    //   viewerUrl += `&showFullScreen=${this.showFullScreen}`;
+    // }
+    if (this.find) {
+      viewerUrl += `&find=${this.find}`;
+    }
+    if (this.lastPage) {
+      viewerUrl += `&lastpage=${this.lastPage}`;
+    }
+    if (this.rotatecw) {
+      viewerUrl += `&rotatecw=${this.rotatecw}`;
+    }
+    if (this.rotateccw) {
+      viewerUrl += `&rotateccw=${this.rotateccw}`;
+    }
+    if (this.cursor) {
+      viewerUrl += `&cursor=${this.cursor}`;
+    }
+    if (this.scroll) {
+      viewerUrl += `&scroll=${this.scroll}`;
+    }
+    if (this.spread) {
+      viewerUrl += `&spread=${this.spread}`;
+    }
+    
+    if (this.page || this.zoom || this.nameddest || this.pagemode) viewerUrl += "#"
+    if (this.page) {
+      viewerUrl += `&page=${this.page}`;
+    }
+    if (this.zoom) {
+      viewerUrl += `&zoom=${this.zoom}`;
+    }
+    if (this.nameddest) {
+      viewerUrl += `&nameddest=${this.nameddest}`;
+    }
+    if (this.pagemode) {
+      viewerUrl += `&pagemode=${this.pagemode}`;
     }
 
     if (this.externalWindow) {
@@ -140,5 +209,31 @@ export class PdfJsViewerComponent {
     } else {
       this.iframe.nativeElement.src = viewerUrl;
     }
+
+    console.log(`
+      pdfSrc = ${this.pdfSrc}
+      fileUrl = ${fileUrl}
+      externalWindow = ${this.externalWindow}
+      downloadFileName = ${this.downloadFileName}
+      pdfJsFolder = ${this.pdfJsFolder}
+      openFile = ${this.openFile}
+      download = ${this.download}
+      startDownload = ${this.startDownload}
+      viewBookmark = ${this.viewBookmark}
+      print = ${this.print}
+      startPrint = ${this.startPrint}
+      fullScreen = ${this.fullScreen}
+      find = ${this.find}
+      lastPage = ${this.lastPage}
+      rotatecw = ${this.rotatecw}
+      rotateccw = ${this.rotateccw}
+      cursor = ${this.cursor}
+      scrollMode = ${this.scroll}
+      spread = ${this.spread}
+      page = ${this.page}
+      zoom = ${this.zoom}
+      nameddest = ${this.nameddest}
+      pagemode = ${this.pagemode}
+    `);
   }
 }

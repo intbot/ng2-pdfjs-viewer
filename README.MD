@@ -1,4 +1,4 @@
-# Angular 2+ PDFJS viewer with Mozilla's ViewerJS
+# Angular 2+ PDFJS viewer with Mozilla's ViewerJS (Supports Angular 2/4/6/7)
 <p align="center">
   <a href="https://www.npmjs.com/package/ng2-pdfjs-viewer">
     <img src="https://img.shields.io/npm/dm/ng2-pdfjs-viewer.svg?style=flat" alt="downloads">
@@ -8,7 +8,7 @@
   </a>
 </p>
 
-This is a simple library wraps mozilla's pdfjs and viewerjs into an angular2+ component.
+This is a simple library wraps mozilla's pdfjs and viewerjs into an angular(2/4/6/7) component.
 
 ### Open in a new tab/window
 <img src="/sampledoc/viewerImage.JPG" alt="angular2+ pdfjs viewer in new window"/>
@@ -50,9 +50,8 @@ import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 export class AppModule { }
 ```
 
-## Step 2: To use this library you need a copy of pdfjs
-1. Using modified version of viewerJs available in the package (Recommended approach)  
-    - Either copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your public or asset folder Or use `TransferWebpackPlugin` or something similar to make sure the static files are accessible from the public folder in your application/webserver. Please note, if you decide to put `pdfjs` folder anywhere else other than the `assets` folder, make sure you also set `[pdfJsFolder]` property to help locate the folder.  
+## Step 2: Copy task for pdfjs (available in this package)
+    - Copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your public or asset folder Or use `TransferWebpackPlugin` or something similar to make sure the static files are accessible from the public folder in your application/webserver. Please note, if you decide to put `pdfjs` folder anywhere else other than the `assets` folder, make sure you also set `[pdfJsFolder]` property to help locate the folder.  
 
     `TransferWebpackPlugin` Sample code  
     ```typescript
@@ -64,22 +63,15 @@ export class AppModule { }
       ])
     ]
     ```
-    Now you can use additional settings such as   
-     `[pdfJsFolder]`: To set the folder path under `web` and `build` resides.  
-     `[externalWindow]`: To decide pdf should be inline or in a new tab  
-     `[openFile]`: Show/hide open file icon  
-     `[viewBookmark]`: Show/hide bookmark icon  
-     `[download]`: Show/hide download icon  
-     `[showSpinner]`: Show a simple css based spinner/progress before the pdf loads  
-
-OR  
-
-2. Using pdf-js-gh-pages  
-    - Download pdfjs-gh-pages from here: https://github.com/mozilla/pdf.js/archive/gh-pages.zip and extract it.  
-    - Create a `pdfjs` folder under your angular2+ applications `assets` folder  
-    - Copy `pdf.js-gh-pages/build` and `pdf.js-gh-pages/web` folders from extracted package to `pdfjs` folder.  
-    - The web/ directory contains a 1 MB PDF file called "compressed.tracemonkey-pldi-09.pdf". This file is a sample and can safely  be removed.  
-    ps: More info can be found here: https://github.com/mozilla/pdf.js/wiki/setup-pdf.js-in-a-website
+    *Options*   
+    | Command | Description | Default
+    | --- | --- | --- |
+    | `[pdfJsFolder]` | To set the folder path under `web` and `build` resides. | |
+    | `[externalWindow]` | To decide pdf should be inline or in a new tab | |
+    | `[openFile]` | Show/hide open file icon | |
+    | `[viewBookmark]` | Show/hide bookmark icon | |
+    | `[download]` | Show/hide download icon | |
+    | `[showSpinner]` | Show a simple css based spinner/progress before the pdf loads | |
 
 ## Usage    
 
@@ -202,10 +194,8 @@ public IActionResult GetMyPdf()
 ## Questions?
 There are several how to questions being posted in issues section of this repository. Questions would be better answered if posted on  www.stackoverflow.com with tag <b>ng2-pdfjs-viewer</b> (Please create this tag if not already present)
 
-## Other projects worth mentioning
-1. Angular 5+ [ng2-pdf-viewer](https://github.com/VadimDez/ng2-pdf-viewer)
-2. AngularJS [angular-pdfjs-viewer](https://github.com/legalthings/angular-pdfjs-viewer)
-3. Angular [ngx-extended-pdf-viewer](https://github.com/stephanrauh/ngx-extended-pdf-viewer)
+## If you are looking for a similar component in AngularJS, This library is quite useful
+AngularJS [angular-pdfjs-viewer](https://github.com/legalthings/angular-pdfjs-viewer)
 
 ## License
 
