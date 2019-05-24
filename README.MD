@@ -64,7 +64,7 @@ plugins: [
 ### Options
 | Command | Description | Type | Default
 | --- | --- | --- | --- |
-| `[pdfJsFolder]` | Set path to _pdfjs's_ `web` and `build` folders. | `string` | `assets` folder path |
+| **`[pdfJsFolder]`** | Set path to _pdfjs's_ `web` and `build` folders. | `string` | `assets` folder path |
 | `[externalWindow]` | Open in new tab. Set to `true` to open document in a new tab | `boolean` | `false` |
 | `downloadFileName` | Sets/Changes the name of document to be downloaded. If the file name does not ends in `.pdf`, the component will automatically add it for you. | `string` | Actual name of the document |
 | `[page]` | Show specific page. E.g _page=3_ | `number` | `1` |
@@ -85,7 +85,7 @@ plugins: [
 | `pagemode` | State of sidebar. Available options are _`none`_, _`thumbs`_,_`bookmarks`_,_`attachments`_. E.g. `pagemode=attachments`. | _`none`_ |  |
 | `[openFile]` | Show/hide open file button. Set `false` to hide | boolean | `true` |
 | `[viewBookmark]` | Show/hide bookmark button. Set `false` to hide | boolean | `true` |
-| `[showSpinner]` | Show a simple css based spinner/progress before the pdf loads | boolean | `true` |
+| `[showSpinner]` | Show a simple css based spinner/progress before the document loads | boolean | `true` |
 
 **_Please note, copy step is mandatory to enjoy all of the different options listed above. You may also avoid this step and could directly use https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website if you wish to just use the default viewer_**  
 
