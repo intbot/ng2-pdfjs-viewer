@@ -8,7 +8,7 @@
   </a>
 </p>
 
-This is a super simple library for displaying pdf inline/embedded or in a new tab along with a feature wrich viewer. It uses mozilla's pdfjs viewer behind the scenes and supports angular(2/4/5/6/7). Extremely lightweight, easiest to integrate and use, this library have only one dependancy (@angular/core).
+This is a super simple library for displaying pdf inline/embedded or in a new tab along with a feature rich viewer. It uses mozilla's pdfjs viewer behind the scenes and supports angular(2/4/5/6/7). Extremely lightweight, easiest to integrate and use, this library has only one dependancy (@angular/core).
 
 ### Open in a new tab/window
 <img src="/sampledoc/viewerImage.JPG" alt="angular2+ pdfjs viewer in new window"/>
