@@ -56,11 +56,9 @@ Edit your project's `angular.json` file and use `ng build` as described here htt
 ]
 ```
 
-Please note, you may manually Copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your `public` or `asset` folder or use any copy script as part of your build process. Another method could be to use **_`TransferWebpackPlugin`_** if you are using webpack(https://github.com/dkokorev90/transfer-webpack-plugin).
 
-Please note if you decide to put _`pdfjs`_ folder anywhere else other than the _`assets`_ folder, make sure you also set _`[pdfJsFolder]`_ property to help locate the folder.  
-
-**_`TransferWebpackPlugin` Sample code_**  
+_Please note, you may manually Copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your `public` or `asset` folder or use any copy script as part of your build process. Another method could be to use `TransferWebpackPlugin` if you are using webpack(https://github.com/dkokorev90/transfer-webpack-plugin)._
+`TransferWebpackPlugin` Sample code  
 ```typescript
 var TransferWebpackPlugin = require('transfer-webpack-plugin');
 ...
@@ -70,6 +68,8 @@ plugins: [
   ])
 ]
 ```
+
+_Please note if you decide to put `pdfjs` folder anywhere else other than the `assets` folder, make sure you also set `[pdfJsFolder]` property to help locate the folder._  
 
 ### Options
 | Attribute | Description | Type | Default Value
