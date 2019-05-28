@@ -57,7 +57,7 @@ Edit your project's `angular.json` file and use `ng build` as described here htt
 ```
 
 
-_Please note, you may manually Copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your `public` or `asset` folder or use any copy script as part of your build process. Another method could be to use `TransferWebpackPlugin` if you are using webpack(https://github.com/dkokorev90/transfer-webpack-plugin)._
+_Please note, you may manually Copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your `public` or `asset` folder or use any copy script as part of your build process. Another method could be to use `TransferWebpackPlugin` if you are using webpack(https://github.com/dkokorev90/transfer-webpack-plugin)._  
 `TransferWebpackPlugin` Sample code  
 ```typescript
 var TransferWebpackPlugin = require('transfer-webpack-plugin');
