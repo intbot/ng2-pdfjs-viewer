@@ -49,8 +49,8 @@ export class AppModule { }
 
 ## Step 2: Copy task for pdfjs
 For several advanced options to work, you need a copy of pdfjs from this npm package. There are several ways to achieve it.
-1. Manually Copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your `public` or `asset` folder or use a script such as `copy .\node_modules\ng2-pdfjs-viewer\pdfjs\* <Myassetfolderpath> -Force -Recurse` (Give example is of powershell)
-OR 
+1. Manually Copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your `public` or `asset` folder or use a script such as `copy .\node_modules\ng2-pdfjs-viewer\pdfjs\* <Myassetfolderpath> -Force -Recurse` (Give example is of powershell)   
+OR   
 2. Add in your project's `angular.json` file and use `ng build` as described here https://angular.io/guide/workspace-config#project-asset-configuration 
 ```json
 "assets": [
