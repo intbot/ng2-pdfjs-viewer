@@ -48,7 +48,16 @@ export class AppModule { }
 ```
 
 ## Step 2: Copy task for pdfjs
-Copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your public or asset folder Or use _`TransferWebpackPlugin`_ or similar plugins/task/build task to make sure the static files are accessible from the public folder in your application/webserver. Please note, if you decide to put _`pdfjs`_ folder anywhere else other than the _`assets`_ folder, make sure you also set _`[pdfJsFolder]`_ property to help locate the folder.  
+For several advanced options to work, you need a copy of pdfjs from this npm package. There are several ways to achieve it.
+1. Manually Copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your `public` or `asset` folder or use a script such as `copy .\node_modules\ng2-pdfjs-viewer\pdfjs\* <Myassetfolderpath> -Force -Recurse` (Give example is of powershell)
+OR 
+2. Add in your project's `angular.json` file and use `ng build` as described here https://angular.io/guide/workspace-config#project-asset-configuration 
+```json
+"assets": [
+  { "glob": "**/*", "input": "node_modules/ng2-pdfjs-viewer/pdfjs", "output": "/assets/pdfjs" },
+]
+```
+Please note if you decide to put _`pdfjs`_ folder anywhere else other than the _`assets`_ folder, make sure you also set _`[pdfJsFolder]`_ property to help locate the folder.  
 
 **_`TransferWebpackPlugin` Sample code_**  
 ```typescript
