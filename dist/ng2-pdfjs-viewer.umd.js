@@ -24,50 +24,6 @@ var PdfJsViewerComponent = /** @class */ (function () {
         //@Input() public showFullScreen: boolean;
         this.find = true;
     }
-    Object.defineProperty(PdfJsViewerComponent.prototype, "PDFViewerApplicationOptions", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            /** @type {?} */
-            var pdfViewerOptions = null;
-            if (this.externalWindow) {
-                if (this.viewerTab) {
-                    pdfViewerOptions = this.viewerTab.PDFViewerApplicationOptions;
-                }
-            }
-            else {
-                if (this.iframe.nativeElement.contentWindow) {
-                    pdfViewerOptions = this.iframe.nativeElement.contentWindow.PDFViewerApplicationOptions;
-                }
-            }
-            return pdfViewerOptions;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(PdfJsViewerComponent.prototype, "PDFViewerApplication", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            /** @type {?} */
-            var pdfViewer = null;
-            if (this.externalWindow) {
-                if (this.viewerTab) {
-                    pdfViewer = this.viewerTab.PDFViewerApplication;
-                }
-            }
-            else {
-                if (this.iframe.nativeElement.contentWindow) {
-                    pdfViewer = this.iframe.nativeElement.contentWindow.PDFViewerApplication;
-                }
-            }
-            return pdfViewer;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(PdfJsViewerComponent.prototype, "pdfSrc", {
         get: /**
          * @return {?}
@@ -224,16 +180,11 @@ var PdfJsViewerComponent = /** @class */ (function () {
         if (this.pagemode) {
             viewerUrl += "&pagemode=" + this.pagemode;
         }
-        console.log("viewerUrl -> " + viewerUrl);
         if (this.externalWindow) {
             this.viewerTab.location.href = viewerUrl;
         }
         else {
             this.iframe.nativeElement.src = viewerUrl;
-            // TODO: Testing.
-            console.log(this.PDFViewerApplication);
-            console.log(this.PDFViewerApplicationOptions);
-            console.log(this.iframe.nativeElement.contentWindow.PDF);
         }
         console.log("\n      pdfSrc = " + this.pdfSrc + "\n      fileUrl = " + fileUrl + "\n      externalWindow = " + this.externalWindow + "\n      downloadFileName = " + this.downloadFileName + "\n      viewerFolder = " + this.viewerFolder + "\n      openFile = " + this.openFile + "\n      download = " + this.download + "\n      startDownload = " + this.startDownload + "\n      viewBookmark = " + this.viewBookmark + "\n      print = " + this.print + "\n      startPrint = " + this.startPrint + "\n      fullScreen = " + this.fullScreen + "\n      find = " + this.find + "\n      lastPage = " + this.lastPage + "\n      rotatecw = " + this.rotatecw + "\n      rotateccw = " + this.rotateccw + "\n      cursor = " + this.cursor + "\n      scrollMode = " + this.scroll + "\n      spread = " + this.spread + "\n      page = " + this.page + "\n      zoom = " + this.zoom + "\n      nameddest = " + this.nameddest + "\n      pagemode = " + this.pagemode + "\n    ");
     };

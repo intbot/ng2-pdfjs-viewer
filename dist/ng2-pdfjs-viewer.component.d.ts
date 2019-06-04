@@ -23,15 +23,9 @@ export declare class PdfJsViewerComponent {
     cursor: string;
     scroll: string;
     spread: string;
-    /**
-     * Used to determine how the external window looks when opened. Follows
-     * the specs parameter from the browsers Window open() function.
-     */
     externalWindowOptions: string;
     viewerTab: any;
     private innerSrc;
-    readonly PDFViewerApplicationOptions: any;
-    readonly PDFViewerApplication: any;
     pdfSrc: string | Blob | Uint8Array;
     ngOnInit(): void;
     refresh(): void;

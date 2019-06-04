@@ -77,6 +77,7 @@ _Please note if you decide to put `pdfjs` folder anywhere else other than the `a
 | `[pdfSrc]` | Fully qualified path to pdf file. (For remote pdf urls over http/https, CORS should be enabled) | `string` |  |
 | `[viewerFolder]` | Set path to _pdfjs's_ `web` and `build` folders. | `string` | `assets` folder path |
 | `[externalWindow]` | Open in new tab. Set to `true` to open document in a new tab | `boolean` | `false` |
+| `externalWindowOptions` | External window options. For allowed comma separated values, refer to https://developer.mozilla.org/en-US/docs/Web/API/Window/open | `string` |  |
 | `downloadFileName` | Sets/Changes the name of document to be downloaded. If the file name does not ends in `.pdf`, the component will automatically add it for you. | `string` | Actual name of the document |
 | `[page]` | Show specific page. E.g _page=3_ | `number` | `1` |
 | `[lastPage]` | Show last page of the document once it is loaded(If set to `true`). If you use this option along with _`page`_ option, undesired effects might occur | `boolean` | `false` |
