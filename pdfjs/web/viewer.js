@@ -139,6 +139,9 @@ window.getUrlParameterByName = function(name, url) { //c1s
 }
 
 window.applyParameterOverride = function(config) {
+  console.log("########################################################################################" + window.getUrlParameterByName('print'));
+  console.log(window.getUrlParameterByName('print') === "false");
+  
   if (window.getUrlParameterByName('openFile') === "false") {
     config.toolbar.openFile.setAttribute('hidden', 'true');
     config.secondaryToolbar.openFileButton.setAttribute('hidden', 'true');
@@ -1046,6 +1049,7 @@ var PDFViewerApplication = {
                 }
               }
 
+              console.log("parameeeeeeeeeeters ##############################:" + JSON.stringify(parameters));
               loadingTask = (0, _pdfjsLib.getDocument)(parameters);
               this.pdfLoadingTask = loadingTask;
 
@@ -1807,10 +1811,10 @@ var validateFileURL;
       var _ref8 = new _pdfjsLib.URL(file, window.location.href),
           origin = _ref8.origin,
           protocol = _ref8.protocol;
-
-      if (origin !== viewerOrigin && protocol !== 'blob:') {
-        throw new Error('file origin does not match viewer\'s');
-      }
+      //c1
+      // if (origin !== viewerOrigin && protocol !== 'blob:') {
+      //   throw new Error('file origin does not match viewer\'s');
+      // }
     } catch (ex) {
       var message = ex && ex.message;
       PDFViewerApplication.l10n.get('loading_error', null, 'An error occurred while loading the PDF.').then(function (loadingErrorMessage) {

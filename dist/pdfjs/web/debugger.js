@@ -1,1 +1,615 @@
-"use strict";var opMap,FontInspector=function(){var e,t,n=!1,a="data-font-name";function r(){let e=document.querySelectorAll(`span[${a}]`);for(let t of e)t.className="debuggerHideText"}function i(e,t){let n=document.querySelectorAll(`span[${a}=${e}]`);for(let e of n)e.className=t?"debuggerShowText":"debuggerHideText"}function o(e){if(e.target.dataset.fontName&&"SPAN"===e.target.tagName.toUpperCase())for(var t=e.target.dataset.fontName,n=document.getElementsByTagName("input"),a=0;a<n.length;++a){var r=n[a];r.dataset.fontName===t&&(r.checked=!r.checked,i(t,r.checked),r.scrollIntoView())}}return{id:"FontInspector",name:"Font Inspector",panel:null,manager:null,init:function(n){var a=this.panel;a.setAttribute("style","padding: 5px;");var i=document.createElement("button");i.addEventListener("click",r),i.textContent="Refresh",a.appendChild(i),e=document.createElement("div"),a.appendChild(e),t=n.createObjectURL},cleanup:function(){e.textContent=""},enabled:!1,get active(){return n},set active(e){(n=e)?(document.body.addEventListener("click",o,!0),r()):(document.body.removeEventListener("click",o,!0),function(){let e=document.querySelectorAll(`span[${a}]`);for(let t of e)t.className=""}())},fontAdded:function(n,a){var o=function(e,t){for(var n=document.createElement("table"),a=0;a<t.length;a++){var r=document.createElement("tr"),i=document.createElement("td");i.textContent=t[a],r.appendChild(i);var o=document.createElement("td");o.textContent=e[t[a]].toString(),r.appendChild(o),n.appendChild(r)}return n}(n,["name","type"]),d=n.loadedName,l=document.createElement("div"),s=document.createElement("span");s.textContent=d;var p=document.createElement("a");a?(a=/url\(['"]?([^\)"']+)/.exec(a),p.href=a[1]):n.data&&(p.href=t(n.data,n.mimeType)),p.textContent="Download";var c=document.createElement("a");c.href="",c.textContent="Log",c.addEventListener("click",function(e){e.preventDefault(),console.log(n)});var u=document.createElement("input");u.setAttribute("type","checkbox"),u.dataset.fontName=d,u.addEventListener("click",function(e,t){return function(){i(t,e.checked)}}(u,d)),l.appendChild(u),l.appendChild(s),l.appendChild(document.createTextNode(" ")),l.appendChild(p),l.appendChild(document.createTextNode(" ")),l.appendChild(c),l.appendChild(o),e.appendChild(l),setTimeout(()=>{this.active&&r()},2e3)}}}(),StepperManager=function(){var e=[],t=null,n=null,a=null,r=Object.create(null);return{id:"Stepper",name:"Stepper",panel:null,manager:null,init:function(e){var i=this;for(var o in this.panel.setAttribute("style","padding: 5px;"),n=document.createElement("div"),(a=document.createElement("select")).addEventListener("change",function(e){i.selectStepper(this.value)}),n.appendChild(a),t=document.createElement("div"),this.panel.appendChild(n),this.panel.appendChild(t),sessionStorage.getItem("pdfjsBreakPoints")&&(r=JSON.parse(sessionStorage.getItem("pdfjsBreakPoints"))),opMap=Object.create(null),e.OPS)opMap[e.OPS[o]]=o},cleanup:function(){a.textContent="",t.textContent="",e=[]},enabled:!1,active:!1,create:function(n){var i=document.createElement("div");i.id="stepper"+n,i.setAttribute("hidden",!0),i.className="stepper",t.appendChild(i);var o=document.createElement("option");o.textContent="Page "+(n+1),o.value=n,a.appendChild(o);var d=r[n]||[],l=new Stepper(i,n,d);return e.push(l),1===e.length&&this.selectStepper(n,!1),l},selectStepper:function(t,n){var r;for(t|=0,n&&this.manager.selectPanel(this),r=0;r<e.length;++r){var i=e[r];i.pageIndex===t?i.panel.removeAttribute("hidden"):i.panel.setAttribute("hidden",!0)}var o=a.options;for(r=0;r<o.length;++r){var d=o[r];d.selected=(0|d.value)===t}},saveBreakPoints:function(e,t){r[e]=t,sessionStorage.setItem("pdfjsBreakPoints",JSON.stringify(r))}}}(),Stepper=function(){function e(e,t){var n=document.createElement(e);return t&&(n.textContent=t),n}function t(e){if("string"==typeof e){return e.length<=75?e:e.substring(0,75)+"..."}if("object"!=typeof e||null===e)return e;if("length"in e){var n,a,r=[];for(n=0,a=Math.min(10,e.length);n<a;n++)r.push(t(e[n]));return n<e.length&&r.push("..."),r}var i={};for(var o in e)i[o]=t(e[o]);return i}function n(e,t,n){this.panel=e,this.breakPoint=0,this.nextBreakPoint=null,this.pageIndex=t,this.breakPoints=n,this.currentIdx=-1,this.operatorListIdx=0}return n.prototype={init:function(t){var n=this.panel,a=e("div","c=continue, s=step"),r=e("table");a.appendChild(r),r.cellSpacing=0;var i=e("tr");r.appendChild(i),i.appendChild(e("th","Break")),i.appendChild(e("th","Idx")),i.appendChild(e("th","fn")),i.appendChild(e("th","args")),n.appendChild(a),this.table=r,this.updateOperatorList(t)},updateOperatorList:function(n){var a=this;function r(){var e=+this.dataset.idx;this.checked?a.breakPoints.push(e):a.breakPoints.splice(a.breakPoints.indexOf(e),1),StepperManager.saveBreakPoints(a.pageIndex,a.breakPoints)}if(!(this.operatorListIdx>15e3)){for(var i=document.createDocumentFragment(),o=Math.min(15e3,n.fnArray.length),d=this.operatorListIdx;d<o;d++){var l=e("tr");l.className="line",l.dataset.idx=d,i.appendChild(l);var s=this.breakPoints.includes(d),p=n.argsArray[d]||[],c=e("td"),u=e("input");u.type="checkbox",u.className="points",u.checked=s,u.dataset.idx=d,u.onclick=r,c.appendChild(u),l.appendChild(c),l.appendChild(e("td",d.toString()));var h=opMap[n.fnArray[d]],m=p;if("showText"===h){for(var v=p[0],f=[],g=[],C=0;C<v.length;C++){var b=v[C];"object"==typeof b&&null!==b?g.push(b.fontChar):(g.length>0&&(f.push(g.join("")),g=[]),f.push(b))}g.length>0&&f.push(g.join("")),m=[f]}l.appendChild(e("td",h)),l.appendChild(e("td",JSON.stringify(t(m))))}if(o<n.fnArray.length){l=e("tr");var x=e("td","...");x.colspan=4,i.appendChild(x)}this.operatorListIdx=n.fnArray.length,this.table.appendChild(i)}},getNextBreakPoint:function(){this.breakPoints.sort(function(e,t){return e-t});for(var e=0;e<this.breakPoints.length;e++)if(this.breakPoints[e]>this.currentIdx)return this.breakPoints[e];return null},breakIt:function(e,t){StepperManager.selectStepper(this.pageIndex,!0);var n=this,a=document;n.currentIdx=e;var r=function(e){switch(e.keyCode){case 83:a.removeEventListener("keydown",r),n.nextBreakPoint=n.currentIdx+1,n.goTo(-1),t();break;case 67:a.removeEventListener("keydown",r);var i=n.getNextBreakPoint();n.nextBreakPoint=i,n.goTo(-1),t()}};a.addEventListener("keydown",r),n.goTo(e)},goTo:function(e){for(var t=this.panel.getElementsByClassName("line"),n=0,a=t.length;n<a;++n){var r=t[n];(0|r.dataset.idx)===e?(r.style.backgroundColor="rgb(251,250,207)",r.scrollIntoView()):r.style.backgroundColor=null}}},n}(),Stats=function(){var e=[];function t(e){for(;e.hasChildNodes();)e.removeChild(e.lastChild)}return{id:"Stats",name:"Stats",panel:null,manager:null,init(e){this.panel.setAttribute("style","padding: 5px;")},enabled:!1,active:!1,add(n,a){if(a){var r=function(t){for(var n=0,a=e.length;n<a;++n)if(e[n].pageNumber===t)return n;return!1}(n);if(!1!==r){var i=e[r];this.panel.removeChild(i.div),e.splice(r,1)}var o=document.createElement("div");o.className="stats";var d=document.createElement("div");d.className="title",d.textContent="Page: "+n;var l=document.createElement("div");l.textContent=a.toString(),o.appendChild(d),o.appendChild(l),e.push({pageNumber:n,div:o}),e.sort(function(e,t){return e.pageNumber-t.pageNumber}),t(this.panel);for(var s=0,p=e.length;s<p;++s)this.panel.appendChild(e[s].div)}},cleanup(){e=[],t(this.panel)}}}();window.PDFBug=function(){var e=[],t=null;return{tools:[FontInspector,StepperManager,Stats],enable(e){var t=!1,n=this.tools;1===e.length&&"all"===e[0]&&(t=!0);for(var a=0;a<n.length;++a){var r=n[a];(t||e.includes(r.id))&&(r.enabled=!0)}t||n.sort(function(t,a){var r=e.indexOf(t.id);r=r<0?n.length:r;var i=e.indexOf(a.id);return r-(i=i<0?n.length:i)})},init(t,n){var a=document.createElement("div");a.id="PDFBug";var r=document.createElement("div");r.setAttribute("class","controls"),a.appendChild(r);var i=document.createElement("div");i.setAttribute("class","panels"),a.appendChild(i),n.appendChild(a),n.style.right="300px";for(var o=this.tools,d=this,l=0;l<o.length;++l){var s=o[l],p=document.createElement("div"),c=document.createElement("button");c.textContent=s.name,c.addEventListener("click",function(e){return function(t){t.preventDefault(),d.selectPanel(e)}}(l)),r.appendChild(c),i.appendChild(p),s.panel=p,s.manager=this,s.enabled?s.init(t):p.textContent=s.name+' is disabled. To enable add  "'+s.id+'" to the pdfBug parameter and refresh (separate multiple by commas).',e.push(c)}this.selectPanel(0)},cleanup(){for(var e=0,t=this.tools.length;e<t;e++)this.tools[e].enabled&&this.tools[e].cleanup()},selectPanel(n){if("number"!=typeof n&&(n=this.tools.indexOf(n)),n!==t){t=n;for(var a=this.tools,r=0;r<a.length;++r)r===n?(e[r].setAttribute("class","active"),a[r].active=!0,a[r].panel.removeAttribute("hidden")):(e[r].setAttribute("class",""),a[r].active=!1,a[r].panel.setAttribute("hidden","true"))}}}}();
+/* Copyright 2012 Mozilla Foundation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/* eslint-disable no-var */
+
+'use strict';
+
+var FontInspector = (function FontInspectorClosure() {
+  var fonts, createObjectURL;
+  var active = false;
+  var fontAttribute = 'data-font-name';
+  function removeSelection() {
+    let divs = document.querySelectorAll(`span[${fontAttribute}]`);
+    for (let div of divs) {
+      div.className = '';
+    }
+  }
+  function resetSelection() {
+    let divs = document.querySelectorAll(`span[${fontAttribute}]`);
+    for (let div of divs) {
+      div.className = 'debuggerHideText';
+    }
+  }
+  function selectFont(fontName, show) {
+    let divs = document.querySelectorAll(`span[${fontAttribute}=${fontName}]`);
+    for (let div of divs) {
+      div.className = show ? 'debuggerShowText' : 'debuggerHideText';
+    }
+  }
+  function textLayerClick(e) {
+    if (!e.target.dataset.fontName ||
+        e.target.tagName.toUpperCase() !== 'SPAN') {
+      return;
+    }
+    var fontName = e.target.dataset.fontName;
+    var selects = document.getElementsByTagName('input');
+    for (var i = 0; i < selects.length; ++i) {
+      var select = selects[i];
+      if (select.dataset.fontName !== fontName) {
+        continue;
+      }
+      select.checked = !select.checked;
+      selectFont(fontName, select.checked);
+      select.scrollIntoView();
+    }
+  }
+  return {
+    // Properties/functions needed by PDFBug.
+    id: 'FontInspector',
+    name: 'Font Inspector',
+    panel: null,
+    manager: null,
+    init: function init(pdfjsLib) {
+      var panel = this.panel;
+      panel.setAttribute('style', 'padding: 5px;');
+      var tmp = document.createElement('button');
+      tmp.addEventListener('click', resetSelection);
+      tmp.textContent = 'Refresh';
+      panel.appendChild(tmp);
+
+      fonts = document.createElement('div');
+      panel.appendChild(fonts);
+
+      createObjectURL = pdfjsLib.createObjectURL;
+    },
+    cleanup: function cleanup() {
+      fonts.textContent = '';
+    },
+    enabled: false,
+    get active() {
+      return active;
+    },
+    set active(value) {
+      active = value;
+      if (active) {
+        document.body.addEventListener('click', textLayerClick, true);
+        resetSelection();
+      } else {
+        document.body.removeEventListener('click', textLayerClick, true);
+        removeSelection();
+      }
+    },
+    // FontInspector specific functions.
+    fontAdded: function fontAdded(fontObj, url) {
+      function properties(obj, list) {
+        var moreInfo = document.createElement('table');
+        for (var i = 0; i < list.length; i++) {
+          var tr = document.createElement('tr');
+          var td1 = document.createElement('td');
+          td1.textContent = list[i];
+          tr.appendChild(td1);
+          var td2 = document.createElement('td');
+          td2.textContent = obj[list[i]].toString();
+          tr.appendChild(td2);
+          moreInfo.appendChild(tr);
+        }
+        return moreInfo;
+      }
+      var moreInfo = properties(fontObj, ['name', 'type']);
+      var fontName = fontObj.loadedName;
+      var font = document.createElement('div');
+      var name = document.createElement('span');
+      name.textContent = fontName;
+      var download = document.createElement('a');
+      if (url) {
+        url = /url\(['"]?([^\)"']+)/.exec(url);
+        download.href = url[1];
+      } else if (fontObj.data) {
+        download.href = createObjectURL(fontObj.data, fontObj.mimeType);
+      }
+      download.textContent = 'Download';
+      var logIt = document.createElement('a');
+      logIt.href = '';
+      logIt.textContent = 'Log';
+      logIt.addEventListener('click', function(event) {
+        event.preventDefault();
+        console.log(fontObj);
+      });
+      var select = document.createElement('input');
+      select.setAttribute('type', 'checkbox');
+      select.dataset.fontName = fontName;
+      select.addEventListener('click', (function(select, fontName) {
+        return (function() {
+           selectFont(fontName, select.checked);
+        });
+      })(select, fontName));
+      font.appendChild(select);
+      font.appendChild(name);
+      font.appendChild(document.createTextNode(' '));
+      font.appendChild(download);
+      font.appendChild(document.createTextNode(' '));
+      font.appendChild(logIt);
+      font.appendChild(moreInfo);
+      fonts.appendChild(font);
+      // Somewhat of a hack, should probably add a hook for when the text layer
+      // is done rendering.
+      setTimeout(() => {
+        if (this.active) {
+          resetSelection();
+        }
+      }, 2000);
+    },
+  };
+})();
+
+var opMap;
+
+// Manages all the page steppers.
+var StepperManager = (function StepperManagerClosure() {
+  var steppers = [];
+  var stepperDiv = null;
+  var stepperControls = null;
+  var stepperChooser = null;
+  var breakPoints = Object.create(null);
+  return {
+    // Properties/functions needed by PDFBug.
+    id: 'Stepper',
+    name: 'Stepper',
+    panel: null,
+    manager: null,
+    init: function init(pdfjsLib) {
+      var self = this;
+      this.panel.setAttribute('style', 'padding: 5px;');
+      stepperControls = document.createElement('div');
+      stepperChooser = document.createElement('select');
+      stepperChooser.addEventListener('change', function(event) {
+        self.selectStepper(this.value);
+      });
+      stepperControls.appendChild(stepperChooser);
+      stepperDiv = document.createElement('div');
+      this.panel.appendChild(stepperControls);
+      this.panel.appendChild(stepperDiv);
+      if (sessionStorage.getItem('pdfjsBreakPoints')) {
+        breakPoints = JSON.parse(sessionStorage.getItem('pdfjsBreakPoints'));
+      }
+
+      opMap = Object.create(null);
+      for (var key in pdfjsLib.OPS) {
+        opMap[pdfjsLib.OPS[key]] = key;
+      }
+    },
+    cleanup: function cleanup() {
+      stepperChooser.textContent = '';
+      stepperDiv.textContent = '';
+      steppers = [];
+    },
+    enabled: false,
+    active: false,
+    // Stepper specific functions.
+    create: function create(pageIndex) {
+      var debug = document.createElement('div');
+      debug.id = 'stepper' + pageIndex;
+      debug.setAttribute('hidden', true);
+      debug.className = 'stepper';
+      stepperDiv.appendChild(debug);
+      var b = document.createElement('option');
+      b.textContent = 'Page ' + (pageIndex + 1);
+      b.value = pageIndex;
+      stepperChooser.appendChild(b);
+      var initBreakPoints = breakPoints[pageIndex] || [];
+      var stepper = new Stepper(debug, pageIndex, initBreakPoints);
+      steppers.push(stepper);
+      if (steppers.length === 1) {
+        this.selectStepper(pageIndex, false);
+      }
+      return stepper;
+    },
+    selectStepper: function selectStepper(pageIndex, selectPanel) {
+      var i;
+      pageIndex = pageIndex | 0;
+      if (selectPanel) {
+        this.manager.selectPanel(this);
+      }
+      for (i = 0; i < steppers.length; ++i) {
+        var stepper = steppers[i];
+        if (stepper.pageIndex === pageIndex) {
+          stepper.panel.removeAttribute('hidden');
+        } else {
+          stepper.panel.setAttribute('hidden', true);
+        }
+      }
+      var options = stepperChooser.options;
+      for (i = 0; i < options.length; ++i) {
+        var option = options[i];
+        option.selected = (option.value | 0) === pageIndex;
+      }
+    },
+    saveBreakPoints: function saveBreakPoints(pageIndex, bps) {
+      breakPoints[pageIndex] = bps;
+      sessionStorage.setItem('pdfjsBreakPoints', JSON.stringify(breakPoints));
+    },
+  };
+})();
+
+// The stepper for each page's IRQueue.
+var Stepper = (function StepperClosure() {
+  // Shorter way to create element and optionally set textContent.
+  function c(tag, textContent) {
+    var d = document.createElement(tag);
+    if (textContent) {
+      d.textContent = textContent;
+    }
+    return d;
+  }
+
+  function simplifyArgs(args) {
+    if (typeof args === 'string') {
+      var MAX_STRING_LENGTH = 75;
+      return args.length <= MAX_STRING_LENGTH ? args :
+        args.substring(0, MAX_STRING_LENGTH) + '...';
+    }
+    if (typeof args !== 'object' || args === null) {
+      return args;
+    }
+    if ('length' in args) { // array
+      var simpleArgs = [], i, ii;
+      var MAX_ITEMS = 10;
+      for (i = 0, ii = Math.min(MAX_ITEMS, args.length); i < ii; i++) {
+        simpleArgs.push(simplifyArgs(args[i]));
+      }
+      if (i < args.length) {
+        simpleArgs.push('...');
+      }
+      return simpleArgs;
+    }
+    var simpleObj = {};
+    for (var key in args) {
+      simpleObj[key] = simplifyArgs(args[key]);
+    }
+    return simpleObj;
+  }
+
+  function Stepper(panel, pageIndex, initialBreakPoints) {
+    this.panel = panel;
+    this.breakPoint = 0;
+    this.nextBreakPoint = null;
+    this.pageIndex = pageIndex;
+    this.breakPoints = initialBreakPoints;
+    this.currentIdx = -1;
+    this.operatorListIdx = 0;
+  }
+  Stepper.prototype = {
+    init: function init(operatorList) {
+      var panel = this.panel;
+      var content = c('div', 'c=continue, s=step');
+      var table = c('table');
+      content.appendChild(table);
+      table.cellSpacing = 0;
+      var headerRow = c('tr');
+      table.appendChild(headerRow);
+      headerRow.appendChild(c('th', 'Break'));
+      headerRow.appendChild(c('th', 'Idx'));
+      headerRow.appendChild(c('th', 'fn'));
+      headerRow.appendChild(c('th', 'args'));
+      panel.appendChild(content);
+      this.table = table;
+      this.updateOperatorList(operatorList);
+    },
+    updateOperatorList: function updateOperatorList(operatorList) {
+      var self = this;
+
+      function cboxOnClick() {
+        var x = +this.dataset.idx;
+        if (this.checked) {
+          self.breakPoints.push(x);
+        } else {
+          self.breakPoints.splice(self.breakPoints.indexOf(x), 1);
+        }
+        StepperManager.saveBreakPoints(self.pageIndex, self.breakPoints);
+      }
+
+      var MAX_OPERATORS_COUNT = 15000;
+      if (this.operatorListIdx > MAX_OPERATORS_COUNT) {
+        return;
+      }
+
+      var chunk = document.createDocumentFragment();
+      var operatorsToDisplay = Math.min(MAX_OPERATORS_COUNT,
+                                        operatorList.fnArray.length);
+      for (var i = this.operatorListIdx; i < operatorsToDisplay; i++) {
+        var line = c('tr');
+        line.className = 'line';
+        line.dataset.idx = i;
+        chunk.appendChild(line);
+        var checked = this.breakPoints.includes(i);
+        var args = operatorList.argsArray[i] || [];
+
+        var breakCell = c('td');
+        var cbox = c('input');
+        cbox.type = 'checkbox';
+        cbox.className = 'points';
+        cbox.checked = checked;
+        cbox.dataset.idx = i;
+        cbox.onclick = cboxOnClick;
+
+        breakCell.appendChild(cbox);
+        line.appendChild(breakCell);
+        line.appendChild(c('td', i.toString()));
+        var fn = opMap[operatorList.fnArray[i]];
+        var decArgs = args;
+        if (fn === 'showText') {
+          var glyphs = args[0];
+          var newArgs = [];
+          var str = [];
+          for (var j = 0; j < glyphs.length; j++) {
+            var glyph = glyphs[j];
+            if (typeof glyph === 'object' && glyph !== null) {
+              str.push(glyph.fontChar);
+            } else {
+              if (str.length > 0) {
+                newArgs.push(str.join(''));
+                str = [];
+              }
+              newArgs.push(glyph); // null or number
+            }
+          }
+          if (str.length > 0) {
+            newArgs.push(str.join(''));
+          }
+          decArgs = [newArgs];
+        }
+        line.appendChild(c('td', fn));
+        line.appendChild(c('td', JSON.stringify(simplifyArgs(decArgs))));
+      }
+      if (operatorsToDisplay < operatorList.fnArray.length) {
+        line = c('tr');
+        var lastCell = c('td', '...');
+        lastCell.colspan = 4;
+        chunk.appendChild(lastCell);
+      }
+      this.operatorListIdx = operatorList.fnArray.length;
+      this.table.appendChild(chunk);
+    },
+    getNextBreakPoint: function getNextBreakPoint() {
+      this.breakPoints.sort(function(a, b) {
+        return a - b;
+      });
+      for (var i = 0; i < this.breakPoints.length; i++) {
+        if (this.breakPoints[i] > this.currentIdx) {
+          return this.breakPoints[i];
+        }
+      }
+      return null;
+    },
+    breakIt: function breakIt(idx, callback) {
+      StepperManager.selectStepper(this.pageIndex, true);
+      var self = this;
+      var dom = document;
+      self.currentIdx = idx;
+      var listener = function(e) {
+        switch (e.keyCode) {
+          case 83: // step
+            dom.removeEventListener('keydown', listener);
+            self.nextBreakPoint = self.currentIdx + 1;
+            self.goTo(-1);
+            callback();
+            break;
+          case 67: // continue
+            dom.removeEventListener('keydown', listener);
+            var breakPoint = self.getNextBreakPoint();
+            self.nextBreakPoint = breakPoint;
+            self.goTo(-1);
+            callback();
+            break;
+        }
+      };
+      dom.addEventListener('keydown', listener);
+      self.goTo(idx);
+    },
+    goTo: function goTo(idx) {
+      var allRows = this.panel.getElementsByClassName('line');
+      for (var x = 0, xx = allRows.length; x < xx; ++x) {
+        var row = allRows[x];
+        if ((row.dataset.idx | 0) === idx) {
+          row.style.backgroundColor = 'rgb(251,250,207)';
+          row.scrollIntoView();
+        } else {
+          row.style.backgroundColor = null;
+        }
+      }
+    },
+  };
+  return Stepper;
+})();
+
+var Stats = (function Stats() {
+  var stats = [];
+  function clear(node) {
+    while (node.hasChildNodes()) {
+      node.removeChild(node.lastChild);
+    }
+  }
+  function getStatIndex(pageNumber) {
+    for (var i = 0, ii = stats.length; i < ii; ++i) {
+      if (stats[i].pageNumber === pageNumber) {
+        return i;
+      }
+    }
+    return false;
+  }
+  return {
+    // Properties/functions needed by PDFBug.
+    id: 'Stats',
+    name: 'Stats',
+    panel: null,
+    manager: null,
+    init(pdfjsLib) {
+      this.panel.setAttribute('style', 'padding: 5px;');
+    },
+    enabled: false,
+    active: false,
+    // Stats specific functions.
+    add(pageNumber, stat) {
+      if (!stat) {
+        return;
+      }
+      var statsIndex = getStatIndex(pageNumber);
+      if (statsIndex !== false) {
+        var b = stats[statsIndex];
+        this.panel.removeChild(b.div);
+        stats.splice(statsIndex, 1);
+      }
+      var wrapper = document.createElement('div');
+      wrapper.className = 'stats';
+      var title = document.createElement('div');
+      title.className = 'title';
+      title.textContent = 'Page: ' + pageNumber;
+      var statsDiv = document.createElement('div');
+      statsDiv.textContent = stat.toString();
+      wrapper.appendChild(title);
+      wrapper.appendChild(statsDiv);
+      stats.push({ pageNumber, div: wrapper, });
+      stats.sort(function(a, b) {
+        return a.pageNumber - b.pageNumber;
+      });
+      clear(this.panel);
+      for (var i = 0, ii = stats.length; i < ii; ++i) {
+        this.panel.appendChild(stats[i].div);
+      }
+    },
+    cleanup() {
+      stats = [];
+      clear(this.panel);
+    },
+  };
+})();
+
+// Manages all the debugging tools.
+window.PDFBug = (function PDFBugClosure() {
+  var panelWidth = 300;
+  var buttons = [];
+  var activePanel = null;
+
+  return {
+    tools: [
+      FontInspector,
+      StepperManager,
+      Stats
+    ],
+    enable(ids) {
+      var all = false, tools = this.tools;
+      if (ids.length === 1 && ids[0] === 'all') {
+        all = true;
+      }
+      for (var i = 0; i < tools.length; ++i) {
+        var tool = tools[i];
+        if (all || ids.includes(tool.id)) {
+          tool.enabled = true;
+        }
+      }
+      if (!all) {
+        // Sort the tools by the order they are enabled.
+        tools.sort(function(a, b) {
+          var indexA = ids.indexOf(a.id);
+          indexA = indexA < 0 ? tools.length : indexA;
+          var indexB = ids.indexOf(b.id);
+          indexB = indexB < 0 ? tools.length : indexB;
+          return indexA - indexB;
+        });
+      }
+    },
+    init(pdfjsLib, container) {
+      /*
+       * Basic Layout:
+       * PDFBug
+       *  Controls
+       *  Panels
+       *    Panel
+       *    Panel
+       *    ...
+       */
+      var ui = document.createElement('div');
+      ui.id = 'PDFBug';
+
+      var controls = document.createElement('div');
+      controls.setAttribute('class', 'controls');
+      ui.appendChild(controls);
+
+      var panels = document.createElement('div');
+      panels.setAttribute('class', 'panels');
+      ui.appendChild(panels);
+
+      container.appendChild(ui);
+      container.style.right = panelWidth + 'px';
+
+      // Initialize all the debugging tools.
+      var tools = this.tools;
+      var self = this;
+      for (var i = 0; i < tools.length; ++i) {
+        var tool = tools[i];
+        var panel = document.createElement('div');
+        var panelButton = document.createElement('button');
+        panelButton.textContent = tool.name;
+        panelButton.addEventListener('click', (function(selected) {
+          return function(event) {
+            event.preventDefault();
+            self.selectPanel(selected);
+          };
+        })(i));
+        controls.appendChild(panelButton);
+        panels.appendChild(panel);
+        tool.panel = panel;
+        tool.manager = this;
+        if (tool.enabled) {
+          tool.init(pdfjsLib);
+        } else {
+          panel.textContent = tool.name + ' is disabled. To enable add ' +
+                              ' "' + tool.id + '" to the pdfBug parameter ' +
+                              'and refresh (separate multiple by commas).';
+        }
+        buttons.push(panelButton);
+      }
+      this.selectPanel(0);
+    },
+    cleanup() {
+      for (var i = 0, ii = this.tools.length; i < ii; i++) {
+        if (this.tools[i].enabled) {
+          this.tools[i].cleanup();
+        }
+      }
+    },
+    selectPanel(index) {
+      if (typeof index !== 'number') {
+        index = this.tools.indexOf(index);
+      }
+      if (index === activePanel) {
+        return;
+      }
+      activePanel = index;
+      var tools = this.tools;
+      for (var j = 0; j < tools.length; ++j) {
+        if (j === index) {
+          buttons[j].setAttribute('class', 'active');
+          tools[j].active = true;
+          tools[j].panel.removeAttribute('hidden');
+        } else {
+          buttons[j].setAttribute('class', '');
+          tools[j].active = false;
+          tools[j].panel.setAttribute('hidden', 'true');
+        }
+      }
+    },
+  };
+})();

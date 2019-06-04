@@ -1,6 +1,6 @@
 {
   "name": "ng2-pdfjs-viewer",
-  "version": "3.2.5",
+  "version": "3.2.8",
   "repository": {
     "type": "git",
     "url": "https://github.com/intbot/ng2-pdfjs-viewer"
@@ -26,6 +26,6 @@
   "jsnext:main": "ng2-pdfjs-viewer.js",
   "typings": "ng2-pdfjs-viewer.d.ts",
   "peerDependencies": {
-    "@angular/core": "^7.2.15"
+    "@angular/core": "^8.0.0"
   }
 }

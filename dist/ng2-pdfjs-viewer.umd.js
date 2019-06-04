@@ -14,8 +14,60 @@
 //declare var path: any;
 var PdfJsViewerComponent = /** @class */ (function () {
     function PdfJsViewerComponent() {
+        this.externalWindow = false;
         this.showSpinner = true;
+        this.openFile = true;
+        this.download = true;
+        this.viewBookmark = true;
+        this.print = true;
+        this.fullScreen = true;
+        //@Input() public showFullScreen: boolean;
+        this.find = true;
     }
+    Object.defineProperty(PdfJsViewerComponent.prototype, "PDFViewerApplicationOptions", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            /** @type {?} */
+            var pdfViewerOptions = null;
+            if (this.externalWindow) {
+                if (this.viewerTab) {
+                    pdfViewerOptions = this.viewerTab.PDFViewerApplicationOptions;
+                }
+            }
+            else {
+                if (this.iframe.nativeElement.contentWindow) {
+                    pdfViewerOptions = this.iframe.nativeElement.contentWindow.PDFViewerApplicationOptions;
+                }
+            }
+            return pdfViewerOptions;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PdfJsViewerComponent.prototype, "PDFViewerApplication", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            /** @type {?} */
+            var pdfViewer = null;
+            if (this.externalWindow) {
+                if (this.viewerTab) {
+                    pdfViewer = this.viewerTab.PDFViewerApplication;
+                }
+            }
+            else {
+                if (this.iframe.nativeElement.contentWindow) {
+                    pdfViewer = this.iframe.nativeElement.contentWindow.PDFViewerApplication;
+                }
+            }
+            return pdfViewer;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(PdfJsViewerComponent.prototype, "pdfSrc", {
         get: /**
          * @return {?}
@@ -70,7 +122,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
         //   console.log(`Status of window - ${this.viewerTab.closed}`);
         // }
         if (this.externalWindow && (typeof this.viewerTab === 'undefined' || this.viewerTab.closed)) {
-            this.viewerTab = window.open('', '_blank');
+            this.viewerTab = window.open('', '_blank', this.externalWindowOptions || '');
             if (this.viewerTab == null) {
                 console.log("ng2-pdfjs-viewer: For 'externalWindow = true'. i.e opening in new tab, to work, pop-ups should be enabled.");
                 return;
@@ -97,8 +149,8 @@ var PdfJsViewerComponent = /** @class */ (function () {
         }
         /** @type {?} */
         var viewerUrl;
-        if (this.pdfJsFolder) {
-            viewerUrl = this.pdfJsFolder + "/web/viewer.html";
+        if (this.viewerFolder) {
+            viewerUrl = this.viewerFolder + "/web/viewer.html";
         }
         else {
             viewerUrl = "assets/pdfjs/web/viewer.html";
@@ -113,31 +165,31 @@ var PdfJsViewerComponent = /** @class */ (function () {
             }
             viewerUrl += "&fileName=" + this.downloadFileName;
         }
-        if (this.openFile) {
+        if (typeof this.openFile !== 'undefined') {
             viewerUrl += "&openFile=" + this.openFile;
         }
-        if (this.download) {
+        if (typeof this.download !== 'undefined') {
             viewerUrl += "&download=" + this.download;
         }
         if (this.startDownload) {
             viewerUrl += "&startDownload=" + this.startDownload;
         }
-        if (this.viewBookmark) {
+        if (typeof this.viewBookmark !== 'undefined') {
             viewerUrl += "&viewBookmark=" + this.viewBookmark;
         }
-        if (this.print) {
+        if (typeof this.print !== 'undefined') {
             viewerUrl += "&print=" + this.print;
         }
         if (this.startPrint) {
             viewerUrl += "&startPrint=" + this.startPrint;
         }
-        if (this.fullScreen) {
+        if (typeof this.fullScreen !== 'undefined') {
             viewerUrl += "&fullScreen=" + this.fullScreen;
         }
         // if (this.showFullScreen) {
         //   viewerUrl += `&showFullScreen=${this.showFullScreen}`;
         // }
-        if (this.find) {
+        if (typeof this.find !== 'undefined') {
             viewerUrl += "&find=" + this.find;
         }
         if (this.lastPage) {
@@ -172,13 +224,18 @@ var PdfJsViewerComponent = /** @class */ (function () {
         if (this.pagemode) {
             viewerUrl += "&pagemode=" + this.pagemode;
         }
+        console.log("viewerUrl -> " + viewerUrl);
         if (this.externalWindow) {
             this.viewerTab.location.href = viewerUrl;
         }
         else {
             this.iframe.nativeElement.src = viewerUrl;
+            // TODO: Testing.
+            console.log(this.PDFViewerApplication);
+            console.log(this.PDFViewerApplicationOptions);
+            console.log(this.iframe.nativeElement.contentWindow.PDF);
         }
-        console.log("\n      pdfSrc = " + this.pdfSrc + "\n      fileUrl = " + fileUrl + "\n      externalWindow = " + this.externalWindow + "\n      downloadFileName = " + this.downloadFileName + "\n      pdfJsFolder = " + this.pdfJsFolder + "\n      openFile = " + this.openFile + "\n      download = " + this.download + "\n      startDownload = " + this.startDownload + "\n      viewBookmark = " + this.viewBookmark + "\n      print = " + this.print + "\n      startPrint = " + this.startPrint + "\n      fullScreen = " + this.fullScreen + "\n      find = " + this.find + "\n      lastPage = " + this.lastPage + "\n      rotatecw = " + this.rotatecw + "\n      rotateccw = " + this.rotateccw + "\n      cursor = " + this.cursor + "\n      scrollMode = " + this.scroll + "\n      spread = " + this.spread + "\n      page = " + this.page + "\n      zoom = " + this.zoom + "\n      nameddest = " + this.nameddest + "\n      pagemode = " + this.pagemode + "\n    ");
+        console.log("\n      pdfSrc = " + this.pdfSrc + "\n      fileUrl = " + fileUrl + "\n      externalWindow = " + this.externalWindow + "\n      downloadFileName = " + this.downloadFileName + "\n      viewerFolder = " + this.viewerFolder + "\n      openFile = " + this.openFile + "\n      download = " + this.download + "\n      startDownload = " + this.startDownload + "\n      viewBookmark = " + this.viewBookmark + "\n      print = " + this.print + "\n      startPrint = " + this.startPrint + "\n      fullScreen = " + this.fullScreen + "\n      find = " + this.find + "\n      lastPage = " + this.lastPage + "\n      rotatecw = " + this.rotatecw + "\n      rotateccw = " + this.rotateccw + "\n      cursor = " + this.cursor + "\n      scrollMode = " + this.scroll + "\n      spread = " + this.spread + "\n      page = " + this.page + "\n      zoom = " + this.zoom + "\n      nameddest = " + this.nameddest + "\n      pagemode = " + this.pagemode + "\n    ");
     };
     PdfJsViewerComponent.decorators = [
         { type: core.Component, args: [{
@@ -188,7 +245,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
     ];
     PdfJsViewerComponent.propDecorators = {
         iframe: [{ type: core.ViewChild, args: ['iframe',] }],
-        pdfJsFolder: [{ type: core.Input }],
+        viewerFolder: [{ type: core.Input }],
         externalWindow: [{ type: core.Input }],
         showSpinner: [{ type: core.Input }],
         downloadFileName: [{ type: core.Input }],
@@ -210,6 +267,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
         cursor: [{ type: core.Input }],
         scroll: [{ type: core.Input }],
         spread: [{ type: core.Input }],
+        externalWindowOptions: [{ type: core.Input }],
         pdfSrc: [{ type: core.Input }]
     };
     return PdfJsViewerComponent;

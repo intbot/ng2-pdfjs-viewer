@@ -155,24 +155,25 @@ gulp.task('copy:build', function () {
 });
 
 /**
- * 7.1. Copy modified version of pdfJs from /pdfjs to /dist, including all js files and html.
+ * 7.1. Copy all modified version of pdfJs from /pdfjs to /dist(including all js files and html), and also add min versions.
  */
 gulp.task('copy:pdfjs', function () {
-  return gulp.src([`${pdfJsFolder}/**/!(*.js)*`], {base: '.'})
+  //return gulp.src([`${pdfJsFolder}/**/!(*.js)*`], {base: '.'})
+  return gulp.src([`${pdfJsFolder}/**/*`], {base: '.'})
     .pipe(gulp.dest(distFolder));
 });
 gulp.task('copy:compress', function() {
   gulp.src([`${pdfJsFolder}/build/*.js`])
-    .pipe(minify({ noSource: true,  ext: { min: '.js' } }))
+    .pipe(minify({ noSource: true,  ext: { src:'.js', min: '.min.js' } }))
     .pipe(gulp.dest(`${distFolder}/pdfjs/build`))
   gulp.src([`${pdfJsFolder}/web/*.js`])
-    .pipe(minify({ noSource: true,  ext: { min: '.js' } }))
+    .pipe(minify({ noSource: true,  ext: { src:'.js', min: '.min.js' } }))
     .pipe(gulp.dest(`${distFolder}/pdfjs/web`))
 });
 
 /**
  * 8. Copy package.json from /src to /dist
- */
+ */ 
 gulp.task('copy:manifest', function () {
   return gulp.src([`${srcFolder}/package.json`])
     .pipe(gulp.dest(distFolder));

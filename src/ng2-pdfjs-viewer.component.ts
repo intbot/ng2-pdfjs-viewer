@@ -22,19 +22,19 @@ export class PdfJsViewerComponent {
 // ]
 
 
-  @Input() public pdfJsFolder: string;
-  @Input() public externalWindow: boolean;
+  @Input() public viewerFolder: string;
+  @Input() public externalWindow: boolean = false;
   @Input() public showSpinner: boolean = true;
   @Input() public downloadFileName: string;
-  @Input() public openFile: boolean;
-  @Input() public download: boolean;
+  @Input() public openFile: boolean = true;
+  @Input() public download: boolean = true;
   @Input() public startDownload: boolean;
-  @Input() public viewBookmark: boolean;
-  @Input() public print: boolean;
+  @Input() public viewBookmark: boolean = true;
+  @Input() public print: boolean = true;
   @Input() public startPrint: boolean;
-  @Input() public fullScreen: boolean;
+  @Input() public fullScreen: boolean = true;
   //@Input() public showFullScreen: boolean;
-  @Input() public find: boolean;
+  @Input() public find: boolean = true;
   @Input() public page: number;
   @Input() public zoom: string;
   @Input() public nameddest: string;
@@ -46,6 +46,7 @@ export class PdfJsViewerComponent {
   @Input() public scroll: string;
   @Input() public spread: string;
   
+  @Input() public externalWindowOptions: string;
   public viewerTab: any;
   private innerSrc: string | Blob | Uint8Array;
 
@@ -53,7 +54,7 @@ export class PdfJsViewerComponent {
   public set pdfSrc(innerSrc: string | Blob | Uint8Array) {
     this.innerSrc = innerSrc;
   }
-  
+
   public get pdfSrc() {
     return this.innerSrc;
   }
@@ -79,7 +80,7 @@ export class PdfJsViewerComponent {
     // }
 
     if (this.externalWindow && (typeof this.viewerTab === 'undefined' || this.viewerTab.closed)) {
-      this.viewerTab = window.open('', '_blank');
+      this.viewerTab = window.open('', '_blank', this.externalWindowOptions || '');
       if (this.viewerTab == null) {
         console.log("ng2-pdfjs-viewer: For 'externalWindow = true'. i.e opening in new tab, to work, pop-ups should be enabled.");
         return;
@@ -127,8 +128,8 @@ export class PdfJsViewerComponent {
     }
 
     let viewerUrl;
-    if (this.pdfJsFolder) {
-      viewerUrl = `${this.pdfJsFolder}/web/viewer.html`;
+    if (this.viewerFolder) {
+      viewerUrl = `${this.viewerFolder}/web/viewer.html`;
     } else {
       viewerUrl = `assets/pdfjs/web/viewer.html`;
     }
@@ -144,31 +145,31 @@ export class PdfJsViewerComponent {
       }
       viewerUrl += `&fileName=${this.downloadFileName}`;
     }
-    if (this.openFile) {
+    if (typeof this.openFile !== 'undefined') {
       viewerUrl += `&openFile=${this.openFile}`;
     }
-    if (this.download) {
+    if (typeof this.download !== 'undefined') {
       viewerUrl += `&download=${this.download}`;
     }
     if (this.startDownload) {
       viewerUrl += `&startDownload=${this.startDownload}`;
     }
-    if (this.viewBookmark) {
+    if (typeof this.viewBookmark !== 'undefined') {
       viewerUrl += `&viewBookmark=${this.viewBookmark}`;
     }
-    if (this.print) {
+    if (typeof this.print !== 'undefined') {
       viewerUrl += `&print=${this.print}`;
     }
     if (this.startPrint) {
       viewerUrl += `&startPrint=${this.startPrint}`;
     }
-    if (this.fullScreen) {
+    if (typeof this.fullScreen !== 'undefined') {
       viewerUrl += `&fullScreen=${this.fullScreen}`;
     }
     // if (this.showFullScreen) {
     //   viewerUrl += `&showFullScreen=${this.showFullScreen}`;
     // }
-    if (this.find) {
+    if (typeof this.find !== 'undefined') {
       viewerUrl += `&find=${this.find}`;
     }
     if (this.lastPage) {
@@ -215,7 +216,7 @@ export class PdfJsViewerComponent {
       fileUrl = ${fileUrl}
       externalWindow = ${this.externalWindow}
       downloadFileName = ${this.downloadFileName}
-      pdfJsFolder = ${this.pdfJsFolder}
+      viewerFolder = ${this.viewerFolder}
       openFile = ${this.openFile}
       download = ${this.download}
       startDownload = ${this.startDownload}

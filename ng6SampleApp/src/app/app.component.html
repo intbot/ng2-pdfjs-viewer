@@ -34,15 +34,15 @@ button:focus {
 <div [hidden]="!isPdfLoaded" style="height: 600px">
   <ng2-pdfjs-viewer #inlinePdfViewer [print]="false" [fullScreen]="false" [find]="false" [rotatecw]=true></ng2-pdfjs-viewer>
 </div>
-<button (click)="loadAndDisplayPdf()" style="background-color:cadetblue;" >Load/Hide Inline PDF</button>
+<button (click)="loadAndDisplayPdf()" style="background-color:cadetblue;">Load/Hide Inline PDF</button>
 <button (click)="openPdf()" style="background-color: orange" >Open PDF in new tab</button>
 <button (click)="changePdf()" style="float: right; background-color: green">Click to change PDF url</button>
 
 <br />
 
-<ng2-pdfjs-viewer #externalPdfViewer [externalWindow]="true" [startPrint]=true></ng2-pdfjs-viewer>
+<ng2-pdfjs-viewer #externalPdfViewer [externalWindow]="true" [startPrint]=true openFile="false"></ng2-pdfjs-viewer>
 <div style="position:fixed; left:845px; width: 1000px; height: 900px">
-  <ng2-pdfjs-viewer #embeddedPdfViewer pdfSrc="gre_research_validity_data.pdf" cursor="HAND" downloadFileName="research.pdf" scroll="W" spred="E"></ng2-pdfjs-viewer>
+  <ng2-pdfjs-viewer #embeddedPdfViewer pdfSrc="gre_research_validity_data.pdf" cursor="HAND" downloadFileName="research.pdf" scroll="W" spred="E" [print]="false"></ng2-pdfjs-viewer>
 </div>
 <div style="position:absolute; width: 825px; height: 900px">
   <ng2-pdfjs-viewer pdfSrc="pdf-sample.pdf" downloadFileName="mySample" [page]=2 zoom="200">

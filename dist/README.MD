@@ -1,4 +1,4 @@
-# Angular 2+ PDFJS viewer with Mozilla's ViewerJS (Supports Angular 2/4/5/6/7)
+# Angular 8 PDFJS viewer with Mozilla's ViewerJS (Supports Angular 2/4/5/6/7/8)
 <p align="center">
   <a href="https://www.npmjs.com/package/ng2-pdfjs-viewer">
     <img src="https://img.shields.io/npm/dm/ng2-pdfjs-viewer.svg?style=flat" alt="downloads">
@@ -8,13 +8,13 @@
   </a>
 </p>
 
-This is a super simple library for displaying pdf inline/embedded or in a new tab along with a feature rich viewer. It uses mozilla's pdfjs viewer behind the scenes and supports angular(2/4/5/6/7). Extremely lightweight, easiest to integrate and use, this library has only one dependancy (@angular/core).
+This is a super simple angular 8 component for displaying pdfs inline(embedded) OR in a new tab along with a feature rich viewer. It uses mozilla's pdfjs viewer(v2.2.171) behind the scenes and supports angular(2/4/5/6/7). Extremely lightweight, easiest to integrate and use, most reliable, this library has only one dependancy (@angular/core). Thanks a ton to the community, standing tall around 250,000 downloads!!!
 
 ### Open in a new tab/window
-<img src="/sampledoc/viewerImage.JPG" alt="angular2+ pdfjs viewer in new window"/>
+<img src="/sampledoc/viewerImage.JPG" alt="angular 8 pdfjs viewer in new window"/>
 
 ### Embed pdf into any angular component/page
-<img src="/sampledoc/viewerImageEmbedded2.jpg" alt="angular2+ pdfjs viewer embedded"/>
+<img src="/sampledoc/viewerImageEmbedded2.jpg" alt="angular 8 pdfjs viewer embedded"/>
 
 ## Installation
 
@@ -48,18 +48,17 @@ export class AppModule { }
 ```
 
 ## Step 2: Copy task for pdfjs
-For several advanced options to work, you need a copy of pdfjs from this npm package. There are several ways to achieve it.
-1. Manually Copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your `public` or `asset` folder or use a script such as `copy .\node_modules\ng2-pdfjs-viewer\pdfjs\* <Myassetfolderpath> -Force -Recurse` (Give example is of powershell)
-OR 
-2. Add in your project's `angular.json` file and use `ng build` as described here https://angular.io/guide/workspace-config#project-asset-configuration 
+For several advanced options to work, you need a copy of pdfjs from this npm package.
+Edit your project's `angular.json` file and use `ng build` as described here https://angular.io/guide/workspace-config#project-asset-configuration 
 ```json
 "assets": [
   { "glob": "**/*", "input": "node_modules/ng2-pdfjs-viewer/pdfjs", "output": "/assets/pdfjs" },
 ]
 ```
-Please note if you decide to put _`pdfjs`_ folder anywhere else other than the _`assets`_ folder, make sure you also set _`[pdfJsFolder]`_ property to help locate the folder.  
 
-**_`TransferWebpackPlugin` Sample code_**  
+
+_Please note, you may manually Copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your `public` or `asset` folder or use any copy script as part of your build process. Another method could be to use `TransferWebpackPlugin` if you are using webpack(https://github.com/dkokorev90/transfer-webpack-plugin)._  
+`TransferWebpackPlugin` Sample code  
 ```typescript
 var TransferWebpackPlugin = require('transfer-webpack-plugin');
 ...
@@ -70,10 +69,13 @@ plugins: [
 ]
 ```
 
+_Please note if you decide to put `pdfjs` folder anywhere else other than the `assets` folder, make sure you also set `[viewerFolder]` property to help locate the folder._  
+
 ### Options
 | Attribute | Description | Type | Default Value
 | --- | --- | --- | --- |
-| `[pdfJsFolder]` | Set path to _pdfjs's_ `web` and `build` folders. | `string` | `assets` folder path |
+| `[pdfSrc]` | Fully qualified path to pdf file. (For remote pdf urls over http/https, CORS should be enabled) | `string` |  |
+| `[viewerFolder]` | Set path to _pdfjs's_ `web` and `build` folders. | `string` | `assets` folder path |
 | `[externalWindow]` | Open in new tab. Set to `true` to open document in a new tab | `boolean` | `false` |
 | `downloadFileName` | Sets/Changes the name of document to be downloaded. If the file name does not ends in `.pdf`, the component will automatically add it for you. | `string` | Actual name of the document |
 | `[page]` | Show specific page. E.g _page=3_ | `number` | `1` |
@@ -83,6 +85,7 @@ plugins: [
 | `[print]` | Show/hide print button. Set `false` to hide | `boolean` | `true` |
 | `[startPrint]` | Start print preview of document. This combined with _`externalWindow`_ could mimic a print preview functionality just like the one in gmail. | `boolean` |  |
 | `[download]` | Show/hide download button. Set `false` to hide | boolean | `true` |
+| `[find]` | Show/hide search button. Set `false` to hide | boolean | `true` |
 | `[startDownload]` | Download document as soon as it opens. You may put this to good use. | `boolean` |  |
 | `[rotatecw]` | Rotate document clock wise 90° | `boolean` |  |
 | `[rotateccw]` | Rotate document anti-clock wise 90° | `boolean` |  |
@@ -120,11 +123,9 @@ For [externalWindow]="true" to work, pop-ups needs to be enabled at browser leve
 <!-- your.component.html -->
 <button (click)="openPdf();">Open Pdf</button>
 
-<!-- Please note, you need a copy of https://github.com/intbot/ng2-pdfjs-viewer/tree/master/pdfjs for some of the below features to work -->
 <div style="width: 800px; height: 400px">
   <ng2-pdfjs-viewer 
     #pdfViewer
-    [pdfJsFolder]="'pdfjs'"
     [externalWindow]="true"
     [downloadFileName]="'mytestfile.pdf'"
     [openFile]="false"
