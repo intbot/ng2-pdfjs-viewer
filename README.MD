@@ -137,7 +137,7 @@ For [externalWindow]="true" to work, pop-ups needs to be enabled at browser leve
 
 ```typescript
 <!-- your.component.ts-->
-export class RateCardComponent implements OnInit {
+export class MyComponent implements OnInit {
   @ViewChild('pdfViewer') pdfViewer
   ...
 
