@@ -104,7 +104,7 @@ _Please note if you decide to put `pdfjs` folder anywhere else other than the `a
 
 ## Usage    
 
-_For your convenience a sample app using angular6 is available under this repository, if you would like to see it in action (Folder ng6SampleApp). It shows many ways to configure this component for different needs._
+_For your convenience a sample app using angular is available under this repository, if you would like to see it in action (Folder SampleApp). It shows many ways to configure this component for different needs._
 
 Once your PdfJsViewerComponent is imported  you can use it in your Angular application like this:
 
