@@ -40,12 +40,12 @@ button:focus {
 
 <br />
 
-<ng2-pdfjs-viewer #externalPdfViewer [externalWindow]="true" [startPrint]=true openFile="false"></ng2-pdfjs-viewer>
+<ng2-pdfjs-viewer #externalPdfViewer [externalWindow]="true" [startPrint]=true openFile="false" [useOnlyCssZoom]=true></ng2-pdfjs-viewer>
 <div style="position:fixed; left:845px; width: 1000px; height: 900px">
-  <ng2-pdfjs-viewer #embeddedPdfViewer pdfSrc="https://github.com/intbot/ng2-pdfjs-viewer/blob/master/sampledoc/gre_research_validity_data.pdf" cursor="HAND" downloadFileName="research.pdf" scroll="W" spred="E" [print]="false" [errorOverride]="true" errorMessage="My error Message"></ng2-pdfjs-viewer>
+  <ng2-pdfjs-viewer #embeddedPdfViewer pdfSrc="gre_research_validity_data.pdf" locale="de-AT" cursor="HAND" downloadFileName="research.pdf" scroll="W" spred="E" [print]="false" [errorOverride]="true" errorMessage="My error Message"></ng2-pdfjs-viewer>
 </div>
 <div style="position:absolute; width: 825px; height: 900px">
-  <ng2-pdfjs-viewer pdfSrc="pdf-sample.pdf" downloadFileName="mySample" [page]=2 zoom="200">
+  <ng2-pdfjs-viewer pdfSrc="pdf-sample.pdf" downloadFileName="mySample" [page]=2 zoom="200" locale="de-AT">
   </ng2-pdfjs-viewer>
 </div>
 <router-outlet></router-outlet>

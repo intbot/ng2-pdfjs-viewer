@@ -128,59 +128,6 @@ var pdfjsWebApp, pdfjsWebAppOptions;
   __webpack_require__(41);
 }
 
-window.getUrlParameterByName = function(name, url) { //c1s
-  if (!url) url = window.location.href;
-  name = name.replace(/[\[\]]/g, "\\$&");
-  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-    results = regex.exec(url);
-  if (!results) return null;
-  if (!results[2]) return '';
-  return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
-
-window.setCustomError = function(moreInfo) {
-  let errorMessage = window.getUrlParameterByName('errorMessage');
-  if(errorMessage) {
-    let errorOverride = window.getUrlParameterByName('errorOverride');
-    if (errorOverride) {
-      moreInfo.errorOverride = true;
-      moreInfo.errorMessage = errorMessage;
-    }
-
-    let errorAppend = window.getUrlParameterByName('errorAppend');
-    if (errorAppend) {
-      moreInfo.errorAppend = true;
-      moreInfo.errorMessage = errorMessage;
-    }
-  }
-}
-
-window.applyParameterOverride = function(config) {
-  if (window.getUrlParameterByName('openFile') === "false") {
-    config.toolbar.openFile.setAttribute('hidden', 'true');
-    config.secondaryToolbar.openFileButton.setAttribute('hidden', 'true');
-  }
-  if (window.getUrlParameterByName('download') === "false") {
-    config.toolbar.download.setAttribute('hidden', 'true');
-    config.secondaryToolbar.downloadButton.setAttribute('hidden', 'true');
-  }
-  if (window.getUrlParameterByName('viewBookmark') === "false") {
-    config.toolbar.viewBookmark.setAttribute('hidden', 'true');
-    config.secondaryToolbar.viewBookmarkButton.setAttribute('hidden', 'true');
-  }
-  if (window.getUrlParameterByName('print') === "false") {
-    config.toolbar.print.classList.add('hidden');
-    config.secondaryToolbar.printButton.classList.add('hidden');
-  }
-  if (window.getUrlParameterByName('fullScreen') === "false") {
-    config.toolbar.presentationModeButton.classList.add('hidden');
-    config.secondaryToolbar.presentationModeButton.classList.add('hidden');
-  }
-  if (window.getUrlParameterByName('find') === "false") {
-    config.toolbar.viewFind.classList.add('hidden');
-  }
-}//c1e
-
 function getViewerConfiguration() {
   return {
     appContainer: document.body,
@@ -4544,6 +4491,73 @@ function () {
   return AppOptions;
 }();
 
+
+window.getUrlParameterByName = function(name, url) { //c1s
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+window.setCustomError = function(moreInfo) {
+  let errorMessage = window.getUrlParameterByName('errorMessage');
+  if(errorMessage) {
+    let errorOverride = window.getUrlParameterByName('errorOverride');
+    if (errorOverride) {
+      moreInfo.errorOverride = true;
+      moreInfo.errorMessage = errorMessage;
+    }
+
+    let errorAppend = window.getUrlParameterByName('errorAppend');
+    if (errorAppend) {
+      moreInfo.errorAppend = true;
+      moreInfo.errorMessage = errorMessage;
+    }
+  }
+}
+
+window.applyUserDefaults = function (appOptions) {
+  let locale = window.getUrlParameterByName('locale');
+  if (locale) {
+    appOptions.set('locale', locale);    
+  }
+
+  let useOnlyCssZoom = window.getUrlParameterByName('useOnlyCssZoom');
+  if (useOnlyCssZoom) {
+      appOptions.set('useOnlyCssZoom', true);
+  }
+}
+
+window.applyParameterOverride = function(config) {
+  if (window.getUrlParameterByName('openFile') === "false") {
+    config.toolbar.openFile.setAttribute('hidden', 'true');
+    config.secondaryToolbar.openFileButton.setAttribute('hidden', 'true');
+  }
+  if (window.getUrlParameterByName('download') === "false") {
+    config.toolbar.download.setAttribute('hidden', 'true');
+    config.secondaryToolbar.downloadButton.setAttribute('hidden', 'true');
+  }
+  if (window.getUrlParameterByName('viewBookmark') === "false") {
+    config.toolbar.viewBookmark.setAttribute('hidden', 'true');
+    config.secondaryToolbar.viewBookmarkButton.setAttribute('hidden', 'true');
+  }
+  if (window.getUrlParameterByName('print') === "false") {
+    config.toolbar.print.classList.add('hidden');
+    config.secondaryToolbar.printButton.classList.add('hidden');
+  }
+  if (window.getUrlParameterByName('fullScreen') === "false") {
+    config.toolbar.presentationModeButton.classList.add('hidden');
+    config.secondaryToolbar.presentationModeButton.classList.add('hidden');
+  }
+  if (window.getUrlParameterByName('find') === "false") {
+    config.toolbar.viewFind.classList.add('hidden');
+  }
+}//c1e
+
+window.applyUserDefaults(AppOptions); //c1
 exports.AppOptions = AppOptions;
 
 /***/ }),

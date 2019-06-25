@@ -99,6 +99,8 @@ _Please note if you decide to put `pdfjs` folder anywhere else other than the `a
 | `[openFile]` | Show/hide open file button. Set `false` to hide | boolean | `true` |
 | `[viewBookmark]` | Show/hide bookmark button. Set `false` to hide | boolean | `true` |
 | `[showSpinner]` | Show a simple css based spinner/progress before the document loads | boolean | `true` |
+| `locale` | Set locale(language) of toolbar/buttons and other viewer elements. E.g. 'de-AT', 'en-GB' etc | string | browser's default language if present, otherwise `en-US` |
+| `[useOnlyCssZoom]` | Instructs the viewer to use css based zoom. This will produce better zoom effect on mobile devices and tablets. | boolean | `false` |
 | `errorMessage` | Custom error message | string |  |
 | `[errorAppend]` | Appends custom error message to the end of other pdfjs error messages | `true` |
 | `[errorOverride]` | Overrides all pdfjs error messages and shows only user's custom error message | boolean | `false` |

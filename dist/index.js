@@ -20,6 +20,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
         this.fullScreen = true;
         //@Input() public showFullScreen: boolean;
         this.find = true;
+        this.useOnlyCssZoom = false;
         this.errorOverride = false;
         this.errorAppend = true;
     }
@@ -79,7 +80,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
         if (this.externalWindow && (typeof this.viewerTab === 'undefined' || this.viewerTab.closed)) {
             this.viewerTab = window.open('', '_blank', this.externalWindowOptions || '');
             if (this.viewerTab == null) {
-                console.log("ng2-pdfjs-viewer: For 'externalWindow = true'. i.e opening in new tab, to work, pop-ups should be enabled.");
+                console.error("ng2-pdfjs-viewer: For 'externalWindow = true'. i.e opening in new tab to work, pop-ups should be enabled.");
                 return;
             }
             if (this.showSpinner) {
@@ -164,6 +165,12 @@ var PdfJsViewerComponent = /** @class */ (function () {
         }
         if (this.spread) {
             viewerUrl += "&spread=" + this.spread;
+        }
+        if (this.locale) {
+            viewerUrl += "&locale=" + this.locale;
+        }
+        if (this.useOnlyCssZoom) {
+            viewerUrl += "&useOnlyCssZoom=" + this.useOnlyCssZoom;
         }
         if (this.page || this.zoom || this.nameddest || this.pagemode)
             viewerUrl += "#";
@@ -253,6 +260,8 @@ var PdfJsViewerComponent = /** @class */ (function () {
         cursor: [{ type: Input }],
         scroll: [{ type: Input }],
         spread: [{ type: Input }],
+        locale: [{ type: Input }],
+        useOnlyCssZoom: [{ type: Input }],
         errorOverride: [{ type: Input }],
         errorAppend: [{ type: Input }],
         errorMessage: [{ type: Input }],

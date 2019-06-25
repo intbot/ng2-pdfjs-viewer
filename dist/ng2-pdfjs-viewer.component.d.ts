@@ -23,6 +23,8 @@ export declare class PdfJsViewerComponent {
     cursor: string;
     scroll: string;
     spread: string;
+    locale: string;
+    useOnlyCssZoom: boolean;
     errorOverride: boolean;
     errorAppend: boolean;
     errorMessage: string;
