@@ -45,6 +45,9 @@ export class PdfJsViewerComponent {
   @Input() public cursor: string;
   @Input() public scroll: string;
   @Input() public spread: string;
+  @Input() public errorOverride: boolean = false;
+  @Input() public errorAppend: boolean = true;
+  @Input() public errorMessage: string;
   
   @Input() public externalWindowOptions: string;
   public viewerTab: any;
@@ -205,36 +208,51 @@ export class PdfJsViewerComponent {
       viewerUrl += `&pagemode=${this.pagemode}`;
     }
 
+
+    if (this.errorOverride || this.errorAppend) {
+      viewerUrl += `&errorMessage=${this.errorMessage}`;
+
+      if (this.errorOverride) {
+        viewerUrl += `&errorOverride=${this.errorOverride}`;
+      }
+      if (this.errorAppend) {
+        viewerUrl += `&errorAppend=${this.errorAppend}`;
+      }
+    }
+
     if (this.externalWindow) {
       this.viewerTab.location.href = viewerUrl;
     } else {
       this.iframe.nativeElement.src = viewerUrl;
     }
 
-    console.log(`
-      pdfSrc = ${this.pdfSrc}
-      fileUrl = ${fileUrl}
-      externalWindow = ${this.externalWindow}
-      downloadFileName = ${this.downloadFileName}
-      viewerFolder = ${this.viewerFolder}
-      openFile = ${this.openFile}
-      download = ${this.download}
-      startDownload = ${this.startDownload}
-      viewBookmark = ${this.viewBookmark}
-      print = ${this.print}
-      startPrint = ${this.startPrint}
-      fullScreen = ${this.fullScreen}
-      find = ${this.find}
-      lastPage = ${this.lastPage}
-      rotatecw = ${this.rotatecw}
-      rotateccw = ${this.rotateccw}
-      cursor = ${this.cursor}
-      scrollMode = ${this.scroll}
-      spread = ${this.spread}
-      page = ${this.page}
-      zoom = ${this.zoom}
-      nameddest = ${this.nameddest}
-      pagemode = ${this.pagemode}
-    `);
+    // console.log(`
+    //   pdfSrc = ${this.pdfSrc}
+    //   fileUrl = ${fileUrl}
+    //   externalWindow = ${this.externalWindow}
+    //   downloadFileName = ${this.downloadFileName}
+    //   viewerFolder = ${this.viewerFolder}
+    //   openFile = ${this.openFile}
+    //   download = ${this.download}
+    //   startDownload = ${this.startDownload}
+    //   viewBookmark = ${this.viewBookmark}
+    //   print = ${this.print}
+    //   startPrint = ${this.startPrint}
+    //   fullScreen = ${this.fullScreen}
+    //   find = ${this.find}
+    //   lastPage = ${this.lastPage}
+    //   rotatecw = ${this.rotatecw}
+    //   rotateccw = ${this.rotateccw}
+    //   cursor = ${this.cursor}
+    //   scrollMode = ${this.scroll}
+    //   spread = ${this.spread}
+    //   page = ${this.page}
+    //   zoom = ${this.zoom}
+    //   nameddest = ${this.nameddest}
+    //   pagemode = ${this.pagemode}
+    //   pagemode = ${this.errorOverride}
+    //   pagemode = ${this.errorAppend}
+    //   pagemode = ${this.errorMessage}
+    // `);
   }
 }

@@ -2,8 +2,8 @@ copy .\pdfjs\web\viewer.js .\SampleApp\src\assets\pdfjs\web -Force
 npm run build
 cd dist
 npm pack
-copy .\ng2-pdfjs-viewer-3.2.8.tgz ..\SampleApp\ -Force
+copy .\ng2-pdfjs-viewer-3.4.5.tgz ..\SampleApp\ -Force
 cd ..\SampleApp\
 npm uninstall ng2-pdfjs-viewer
-npm install .\ng2-pdfjs-viewer-3.2.8.tgz
+npm install .\ng2-pdfjs-viewer-3.4.5.tgz
 ng serve

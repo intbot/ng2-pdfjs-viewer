@@ -23,6 +23,8 @@ var PdfJsViewerComponent = /** @class */ (function () {
         this.fullScreen = true;
         //@Input() public showFullScreen: boolean;
         this.find = true;
+        this.errorOverride = false;
+        this.errorAppend = true;
     }
     Object.defineProperty(PdfJsViewerComponent.prototype, "pdfSrc", {
         get: /**
@@ -180,13 +182,49 @@ var PdfJsViewerComponent = /** @class */ (function () {
         if (this.pagemode) {
             viewerUrl += "&pagemode=" + this.pagemode;
         }
+        if (this.errorOverride || this.errorAppend) {
+            viewerUrl += "&errorMessage=" + this.errorMessage;
+            if (this.errorOverride) {
+                viewerUrl += "&errorOverride=" + this.errorOverride;
+            }
+            if (this.errorAppend) {
+                viewerUrl += "&errorAppend=" + this.errorAppend;
+            }
+        }
         if (this.externalWindow) {
             this.viewerTab.location.href = viewerUrl;
         }
         else {
             this.iframe.nativeElement.src = viewerUrl;
         }
-        console.log("\n      pdfSrc = " + this.pdfSrc + "\n      fileUrl = " + fileUrl + "\n      externalWindow = " + this.externalWindow + "\n      downloadFileName = " + this.downloadFileName + "\n      viewerFolder = " + this.viewerFolder + "\n      openFile = " + this.openFile + "\n      download = " + this.download + "\n      startDownload = " + this.startDownload + "\n      viewBookmark = " + this.viewBookmark + "\n      print = " + this.print + "\n      startPrint = " + this.startPrint + "\n      fullScreen = " + this.fullScreen + "\n      find = " + this.find + "\n      lastPage = " + this.lastPage + "\n      rotatecw = " + this.rotatecw + "\n      rotateccw = " + this.rotateccw + "\n      cursor = " + this.cursor + "\n      scrollMode = " + this.scroll + "\n      spread = " + this.spread + "\n      page = " + this.page + "\n      zoom = " + this.zoom + "\n      nameddest = " + this.nameddest + "\n      pagemode = " + this.pagemode + "\n    ");
+        // console.log(`
+        //   pdfSrc = ${this.pdfSrc}
+        //   fileUrl = ${fileUrl}
+        //   externalWindow = ${this.externalWindow}
+        //   downloadFileName = ${this.downloadFileName}
+        //   viewerFolder = ${this.viewerFolder}
+        //   openFile = ${this.openFile}
+        //   download = ${this.download}
+        //   startDownload = ${this.startDownload}
+        //   viewBookmark = ${this.viewBookmark}
+        //   print = ${this.print}
+        //   startPrint = ${this.startPrint}
+        //   fullScreen = ${this.fullScreen}
+        //   find = ${this.find}
+        //   lastPage = ${this.lastPage}
+        //   rotatecw = ${this.rotatecw}
+        //   rotateccw = ${this.rotateccw}
+        //   cursor = ${this.cursor}
+        //   scrollMode = ${this.scroll}
+        //   spread = ${this.spread}
+        //   page = ${this.page}
+        //   zoom = ${this.zoom}
+        //   nameddest = ${this.nameddest}
+        //   pagemode = ${this.pagemode}
+        //   pagemode = ${this.errorOverride}
+        //   pagemode = ${this.errorAppend}
+        //   pagemode = ${this.errorMessage}
+        // `);
     };
     PdfJsViewerComponent.decorators = [
         { type: core.Component, args: [{
@@ -218,6 +256,9 @@ var PdfJsViewerComponent = /** @class */ (function () {
         cursor: [{ type: core.Input }],
         scroll: [{ type: core.Input }],
         spread: [{ type: core.Input }],
+        errorOverride: [{ type: core.Input }],
+        errorAppend: [{ type: core.Input }],
+        errorMessage: [{ type: core.Input }],
         externalWindowOptions: [{ type: core.Input }],
         pdfSrc: [{ type: core.Input }]
     };

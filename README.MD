@@ -99,6 +99,11 @@ _Please note if you decide to put `pdfjs` folder anywhere else other than the `a
 | `[openFile]` | Show/hide open file button. Set `false` to hide | boolean | `true` |
 | `[viewBookmark]` | Show/hide bookmark button. Set `false` to hide | boolean | `true` |
 | `[showSpinner]` | Show a simple css based spinner/progress before the document loads | boolean | `true` |
+| `errorMessage` | Custom error message | string |  |
+| `[errorAppend]` | Appends custom error message to the end of other pdfjs error messages | `true` |
+| `[errorOverride]` | Overrides all pdfjs error messages and shows only user's custom error message | boolean | `false` |
+
+
 
 **_Please note, copy step is mandatory to enjoy all of the different options listed above. You may also avoid this step and could directly use https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website if you wish to just use the default viewer_**  
 

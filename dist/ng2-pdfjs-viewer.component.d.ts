@@ -23,6 +23,9 @@ export declare class PdfJsViewerComponent {
     cursor: string;
     scroll: string;
     spread: string;
+    errorOverride: boolean;
+    errorAppend: boolean;
+    errorMessage: string;
     externalWindowOptions: string;
     viewerTab: any;
     private innerSrc;
