@@ -181,7 +181,7 @@ import { map } from 'rxjs/operators';
 ...
 
 export class MyComponent implements OnInit {
-  @ViewChild('pdfViewer') pdfViewerOnDemand;
+  @ViewChild('pdfViewerOnDemand') pdfViewerOnDemand;
   @ViewChild('pdfViewerAutoLoad') pdfViewerAutoLoad;
   ...
 
@@ -214,8 +214,8 @@ export class MyComponent implements OnInit {
 
     this.downloadFile(url).subscribe(
     (res) => {
-        this.pdfViewer.pdfSrc = res; // pdfSrc can be Blob or Uint8Array
-        this.pdfViewer.refresh(); // Ask pdf viewer to load/reresh pdf
+        this.pdfViewerOnDemand.pdfSrc = res; // pdfSrc can be Blob or Uint8Array
+        this.pdfViewerOnDemand.refresh(); // Ask pdf viewer to load/reresh pdf
       }
     );
   }
