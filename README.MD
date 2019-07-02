@@ -10,10 +10,10 @@
 
 This is a super simple angular 8 component for displaying pdfs inline(embedded) OR in a new tab along with a feature rich viewer. It uses mozilla's pdfjs viewer(v2.2.171) behind the scenes and supports angular(2/4/5/6/7). Extremely lightweight, easiest to integrate and use, most reliable, this library has only one dependancy (@angular/core). Thanks a ton to the community, standing tall around 250,000 downloads!!!
 
-## Demo
-https://ng2-pdfjs-viewer.azurewebsites.net/
-
-You may download source code for the demo here : https://github.com/intbot/ng2-pdfjs-viewer/Demo
+## Demo and Samples
+Fully fledged Demo app showing unique use cases: https://ng2-pdfjs-viewer.azurewebsites.net/
+Source code for the demo here : https://github.com/intbot/ng2-pdfjs-viewer/tree/master/Demo 
+Minimalistic angular sample app: https://github.com/intbot/ng2-pdfjs-viewer/tree/master/SampleApp 
 
 ## Features
 Some of below features are unique to this component, which is unavailable in native viewer or other implementations.  
