@@ -10,9 +10,14 @@
 
 This is a super simple angular 8 component for displaying pdfs inline(embedded) OR in a new tab along with a feature rich viewer. It uses mozilla's pdfjs viewer(v2.2.171) behind the scenes and supports angular(2/4/5/6/7). Extremely lightweight, easiest to integrate and use, most reliable, this library has only one dependancy (@angular/core). Thanks a ton to the community, standing tall around 250,000 downloads!!!
 
+## Demo
+https://ng2-pdfjs-viewer.azurewebsites.net/
+
+You may download source code for the demo here : https://github.com/intbot/ng2-pdfjs-viewer/Demo
+
 ## Features
 Some of below features are unique to this component, which is unavailable in native viewer or other implementations.  
-✔️ **Open pdf in new window** 🌐 - Opens pdf viewer in new window. Alos, you may set all allowable external window options.  
+✔️ **Open pdf in new window** 🌐 - Opens pdf viewer in new window. Also, you may set all allowable external window options.  
 ✔️ **Embed pdf** 🗎 - Embeds viewer and pdf inside your web page/component.  
 ✔️ **Blob and byte arrays** 🔟 - Have pdf as a byte array? Still works.  
 ✔️ **Print preview** 🖨️ - You can set the pdf to open in a new tab or another browser window and provide an immediate print preview, A use case will be a 'Print' button opening pdf in new window with print dialog.  
@@ -154,30 +159,53 @@ For [externalWindow]="true" to work, pop-ups needs to be enabled at browser leve
 
 <div style="width: 800px; height: 400px">
   <ng2-pdfjs-viewer 
-    #pdfViewer
+    #pdfViewerOnDemand
     [externalWindow]="true"
     [downloadFileName]="'mytestfile.pdf'"
     [openFile]="false"
     [viewBookmark]="false"
     [download]="false"></ng2-pdfjs-viewer>
 </div>
+<div>
+<div style="width: 800px; height: 400px">
+  <ng2-pdfjs-viewer #pdfViewerAutoLoad></ng2-pdfjs-viewer>
+</div>
 ```
 
 ```typescript
 <!-- your.component.ts-->
+import { Component, ViewChild } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+...
+
 export class MyComponent implements OnInit {
-  @ViewChild('pdfViewer') pdfViewer
+  @ViewChild('pdfViewer') pdfViewerOnDemand;
+  @ViewChild('pdfViewerAutoLoad') pdfViewerAutoLoad;
   ...
 
-  private downloadFile(url: string): any {
-    return this.http.get(url, { responseType: ResponseContentType.Blob }).map(
-      (res) => {
-        return new Blob([res.blob()], { type: "application/pdf" });
-      });
+  constructor(private http: HttpClient) {
+      let url = "api/document/getmypdf"; // Or your url
+      this.downloadFile(url).subscribe(
+          (res) => {
+              this.pdfViewerAutoLoad.pdfSrc = res; // pdfSrc can be Blob or Uint8Array
+              this.pdfViewerAutoLoad.refresh(); // Ask pdf viewer to load/refresh pdf
+          }
+      );
   }
 
+  private downloadFile(url: string): any {
+        return this.http.get(url, { responseType: 'blob' })
+            .pipe(
+                map((result: any) => {
+                    return result;
+                })
+            );
+    }
+
   public openPdf() {
-    let url = "url to fetch pdf as byte array";
+    let url = "url to fetch pdf as byte array"; // E.g. http://localhost:3000/api/GetMyPdf
     // url can be local url or remote http request to an api/pdf file. 
     // E.g: let url = "assets/pdf-sample.pdf";
     // E.g: https://github.com/intbot/ng2-pdfjs-viewer/tree/master/sampledoc/pdf-sample.pdf
@@ -185,7 +213,6 @@ export class MyComponent implements OnInit {
     // Please note, for remote urls to work, CORS should be enabled at the server. Read: https://enable-cors.org/server.html
 
     this.downloadFile(url).subscribe(
-
     (res) => {
         this.pdfViewer.pdfSrc = res; // pdfSrc can be Blob or Uint8Array
         this.pdfViewer.refresh(); // Ask pdf viewer to load/reresh pdf
@@ -218,15 +245,6 @@ public IActionResult GetReport()
    string extension;
 
    var bytes = reportViewer.LocalReport.Render("application/pdf", null, out mimeType, out encoding, out extension, out streamids, out warnings);
-
-   // The below content-disposition is lost when we create Blob() object in client browser. Hence commented out
-   //var cd = new System.Net.Mime.ContentDisposition
-   //{
-   //    FileName = "somepdf.pdf",
-   //    Inline = true
-   //};
-   //Response.Headers.Add("Content-Disposition", cd.ToString());
-   
    return File(bytes, "application/pdf")
 }
 ```
@@ -243,6 +261,17 @@ public IActionResult GetMyPdf()
   // OR
   // var bytes = await {{__get_bytes_here__}}
   // return File(bytes, "application/pdf")
+}
+
+OR
+
+[HttpGet]
+[Route("GetMyPdf")]
+public IActionResult GetMyPdf()
+{
+    var pdfPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/assets/pdfjs/web/gre_research_validity_data.pdf");
+    byte[] bytes = System.IO.File.ReadAllBytes(pdfPath);
+    return File(bytes, "application/pdf");
 }
 ```
 
