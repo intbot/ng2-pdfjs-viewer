@@ -31,4 +31,16 @@ export class AppComponent {
     this.inlinePdfViewer.refresh();
     this.isPdfLoaded = !this.isPdfLoaded;
   }
+
+  public testBeforePrint() {
+    console.log("testBeforePrint() successfully called");
+  }
+
+  public testAfterPrint() {
+    console.log("testAfterPrint() successfully called");
+  }
+
+  public testPagesLoaded(count: number) {
+    console.log("testPagesLoaded() successfully called. Total pages # : " + count);
+  }
 }

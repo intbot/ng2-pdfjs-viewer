@@ -1572,6 +1572,14 @@ var PDFViewerApplication = {
   beforePrint: function beforePrint() {
     var _this7 = this;
 
+    let viewerId = window.getUrlParameterByName('viewerId'); //c1s
+    if (viewerId) {
+      let trigger = window.getUrlParameterByName('beforePrint');
+      if (trigger == "true") {
+        window.parent.postMessage({viewerId: viewerId, event: "beforePrint"}, "*");
+      }
+    }//c1e
+
     if (this.printService) {
       return;
     }
@@ -1598,6 +1606,14 @@ var PDFViewerApplication = {
     printService.layout();
   },
   afterPrint: function pdfViewSetupAfterPrint() {
+    var viewerId = window.getUrlParameterByName('viewerId'); //c1s
+    if (viewerId) {
+      var trigger = window.getUrlParameterByName('afterPrint');
+      if (trigger == "true") {
+        window.parent.postMessage({viewerId: viewerId, event: "afterPrint"}, "*");
+      }
+    }//c1e
+
     if (this.printService) {
       this.printService.destroy();
       this.printService = null;
@@ -7783,6 +7799,14 @@ function () {
     this.eventBus.on('pagesloaded', function (evt) {
       _this.applyActionsOverride(_this);//c1
       _this._isPagesLoaded = !!evt.pagesCount;
+
+      let viewerId = window.getUrlParameterByName('viewerId'); //c1s
+      if (viewerId) {
+        let trigger = window.getUrlParameterByName('pagesLoaded');
+        if (trigger == "true") {
+          window.parent.postMessage({viewerId: viewerId, event: "pagesLoaded", param: evt.pagesCount}, "*");
+        }
+      }//c1e
     });
   }
 

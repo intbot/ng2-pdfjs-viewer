@@ -10,6 +10,10 @@
 
 This is a super simple angular 8 component for displaying pdfs inline(embedded) OR in a new tab along with a feature rich viewer. It uses mozilla's pdfjs viewer(v2.2.171) behind the scenes and supports angular(2/4/5/6/7). Extremely lightweight, easiest to integrate and use, most reliable, this library has only one dependancy (@angular/core). Thanks a ton to the community, standing tall around 250,000 downloads!!!
 
+## What is new?
+1. **Support for events** - You may now register several events such as document load, before print, after print etc.  
+2. Several bug fixes.  
+
 ## Demo and Samples
 **Full fledged Demo app showing unique use cases**: https://ng2-pdfjs-viewer.azurewebsites.net  
 **Minimalistic angular sample app**: https://github.com/intbot/ng2-pdfjs-viewer/tree/master/SampleApp  
@@ -20,6 +24,7 @@ Some of below features are unique to this component, which is unavailable in nat
 ✔️ **Open pdf in new window** 🌐 - Opens pdf viewer in new window. Also, you may set all allowable external window options.  
 ✔️ **Embed pdf** 🗎 - Embeds viewer and pdf inside your web page/component.  
 ✔️ **Blob and byte arrays** 🔟 - Have pdf as a byte array? Still works.  
+✔️ **Events** ⚡ - Catch events such as document loaded, before/after print etc.  
 ✔️ **Print preview** 🖨️ - You can set the pdf to open in a new tab or another browser window and provide an immediate print preview, A use case will be a 'Print' button opening pdf in new window with print dialog.  
 ✔️ **Auto download** 💾 - This option allows you to download the pdf file to user device automatically without manually invoking the download.  
 ✔️ **Auto rotate** 🔄 - Rotate the document _clockwise_ or _anti-clockwise_ 90° (+/- 90°) just before displaying. Useful if the document is misaligned.  
@@ -104,6 +109,9 @@ _Please note if you decide to put `pdfjs` folder anywhere else other than the `a
 | `[viewerFolder]` | Set path to _pdfjs's_ `web` and `build` folders. | `string` | `assets` folder path |
 | `[externalWindow]` | Open in new tab. Set to `true` to open document in a new tab | `boolean` | `false` |
 | `externalWindowOptions` | External window options. For allowed comma separated values, refer to https://developer.mozilla.org/en-US/docs/Web/API/Window/open | `string` |  |
+| `onPagesLoaded` | Event to be invoked once document is fully loaded. Also returns number of pages in the `$event` parameter. E.g. `(onPagesLoaded)="testPagesLoaded($event)""` | `Function` |  |
+| `onBeforePrint` | Event to be invoked before document gets printed. E.g. `(onBeforePrint)="testBeforePrint()"` | `Function` |  |
+| `onAfterPrint` | Event to be invoked after document gets printed. E.g. `(onAfterPrint)="testAfterPrint()"` | `Function` |  |
 | `downloadFileName` | Sets/Changes the name of document to be downloaded. If the file name does not ends in `.pdf`, the component will automatically add it for you. | `string` | Actual name of the document |
 | `[page]` | Show specific page. E.g _page=3_ | `number` | `1` |
 | `[lastPage]` | Show last page of the document once it is loaded(If set to `true`). If you use this option along with _`page`_ option, undesired effects might occur | `boolean` | `false` |
@@ -169,6 +177,10 @@ For [externalWindow]="true" to work, pop-ups needs to be enabled at browser leve
 <div>
 <div style="width: 800px; height: 400px">
   <ng2-pdfjs-viewer #pdfViewerAutoLoad></ng2-pdfjs-viewer>
+</div>
+<div style="height: 600px">
+  <ng2-pdfjs-viewer pdfSrc="gre_research_validity_data.pdf" viewerId="MyUniqueID" (onBeforePrint)="testBeforePrint()" (onAfterPrint)="testAfterPrint()" (onPagesLoaded)="testPagesLoaded($event)">
+  </ng2-pdfjs-viewer>
 </div>
 ```
 

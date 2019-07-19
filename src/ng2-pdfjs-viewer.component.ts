@@ -1,9 +1,4 @@
-import { Component, Input, ViewChild, ElementRef } from '@angular/core';
-
-//import viewerHtml from 'pdfjs/web/viewer.html';
-//declare var require: any
-//require('static-reference')('./pdfjs/web/viewer.html');
-//declare var path: any;
+import { Component, Input, Output, ViewChild, EventEmitter, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'ng2-pdfjs-viewer',
@@ -11,17 +6,10 @@ import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 })
 export class PdfJsViewerComponent {
   @ViewChild('iframe') iframe: ElementRef;
-
-
-//   var TransferWebpackPlugin = require('transfer-webpack-plugin');
-// ...
-// plugins: [
-//   new TransferWebpackPlugin([
-//     { from: 'node_modules/my-package/assets', to: path.join(__dirname, 'my/public') }
-//   ])
-// ]
-
-
+  @Input() public viewerId: string;
+  @Output() onBeforePrint: EventEmitter<any> = new EventEmitter();
+  @Output() onAfterPrint: EventEmitter<any> = new EventEmitter();
+  @Output() onPagesLoaded: EventEmitter<any> = new EventEmitter();
   @Input() public viewerFolder: string;
   @Input() public externalWindow: boolean = false;
   @Input() public showSpinner: boolean = true;
@@ -64,7 +52,27 @@ export class PdfJsViewerComponent {
     return this.innerSrc;
   }
 
+  public receiveMessage(viewerEvent)  {
+    if (viewerEvent.data && viewerEvent.data.viewerId && viewerEvent.data.event) {
+      let viewerId = viewerEvent.data.viewerId;
+      let event = viewerEvent.data.event;
+      let param = viewerEvent.data.param;
+      if (this.viewerId == viewerId) {
+        if (this.onBeforePrint && event == "beforePrint") {
+          this.onBeforePrint.emit();
+        }
+        else if (this.onAfterPrint && event == "afterPrint") {
+          this.onAfterPrint.emit();
+        }
+        else if (this.onPagesLoaded && event == "pagesLoaded") {
+          this.onPagesLoaded.emit(param);
+        }
+      }
+    }
+  }
+
   ngOnInit(): void {
+    window.addEventListener("message", this.receiveMessage.bind(this), false);
     if (!this.externalWindow) { // Load pdf for embedded views
       this.loadPdf();
     }
@@ -139,10 +147,20 @@ export class PdfJsViewerComponent {
       viewerUrl = `assets/pdfjs/web/viewer.html`;
     }
 
-    //console.log("__dirname" + __dirname);
-    //console.log("__dirname" + path.join(__dirname, 'my/public'));
-    //var viewerUrl = __dirname + "/pdfjs/web/viewer.html";
     viewerUrl += `?file=${fileUrl}`;
+
+    if (typeof this.viewerId !== 'undefined') {
+      viewerUrl += `&viewerId=${this.viewerId}`;
+    }
+    if (typeof this.onBeforePrint !== 'undefined') {
+      viewerUrl += `&beforePrint=true`;
+    }
+    if (typeof this.onAfterPrint !== 'undefined') {
+      viewerUrl += `&afterPrint=true`;
+    }
+    if (typeof this.onPagesLoaded !== 'undefined') {
+      viewerUrl += `&pagesLoaded=true`;
+    }
 
     if (this.downloadFileName) {
       if(!this.downloadFileName.endsWith(".pdf")) {
@@ -215,8 +233,6 @@ export class PdfJsViewerComponent {
     if (this.pagemode) {
       viewerUrl += `&pagemode=${this.pagemode}`;
     }
-
-
     if (this.errorOverride || this.errorAppend) {
       viewerUrl += `&errorMessage=${this.errorMessage}`;
 

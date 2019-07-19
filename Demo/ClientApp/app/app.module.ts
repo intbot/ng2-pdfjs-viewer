@@ -36,6 +36,7 @@ import { AutoDownloadComponent } from './containers/autodownload/autodownload.co
 import { LanguageComponent } from './containers/language/language.component';
 import { ByteArrayComponent } from './containers/bytearray/bytearray.component';
 import { ShowHideComponent } from './containers/showhide/showhide.component';
+import { EventsComponent } from './containers/events/events.component';
 
 
 export function hljsLanguages() {
@@ -65,6 +66,7 @@ export function createTranslateLoader(http: HttpClient, baseHref) {
         LanguageComponent,
         ByteArrayComponent,
         ShowHideComponent,
+        EventsComponent,
         UsersComponent,
         UserDetailComponent,
         HomeComponent,
@@ -150,6 +152,10 @@ export function createTranslateLoader(http: HttpClient, baseHref) {
                 {
                     path: 'showhide',
                     component: ShowHideComponent
+                },
+                {
+                    path: 'events',
+                    component: EventsComponent
                 },
             ],
             {

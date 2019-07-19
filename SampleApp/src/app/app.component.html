@@ -30,6 +30,8 @@ button:focus {
   </li>
 </ul> -->
 
+<ng2-pdfjs-viewer pdfSrc="gre_research_validity_data.pdf" downloadFileName="mySample" zoom="200" locale="de-AT" viewerId="MyID" (onBeforePrint)="testBeforePrint()" (onAfterPrint)="testAfterPrint()" (onPagesLoaded)="testPagesLoaded($event)">
+</ng2-pdfjs-viewer>
 
 <div [hidden]="!isPdfLoaded" style="height: 600px">
   <ng2-pdfjs-viewer #inlinePdfViewer [print]="false" [fullScreen]="false" [find]="false" [rotatecw]=true></ng2-pdfjs-viewer>
@@ -42,10 +44,10 @@ button:focus {
 
 <ng2-pdfjs-viewer #externalPdfViewer [externalWindow]="true" [startPrint]=true openFile="false" [useOnlyCssZoom]=true></ng2-pdfjs-viewer>
 <div style="position:fixed; left:845px; width: 1000px; height: 900px">
-  <ng2-pdfjs-viewer #embeddedPdfViewer pdfSrc="gre_research_validity_data.pdf" locale="de-AT" cursor="HAND" downloadFileName="research.pdf" scroll="W" spred="E" [print]="false" [errorOverride]="true" errorMessage="My error Message"></ng2-pdfjs-viewer>
+  <ng2-pdfjs-viewer #embeddedPdfViewer pdfSrc="gre_research_validity_data.pdf" [page]=2 locale="de-AT" cursor="HAND" downloadFileName="research.pdf" scroll="W" spred="E" [print]="false" [errorOverride]="true" errorMessage="My error Message"></ng2-pdfjs-viewer>
 </div>
 <div style="position:absolute; width: 825px; height: 900px">
-  <ng2-pdfjs-viewer pdfSrc="pdf-sample.pdf" downloadFileName="mySample" [page]=2 zoom="200" locale="de-AT">
+  <ng2-pdfjs-viewer pdfSrc="pdf-sample.pdf" downloadFileName="mySample" zoom="200" locale="de-AT">
   </ng2-pdfjs-viewer>
 </div>
 <router-outlet></router-outlet>

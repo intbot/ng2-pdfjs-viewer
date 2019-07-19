@@ -1,6 +1,10 @@
-import { ElementRef } from '@angular/core';
+import { EventEmitter, ElementRef } from '@angular/core';
 export declare class PdfJsViewerComponent {
     iframe: ElementRef;
+    viewerId: string;
+    onBeforePrint: EventEmitter<any>;
+    onAfterPrint: EventEmitter<any>;
+    onPagesLoaded: EventEmitter<any>;
     viewerFolder: string;
     externalWindow: boolean;
     showSpinner: boolean;
@@ -32,6 +36,7 @@ export declare class PdfJsViewerComponent {
     viewerTab: any;
     private innerSrc;
     pdfSrc: string | Blob | Uint8Array;
+    receiveMessage(viewerEvent: any): void;
     ngOnInit(): void;
     refresh(): void;
     private loadPdf;
