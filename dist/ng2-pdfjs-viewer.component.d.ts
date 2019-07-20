@@ -4,7 +4,8 @@ export declare class PdfJsViewerComponent {
     viewerId: string;
     onBeforePrint: EventEmitter<any>;
     onAfterPrint: EventEmitter<any>;
-    onPagesLoaded: EventEmitter<any>;
+    onDocumentLoad: EventEmitter<any>;
+    onPageChange: EventEmitter<any>;
     viewerFolder: string;
     externalWindow: boolean;
     showSpinner: boolean;

@@ -9,7 +9,8 @@ export class PdfJsViewerComponent {
   @Input() public viewerId: string;
   @Output() onBeforePrint: EventEmitter<any> = new EventEmitter();
   @Output() onAfterPrint: EventEmitter<any> = new EventEmitter();
-  @Output() onPagesLoaded: EventEmitter<any> = new EventEmitter();
+  @Output() onDocumentLoad: EventEmitter<any> = new EventEmitter();
+  @Output() onPageChange: EventEmitter<any> = new EventEmitter();
   @Input() public viewerFolder: string;
   @Input() public externalWindow: boolean = false;
   @Input() public showSpinner: boolean = true;
@@ -64,8 +65,11 @@ export class PdfJsViewerComponent {
         else if (this.onAfterPrint && event == "afterPrint") {
           this.onAfterPrint.emit();
         }
-        else if (this.onPagesLoaded && event == "pagesLoaded") {
-          this.onPagesLoaded.emit(param);
+        else if (this.onDocumentLoad && event == "pagesLoaded") {
+          this.onDocumentLoad.emit(param);
+        }
+        else if (this.onPageChange && event == "pageChange") {
+          this.onPageChange.emit(param);
         }
       }
     }
@@ -158,8 +162,11 @@ export class PdfJsViewerComponent {
     if (typeof this.onAfterPrint !== 'undefined') {
       viewerUrl += `&afterPrint=true`;
     }
-    if (typeof this.onPagesLoaded !== 'undefined') {
+    if (typeof this.onDocumentLoad !== 'undefined') {
       viewerUrl += `&pagesLoaded=true`;
+    }
+    if (typeof this.onPageChange !== 'undefined') {
+      viewerUrl += `&pageChange=true`;
     }
 
     if (this.downloadFileName) {

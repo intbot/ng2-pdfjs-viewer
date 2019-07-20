@@ -12,7 +12,8 @@ var PdfJsViewerComponent = /** @class */ (function () {
     function PdfJsViewerComponent() {
         this.onBeforePrint = new core.EventEmitter();
         this.onAfterPrint = new core.EventEmitter();
-        this.onPagesLoaded = new core.EventEmitter();
+        this.onDocumentLoad = new core.EventEmitter();
+        this.onPageChange = new core.EventEmitter();
         this.externalWindow = false;
         this.showSpinner = true;
         this.openFile = true;
@@ -66,8 +67,11 @@ var PdfJsViewerComponent = /** @class */ (function () {
                 else if (this.onAfterPrint && event_1 == "afterPrint") {
                     this.onAfterPrint.emit();
                 }
-                else if (this.onPagesLoaded && event_1 == "pagesLoaded") {
-                    this.onPagesLoaded.emit(param);
+                else if (this.onDocumentLoad && event_1 == "pagesLoaded") {
+                    this.onDocumentLoad.emit(param);
+                }
+                else if (this.onPageChange && event_1 == "pageChange") {
+                    this.onPageChange.emit(param);
                 }
             }
         }
@@ -153,8 +157,11 @@ var PdfJsViewerComponent = /** @class */ (function () {
         if (typeof this.onAfterPrint !== 'undefined') {
             viewerUrl += "&afterPrint=true";
         }
-        if (typeof this.onPagesLoaded !== 'undefined') {
+        if (typeof this.onDocumentLoad !== 'undefined') {
             viewerUrl += "&pagesLoaded=true";
+        }
+        if (typeof this.onPageChange !== 'undefined') {
+            viewerUrl += "&pageChange=true";
         }
         if (this.downloadFileName) {
             if (!this.downloadFileName.endsWith(".pdf")) {
@@ -282,7 +289,8 @@ var PdfJsViewerComponent = /** @class */ (function () {
         viewerId: [{ type: core.Input }],
         onBeforePrint: [{ type: core.Output }],
         onAfterPrint: [{ type: core.Output }],
-        onPagesLoaded: [{ type: core.Output }],
+        onDocumentLoad: [{ type: core.Output }],
+        onPageChange: [{ type: core.Output }],
         viewerFolder: [{ type: core.Input }],
         externalWindow: [{ type: core.Input }],
         showSpinner: [{ type: core.Input }],

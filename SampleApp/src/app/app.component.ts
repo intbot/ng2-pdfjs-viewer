@@ -43,4 +43,8 @@ export class AppComponent {
   public testPagesLoaded(count: number) {
     console.log("testPagesLoaded() successfully called. Total pages # : " + count);
   }
+
+  public testPageChange(pageNumber: number) {
+    console.log("testPageChange() successfully called. Current page # : " + pageNumber);
+  }
 }

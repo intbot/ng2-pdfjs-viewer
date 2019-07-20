@@ -21,6 +21,10 @@ export class EventsComponent {
         alert(`Document is loaded!. Total pages : ${count}`);
     }
 
+    public testPageChange(pageNumber: number) {
+        console.log("testPageChange() successfully called. Current page # : " + pageNumber);
+    }
+
     public htmlcode =
         `
 <!-- your.component.html -->

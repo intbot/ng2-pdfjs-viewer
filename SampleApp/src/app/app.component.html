@@ -29,10 +29,10 @@ button:focus {
     <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
   </li>
 </ul> -->
-
-<ng2-pdfjs-viewer pdfSrc="gre_research_validity_data.pdf" downloadFileName="mySample" zoom="200" locale="de-AT" viewerId="MyID" (onBeforePrint)="testBeforePrint()" (onAfterPrint)="testAfterPrint()" (onPagesLoaded)="testPagesLoaded($event)">
-</ng2-pdfjs-viewer>
-
+<div style="height: 800px">
+  <ng2-pdfjs-viewer pdfSrc="gre_research_validity_data.pdf" downloadFileName="mySample" zoom="200" viewerId="MyID" (onDocumentLoad)="testPagesLoaded($event)" (onPageChange)="testPageChange($event)" (onBeforePrint)="testBeforePrint()" (onAfterPrint)="testAfterPrint()">
+  </ng2-pdfjs-viewer>
+</div>
 <div [hidden]="!isPdfLoaded" style="height: 600px">
   <ng2-pdfjs-viewer #inlinePdfViewer [print]="false" [fullScreen]="false" [find]="false" [rotatecw]=true></ng2-pdfjs-viewer>
 </div>

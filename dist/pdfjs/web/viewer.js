@@ -2312,6 +2312,14 @@ function webViewerPageChanging(evt) {
       Stats.add(page, pageView.stats);
     }
   }
+
+  let viewerId = window.getUrlParameterByName('viewerId'); //c1s
+  if (viewerId) {
+    let trigger = window.getUrlParameterByName('pageChange');
+    if (trigger == "true") {
+      window.parent.postMessage({viewerId: viewerId, event: "pageChange", param: page}, "*");
+    }
+  }//c1e
 }
 
 function webViewerVisibilityChange(evt) {
