@@ -11,8 +11,10 @@
 This is a super simple angular 8 component for displaying pdfs inline(embedded) OR in a new tab along with a feature rich viewer. It uses mozilla's pdfjs viewer(v2.2.171) behind the scenes and supports angular(2/4/5/6/7). Extremely lightweight, easiest to integrate and use, most reliable, this library has only one dependancy (@angular/core). Thanks a ton to the community, standing tall over 250,000 downloads!!!
 
 ## What is new?
-1. **Support for events** - You may now register several events such as document load, page change, before print, after print etc.  
-2. Several bug fixes.  
+1. **Direct access to underlying viewer** - Exposed PDFViewerApplication and PDFViewerApplicationOptions objects opens a whole world of customizable PDFJS and ViewerJS properties and methods, allowing to change them programmatically; thus producing a unique viewer experience.  
+2. **Dynamic page number** - Getter/Setter added for page number. Change page number after document loaded, or access current page in parent component.
+3. **Support for events** - You may now register several events such as document load, page change, before print, after print etc.  
+
 
 ## Demo and Samples
 **Full fledged Demo app showing unique use cases**: https://ng2-pdfjs-viewer.azurewebsites.net  
@@ -22,7 +24,7 @@ Source code for the demo here : https://github.com/intbot/ng2-pdfjs-viewer/tree/
 ## Features
 Some of below features are unique to this component, which is unavailable in native viewer or other implementations.  
 ✔️ **Open pdf in new window** 🌐 - Opens pdf viewer in new window. Also, you may set all allowable external window options.  
-✔️ **Direct access to document** 🌐 - Exposed PDFViewerApplication and PDFViewerApplicationOptions objects opens a whole world of existing PDFJS and ViewerJS to the user, allowing to change them programmatically; thus producing a unique viewer experience.  
+✔️ **Direct access to underlying viewer** 👨‍💻👩‍💻- Exposed PDFViewerApplication and PDFViewerApplicationOptions objects opens a whole world of customizable PDFJS and ViewerJS properties and methods, allowing to change them programmatically; thus producing a unique viewer experience.  
 ✔️ **Embed pdf** 🗎 - Embeds viewer and pdf inside your web page/component.  
 ✔️ **Blob and byte arrays** 🔟 - Have pdf as a byte array? Still works.  
 ✔️ **Events** ⚡ - Catch events such as document loaded, page change, before/after print etc.  
