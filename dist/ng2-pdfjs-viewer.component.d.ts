@@ -18,7 +18,6 @@ export declare class PdfJsViewerComponent {
     startPrint: boolean;
     fullScreen: boolean;
     find: boolean;
-    page: number;
     zoom: string;
     nameddest: string;
     pagemode: string;
@@ -33,10 +32,15 @@ export declare class PdfJsViewerComponent {
     errorOverride: boolean;
     errorAppend: boolean;
     errorMessage: string;
+    diagnosticLogs: boolean;
     externalWindowOptions: string;
     viewerTab: any;
-    private innerSrc;
+    private _src;
+    private _page;
+    page: number;
     pdfSrc: string | Blob | Uint8Array;
+    readonly PDFViewerApplicationOptions: any;
+    readonly PDFViewerApplication: any;
     receiveMessage(viewerEvent: any): void;
     ngOnInit(): void;
     refresh(): void;

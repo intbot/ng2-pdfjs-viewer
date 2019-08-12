@@ -24,7 +24,6 @@ export class PdfJsViewerComponent {
   @Input() public fullScreen: boolean = true;
   //@Input() public showFullScreen: boolean;
   @Input() public find: boolean = true;
-  @Input() public page: number;
   @Input() public zoom: string;
   @Input() public nameddest: string;
   @Input() public pagemode: string;
@@ -39,18 +38,66 @@ export class PdfJsViewerComponent {
   @Input() public errorOverride: boolean = false;
   @Input() public errorAppend: boolean = true;
   @Input() public errorMessage: string;
+  @Input() public diagnosticLogs: boolean = true;
   
   @Input() public externalWindowOptions: string;
   public viewerTab: any;
-  private innerSrc: string | Blob | Uint8Array;
+  private _src: string | Blob | Uint8Array;
+  private _page: number;
+  
+  @Input()
+  public set page(_page: number) {
+    this._page = _page;
+    if(this.PDFViewerApplication) {
+      this.PDFViewerApplication.page = this._page;
+    } else {
+      if(this.diagnosticLogs) console.warn("Document is not loaded yet!!!. Try to set page# after full load. Ignore this warning if you are not setting page# using '.' notation. (E.g. pdfViewer.page = 5;)");
+    }
+  }
+
+  public get page() {
+    if(this.PDFViewerApplication) {
+      return this.PDFViewerApplication.page;
+    } else {
+      if(this.diagnosticLogs) console.warn("Document is not loaded yet!!!. Try to retrieve page# after full load.");
+    }
+  }
 
   @Input()
-  public set pdfSrc(innerSrc: string | Blob | Uint8Array) {
-    this.innerSrc = innerSrc;
+  public set pdfSrc(_src: string | Blob | Uint8Array) {
+    this._src = _src;
   }
 
   public get pdfSrc() {
-    return this.innerSrc;
+    return this._src;
+  }
+
+  public get PDFViewerApplicationOptions() {
+    let pdfViewerOptions = null;
+    if (this.externalWindow) {
+      if (this.viewerTab) {
+        pdfViewerOptions = this.viewerTab.PDFViewerApplicationOptions;
+      }
+    } else {
+      if (this.iframe.nativeElement.contentWindow) {
+        pdfViewerOptions = this.iframe.nativeElement.contentWindow.PDFViewerApplicationOptions;
+      }
+    }
+    return pdfViewerOptions;
+  }
+
+  public get PDFViewerApplication() {
+    let pdfViewer = null;
+    if (this.externalWindow) {
+      if (this.viewerTab) {
+        pdfViewer = this.viewerTab.PDFViewerApplication;
+      }
+    } else {
+      if (this.iframe.nativeElement.contentWindow) {
+        pdfViewer = this.iframe.nativeElement.contentWindow.PDFViewerApplication;
+      }
+    }
+    return pdfViewer;
   }
 
   public receiveMessage(viewerEvent)  {
@@ -87,7 +134,7 @@ export class PdfJsViewerComponent {
   }
 
   private loadPdf() {
-    if (!this.innerSrc) {
+    if (!this._src) {
       return;
     }
 
@@ -99,7 +146,7 @@ export class PdfJsViewerComponent {
     if (this.externalWindow && (typeof this.viewerTab === 'undefined' || this.viewerTab.closed)) {
       this.viewerTab = window.open('', '_blank', this.externalWindowOptions || '');
       if (this.viewerTab == null) {
-        console.error("ng2-pdfjs-viewer: For 'externalWindow = true'. i.e opening in new tab to work, pop-ups should be enabled.");
+        if(this.diagnosticLogs) console.error("ng2-pdfjs-viewer: For 'externalWindow = true'. i.e opening in new tab to work, pop-ups should be enabled.");
         return;
       }
 
@@ -135,13 +182,13 @@ export class PdfJsViewerComponent {
     //if (typeof this.src === "string") {
     //  fileUrl = this.src;
     //}
-    if (this.innerSrc instanceof Blob) {
-      fileUrl = encodeURIComponent(URL.createObjectURL(this.innerSrc));
-    } else if (this.innerSrc instanceof Uint8Array) {
-      let blob = new Blob([this.innerSrc], { type: "application/pdf" });
+    if (this._src instanceof Blob) {
+      fileUrl = encodeURIComponent(URL.createObjectURL(this._src));
+    } else if (this._src instanceof Uint8Array) {
+      let blob = new Blob([this._src], { type: "application/pdf" });
       fileUrl = encodeURIComponent(URL.createObjectURL(blob));
     } else {
-      fileUrl = this.innerSrc;
+      fileUrl = this._src;
     }
 
     let viewerUrl;
@@ -227,9 +274,9 @@ export class PdfJsViewerComponent {
       viewerUrl += `&useOnlyCssZoom=${this.useOnlyCssZoom}`;
     }
     
-    if (this.page || this.zoom || this.nameddest || this.pagemode) viewerUrl += "#"
-    if (this.page) {
-      viewerUrl += `&page=${this.page}`;
+    if (this._page || this.zoom || this.nameddest || this.pagemode) viewerUrl += "#"
+    if (this._page) {
+      viewerUrl += `&page=${this._page}`;
     }
     if (this.zoom) {
       viewerUrl += `&zoom=${this.zoom}`;

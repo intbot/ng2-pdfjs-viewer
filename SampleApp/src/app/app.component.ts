@@ -11,7 +11,8 @@ export class AppComponent {
   @ViewChild('externalPdfViewer') public externalPdfViewer;
   @ViewChild('embeddedPdfViewer') public embeddedPdfViewer;
   @ViewChild('inlinePdfViewer') public inlinePdfViewer;
-
+  @ViewChild('bigPdfViewer') public bigPdfViewer;
+  
   public isPdfLoaded = false;
 
   public openPdf() {
@@ -34,6 +35,9 @@ export class AppComponent {
 
   public testBeforePrint() {
     console.log("testBeforePrint() successfully called");
+    console.log(this.bigPdfViewer.page);
+    this.bigPdfViewer.page = 3;
+    console.log(this.bigPdfViewer.page);
   }
 
   public testAfterPrint() {

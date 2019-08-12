@@ -8,7 +8,7 @@
   </a>
 </p>
 
-This is a super simple angular 8 component for displaying pdfs inline(embedded) OR in a new tab along with a feature rich viewer. It uses mozilla's pdfjs viewer(v2.2.171) behind the scenes and supports angular(2/4/5/6/7). Extremely lightweight, easiest to integrate and use, most reliable, this library has only one dependancy (@angular/core). Thanks a ton to the community, standing tall around 250,000 downloads!!!
+This is a super simple angular 8 component for displaying pdfs inline(embedded) OR in a new tab along with a feature rich viewer. It uses mozilla's pdfjs viewer(v2.2.171) behind the scenes and supports angular(2/4/5/6/7). Extremely lightweight, easiest to integrate and use, most reliable, this library has only one dependancy (@angular/core). Thanks a ton to the community, standing tall over 250,000 downloads!!!
 
 ## What is new?
 1. **Support for events** - You may now register several events such as document load, page change, before print, after print etc.  
@@ -22,10 +22,12 @@ Source code for the demo here : https://github.com/intbot/ng2-pdfjs-viewer/tree/
 ## Features
 Some of below features are unique to this component, which is unavailable in native viewer or other implementations.  
 ✔️ **Open pdf in new window** 🌐 - Opens pdf viewer in new window. Also, you may set all allowable external window options.  
+✔️ **Direct access to document** 🌐 - Exposed PDFViewerApplication and PDFViewerApplicationOptions objects opens a whole world of existing PDFJS and ViewerJS to the user, allowing to change them programmatically; thus producing a unique viewer experience.  
 ✔️ **Embed pdf** 🗎 - Embeds viewer and pdf inside your web page/component.  
 ✔️ **Blob and byte arrays** 🔟 - Have pdf as a byte array? Still works.  
 ✔️ **Events** ⚡ - Catch events such as document loaded, page change, before/after print etc.  
 ✔️ **Print preview** 🖨️ - You can set the pdf to open in a new tab or another browser window and provide an immediate print preview, A use case will be a 'Print' button opening pdf in new window with print dialog.  
+✔️ **Defaults** - There are a ton of built in functionality Mozilla's viewer supports; such as print, download, bookmark, fullscreen, open file, zoom, search, pan, spread, navigate, attachments etc which is also available as-is in this viewer. Not mentioning them individually.  
 ✔️ **Auto download** 💾 - This option allows you to download the pdf file to user device automatically without manually invoking the download.  
 ✔️ **Auto rotate** 🔄 - Rotate the document _clockwise_ or _anti-clockwise_ 90° (+/- 90°) just before displaying. Useful if the document is misaligned.  
 ✔️ **Language** 🌍 - Set the language of your choice to the viewer controls.  
@@ -40,7 +42,7 @@ Some of below features are unique to this component, which is unavailable in nat
 ✔️ **Change file name** - You may set the file name of download to a different one, if user chooses to download.  
 ✔️ **Scroll** 📜 - Changes the scroll to your choice. Even wrapped scrolling is supported.  
 ✔️ **Spread** - Allows you to change spread to odd or even.  
-✔️ **Other** - There are a ton of built in functionality Mozilla's viewer supports, which is also available as-is in this viewer.  
+
 
 ### Open in a new tab/ external window
 <img src="/sampledoc/viewerImage.JPG" alt="angular 8 pdfjs viewer in new window"/>
@@ -107,6 +109,8 @@ _Please note if you decide to put `pdfjs` folder anywhere else other than the `a
 | Attribute | Description | Type | Default Value
 | --- | --- | --- | --- |
 | `[pdfSrc]` | Fully qualified path to pdf file. (For remote pdf urls over http/https, CORS should be enabled) | `string` |  |
+| `PDFViewerApplication` | This public property exposes underlying PDFViewerApplication object. Make sure to access it after document is loaded. Opens up the whole world of underlying PDFJS properties and methods. Use it to customize the viewer and document experience. | `object` |  |
+| `PDFViewerApplicationOptions` | This public property exposes underlying PDFViewerApplicationOptions object. Make sure to access it after document is loaded. Opens up the whole world of underlying PDFJS options. Use it to customize the viewer and document experience. | `object` |  |
 | `[viewerFolder]` | Set path to _pdfjs's_ `web` and `build` folders. | `string` | `assets` folder path |
 | `[externalWindow]` | Open in new tab. Set to `true` to open document in a new tab | `boolean` | `false` |
 | `externalWindowOptions` | External window options. For allowed comma separated values, refer to https://developer.mozilla.org/en-US/docs/Web/API/Window/open | `string` |  |
@@ -115,7 +119,7 @@ _Please note if you decide to put `pdfjs` folder anywhere else other than the `a
 | `(onBeforePrint)` | Event to be invoked before document gets printed. E.g. `(onBeforePrint)="testBeforePrint()"` | `Function` |  |
 | `(onAfterPrint)` | Event to be invoked after document gets printed. E.g. `(onAfterPrint)="testAfterPrint()"` | `Function` |  |
 | `downloadFileName` | Sets/Changes the name of document to be downloaded. If the file name does not ends in `.pdf`, the component will automatically add it for you. | `string` | Actual name of the document |
-| `[page]` | Show specific page. E.g _page=3_ | `number` | `1` |
+| `[page]` | Show specific page. E.g _page=3_. You may also get/set the page number from your component using '.' notation explicitly, after document is loaded. E.g. `myPdfViewer.page = 3;` | `number` | `1` |
 | `[lastPage]` | Show last page of the document once it is loaded(If set to `true`). If you use this option along with _`page`_ option, undesired effects might occur | `boolean` | `false` |
 | `nameddest` | Go to a named destination. E.g. To go to section _5.1_ use like nameddest=5.1. Do not mix this option with _`page`_ and _`lastPage`_ options | `string` |  |
 | `zoom` | Set zoom level of document. Applicable values are `auto`, `page-width`, `page-height`, `page-fit`, `200`_(As a zoom percentage)_, `left offset`_(As in "auto,18,827")_, `top offset`_(As in "auto,18,127")_  | `string` | `auto` |
@@ -140,7 +144,7 @@ _Please note if you decide to put `pdfjs` folder anywhere else other than the `a
 | `errorMessage` | Custom error message | string |  |
 | `[errorAppend]` | Appends custom error message to the end of other pdfjs error messages | `true` |
 | `[errorOverride]` | Overrides all pdfjs error messages and shows only user's custom error message | boolean | `false` |
-
+| `[diagnosticLogs]` | Turns on all diagnostic logs to the console | boolean | `true` |
 
 
 **_Please note, copy step is mandatory to enjoy all of the different options listed above. You may also avoid this step and could directly use https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website if you wish to just use the default viewer_**  

@@ -26,20 +26,95 @@ var PdfJsViewerComponent = /** @class */ (function () {
         this.useOnlyCssZoom = false;
         this.errorOverride = false;
         this.errorAppend = true;
+        this.diagnosticLogs = true;
     }
+    Object.defineProperty(PdfJsViewerComponent.prototype, "page", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            if (this.PDFViewerApplication) {
+                return this.PDFViewerApplication.page;
+            }
+            else {
+                if (this.diagnosticLogs)
+                    console.warn("Document is not loaded yet!!!. Try to retrieve page# after full load.");
+            }
+        },
+        set: /**
+         * @param {?} _page
+         * @return {?}
+         */
+        function (_page) {
+            this._page = _page;
+            if (this.PDFViewerApplication) {
+                this.PDFViewerApplication.page = this._page;
+            }
+            else {
+                if (this.diagnosticLogs)
+                    console.warn("Document is not loaded yet!!!. Try to set page# after full load. Ignore this warning if you are not setting page# using '.' notation. (E.g. pdfViewer.page = 5;)");
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(PdfJsViewerComponent.prototype, "pdfSrc", {
         get: /**
          * @return {?}
          */
         function () {
-            return this.innerSrc;
+            return this._src;
         },
         set: /**
-         * @param {?} innerSrc
+         * @param {?} _src
          * @return {?}
          */
-        function (innerSrc) {
-            this.innerSrc = innerSrc;
+        function (_src) {
+            this._src = _src;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PdfJsViewerComponent.prototype, "PDFViewerApplicationOptions", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            /** @type {?} */
+            var pdfViewerOptions = null;
+            if (this.externalWindow) {
+                if (this.viewerTab) {
+                    pdfViewerOptions = this.viewerTab.PDFViewerApplicationOptions;
+                }
+            }
+            else {
+                if (this.iframe.nativeElement.contentWindow) {
+                    pdfViewerOptions = this.iframe.nativeElement.contentWindow.PDFViewerApplicationOptions;
+                }
+            }
+            return pdfViewerOptions;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PdfJsViewerComponent.prototype, "PDFViewerApplication", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            /** @type {?} */
+            var pdfViewer = null;
+            if (this.externalWindow) {
+                if (this.viewerTab) {
+                    pdfViewer = this.viewerTab.PDFViewerApplication;
+                }
+            }
+            else {
+                if (this.iframe.nativeElement.contentWindow) {
+                    pdfViewer = this.iframe.nativeElement.contentWindow.PDFViewerApplication;
+                }
+            }
+            return pdfViewer;
         },
         enumerable: true,
         configurable: true
@@ -106,7 +181,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
      * @return {?}
      */
     function () {
-        if (!this.innerSrc) {
+        if (!this._src) {
             return;
         }
         // console.log(`Tab is - ${this.viewerTab}`);
@@ -116,7 +191,8 @@ var PdfJsViewerComponent = /** @class */ (function () {
         if (this.externalWindow && (typeof this.viewerTab === 'undefined' || this.viewerTab.closed)) {
             this.viewerTab = window.open('', '_blank', this.externalWindowOptions || '');
             if (this.viewerTab == null) {
-                console.error("ng2-pdfjs-viewer: For 'externalWindow = true'. i.e opening in new tab to work, pop-ups should be enabled.");
+                if (this.diagnosticLogs)
+                    console.error("ng2-pdfjs-viewer: For 'externalWindow = true'. i.e opening in new tab to work, pop-ups should be enabled.");
                 return;
             }
             if (this.showSpinner) {
@@ -128,16 +204,16 @@ var PdfJsViewerComponent = /** @class */ (function () {
         //if (typeof this.src === "string") {
         //  fileUrl = this.src;
         //}
-        if (this.innerSrc instanceof Blob) {
-            fileUrl = encodeURIComponent(URL.createObjectURL(this.innerSrc));
+        if (this._src instanceof Blob) {
+            fileUrl = encodeURIComponent(URL.createObjectURL(this._src));
         }
-        else if (this.innerSrc instanceof Uint8Array) {
+        else if (this._src instanceof Uint8Array) {
             /** @type {?} */
-            var blob = new Blob([this.innerSrc], { type: "application/pdf" });
+            var blob = new Blob([this._src], { type: "application/pdf" });
             fileUrl = encodeURIComponent(URL.createObjectURL(blob));
         }
         else {
-            fileUrl = this.innerSrc;
+            fileUrl = this._src;
         }
         /** @type {?} */
         var viewerUrl;
@@ -220,10 +296,10 @@ var PdfJsViewerComponent = /** @class */ (function () {
         if (this.useOnlyCssZoom) {
             viewerUrl += "&useOnlyCssZoom=" + this.useOnlyCssZoom;
         }
-        if (this.page || this.zoom || this.nameddest || this.pagemode)
+        if (this._page || this.zoom || this.nameddest || this.pagemode)
             viewerUrl += "#";
-        if (this.page) {
-            viewerUrl += "&page=" + this.page;
+        if (this._page) {
+            viewerUrl += "&page=" + this._page;
         }
         if (this.zoom) {
             viewerUrl += "&zoom=" + this.zoom;
@@ -303,7 +379,6 @@ var PdfJsViewerComponent = /** @class */ (function () {
         startPrint: [{ type: core.Input }],
         fullScreen: [{ type: core.Input }],
         find: [{ type: core.Input }],
-        page: [{ type: core.Input }],
         zoom: [{ type: core.Input }],
         nameddest: [{ type: core.Input }],
         pagemode: [{ type: core.Input }],
@@ -318,7 +393,9 @@ var PdfJsViewerComponent = /** @class */ (function () {
         errorOverride: [{ type: core.Input }],
         errorAppend: [{ type: core.Input }],
         errorMessage: [{ type: core.Input }],
+        diagnosticLogs: [{ type: core.Input }],
         externalWindowOptions: [{ type: core.Input }],
+        page: [{ type: core.Input }],
         pdfSrc: [{ type: core.Input }]
     };
     return PdfJsViewerComponent;

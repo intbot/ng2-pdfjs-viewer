@@ -30,7 +30,7 @@ button:focus {
   </li>
 </ul> -->
 <div style="height: 800px">
-  <ng2-pdfjs-viewer pdfSrc="gre_research_validity_data.pdf" downloadFileName="mySample" zoom="200" viewerId="MyID" (onDocumentLoad)="testPagesLoaded($event)" (onPageChange)="testPageChange($event)" (onBeforePrint)="testBeforePrint()" (onAfterPrint)="testAfterPrint()">
+  <ng2-pdfjs-viewer #bigPdfViewer pdfSrc="gre_research_validity_data.pdf" downloadFileName="mySample" zoom="200" viewerId="MyID" (onDocumentLoad)="testPagesLoaded($event)" (onPageChange)="testPageChange($event)" (onBeforePrint)="testBeforePrint()" (onAfterPrint)="testAfterPrint()">
   </ng2-pdfjs-viewer>
 </div>
 <div [hidden]="!isPdfLoaded" style="height: 600px">
@@ -44,7 +44,7 @@ button:focus {
 
 <ng2-pdfjs-viewer #externalPdfViewer [externalWindow]="true" [startPrint]=true openFile="false" [useOnlyCssZoom]=true></ng2-pdfjs-viewer>
 <div style="position:fixed; left:845px; width: 1000px; height: 900px">
-  <ng2-pdfjs-viewer #embeddedPdfViewer pdfSrc="gre_research_validity_data.pdf" [page]=2 locale="de-AT" cursor="HAND" downloadFileName="research.pdf" scroll="W" spred="E" [print]="false" [errorOverride]="true" errorMessage="My error Message"></ng2-pdfjs-viewer>
+  <ng2-pdfjs-viewer viewerId="MyID2" #embeddedPdfViewer pdfSrc="gre_research_validity_data.pdf" [(page)]=page locale="de-AT" cursor="HAND" downloadFileName="research.pdf" scroll="W" spred="E" [print]="false" [errorOverride]="true" errorMessage="My error Message"></ng2-pdfjs-viewer>
 </div>
 <div style="position:absolute; width: 825px; height: 900px">
   <ng2-pdfjs-viewer pdfSrc="pdf-sample.pdf" downloadFileName="mySample" zoom="200" locale="de-AT">
