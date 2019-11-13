@@ -15,9 +15,8 @@ This is a super simple angular 8 component for displaying pdfs inline(embedded) 
 2. **Dynamic page number** - Getter/Setter added for page number. Change page number after document loaded, or access current page in parent component.
 3. **Support for events** - You may now register several events such as document load, page change, before print, after print etc.  
 
-
-## Demo and Samples
-**Full fledged Demo app showing unique use cases**: https://ng2-pdfjs-viewer.azurewebsites.net  
+## Tutorials, Demos & Examples
+**Hosted Demo app showing unique use cases**: https://ng2-pdfjs-viewer.azurewebsites.net  
 **Minimalistic angular sample app**: https://github.com/intbot/ng2-pdfjs-viewer/tree/master/SampleApp  
 Source code for the demo here : https://github.com/intbot/ng2-pdfjs-viewer/tree/master/Demo  
 
@@ -295,8 +294,10 @@ public IActionResult GetMyPdf()
 }
 ```
 
-## Questions?
-There are several how to questions being posted in issues section of this repository. Questions would be better answered if posted on  www.stackoverflow.com with tag **_ng2-pdfjs-viewer_** (Please create **_ng2-pdfjs-viewer_** tag if not already present on SO)
+## Stack Overflow Support
+Have a question? Ask questions and find answers on Stack overflow.
+
+[Stack Overflow](https://stackoverflow.com/questions/tagged/ng2-pdfjs-viewer)
 
 ## Looking for old AngularJS? - The below library is quite useful
 AngularJS [angular-pdfjs-viewer](https://github.com/legalthings/angular-pdfjs-viewer)

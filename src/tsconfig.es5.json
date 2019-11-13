@@ -27,7 +27,8 @@
     "strictMetadataEmit": true,
     "skipTemplateCodegen": true,
     "flatModuleOutFile": "ng2-pdfjs-viewer.js",
-    "flatModuleId": "ng2-pdfjs-viewer"
+    "flatModuleId": "ng2-pdfjs-viewer",
+    "enableIvy": false
   },
   "files": [
     "./index.ts"
