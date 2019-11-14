@@ -1,53 +1,19 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<style>
-  button {
-  display: inline-block;
-  padding: 15px 45px;
-  font-size: 48px;
-  font-family: "Bitter",serif;
-  line-height: 1.8;
-  appearance: none;
-  box-shadow: none;
-  border-radius: 0;
-}
-button:focus {
-  outline: none
-}
-</style>
-<div style="text-align:center">
-  <!-- <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="> -->
-</div>
-<!-- <h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul> -->
-<div style="height: 800px">
-  <ng2-pdfjs-viewer #bigPdfViewer pdfSrc="gre_research_validity_data.pdf" downloadFileName="mySample" zoom="200" viewerId="MyID" (onDocumentLoad)="testPagesLoaded($event)" (onPageChange)="testPageChange($event)" (onBeforePrint)="testBeforePrint()" (onAfterPrint)="testAfterPrint()">
-  </ng2-pdfjs-viewer>
-</div>
-<div [hidden]="!isPdfLoaded" style="height: 600px">
-  <ng2-pdfjs-viewer #inlinePdfViewer [print]="false" [fullScreen]="false" [find]="false" [rotatecw]=true></ng2-pdfjs-viewer>
-</div>
-<button (click)="loadAndDisplayPdf()" style="background-color:cadetblue;">Load/Hide Inline PDF</button>
-<button (click)="openPdf()" style="background-color: orange" >Open PDF in new tab</button>
-<button (click)="changePdf()" style="float: right; background-color: green">Click to change PDF url</button>
+<mat-toolbar color="primary">
+  <button mat-button routerLink="/" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="mat-accent">
+    ng2-pdfjs-viewer
+  </button>
+  <div class="spacer"></div>
+  <button mat-raised-button routerLink="/" color="primary" [routerLinkActiveOptions]="{exact: true}"
+          routerLinkActive="mat-accent">
+    Big viewer
+  </button>
+  <button mat-raised-button routerLink="inline" color="primary" routerLinkActive="mat-accent">Inline PDF</button>
+  <button mat-raised-button (click)="openPdf()" color="primary" routerLinkActive="mat-accent">Open in new tab</button>
+  <button mat-raised-button routerLink="dynamic" color="primary" routerLinkActive="mat-accent">Dynamic PDF</button>
+</mat-toolbar>
 
-<br />
+<ng2-pdfjs-viewer #externalPdfViewer [externalWindow]="true" openFile="false" [useOnlyCssZoom]=true></ng2-pdfjs-viewer>
+<div class="container mat-typography">
+  <router-outlet></router-outlet>
+</div>
 
-<ng2-pdfjs-viewer #externalPdfViewer [externalWindow]="true" [startPrint]=true openFile="false" [useOnlyCssZoom]=true></ng2-pdfjs-viewer>
-<div style="position:fixed; left:845px; width: 1000px; height: 900px">
-  <ng2-pdfjs-viewer viewerId="MyID2" #embeddedPdfViewer pdfSrc="gre_research_validity_data.pdf" [(page)]=page locale="de-AT" cursor="HAND" downloadFileName="research.pdf" scroll="W" spred="E" [print]="false" [errorOverride]="true" errorMessage="My error Message"></ng2-pdfjs-viewer>
-</div>
-<div style="position:absolute; width: 825px; height: 900px">
-  <ng2-pdfjs-viewer pdfSrc="pdf-sample.pdf" downloadFileName="mySample" zoom="200" locale="de-AT">
-  </ng2-pdfjs-viewer>
-</div>
-<router-outlet></router-outlet>
