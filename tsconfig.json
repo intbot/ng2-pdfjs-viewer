@@ -9,6 +9,7 @@
       "dom"
     ],
     "skipLibCheck": true,
+    "target": "es5",
     "types": [
       "node"
     ]

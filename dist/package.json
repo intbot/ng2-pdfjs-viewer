@@ -22,8 +22,7 @@
     "url": "https://github.com/intbot/ng2-pdfjs-viewer/issues"
   },
   "main": "ng2-pdfjs-viewer.umd.js",
-  "module": "ng2-pdfjs-viewer.js",
-  "jsnext:main": "ng2-pdfjs-viewer.js",
+  "module": "index.js",
   "typings": "ng2-pdfjs-viewer.d.ts",
   "peerDependencies": {
     "@angular/core": "^8.0.0"

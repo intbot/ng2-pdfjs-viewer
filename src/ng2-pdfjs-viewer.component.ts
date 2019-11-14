@@ -5,7 +5,7 @@ import { Component, Input, Output, ViewChild, EventEmitter, ElementRef } from '@
   template: `<iframe [hidden]="externalWindow || (!externalWindow && !pdfSrc)" #iframe width="100%" height="100%"></iframe>`
 })
 export class PdfJsViewerComponent {
-  @ViewChild('iframe') iframe: ElementRef;
+  @ViewChild('iframe', {static: true}) iframe: ElementRef;
   @Input() public viewerId: string;
   @Output() onBeforePrint: EventEmitter<any> = new EventEmitter();
   @Output() onAfterPrint: EventEmitter<any> = new EventEmitter();
