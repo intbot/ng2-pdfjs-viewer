@@ -358,7 +358,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
                 },] },
     ];
     PdfJsViewerComponent.propDecorators = {
-        iframe: [{ type: ViewChild, args: ['iframe',] }],
+        iframe: [{ type: ViewChild, args: ['iframe', { static: true },] }],
         viewerId: [{ type: Input }],
         onBeforePrint: [{ type: Output }],
         onAfterPrint: [{ type: Output }],
