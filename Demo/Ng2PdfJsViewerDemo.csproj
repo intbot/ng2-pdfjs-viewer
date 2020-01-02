@@ -6,10 +6,12 @@
     <IsPackable>false</IsPackable>
     <LangVersion>latest</LangVersion>
     <UserSecretsId>de7d8d68-4845-4cf5-825b-a4d4279b6c34</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
   <ItemGroup>
     <!-- New Meta Package has SpaServices in It -->
     <PackageReference Include="Microsoft.AspNetCore.All" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.4.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
     <PackageReference Include="NETStandard.Library" Version="2.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" /> 
@@ -19,6 +21,8 @@
 
   <ItemGroup>
     <!-- Files not to show in IDE -->
+    <None Remove=".dockerignore" />
+    <None Remove="Dockerfile" />
     <None Remove="yarn.lock" />
     <Content Remove="wwwroot\dist\**" />
     <None Remove="ClientApp\dist\**" />
@@ -26,6 +30,11 @@
 
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
     <Content Remove="ClientApp\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include=".dockerignore" />
+    <Compile Include="Dockerfile" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches:
+    - master
+    - release/*
+
+jobs:
+  build_icolors:
+    runs-on: ubuntu-16.04
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build and deploy the Docker image
+      env: 
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        APP_NAME: ${{ 'ng2-pdfjs-viewer' }}
+      run: |
+        cd ./ASPNetCoreLabs/HerokuContainer
+        docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+        heroku container:push web -a ng2-pdfjs-viewer
+        heroku container:release web -a ng2-pdfjs-viewer
