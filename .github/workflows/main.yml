@@ -17,6 +17,6 @@ jobs:
         APP_NAME: ${{ 'ng2-pdfjs-viewer' }}
       run: |
         cd ./Demo
-        docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+        docker login --username=_ --password-stdin < $HEROKU_API_KEY registry.heroku.com
         heroku container:push web -a ng2-pdfjs-viewer
         heroku container:release web -a ng2-pdfjs-viewer
