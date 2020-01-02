@@ -21,8 +21,6 @@
 
   <ItemGroup>
     <!-- Files not to show in IDE -->
-    <None Remove=".dockerignore" />
-    <None Remove="Dockerfile" />
     <None Remove="yarn.lock" />
     <Content Remove="wwwroot\dist\**" />
     <None Remove="ClientApp\dist\**" />
@@ -30,11 +28,6 @@
 
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
     <Content Remove="ClientApp\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include=".dockerignore" />
-    <Compile Include="Dockerfile" />
   </ItemGroup>
 
   <ItemGroup>
