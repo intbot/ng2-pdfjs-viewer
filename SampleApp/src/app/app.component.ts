@@ -10,6 +10,7 @@ export class AppComponent {
   page: number;
 
   @ViewChild('externalPdfViewer', { static: true }) public externalPdfViewer;
+  @ViewChild('embeddedPdfViewer', { static: true }) public embeddedPdfViewer;
 
   public openPdf() {
     console.log('opening pdf in new tab!');
