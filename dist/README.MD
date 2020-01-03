@@ -50,10 +50,10 @@ Some of below features are unique to this component, which is unavailable in nat
 
 
 ### Open in a new tab/ external window
-<img src="/sampledoc/viewerImage.JPG" alt="angular 8 pdfjs viewer in new window"/>
+<img src="/sampledoc/ng2pdfjsviewerExternal.JPG" alt="angular 8 pdfjs viewer in new window"/>
 
 ### Embed pdf into any angular component/page
-<img src="/sampledoc/viewerImageEmbedded2.jpg" alt="angular 8 pdfjs viewer embedded"/>
+<img src="/sampledoc/ng2pdfjsviewerEmbedded.jpg" alt="angular 8 pdfjs viewer embedded"/>
 
 ## Installation
 

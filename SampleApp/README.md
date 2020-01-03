@@ -1,4 +1,4 @@
-# Ng6SampleApp
+# SampleApp
 
 This is a sample app showcasing usage of ng2-pdfjs-viewer. This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.1. 
 
