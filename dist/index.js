@@ -354,7 +354,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
     PdfJsViewerComponent.decorators = [
         { type: Component, args: [{
                     selector: 'ng2-pdfjs-viewer',
-                    template: "<iframe [hidden]=\"externalWindow || (!externalWindow && !pdfSrc)\" #iframe width=\"100%\" height=\"100%\"></iframe>"
+                    template: "<iframe title=\"ng2-pdfjs-viewer\" [hidden]=\"externalWindow || (!externalWindow && !pdfSrc)\" #iframe width=\"100%\" height=\"100%\"></iframe>"
                 },] },
     ];
     PdfJsViewerComponent.propDecorators = {
