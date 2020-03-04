@@ -17,7 +17,7 @@ This is a super simple angular 8 component for displaying pdfs inline(embedded) 
 ## What is new?
 1. **Direct access to underlying viewer** - Exposed PDFViewerApplication and PDFViewerApplicationOptions objects opens a whole world of customizable PDFJS and ViewerJS properties and methods, allowing to change them programmatically; thus producing a unique viewer experience.  
 2. **Dynamic page number** - Getter/Setter added for page number. Change page number after document loaded, or access current page in parent component.
-3. **Support for events** - You may now register several events such as document load, page change, before print, after print etc.  
+3. **Support for events** - You may now register several events such as document load, page change, before print, after print etc. Please make sure to provide `viewerId` for events to work properly.  
 
 ## Tutorials, Demos & Examples
 **Hosted Demo app showing unique use cases**: https://ng2-pdfjs-viewer.azurewebsites.net  
@@ -30,7 +30,7 @@ Some of below features are unique to this component, which is unavailable in nat
 ✔️ **Direct access to underlying viewer** 👨‍💻👩‍💻- Exposed PDFViewerApplication and PDFViewerApplicationOptions objects opens a whole world of customizable PDFJS and ViewerJS properties and methods, allowing to change them programmatically; thus producing a unique viewer experience.  
 ✔️ **Embed pdf** 🗎 - Embeds viewer and pdf inside your web page/component.  
 ✔️ **Blob and byte arrays** 🔟 - Have pdf as a byte array? Still works.  
-✔️ **Events** ⚡ - Catch events such as document loaded, page change, before/after print etc.  
+✔️ **Events** ⚡ - Catch events such as document loaded, page change, before/after print etc.Please make sure to provide `viewerId` for events to work properly.  
 ✔️ **Print preview** 🖨️ - You can set the pdf to open in a new tab or another browser window and provide an immediate print preview, A use case will be a 'Print' button opening pdf in new window with print dialog.  
 ✔️ **Defaults** - There are a ton of built in functionality Mozilla's viewer supports; such as print, download, bookmark, fullscreen, open file, zoom, search, pan, spread, navigate, attachments etc which is also available as-is in this viewer. Not mentioning them individually.  
 ✔️ **Auto download** 💾 - This option allows you to download the pdf file to user device automatically without manually invoking the download.  
@@ -119,10 +119,10 @@ _Please note if you decide to put `pdfjs` folder anywhere else other than the `a
 | `[viewerFolder]` | Set path to _pdfjs's_ `web` and `build` folders. | `string` | `assets` folder path |
 | `[externalWindow]` | Open in new tab. Set to `true` to open document in a new tab | `boolean` | `false` |
 | `externalWindowOptions` | External window options. For allowed comma separated values, refer to https://developer.mozilla.org/en-US/docs/Web/API/Window/open | `string` |  |
-| `(onDocumentLoad)` | Event to be invoked once document is fully loaded. Also returns number of pages in the `$event` parameter. E.g. `(onDocumentLoad)="testPagesLoaded($event)""` | `Function` |  |
-| `(onPageChange)` | Event to be invoked when user scrolls through pages. Also returns current page number user is at in the `$event` parameter. E.g. `(onPageChange)="testPageChange($event)""` | `Function` |  |
-| `(onBeforePrint)` | Event to be invoked before document gets printed. E.g. `(onBeforePrint)="testBeforePrint()"` | `Function` |  |
-| `(onAfterPrint)` | Event to be invoked after document gets printed. E.g. `(onAfterPrint)="testAfterPrint()"` | `Function` |  |
+| `(onDocumentLoad)` | Event to be invoked once document is fully loaded(Must provide `viewerId`). Also returns number of pages in the `$event` parameter. E.g. `(onDocumentLoad)="testPagesLoaded($event)""` | `Function` |  |
+| `(onPageChange)` | Event to be invoked when user scrolls through pages(Must provide `viewerId`). Also returns current page number user is at in the `$event` parameter. E.g. `(onPageChange)="testPageChange($event)""` | `Function` |  |
+| `(onBeforePrint)` | Event to be invoked before document gets printed(Must provide `viewerId`). E.g. `(onBeforePrint)="testBeforePrint()"` | `Function` |  |
+| `(onAfterPrint)` | Event to be invoked after document gets printed(Must provide `viewerId`). E.g. `(onAfterPrint)="testAfterPrint()"` | `Function` |  |
 | `downloadFileName` | Sets/Changes the name of document to be downloaded. If the file name does not ends in `.pdf`, the component will automatically add it for you. | `string` | Actual name of the document |
 | `[page]` | Show specific page. E.g _page=3_. You may also get/set the page number from your component using '.' notation explicitly, after document is loaded. E.g. `myPdfViewer.page = 3;` | `number` | `1` |
 | `[lastPage]` | Show last page of the document once it is loaded(If set to `true`). If you use this option along with _`page`_ option, undesired effects might occur | `boolean` | `false` |
