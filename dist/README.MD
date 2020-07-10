@@ -1,4 +1,4 @@
-# Angular 8 PDFJS viewer with Mozilla's ViewerJS (Supports Angular 2/4/5/6/7/8)
+# Angular PDFJS viewer with Mozilla's ViewerJS. Supports Angular 2+ (Angular versions ^2.0.0 to ^10.0.0)
 <p align="center">
   <a href="https://www.npmjs.com/package/ng2-pdfjs-viewer">
     <img src="https://img.shields.io/npm/dm/ng2-pdfjs-viewer.svg?style=flat" alt="downloads">
@@ -12,7 +12,7 @@
 
 ***Pull requests and contributions are much appreciated.***
 
-This is a super simple angular 8 component for displaying pdfs inline(embedded) OR in a new tab along with a feature rich viewer. It uses mozilla's pdfjs viewer(v2.2.171) behind the scenes and supports angular(2/4/5/6/7/8). Extremely lightweight, easiest to integrate and use, most reliable, this library has only one dependancy (@angular/core).
+This is a super simple angular 8 component for displaying pdfs inline(embedded) OR in a new tab along with a feature rich viewer. It uses mozilla's pdfjs viewer(v2.2.171) behind the scenes and supports angular version ^2.0.0 to ^10.0.0. Extremely lightweight, easiest to integrate and use, most reliable, this library has only one dependancy (@angular/core).
 
 ## What is new?
 1. **Direct access to underlying viewer** - Exposed PDFViewerApplication and PDFViewerApplicationOptions objects opens a whole world of customizable PDFJS and ViewerJS properties and methods, allowing to change them programmatically; thus producing a unique viewer experience.  

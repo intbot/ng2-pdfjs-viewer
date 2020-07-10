@@ -16,7 +16,7 @@ export * from './ng2-pdfjs-viewer.component';
   ]
 })
 export class PdfJsViewerModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<PdfJsViewerModule> {
     return {
       ngModule: PdfJsViewerModule
     };
