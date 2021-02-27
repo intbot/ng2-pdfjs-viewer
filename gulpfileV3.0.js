@@ -6,7 +6,7 @@ var gulp = require('gulp'),
   rollup = require('gulp-rollup'),
   rename = require('gulp-rename'),
   fs = require('fs-extra'),
-  runSequence = require('gulp4-run-sequence'),
+  runSequence = require('run-sequence'),
   inlineResources = require('./tools/gulp/inline-resources');
 
 const minify = require('gulp-minify');
@@ -21,7 +21,7 @@ const distFolder = path.join(rootFolder, 'dist');
 /**
  * 1. Delete /dist folder
  */
-gulp.task('clean:dist', async function () {
+gulp.task('clean:dist', function () {
 
   // Delete contents but not dist folder to avoid broken npm links
   // when dist directory is removed while npm link references it.
@@ -164,7 +164,7 @@ gulp.task('copy:pdfjs', function () {
   return gulp.src([`${pdfJsFolder}/**/*`], {base: '.'})
     .pipe(gulp.dest(distFolder));
 });
-gulp.task('copy:compress', async function() {
+gulp.task('copy:compress', function() {
   gulp.src([`${pdfJsFolder}/build/*.js`])
     .pipe(minify({ noSource: true,  ext: { src:'.js', min: '.min.js' } }))
     .pipe(gulp.dest(`${distFolder}/pdfjs/build`))
@@ -192,19 +192,20 @@ gulp.task('copy:readme', function () {
 /**
  * 10. Delete /.tmp folder
  */
-gulp.task('clean:tmp', async function () {
+gulp.task('clean:tmp', function () {
   return deleteFolder(tmpFolder);
 });
 
 /**
  * 11. Delete /build folder
  */
-gulp.task('clean:build', async function () {
+gulp.task('clean:build', function () {
   return deleteFolder(buildFolder);
 });
 
 gulp.task('compile', async function () {
-  runSequence(
+  //runSequence(
+  gulp.series(
     'clean:dist',
     'copy:source',
     'inline-resources',
@@ -238,15 +239,21 @@ gulp.task('watch', function () {
 });
 
 gulp.task('clean', async function (callback) {
-  runSequence('clean:dist', 'clean:tmp', 'clean:build', callback);
+  console.log("Clean-------------->");
+  //runSequence('clean:dist', 'clean:tmp', 'clean:build', callback);
+  gulp.series('clean:dist', 'clean:tmp', 'clean:build', callback);
 });
 
 gulp.task('build', async function (callback) {
-  runSequence('clean', 'compile', callback);
+  console.log("BUILD-------------->");
+  // runSequence('clean', 'compile', callback);
+  gulp.series('clean', 'compile', callback);
 });
 
 gulp.task('build:watch', async function (callback) {
-  runSequence('build', 'watch', callback);
+  console.log("BUILD:WATCH-------------->");
+  //runSequence('build', 'watch', callback);
+  gulp.series('build', 'watch', callback);
 });
 
 //gulp.task('default', ['build:watch']);

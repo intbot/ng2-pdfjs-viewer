@@ -1,4 +1,4 @@
-# Angular PDFJS viewer with Mozilla's ViewerJS. Supports Angular 2+ (Angular versions ^2.0.0 to ^10.0.0)
+# Angular PDFJS viewer with Mozilla's ViewerJS. Supports Angular 2+
 <p align="center">
   <a href="https://www.npmjs.com/package/ng2-pdfjs-viewer">
     <img src="https://img.shields.io/npm/dm/ng2-pdfjs-viewer.svg?style=flat" alt="downloads">
@@ -8,11 +8,11 @@
   </a>
 </p>
 
-***🎉 Thanks a ton to the community - Now standing tall over 400,000 downloads!!!***
+***🎉 Thanks a ton to the community - Now closing in on a million downloads!!!***
 
-***Pull requests and contributions are much appreciated.***
+***This project is currently maintained by a single developer on his spare time. Inviting contributors and pull requests to pick-up momentum, and handle the expansive userbase and requests.***
 
-This is a super simple angular 8 component for displaying pdfs inline(embedded) OR in a new tab along with a feature rich viewer. It uses mozilla's pdfjs viewer(v2.2.171) behind the scenes and supports angular version ^2.0.0 to ^10.0.0. Extremely lightweight, easiest to integrate and use, most reliable, this library has only one dependancy (@angular/core).
+This is a super simple angular component for displaying pdfs inline(embedded) OR in a new tab along with a feature rich viewer. It uses mozilla's pdfjs viewer(v2.2.171) behind the scenes and supports angular version above 2.0. Extremely lightweight, easiest to integrate and use, most reliable, this library has only one dependancy (@angular/core).
 
 ## What is new?
 1. **Direct access to underlying viewer** - Exposed PDFViewerApplication and PDFViewerApplicationOptions objects opens a whole world of customizable PDFJS and ViewerJS properties and methods, allowing to change them programmatically; thus producing a unique viewer experience.  
@@ -50,10 +50,10 @@ Some of below features are unique to this component, which is unavailable in nat
 
 
 ### Open in a new tab/ external window
-<img src="/sampledoc/ng2pdfjsviewerExternal.JPG" alt="angular 8 pdfjs viewer in new window"/>
+<img src="/sampledoc/ng2pdfjsviewerExternal.JPG" alt="angular pdfjs viewer in new window"/>
 
 ### Embed pdf into any angular component/page
-<img src="/sampledoc/ng2pdfjsviewerEmbedded.JPG" alt="angular 8 pdfjs viewer embedded"/>
+<img src="/sampledoc/ng2pdfjsviewerEmbedded.JPG" alt="angular pdfjs viewer embedded"/>
 
 ## Installation
 

@@ -37,10 +37,12 @@ export declare class PdfJsViewerComponent {
     viewerTab: any;
     private _src;
     private _page;
-    page: number;
-    pdfSrc: string | Blob | Uint8Array;
-    readonly PDFViewerApplicationOptions: any;
-    readonly PDFViewerApplication: any;
+    set page(_page: number);
+    get page(): number;
+    set pdfSrc(_src: string | Blob | Uint8Array);
+    get pdfSrc(): string | Blob | Uint8Array;
+    get PDFViewerApplicationOptions(): any;
+    get PDFViewerApplication(): any;
     receiveMessage(viewerEvent: any): void;
     ngOnInit(): void;
     refresh(): void;

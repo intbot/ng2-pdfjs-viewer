@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, NgModule, Output, ViewChild } from '@angular/core';
+import { Component, ViewChild, Input, Output, EventEmitter, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: ng2-pdfjs-viewer.component.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var PdfJsViewerComponent = /** @class */ (function () {
     function PdfJsViewerComponent() {
@@ -52,7 +53,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
                     console.warn("Document is not loaded yet!!!. Try to set page# after full load. Ignore this warning if you are not setting page# using '.' notation. (E.g. pdfViewer.page = 5;)");
             }
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(PdfJsViewerComponent.prototype, "pdfSrc", {
@@ -69,7 +70,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
         function (_src) {
             this._src = _src;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(PdfJsViewerComponent.prototype, "PDFViewerApplicationOptions", {
@@ -91,7 +92,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
             }
             return pdfViewerOptions;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(PdfJsViewerComponent.prototype, "PDFViewerApplication", {
@@ -113,7 +114,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
             }
             return pdfViewer;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -355,7 +356,7 @@ var PdfJsViewerComponent = /** @class */ (function () {
         { type: Component, args: [{
                     selector: 'ng2-pdfjs-viewer',
                     template: "<iframe title=\"ng2-pdfjs-viewer\" [hidden]=\"externalWindow || (!externalWindow && !pdfSrc)\" #iframe width=\"100%\" height=\"100%\"></iframe>"
-                },] },
+                },] }
     ];
     PdfJsViewerComponent.propDecorators = {
         iframe: [{ type: ViewChild, args: ['iframe', { static: true },] }],
@@ -400,7 +401,8 @@ var PdfJsViewerComponent = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: index.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var PdfJsViewerModule = /** @class */ (function () {
     function PdfJsViewerModule() {
@@ -427,7 +429,7 @@ var PdfJsViewerModule = /** @class */ (function () {
                     exports: [
                         PdfJsViewerComponent
                     ]
-                },] },
+                },] }
     ];
     return PdfJsViewerModule;
 }());
