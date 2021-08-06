@@ -32714,7 +32714,7 @@ var PartialEvaluator = function PartialEvaluatorClosure() {
     },
     getBaseFontMetrics: function PartialEvaluator_getBaseFontMetrics(name) {
       var defaultWidth = 0;
-      var widths = [];
+      var widths = Object.create(null); // Temporary fix: See https://github.com/intbot/ng2-pdfjs-viewer/issues/157 and https://github.com/mozilla/pdf.js/pull/12924/
       var monospace = false;
       var stdFontMap = (0, _standard_fonts.getStdFontMap)();
       var lookupName = stdFontMap[name] || name;
