@@ -55,7 +55,7 @@
     "jquery": "^3.5.1",
     "json-loader": "^0.5.7",
     "moment": "^2.29.1",
-    "ng2-pdfjs-viewer": "^5.0.7",
+    "ng2-pdfjs-viewer": "^6.0.2",
     "ngx-bootstrap": "^6.2.0",
     "ngx-highlightjs": "^4.1.3",
     "node-sass": "^5.0.0",

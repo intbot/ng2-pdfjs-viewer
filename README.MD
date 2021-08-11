@@ -8,7 +8,7 @@
   </a>
 </p>
 
-***🎉 Thanks a ton to the community - Now closing in on a million downloads!!!***
+***🎉 Thanks a ton to the community - We are talking Downloads in millions now!!!***
 
 ***This project is currently maintained by a single developer on his spare time. Inviting contributors and pull requests to pick-up momentum, and handle the expansive userbase and feature requests.***
 

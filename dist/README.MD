@@ -8,9 +8,9 @@
   </a>
 </p>
 
-***🎉 Thanks a ton to the community - Now closing in on a million downloads!!!***
+***🎉 Thanks a ton to the community - We are talking Downloads in millions now!!!***
 
-***This project is currently maintained by a single developer on his spare time. Inviting contributors and pull requests to pick-up momentum, and handle the expansive userbase and requests.***
+***This project is currently maintained by a single developer on his spare time. Inviting contributors and pull requests to pick-up momentum, and handle the expansive userbase and feature requests.***
 
 This is a super simple angular component for displaying pdfs inline(embedded) OR in a new tab along with a feature rich viewer. It uses mozilla's pdfjs viewer(v2.2.171) behind the scenes and supports angular version above 2.0. Extremely lightweight, easiest to integrate and use, most reliable, this library has only one dependancy (@angular/core).
 
