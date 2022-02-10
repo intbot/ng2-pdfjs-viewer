@@ -62,7 +62,7 @@
     "karma-jasmine": "~4.0.1",
     "karma-jasmine-html-reporter": "^1.5.4",
     "lite-server": "^2.6.1",
-    "node-sass": "^5.0.0",
+    "node-sass": "^7.0.0",
     "node-sass-tilde-importer": "^1.0.2",
     "node-watch": "^0.7.1",
     "protractor": "~7.0.0",
