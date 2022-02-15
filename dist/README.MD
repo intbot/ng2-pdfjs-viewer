@@ -1,4 +1,4 @@
-# Angular PDFJS viewer with Mozilla's ViewerJS. Supports Angular 2+
+# Angular PDFJS viewer with Mozilla's ViewerJS.
 <p align="center">
   <a href="https://www.npmjs.com/package/ng2-pdfjs-viewer">
     <img src="https://img.shields.io/npm/dm/ng2-pdfjs-viewer.svg?style=flat" alt="downloads">
@@ -12,7 +12,7 @@
 
 ***This project is currently maintained by a single developer on his spare time. Inviting contributors and pull requests to pick-up momentum, and handle the expansive userbase and feature requests.***
 
-This is a super simple angular component for displaying pdfs inline(embedded) OR in a new tab along with a feature rich viewer. It uses mozilla's pdfjs viewer(v2.2.171) behind the scenes and supports angular version above 2.0. Extremely lightweight, easiest to integrate and use, most reliable, this library has only one dependancy (@angular/core).
+This is a super simple angular component for displaying pdfs inline(embedded) OR in a new tab along with a feature rich viewer. It uses mozilla's pdfjs viewer(v2.2.171) behind the scenes and supports angular version from 2.0. Extremely lightweight, easiest to integrate and use, most reliable, this library has only one dependancy (@angular/core).
 
 ## What is new?
 1. **Direct access to underlying viewer** - Exposed PDFViewerApplication and PDFViewerApplicationOptions objects opens a whole world of customizable PDFJS and ViewerJS properties and methods, allowing to change them programmatically; thus producing a unique viewer experience.  
@@ -306,6 +306,6 @@ Have a question? Ask questions and find answers on Stack overflow.
 ## Looking for old AngularJS? - The below library is quite useful
 AngularJS [angular-pdfjs-viewer](https://github.com/legalthings/angular-pdfjs-viewer)
 
-## License
 
-MIT © [Code Hippie](mailto:codehippie1@gmail.com)
+## License
+**Apache V2 License - https://www.apache.org/licenses/LICENSE-2.0

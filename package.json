@@ -1,18 +1,24 @@
 {
   "name": "ng2-pdfjs-viewer",
-  "version": "1.0.0",
+  "version": "13.2.2",
+  "$schema": "./node_modules/ng-packagr/package.schema.json",
+  "ngPackage": {
+    "assets": [
+      "./pdfjs/**/*.*"
+    ],
+    "lib": {
+      "entryFile": "index.ts"
+    }
+  },
   "scripts": {
-    "build": "gulp build",
-    "build:watch": "gulp",
-    "docs": "npm run docs:build",
-    "docs:build": "compodoc -p tsconfig.json -n ng2-pdfjs-viewer -d docs --hideGenerator",
-    "docs:serve": "npm run docs:build -- -s",
-    "docs:watch": "npm run docs:build -- -s -w",
-    "lint": "tslint --type-check --project tsconfig.json src/**/*.ts",
-    "lite": "lite-server",
-    "playground:build": "tsc -p playground -w",
-    "playground": "concurrently \"npm run build:watch\" \"npm run playground:build\" \"npm run lite\"",
-    "test": "tsc && karma start"
+    "build": "ng-packagr -p package.json"
+  },
+  "devDependencies": {
+    "ng-packagr": "^13.2.1"
+  },
+  "peerDependencies": {
+    "@angular/common": "^13.2.2",
+    "@angular/core": "^13.2.2"
   },
   "repository": {
     "type": "git",
@@ -30,54 +36,8 @@
     "viewerjs",
     "viewer.html"
   ],
-  "license": "MIT",
+  "license": "Apache",
   "bugs": {
     "url": "https://github.com/intbot/ng2-pdfjs-viewer/issues"
-  },
-  "devDependencies": {
-    "@angular/common": "^11.2.3",
-    "@angular/compiler": "^11.2.3",
-    "@angular/compiler-cli": "^11.2.3",
-    "@angular/core": "^11.2.3",
-    "@angular/platform-browser": "^11.2.3",
-    "@angular/platform-browser-dynamic": "^11.2.3",
-    "@compodoc/compodoc": "^1.1.11",
-    "@types/jasmine": "3.6.4",
-    "@types/node": "^14.14.31",
-    "codelyzer": "~6.0.1",
-    "concurrently": "^6.0.0",
-    "core-js": "^3.9.0",
-    "fs-extra": "^9.1.0",
-    "gulp": "4.0.2",
-    "gulp-minify": "^3.1.0",
-    "gulp-rename": "^2.0.0",
-    "gulp-rollup": "^2.17.0",
-    "gulp4-run-sequence": "^1.0.1",
-    "jasmine-core": "~3.6.0",
-    "jasmine-spec-reporter": "~6.0.0",
-    "karma": "~6.1.1",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-cli": "~2.0.0",
-    "karma-coverage-istanbul-reporter": "^3.0.3",
-    "karma-jasmine": "~4.0.1",
-    "karma-jasmine-html-reporter": "^1.5.4",
-    "lite-server": "^2.6.1",
-    "node-sass": "^5.0.0",
-    "node-sass-tilde-importer": "^1.0.2",
-    "node-watch": "^0.7.1",
-    "protractor": "~7.0.0",
-    "rollup": "^2.39.1",
-    "rxjs": "^6.6.6",
-    "systemjs": "^6.8.3",
-    "ts-node": "~9.1.1",
-    "tslint": "~5.20.1",
-    "typescript": "^4.0.5",
-    "zone.js": "^0.11.4"
-  },
-  "engines": {
-    "node": ">=6.0.0"
-  },
-  "dependencies": {
-    "tsickle": "^0.39.1"
   }
 }
