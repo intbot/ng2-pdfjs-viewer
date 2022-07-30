@@ -1261,6 +1261,14 @@ html[dir="rtl"] .secondaryToolbarButton::before {
   right: 4px;
 }
 
+html[dir='ltr'] .toolbarButton#closeFile::before {
+  content: url(images/close-file.png);
+}
+
+html[dir='rtl'] .toolbarButton#closeFile::before {
+  content: url(images/close-file.png);
+}
+
 html[dir='ltr'] .toolbarButton#sidebarToggle::before {
   content: url(images/toolbarButton-sidebarToggle.png);
 }
@@ -2064,6 +2072,13 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
     top: -5px;
   }
 
+  .toolbarButton#closeFile::before {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    top: 4px;
+    left: 7px;
+  }
+
   .secondaryToolbarButton::before {
     -webkit-transform: scale(0.5);
             transform: scale(0.5);
@@ -2400,6 +2415,6 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
 
 @media all and (max-width: 535px) {
   #scaleSelectContainer {
-    display: none;
+    display: none !important;
   }
 }

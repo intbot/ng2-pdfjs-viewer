@@ -1,6 +1,6 @@
 {
-  "name": "ng2-pdfjs-viewer",
-  "version": "13.2.2",
+  "name": "@hoabanmc/ng2-pdfjs-viewer",
+  "version": "1.0.6",
   "$schema": "./node_modules/ng-packagr/package.schema.json",
   "ngPackage": {
     "assets": [

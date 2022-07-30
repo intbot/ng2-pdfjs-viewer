@@ -44,6 +44,9 @@ export class PdfJsViewerComponent {
   public viewerTab: any;
   private _src: string | Blob | Uint8Array;
   private _page: number;
+
+  @Input() public closeFile: boolean;
+  @Output() public closeFileChange = new EventEmitter<any>();
   
   @Input()
   public set page(_page: number) {
@@ -117,6 +120,8 @@ export class PdfJsViewerComponent {
         }
         else if (this.onPageChange && event == "pageChange") {
           this.onPageChange.emit(param);
+        }else if(this.closeFileChange && event == "closeFile"){
+          this.closeFileChange.emit(true);
         }
       }
     }
@@ -214,6 +219,9 @@ export class PdfJsViewerComponent {
     }
     if (typeof this.onPageChange !== 'undefined') {
       viewerUrl += `&pageChange=true`;
+    }
+    if (typeof this.closeFileChange !== 'undefined') {
+      viewerUrl += `&closeFileChange=true`;
     }
 
     if (this.downloadFileName) {

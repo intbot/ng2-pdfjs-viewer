@@ -150,7 +150,8 @@ function getViewerConfiguration() {
       print: document.getElementById('print'),
       presentationModeButton: document.getElementById('presentationMode'),
       download: document.getElementById('download'),
-      viewBookmark: document.getElementById('viewBookmark')
+      viewBookmark: document.getElementById('viewBookmark'),
+      closeFile: document.getElementById('closeFile'),
     },
     secondaryToolbar: {
       toolbar: document.getElementById('secondaryToolbar'),
@@ -406,6 +407,7 @@ var PDFViewerApplication = {
   isViewerEmbedded: window.parent !== window,
   url: '',
   baseUrl: '',
+  closeFile: false,
   externalServices: DefaultExternalServices,
   _boundEvents: {},
   contentDispositionFilename: null,
@@ -1680,6 +1682,7 @@ var PDFViewerApplication = {
     eventBus.on('updatefindmatchescount', webViewerUpdateFindMatchesCount);
     eventBus.on('updatefindcontrolstate', webViewerUpdateFindControlState);
     eventBus.on('fileinputchange', webViewerFileInputChange);
+    eventBus.on('closefile', webViewerCloseFile);
   },
   bindWindowEvents: function bindWindowEvents() {
     var eventBus = this.eventBus,
@@ -1763,6 +1766,7 @@ var PDFViewerApplication = {
     eventBus.off('updatefindmatchescount', webViewerUpdateFindMatchesCount);
     eventBus.off('updatefindcontrolstate', webViewerUpdateFindControlState);
     eventBus.off('fileinputchange', webViewerFileInputChange);
+    eventBus.off('closefile', webViewerCloseFile);
     _boundEvents.beforePrint = null;
     _boundEvents.afterPrint = null;
   },
@@ -2192,6 +2196,12 @@ function webViewerPreviousPage() {
 function webViewerZoomIn() {
   PDFViewerApplication.zoomIn();
 }
+
+function webViewerCloseFile() {
+  PDFViewerApplication.closeFile = true;
+  console.log(1234);
+}
+
 
 function webViewerZoomOut() {
   PDFViewerApplication.zoomOut();
@@ -7815,6 +7825,11 @@ function () {
           window.parent.postMessage({viewerId: viewerId, event: "pagesLoaded", param: evt.pagesCount}, "*");
         }
       }//c1e
+    });
+
+    this.eventBus.on('closefile', function() {
+      console.log(12345456566);
+      window.parent.postMessage({viewerId: viewerId, event: "closeFile"}, "*");
     });
   }
 
@@ -13519,6 +13534,11 @@ function () {
       });
       items.zoomIn.addEventListener('click', function () {
         eventBus.dispatch('zoomin', {
+          source: self
+        });
+      });
+      items.closeFile.addEventListener('click', function () {
+        eventBus.dispatch('closefile', {
           source: self
         });
       });
