@@ -1,11 +1,11 @@
-import { Component, Input, Output, ViewChild, EventEmitter, ElementRef } from '@angular/core';
+import { Component, Input, Output, ViewChild, EventEmitter, ElementRef, HostListener } from '@angular/core';
 
 @Component({
   selector: 'ng2-pdfjs-viewer',
   template: `<iframe title="ng2-pdfjs-viewer" [hidden]="externalWindow || (!externalWindow && !pdfSrc)" #iframe width="100%" height="100%"></iframe>`
 })
 export class PdfJsViewerComponent {
-  @ViewChild('iframe', {static: true}) iframe: ElementRef;
+  @ViewChild('iframe', { static: true }) iframe: ElementRef;
   @Input() public viewerId: string;
   @Output() onBeforePrint: EventEmitter<any> = new EventEmitter();
   @Output() onAfterPrint: EventEmitter<any> = new EventEmitter();
@@ -18,7 +18,7 @@ export class PdfJsViewerComponent {
   @Input() public openFile: boolean = true;
   @Input() public download: boolean = true;
   @Input() public startDownload: boolean;
-  @Input() public viewBookmark: boolean = true;
+  @Input() public viewBookmark: boolean = false;
   @Input() public print: boolean = true;
   @Input() public startPrint: boolean;
   @Input() public fullScreen: boolean = true;
@@ -39,30 +39,30 @@ export class PdfJsViewerComponent {
   @Input() public errorAppend: boolean = true;
   @Input() public errorMessage: string;
   @Input() public diagnosticLogs: boolean = true;
-  
+
   @Input() public externalWindowOptions: string;
   public viewerTab: any;
   private _src: string | Blob | Uint8Array;
   private _page: number;
 
-  @Input() public closeFile: boolean;
-  @Output() public closeFileChange = new EventEmitter<any>();
-  
+  @Input() public closeButton: boolean;
+  @Output() closeFile: EventEmitter<boolean> = new EventEmitter();
+
   @Input()
   public set page(_page: number) {
     this._page = _page;
-    if(this.PDFViewerApplication) {
+    if (this.PDFViewerApplication) {
       this.PDFViewerApplication.page = this._page;
     } else {
-      if(this.diagnosticLogs) console.warn("Document is not loaded yet!!!. Try to set page# after full load. Ignore this warning if you are not setting page# using '.' notation. (E.g. pdfViewer.page = 5;)");
+      if (this.diagnosticLogs) console.warn("Document is not loaded yet!!!. Try to set page# after full load. Ignore this warning if you are not setting page# using '.' notation. (E.g. pdfViewer.page = 5;)");
     }
   }
 
   public get page() {
-    if(this.PDFViewerApplication) {
+    if (this.PDFViewerApplication) {
       return this.PDFViewerApplication.page;
     } else {
-      if(this.diagnosticLogs) console.warn("Document is not loaded yet!!!. Try to retrieve page# after full load.");
+      if (this.diagnosticLogs) console.warn("Document is not loaded yet!!!. Try to retrieve page# after full load.");
     }
   }
 
@@ -103,7 +103,7 @@ export class PdfJsViewerComponent {
     return pdfViewer;
   }
 
-  public receiveMessage(viewerEvent)  {
+  public receiveMessage(viewerEvent) {
     if (viewerEvent.data && viewerEvent.data.viewerId && viewerEvent.data.event) {
       let viewerId = viewerEvent.data.viewerId;
       let event = viewerEvent.data.event;
@@ -120,10 +120,11 @@ export class PdfJsViewerComponent {
         }
         else if (this.onPageChange && event == "pageChange") {
           this.onPageChange.emit(param);
-        }else if(this.closeFileChange && event == "closeFile"){
-          this.closeFileChange.emit(true);
         }
       }
+    }
+    if (viewerEvent.data && viewerEvent.data.event === "closefile") {
+      this.closeFile.emit(true);
     }
   }
 
@@ -151,7 +152,7 @@ export class PdfJsViewerComponent {
     if (this.externalWindow && (typeof this.viewerTab === 'undefined' || this.viewerTab.closed)) {
       this.viewerTab = window.open('', '_blank', this.externalWindowOptions || '');
       if (this.viewerTab == null) {
-        if(this.diagnosticLogs) console.error("ng2-pdfjs-viewer: For 'externalWindow = true'. i.e opening in new tab to work, pop-ups should be enabled.");
+        if (this.diagnosticLogs) console.error("ng2-pdfjs-viewer: For 'externalWindow = true'. i.e opening in new tab to work, pop-ups should be enabled.");
         return;
       }
 
@@ -220,12 +221,12 @@ export class PdfJsViewerComponent {
     if (typeof this.onPageChange !== 'undefined') {
       viewerUrl += `&pageChange=true`;
     }
-    if (typeof this.closeFileChange !== 'undefined') {
-      viewerUrl += `&closeFileChange=true`;
+    if (typeof this.closeButton !== 'undefined') {
+      viewerUrl += `&closeFile=${this.closeButton}`;
     }
 
     if (this.downloadFileName) {
-      if(!this.downloadFileName.endsWith(".pdf")) {
+      if (!this.downloadFileName.endsWith(".pdf")) {
         this.downloadFileName += ".pdf";
       }
       viewerUrl += `&fileName=${this.downloadFileName}`;
@@ -281,7 +282,7 @@ export class PdfJsViewerComponent {
     if (this.useOnlyCssZoom) {
       viewerUrl += `&useOnlyCssZoom=${this.useOnlyCssZoom}`;
     }
-    
+
     if (this._page || this.zoom || this.nameddest || this.pagemode) viewerUrl += "#"
     if (this._page) {
       viewerUrl += `&page=${this._page}`;
