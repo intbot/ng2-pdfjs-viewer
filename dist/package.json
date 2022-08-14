@@ -1,10 +1,10 @@
 {
   "name": "ng2-pdfjs-viewer",
-  "version": "13.2.2",
+  "version": "14.0.0",
   "$schema": "./node_modules/ng-packagr/package.schema.json",
   "peerDependencies": {
-    "@angular/common": "^13.2.2",
-    "@angular/core": "^13.2.2"
+    "@angular/common": "^14.0.0",
+    "@angular/core": "^14.0.0"
   },
   "repository": {
     "type": "git",
@@ -31,13 +31,13 @@
   "esm2020": "esm2020/ng2-pdfjs-viewer.mjs",
   "fesm2020": "fesm2020/ng2-pdfjs-viewer.mjs",
   "fesm2015": "fesm2015/ng2-pdfjs-viewer.mjs",
-  "typings": "ng2-pdfjs-viewer.d.ts",
+  "typings": "index.d.ts",
   "exports": {
     "./package.json": {
       "default": "./package.json"
     },
     ".": {
-      "types": "./ng2-pdfjs-viewer.d.ts",
+      "types": "./index.d.ts",
       "esm2020": "./esm2020/ng2-pdfjs-viewer.mjs",
       "es2020": "./fesm2020/ng2-pdfjs-viewer.mjs",
       "es2015": "./fesm2015/ng2-pdfjs-viewer.mjs",

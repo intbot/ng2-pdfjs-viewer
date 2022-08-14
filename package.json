@@ -1,24 +1,16 @@
 {
   "name": "ng2-pdfjs-viewer",
-  "version": "13.2.2",
+  "version": "14.0.0",
   "$schema": "./node_modules/ng-packagr/package.schema.json",
-  "ngPackage": {
-    "assets": [
-      "./pdfjs/**/*.*"
-    ],
-    "lib": {
-      "entryFile": "index.ts"
-    }
-  },
   "scripts": {
-    "build": "ng-packagr -p package.json"
+    "build": "ng-packagr -p ng-package.json"
   },
   "devDependencies": {
-    "ng-packagr": "^13.2.1"
+    "ng-packagr": "^14.0.0"
   },
   "peerDependencies": {
-    "@angular/common": "^13.2.2",
-    "@angular/core": "^13.2.2"
+    "@angular/common": "^14.0.0",
+    "@angular/core": "^14.0.0"
   },
   "repository": {
     "type": "git",
