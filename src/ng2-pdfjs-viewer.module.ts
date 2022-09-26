@@ -1,10 +1,16 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { PdfJsViewerComponent } from './ng2-pdfjs-viewer.component';
+import { ModuleWithProviders, NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { PdfJsViewerComponent } from "./ng2-pdfjs-viewer.component";
 
 @NgModule({
   imports: [CommonModule],
   declarations: [PdfJsViewerComponent],
-  exports: [PdfJsViewerModule]
+  exports: [PdfJsViewerComponent],
 })
-export class PdfJsViewerModule {}
+export class PdfJsViewerModule {
+  static forRoot(): ModuleWithProviders<PdfJsViewerModule> {
+    return {
+      ngModule: PdfJsViewerModule,
+    };
+  }
+}
