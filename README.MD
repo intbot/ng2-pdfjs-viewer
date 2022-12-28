@@ -298,6 +298,32 @@ public IActionResult GetMyPdf()
 }
 ```
 
+## E-Signature Support
+Original issue -> PDF.JS is not able to load the signature in the pdf if that is done via the any **E-Signature** tool.
+
+Resolution of the issue -> To support this feature need to comment/remove the below code from pdf.worker.js file and file path i.e. lib\pdfjs\build\pdf.worker.js
+
+**Original issue code** 
+
+```javascript
+if (data.fieldType === 'Sig') {
+      data.fieldValue = null;
+
+      _this3.setFlags(_util.AnnotationFlag.HIDDEN);
+}
+```
+
+**Resoultion code** 
+
+```javascript
+if (data.fieldType === 'Sig') {
+      data.fieldValue = null;
+
+      _this3.setFlags(_util.AnnotationFlag.HIDDEN); //remove or comment this line
+}
+```
+
+
 ## Stack Overflow Support
 Have a question? Ask questions and find answers on Stack overflow.
 
