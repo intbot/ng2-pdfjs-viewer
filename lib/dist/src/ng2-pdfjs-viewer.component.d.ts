@@ -9,6 +9,7 @@ export declare class PdfJsViewerComponent {
     onPageChange: EventEmitter<any>;
     viewerFolder: string;
     externalWindow: boolean;
+    target: string;
     showSpinner: boolean;
     downloadFileName: string;
     openFile: boolean;
@@ -49,5 +50,5 @@ export declare class PdfJsViewerComponent {
     refresh(): void;
     private loadPdf;
     static ɵfac: i0.ɵɵFactoryDeclaration<PdfJsViewerComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<PdfJsViewerComponent, "ng2-pdfjs-viewer", never, { "viewerId": "viewerId"; "viewerFolder": "viewerFolder"; "externalWindow": "externalWindow"; "showSpinner": "showSpinner"; "downloadFileName": "downloadFileName"; "openFile": "openFile"; "download": "download"; "startDownload": "startDownload"; "viewBookmark": "viewBookmark"; "print": "print"; "startPrint": "startPrint"; "fullScreen": "fullScreen"; "find": "find"; "zoom": "zoom"; "nameddest": "nameddest"; "pagemode": "pagemode"; "lastPage": "lastPage"; "rotatecw": "rotatecw"; "rotateccw": "rotateccw"; "cursor": "cursor"; "scroll": "scroll"; "spread": "spread"; "locale": "locale"; "useOnlyCssZoom": "useOnlyCssZoom"; "errorOverride": "errorOverride"; "errorAppend": "errorAppend"; "errorMessage": "errorMessage"; "diagnosticLogs": "diagnosticLogs"; "externalWindowOptions": "externalWindowOptions"; "page": "page"; "pdfSrc": "pdfSrc"; }, { "onBeforePrint": "onBeforePrint"; "onAfterPrint": "onAfterPrint"; "onDocumentLoad": "onDocumentLoad"; "onPageChange": "onPageChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<PdfJsViewerComponent, "ng2-pdfjs-viewer", never, { "viewerId": "viewerId"; "viewerFolder": "viewerFolder"; "externalWindow": "externalWindow"; "target": "target"; "showSpinner": "showSpinner"; "downloadFileName": "downloadFileName"; "openFile": "openFile"; "download": "download"; "startDownload": "startDownload"; "viewBookmark": "viewBookmark"; "print": "print"; "startPrint": "startPrint"; "fullScreen": "fullScreen"; "find": "find"; "zoom": "zoom"; "nameddest": "nameddest"; "pagemode": "pagemode"; "lastPage": "lastPage"; "rotatecw": "rotatecw"; "rotateccw": "rotateccw"; "cursor": "cursor"; "scroll": "scroll"; "spread": "spread"; "locale": "locale"; "useOnlyCssZoom": "useOnlyCssZoom"; "errorOverride": "errorOverride"; "errorAppend": "errorAppend"; "errorMessage": "errorMessage"; "diagnosticLogs": "diagnosticLogs"; "externalWindowOptions": "externalWindowOptions"; "page": "page"; "pdfSrc": "pdfSrc"; }, { "onBeforePrint": "onBeforePrint"; "onAfterPrint": "onAfterPrint"; "onDocumentLoad": "onDocumentLoad"; "onPageChange": "onPageChange"; }, never, never, false, never>;
 }

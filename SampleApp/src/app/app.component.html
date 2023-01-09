@@ -12,7 +12,7 @@
   <button mat-raised-button routerLink="dynamic" color="primary" routerLinkActive="mat-accent">Dynamic PDF</button>
 </mat-toolbar>
 
-<ng2-pdfjs-viewer #externalPdfViewer [externalWindow]="true" openFile="false" [useOnlyCssZoom]=true></ng2-pdfjs-viewer>
+<ng2-pdfjs-viewer #externalPdfViewer [externalWindow]="true" openFile="false" [useOnlyCssZoom]=true target="_myWindow"></ng2-pdfjs-viewer>
 <div class="container mat-typography">
   <router-outlet></router-outlet>
 </div>

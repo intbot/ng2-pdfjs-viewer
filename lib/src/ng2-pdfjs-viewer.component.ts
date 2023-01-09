@@ -13,6 +13,7 @@ export class PdfJsViewerComponent {
   @Output() onPageChange: EventEmitter<any> = new EventEmitter();
   @Input() public viewerFolder: string;
   @Input() public externalWindow: boolean = false;
+  @Input() public target: string = '_blank';
   @Input() public showSpinner: boolean = true;
   @Input() public downloadFileName: string;
   @Input() public openFile: boolean = true;
@@ -144,7 +145,7 @@ export class PdfJsViewerComponent {
     // }
 
     if (this.externalWindow && (typeof this.viewerTab === 'undefined' || this.viewerTab.closed)) {
-      this.viewerTab = window.open('', '_blank', this.externalWindowOptions || '');
+      this.viewerTab = window.open('', this.target, this.externalWindowOptions || '');
       if (this.viewerTab == null) {
         if(this.diagnosticLogs) console.error("ng2-pdfjs-viewer: For 'externalWindow = true'. i.e opening in new tab to work, pop-ups should be enabled.");
         return;
