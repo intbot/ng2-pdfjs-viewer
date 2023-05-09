@@ -6,11 +6,11 @@
     "build": "ng-packagr -p ng-package.json"
   },
   "devDependencies": {
-    "ng-packagr": "^15.0.0"
+    "ng-packagr": "^15.2.2"
   },
   "peerDependencies": {
-    "@angular/common": "^15.0.0",
-    "@angular/core": "^15.0.0"
+    "@angular/common": "^15.2.9",
+    "@angular/core": "^15.2.9"
   },
   "repository": {
     "type": "git",
