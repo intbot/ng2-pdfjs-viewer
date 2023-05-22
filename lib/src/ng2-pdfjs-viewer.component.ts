@@ -5,8 +5,9 @@ import { Component, Input, Output, ViewChild, EventEmitter, ElementRef } from '@
   template: `<iframe title="ng2-pdfjs-viewer" [hidden]="externalWindow || (!externalWindow && !pdfSrc)" #iframe width="100%" height="100%"></iframe>`
 })
 export class PdfJsViewerComponent {
-  @ViewChild('iframe', {static: true}) iframe: ElementRef;
-  @Input() public viewerId: string;
+  @ViewChild('iframe', { static: true }) iframe: ElementRef;
+  static lastID = 0;
+  @Input() public viewerId = `ng2-pdfjs-viewer-ID${++lastID}`;
   @Output() onBeforePrint: EventEmitter<any> = new EventEmitter();
   @Output() onAfterPrint: EventEmitter<any> = new EventEmitter();
   @Output() onDocumentLoad: EventEmitter<any> = new EventEmitter();
@@ -40,12 +41,12 @@ export class PdfJsViewerComponent {
   @Input() public errorAppend: boolean = true;
   @Input() public errorMessage: string;
   @Input() public diagnosticLogs: boolean = true;
-  
+
   @Input() public externalWindowOptions: string;
   public viewerTab: any;
   private _src: string | Blob | Uint8Array;
   private _page: number;
-  
+
   @Input()
   public set page(_page: number) {
     this._page = _page;
@@ -274,7 +275,7 @@ export class PdfJsViewerComponent {
     if (this.useOnlyCssZoom) {
       viewerUrl += `&useOnlyCssZoom=${this.useOnlyCssZoom}`;
     }
-    
+
     if (this._page || this.zoom || this.nameddest || this.pagemode) viewerUrl += "#"
     if (this._page) {
       viewerUrl += `&page=${this._page}`;
