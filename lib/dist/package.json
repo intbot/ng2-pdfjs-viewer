@@ -1,10 +1,10 @@
 {
   "name": "ng2-pdfjs-viewer",
-  "version": "15.0.0",
+  "version": "16.0.4",
   "$schema": "./node_modules/ng-packagr/package.schema.json",
   "peerDependencies": {
-    "@angular/common": "^15.0.0",
-    "@angular/core": "^15.0.0"
+    "@angular/common": "^16.0.4",
+    "@angular/core": "^16.0.4"
   },
   "repository": {
     "type": "git",
@@ -26,11 +26,7 @@
   "bugs": {
     "url": "https://github.com/intbot/ng2-pdfjs-viewer/issues"
   },
-  "module": "fesm2015/ng2-pdfjs-viewer.mjs",
-  "es2020": "fesm2020/ng2-pdfjs-viewer.mjs",
-  "esm2020": "esm2020/ng2-pdfjs-viewer.mjs",
-  "fesm2020": "fesm2020/ng2-pdfjs-viewer.mjs",
-  "fesm2015": "fesm2015/ng2-pdfjs-viewer.mjs",
+  "module": "fesm2022/ng2-pdfjs-viewer.mjs",
   "typings": "index.d.ts",
   "exports": {
     "./package.json": {
@@ -38,11 +34,9 @@
     },
     ".": {
       "types": "./index.d.ts",
-      "esm2020": "./esm2020/ng2-pdfjs-viewer.mjs",
-      "es2020": "./fesm2020/ng2-pdfjs-viewer.mjs",
-      "es2015": "./fesm2015/ng2-pdfjs-viewer.mjs",
-      "node": "./fesm2015/ng2-pdfjs-viewer.mjs",
-      "default": "./fesm2020/ng2-pdfjs-viewer.mjs"
+      "esm2022": "./esm2022/ng2-pdfjs-viewer.mjs",
+      "esm": "./esm2022/ng2-pdfjs-viewer.mjs",
+      "default": "./fesm2022/ng2-pdfjs-viewer.mjs"
     }
   },
   "sideEffects": false,
