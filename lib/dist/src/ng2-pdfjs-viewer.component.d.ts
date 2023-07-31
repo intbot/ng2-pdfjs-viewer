@@ -1,7 +1,8 @@
-import { EventEmitter, ElementRef } from '@angular/core';
+import { OnInit, EventEmitter, ElementRef } from '@angular/core';
 import * as i0 from "@angular/core";
-export declare class PdfJsViewerComponent {
+export declare class PdfJsViewerComponent implements OnInit {
     iframe: ElementRef;
+    static lastID: number;
     viewerId: string;
     onBeforePrint: EventEmitter<any>;
     onAfterPrint: EventEmitter<any>;
@@ -48,6 +49,7 @@ export declare class PdfJsViewerComponent {
     receiveMessage(viewerEvent: any): void;
     ngOnInit(): void;
     refresh(): void;
+    private relaseUrl?;
     private loadPdf;
     static ɵfac: i0.ɵɵFactoryDeclaration<PdfJsViewerComponent, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<PdfJsViewerComponent, "ng2-pdfjs-viewer", never, { "viewerId": { "alias": "viewerId"; "required": false; }; "viewerFolder": { "alias": "viewerFolder"; "required": false; }; "externalWindow": { "alias": "externalWindow"; "required": false; }; "target": { "alias": "target"; "required": false; }; "showSpinner": { "alias": "showSpinner"; "required": false; }; "downloadFileName": { "alias": "downloadFileName"; "required": false; }; "openFile": { "alias": "openFile"; "required": false; }; "download": { "alias": "download"; "required": false; }; "startDownload": { "alias": "startDownload"; "required": false; }; "viewBookmark": { "alias": "viewBookmark"; "required": false; }; "print": { "alias": "print"; "required": false; }; "startPrint": { "alias": "startPrint"; "required": false; }; "fullScreen": { "alias": "fullScreen"; "required": false; }; "find": { "alias": "find"; "required": false; }; "zoom": { "alias": "zoom"; "required": false; }; "nameddest": { "alias": "nameddest"; "required": false; }; "pagemode": { "alias": "pagemode"; "required": false; }; "lastPage": { "alias": "lastPage"; "required": false; }; "rotatecw": { "alias": "rotatecw"; "required": false; }; "rotateccw": { "alias": "rotateccw"; "required": false; }; "cursor": { "alias": "cursor"; "required": false; }; "scroll": { "alias": "scroll"; "required": false; }; "spread": { "alias": "spread"; "required": false; }; "locale": { "alias": "locale"; "required": false; }; "useOnlyCssZoom": { "alias": "useOnlyCssZoom"; "required": false; }; "errorOverride": { "alias": "errorOverride"; "required": false; }; "errorAppend": { "alias": "errorAppend"; "required": false; }; "errorMessage": { "alias": "errorMessage"; "required": false; }; "diagnosticLogs": { "alias": "diagnosticLogs"; "required": false; }; "externalWindowOptions": { "alias": "externalWindowOptions"; "required": false; }; "page": { "alias": "page"; "required": false; }; "pdfSrc": { "alias": "pdfSrc"; "required": false; }; }, { "onBeforePrint": "onBeforePrint"; "onAfterPrint": "onAfterPrint"; "onDocumentLoad": "onDocumentLoad"; "onPageChange": "onPageChange"; }, never, never, false, never>;

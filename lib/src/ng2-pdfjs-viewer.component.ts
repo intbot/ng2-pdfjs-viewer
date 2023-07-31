@@ -7,7 +7,7 @@ import { Component, Input, Output, OnInit, ViewChild, EventEmitter, ElementRef }
 export class PdfJsViewerComponent implements OnInit {
   @ViewChild('iframe', { static: true }) iframe: ElementRef;
   static lastID = 0;
-  @Input() public viewerId = `ng2-pdfjs-viewer-ID${++lastID}`;
+  @Input() public viewerId = `ng2-pdfjs-viewer-ID${++PdfJsViewerComponent.lastID}`;
   @Output() onBeforePrint: EventEmitter<any> = new EventEmitter();
   @Output() onAfterPrint: EventEmitter<any> = new EventEmitter();
   @Output() onDocumentLoad: EventEmitter<any> = new EventEmitter();
@@ -192,7 +192,7 @@ export class PdfJsViewerComponent implements OnInit {
       this.relaseUrl = () => URL.revokeObjectURL(url);
     } else if (this._src instanceof Uint8Array) {
       let blob = new Blob([this._src], { type: "application/pdf" });
-      const url = createObjectURL(blob);
+      const url = URL.createObjectURL(blob);
       this.relaseUrl = () => URL.revokeObjectURL(url);
       fileUrl = encodeURIComponent(url);
     } else {
