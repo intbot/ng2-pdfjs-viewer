@@ -1,10 +1,10 @@
-import { Component, Input, Output, ViewChild, EventEmitter, ElementRef } from '@angular/core';
+import { Component, Input, Output, OnInit, ViewChild, EventEmitter, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'ng2-pdfjs-viewer',
   template: `<iframe title="ng2-pdfjs-viewer" [hidden]="externalWindow || (!externalWindow && !pdfSrc)" #iframe width="100%" height="100%"></iframe>`
 })
-export class PdfJsViewerComponent {
+export class PdfJsViewerComponent implements OnInit {
   @ViewChild('iframe', { static: true }) iframe: ElementRef;
   static lastID = 0;
   @Input() public viewerId = `ng2-pdfjs-viewer-ID${++lastID}`;
@@ -135,6 +135,7 @@ export class PdfJsViewerComponent {
     this.loadPdf();
   }
 
+  private relaseUrl?: () => void; // Avoid memory leask with `URL.createObjectURL`
   private loadPdf() {
     if (!this._src) {
       return;
@@ -180,15 +181,20 @@ export class PdfJsViewerComponent {
       }
     }
 
+    this.relaseUrl?.();
     let fileUrl;
     //if (typeof this.src === "string") {
     //  fileUrl = this.src;
     //}
     if (this._src instanceof Blob) {
-      fileUrl = encodeURIComponent(URL.createObjectURL(this._src));
+      const url = URL.createObjectURL(this._src);
+      fileUrl = encodeURIComponent(url);
+      this.relaseUrl = () => URL.revokeObjectURL(url);
     } else if (this._src instanceof Uint8Array) {
       let blob = new Blob([this._src], { type: "application/pdf" });
-      fileUrl = encodeURIComponent(URL.createObjectURL(blob));
+      const url = createObjectURL(blob);
+      this.relaseUrl = () => URL.revokeObjectURL(url);
+      fileUrl = encodeURIComponent(url);
     } else {
       fileUrl = this._src;
     }
