@@ -18,4 +18,4 @@ WORKDIR /app
 COPY --from=publish /app .
 # ENTRYPOINT ["dotnet", "Ng2PdfJsViewerDemo.dll"]
 # heroku uses the following
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet Ng2PdfJsViewerDemo.dll
+CMD ["ASPNETCORE_URLS=http://*:$PORT", "dotnet", "Ng2PdfJsViewerDemo.dll"]
