@@ -8,12 +8,12 @@ import { AppComponent } from './app.component';
 import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule} from '@angular/material/button';
+import {MatLegacyButtonModule as MatButtonModule} from '@angular/material/legacy-button';
 import { InlineComponent } from './inline/inline.component';
 import { BigComponent } from './big/big.component';
 import { DynamicComponent } from './dynamic/dynamic.component';
 import {MatGridListModule} from '@angular/material/grid-list';
-import {MatTableModule} from '@angular/material/table';
+import {MatLegacyTableModule as MatTableModule} from '@angular/material/legacy-table';
 
 const MATERIAL_IMPORTS = [
   BrowserAnimationsModule,

@@ -5,8 +5,9 @@ import { Component, Input, Output, OnInit, ViewChild, EventEmitter, ElementRef }
   template: `<iframe title="ng2-pdfjs-viewer" [hidden]="externalWindow || (!externalWindow && !pdfSrc)" #iframe width="100%" height="100%"></iframe>`
 })
 export class PdfJsViewerComponent implements OnInit {
-  @ViewChild('iframe', {static: true}) iframe: ElementRef;
-  @Input() public viewerId: string;
+  @ViewChild('iframe', { static: true }) iframe: ElementRef;
+  static lastID = 0;
+  @Input() public viewerId = `ng2-pdfjs-viewer-ID${++lastID}`;
   @Output() onBeforePrint: EventEmitter<any> = new EventEmitter();
   @Output() onAfterPrint: EventEmitter<any> = new EventEmitter();
   @Output() onDocumentLoad: EventEmitter<any> = new EventEmitter();
