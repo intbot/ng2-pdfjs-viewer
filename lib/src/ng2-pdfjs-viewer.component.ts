@@ -1,10 +1,10 @@
-import { Component, Input, Output, OnInit, ViewChild, EventEmitter, ElementRef } from '@angular/core';
+import { Component, Input, Output, OnInit, OnDestroy, ViewChild, EventEmitter, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'ng2-pdfjs-viewer',
   template: `<iframe title="ng2-pdfjs-viewer" [hidden]="externalWindow || (!externalWindow && !pdfSrc)" #iframe width="100%" height="100%"></iframe>`
 })
-export class PdfJsViewerComponent implements OnInit {
+export class PdfJsViewerComponent implements OnInit, OnDestroy {
   @ViewChild('iframe', { static: true }) iframe: ElementRef;
   static lastID = 0;
   @Input() public viewerId = `ng2-pdfjs-viewer-ID${++lastID}`;
@@ -340,5 +340,9 @@ export class PdfJsViewerComponent implements OnInit {
     //   pagemode = ${this.errorAppend}
     //   pagemode = ${this.errorMessage}
     // `);
+  }
+
+  ngOnDestroy(): void {
+    this.relaseUrl?.();
   }
 }
