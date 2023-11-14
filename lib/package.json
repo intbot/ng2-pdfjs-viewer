@@ -1,16 +1,13 @@
 {
   "name": "ng2-pdfjs-viewer",
-  "version": "16.0.4",
+  "version": "17.0.2",
   "$schema": "./node_modules/ng-packagr/package.schema.json",
   "scripts": {
     "build": "ng-packagr -p ng-package.json"
   },
-  "devDependencies": {
-    "ng-packagr": "^16.0.1"
-  },
   "peerDependencies": {
-    "@angular/common": "^16.0.4",
-    "@angular/core": "^16.0.4"
+    "@angular/common": "^17.0.2",
+    "@angular/core": "^17.0.2"
   },
   "repository": {
     "type": "git",
@@ -31,5 +28,8 @@
   "license": "Apache",
   "bugs": {
     "url": "https://github.com/intbot/ng2-pdfjs-viewer/issues"
+  },
+  "dependencies": {
+    "ng-packagr": "^17.0.0"
   }
 }
