@@ -1,8 +1,8 @@
 ﻿{
   "compilerOptions": {
     "moduleResolution": "node",
-    "module": "es2015",
-    "target": "es5",
+    "module": "ES2022",
+    "target": "ES2022",
     "alwaysStrict": true,
     "noImplicitAny": false,
     "sourceMap": true,
@@ -12,7 +12,7 @@
     "skipLibCheck": true,
     "allowUnreachableCode": false,
     "lib": [
-      "es2016",
+      "ES2022",
       "dom"
     ],
     "types": [ "node" ]
