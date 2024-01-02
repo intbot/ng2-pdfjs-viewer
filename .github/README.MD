@@ -1,1 +1,1 @@
-../lib/readme.lib
+../lib/readme.md
