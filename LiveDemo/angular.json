@@ -15,7 +15,6 @@
           "options": {
             "outputPath": "wwwroot/dist",
             "main": "ClientApp/boot-browser.ts",
-            "polyfills": "ClientApp/polyfills/polyfills.ts",
             "tsConfig": "ClientApp/tsconfig.app.json",
             "assets": [
               "src/assets",
