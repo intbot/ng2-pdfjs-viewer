@@ -1,1 +1,1 @@
-../lib/readme.md
+../lib/test-me.md
