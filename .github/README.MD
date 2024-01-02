@@ -1,1 +1,1 @@
-../lib/test-me.md
+../test-me.md
