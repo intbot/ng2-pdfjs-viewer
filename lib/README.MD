@@ -1,4 +1,5 @@
 # Angular PDFJS viewer with Mozilla's ViewerJS.
+
 <p align="center">
   <a href="https://www.npmjs.com/package/ng2-pdfjs-viewer">
     <img src="https://img.shields.io/npm/dm/ng2-pdfjs-viewer.svg?style=flat" alt="downloads">
@@ -8,23 +9,26 @@
   </a>
 </p>
 
-***🎉 Thanks a ton to the community - We are talking Downloads in millions now!!!***
+**_🎉 Thanks a ton to the community - We are talking Downloads in millions now!!!_**
 
-***This project is currently maintained by a single developer on his spare time. Inviting contributors and pull requests to pick-up momentum, and handle the expansive userbase and feature requests.***
+**_This project is currently maintained by a single developer on his spare time. Inviting contributors and pull requests to pick-up momentum, and handle the expansive userbase and feature requests._**
 
 This is a super simple angular component for displaying pdfs inline(embedded) OR in a new tab along with a feature rich viewer. It uses mozilla's pdfjs viewer(v2.2.171) behind the scenes and supports angular version from 2.0. Extremely lightweight, easiest to integrate and use, most reliable, this library has only one dependancy (@angular/core).
 
 ## What is new?
-1. **Direct access to underlying viewer** - Exposed PDFViewerApplication and PDFViewerApplicationOptions objects opens a whole world of customizable PDFJS and ViewerJS properties and methods, allowing to change them programmatically; thus producing a unique viewer experience.  
+
+1. **Direct access to underlying viewer** - Exposed PDFViewerApplication and PDFViewerApplicationOptions objects opens a whole world of customizable PDFJS and ViewerJS properties and methods, allowing to change them programmatically; thus producing a unique viewer experience.
 2. **Dynamic page number** - Getter/Setter added for page number. Change page number after document loaded, or access current page in parent component.
-3. **Support for events** - You may now register several events such as document load, page change, before print, after print etc. Please make sure to provide `viewerId` for events to work properly.  
+3. **Support for events** - You may now register several events such as document load, page change, before print, after print etc. Please make sure to provide `viewerId` for events to work properly.
 
 ## Tutorials, Demos & Examples
+
 **Hosted Demo app showing unique use cases**: https://ng2-pdfjs-viewer.azurewebsites.net  
 **Minimalistic angular sample app**: https://github.com/intbot/ng2-pdfjs-viewer/tree/master/SampleApp  
-Source code for the demo here : https://github.com/intbot/ng2-pdfjs-viewer/tree/master/Demo  
+Source code for the demo here : https://github.com/intbot/ng2-pdfjs-viewer/tree/master/Demo
 
 ## Features
+
 Some of below features are unique to this component, which is unavailable in native viewer or other implementations.  
 ✔️ **Open pdf in new window** 🌐 - Opens pdf viewer in new window. Also, you may set all allowable external window options.  
 ✔️ **Direct access to underlying viewer** 👨‍💻👩‍💻- Exposed PDFViewerApplication and PDFViewerApplicationOptions objects opens a whole world of customizable PDFJS and ViewerJS properties and methods, allowing to change them programmatically; thus producing a unique viewer experience.  
@@ -46,13 +50,14 @@ Some of below features are unique to this component, which is unavailable in nat
 ✔️ **Cursor** 👆 - Love the age old hand cursor 👆 on your pdf? You got it.  
 ✔️ **Change file name** - You may set the file name of download to a different one, if user chooses to download.  
 ✔️ **Scroll** 📜 - Changes the scroll to your choice. Even wrapped scrolling is supported.  
-✔️ **Spread** - Allows you to change spread to odd or even.  
-
+✔️ **Spread** - Allows you to change spread to odd or even.
 
 ### Open in a new tab/ external window
+
 <img src="/sampledoc/ng2pdfjsviewerExternal.JPG" alt="angular pdfjs viewer in new window"/>
 
 ### Embed pdf into any angular component/page
+
 <img src="/sampledoc/ng2pdfjsviewerEmbedded.JPG" alt="angular pdfjs viewer embedded"/>
 
 ## Installation
@@ -66,38 +71,38 @@ $ npm install ng2-pdfjs-viewer --save
 And then configure it in your Angular `AppModule`:
 
 ```typescript
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { AppComponent } from './app.component';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+import { AppComponent } from "./app.component";
 
-import { PdfJsViewerModule } from 'ng2-pdfjs-viewer'; // <-- Import PdfJsViewerModule module
+import { PdfJsViewerModule } from "ng2-pdfjs-viewer"; // <-- Import PdfJsViewerModule module
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
-    PdfJsViewerModule // <-- Add to declarations
+    PdfJsViewerModule, // <-- Add to declarations
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
 ```
 
 ## Step 2: Copy task for pdfjs
+
 For several advanced options to work, you need a copy of pdfjs from this npm package.
-Edit your project's `angular.json` file and use `ng build` as described here https://angular.io/guide/workspace-config#project-asset-configuration 
+Edit your project's `angular.json` file and use `ng build` as described here https://angular.io/guide/workspace-config#assets-configuration
+
 ```json
 "assets": [
   { "glob": "**/*", "input": "node_modules/ng2-pdfjs-viewer/pdfjs", "output": "/assets/pdfjs" },
 ]
 ```
 
-
 _Please note, you must manually Copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your `public` or `asset` folder or use any copy script as part of your build process. Another method could be to use `TransferWebpackPlugin` if you are using webpack(https://github.com/dkokorev90/transfer-webpack-plugin)._  
-`TransferWebpackPlugin` Sample code  
+`TransferWebpackPlugin` Sample code
+
 ```typescript
 var TransferWebpackPlugin = require('transfer-webpack-plugin');
 ...
@@ -108,57 +113,57 @@ plugins: [
 ]
 ```
 
-_Please note if you decide to put `pdfjs` folder anywhere else other than the `assets` folder, make sure you also set `[viewerFolder]` property to help locate the folder._  
+_Please note if you decide to put `pdfjs` folder anywhere else other than the `assets` folder, make sure you also set `[viewerFolder]` property to help locate the folder._
 
 ### Options
-| Attribute | Description | Type | Default Value
-| --- | --- | --- | --- |
-| `[pdfSrc]` | Fully qualified path to pdf file. (For remote pdf urls over http/https, CORS should be enabled) | `string` |  |
-| `PDFViewerApplication` | This public property exposes underlying PDFViewerApplication object. Make sure to access it after document is loaded. Opens up the whole world of underlying PDFJS properties and methods. Use it to customize the viewer and document experience. | `object` |  |
-| `PDFViewerApplicationOptions` | This public property exposes underlying PDFViewerApplicationOptions object. Make sure to access it after document is loaded. Opens up the whole world of underlying PDFJS options. Use it to customize the viewer and document experience. | `object` |  |
-| `[viewerFolder]` | Set path to _pdfjs's_ `web` and `build` folders. | `string` | `assets` folder path |
-| `[externalWindow]` | Open in new tab. Set to `true` to open document in a new tab | `boolean` | `false` |
-| `externalWindowOptions` | External window options. For allowed comma separated values, refer to https://developer.mozilla.org/en-US/docs/Web/API/Window/open | `string` |  |
-| `(onDocumentLoad)` | Event to be invoked once document is fully loaded(Must provide `viewerId`). Also returns number of pages in the `$event` parameter. E.g. `(onDocumentLoad)="testPagesLoaded($event)""` | `Function` |  |
-| `(onPageChange)` | Event to be invoked when user scrolls through pages(Must provide `viewerId`). Also returns current page number user is at in the `$event` parameter. E.g. `(onPageChange)="testPageChange($event)""` | `Function` |  |
-| `(onBeforePrint)` | Event to be invoked before document gets printed(Must provide `viewerId`). E.g. `(onBeforePrint)="testBeforePrint()"` | `Function` |  |
-| `(onAfterPrint)` | Event to be invoked after document gets printed(Must provide `viewerId`). E.g. `(onAfterPrint)="testAfterPrint()"` | `Function` |  |
-| `downloadFileName` | Sets/Changes the name of document to be downloaded. If the file name does not ends in `.pdf`, the component will automatically add it for you. | `string` | Actual name of the document |
-| `[page]` | Show specific page. E.g _page=3_. You may also get/set the page number from your component using '.' notation explicitly, after document is loaded. E.g. `myPdfViewer.page = 3;` | `number` | `1` |
-| `[lastPage]` | Show last page of the document once it is loaded(If set to `true`). If you use this option along with _`page`_ option, undesired effects might occur | `boolean` | `false` |
-| `nameddest` | Go to a named destination. E.g. To go to section _5.1_ use like nameddest=5.1. Do not mix this option with _`page`_ and _`lastPage`_ options | `string` |  |
-| `zoom` | Set zoom level of document. Applicable values are `auto`, `page-width`, `page-height`, `page-fit`, `200`_(As a zoom percentage)_, `left offset`_(As in "auto,18,827")_, `top offset`_(As in "auto,18,127")_  | `string` | `auto` |
-| `[print]` | Show/hide print button. Set `false` to hide | `boolean` | `true` |
-| `[startPrint]` | Start print preview of document. This combined with _`externalWindow`_ could mimic a print preview functionality just like the one in gmail. | `boolean` |  |
-| `[download]` | Show/hide download button. Set `false` to hide | boolean | `true` |
-| `[find]` | Show/hide search button. Set `false` to hide | boolean | `true` |
-| `[startDownload]` | Download document as soon as it opens. You may put this to good use. | `boolean` |  |
-| `[rotatecw]` | Rotate document clock wise 90° | `boolean` |  |
-| `[rotateccw]` | Rotate document anti-clock wise 90° | `boolean` |  |
-| `cursor` | Type of cursor. Available options are _`HAND`/`H`_, _`SELECT`/`S`_,_`ZOOM`/`Z`_. Case is irrelevant. | _`SELECT`/`S`_ |  |
-| `scroll` | Sets scroll. Available options are _`VERTICAL`/`V`_, _`HORIZONTAL`/`H`_,_`WRAPPED`/`W`_. Case is irrelevant. | _`VERTICAL`/`V`_ |  |
-| `spread` | Sets Odd or Even spread. Available options are _`ODD`/`O`_, _`EVEN`/`E`_,_`NONE`/`N`_. Case is irrelevant. | _`NONE`/`N`_ |  |
-| `[fullScreen]` | Show/hide presentation(full screen) button. Set `false` to hide | `boolean` | `true` |
-| `cursor` | Type of cursor. Available options are _`HAND`/`H`_, _`SELECT`/`S`_,_`ZOOM`/`Z`_. Case is irrelevant. | _`SELECT`/`S`_ |  |
-| `pagemode` | State of sidebar. Available options are _`none`_, _`thumbs`_,_`bookmarks`_,_`attachments`_. E.g. `pagemode=attachments`. | _`none`_ |  |
-| `[openFile]` | Show/hide open file button. Set `false` to hide | boolean | `true` |
-| `[viewBookmark]` | Show/hide bookmark button. Set `false` to hide | boolean | `true` |
-| `[showSpinner]` | Show a simple css based spinner/progress before the document loads | boolean | `true` |
-| `locale` | Set locale(language) of toolbar/buttons and other viewer elements. E.g. 'de-AT', 'en-GB' etc | string | browser's default language if present, otherwise `en-US` |
-| `[useOnlyCssZoom]` | Instructs the viewer to use css based zoom. This will produce better zoom effect on mobile devices and tablets. | boolean | `false` |
-| `errorMessage` | Custom error message | string |  |
-| `[errorAppend]` | Appends custom error message to the end of other pdfjs error messages | `true` |
-| `[errorOverride]` | Overrides all pdfjs error messages and shows only user's custom error message | boolean | `false` |
-| `[diagnosticLogs]` | Turns on all diagnostic logs to the console | boolean | `true` |
 
+| Attribute                     | Description                                                                                                                                                                                                                                        | Type             | Default Value                                            |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | -------------------------------------------------------- |
+| `[pdfSrc]`                    | Fully qualified path to pdf file. (For remote pdf urls over http/https, CORS should be enabled)                                                                                                                                                    | `string`         |                                                          |
+| `PDFViewerApplication`        | This public property exposes underlying PDFViewerApplication object. Make sure to access it after document is loaded. Opens up the whole world of underlying PDFJS properties and methods. Use it to customize the viewer and document experience. | `object`         |                                                          |
+| `PDFViewerApplicationOptions` | This public property exposes underlying PDFViewerApplicationOptions object. Make sure to access it after document is loaded. Opens up the whole world of underlying PDFJS options. Use it to customize the viewer and document experience.         | `object`         |                                                          |
+| `[viewerFolder]`              | Set path to _pdfjs's_ `web` and `build` folders.                                                                                                                                                                                                   | `string`         | `assets` folder path                                     |
+| `[externalWindow]`            | Open in new tab. Set to `true` to open document in a new tab                                                                                                                                                                                       | `boolean`        | `false`                                                  |
+| `externalWindowOptions`       | External window options. For allowed comma separated values, refer to https://developer.mozilla.org/en-US/docs/Web/API/Window/open                                                                                                                 | `string`         |                                                          |
+| `(onDocumentLoad)`            | Event to be invoked once document is fully loaded(Must provide `viewerId`). Also returns number of pages in the `$event` parameter. E.g. `(onDocumentLoad)="testPagesLoaded($event)""`                                                             | `Function`       |                                                          |
+| `(onPageChange)`              | Event to be invoked when user scrolls through pages(Must provide `viewerId`). Also returns current page number user is at in the `$event` parameter. E.g. `(onPageChange)="testPageChange($event)""`                                               | `Function`       |                                                          |
+| `(onBeforePrint)`             | Event to be invoked before document gets printed(Must provide `viewerId`). E.g. `(onBeforePrint)="testBeforePrint()"`                                                                                                                              | `Function`       |                                                          |
+| `(onAfterPrint)`              | Event to be invoked after document gets printed(Must provide `viewerId`). E.g. `(onAfterPrint)="testAfterPrint()"`                                                                                                                                 | `Function`       |                                                          |
+| `downloadFileName`            | Sets/Changes the name of document to be downloaded. If the file name does not ends in `.pdf`, the component will automatically add it for you.                                                                                                     | `string`         | Actual name of the document                              |
+| `[page]`                      | Show specific page. E.g _page=3_. You may also get/set the page number from your component using '.' notation explicitly, after document is loaded. E.g. `myPdfViewer.page = 3;`                                                                   | `number`         | `1`                                                      |
+| `[lastPage]`                  | Show last page of the document once it is loaded(If set to `true`). If you use this option along with _`page`_ option, undesired effects might occur                                                                                               | `boolean`        | `false`                                                  |
+| `nameddest`                   | Go to a named destination. E.g. To go to section _5.1_ use like nameddest=5.1. Do not mix this option with _`page`_ and _`lastPage`_ options                                                                                                       | `string`         |                                                          |
+| `zoom`                        | Set zoom level of document. Applicable values are `auto`, `page-width`, `page-height`, `page-fit`, `200`_(As a zoom percentage)_, `left offset`_(As in "auto,18,827")_, `top offset`_(As in "auto,18,127")_                                        | `string`         | `auto`                                                   |
+| `[print]`                     | Show/hide print button. Set `false` to hide                                                                                                                                                                                                        | `boolean`        | `true`                                                   |
+| `[startPrint]`                | Start print preview of document. This combined with _`externalWindow`_ could mimic a print preview functionality just like the one in gmail.                                                                                                       | `boolean`        |                                                          |
+| `[download]`                  | Show/hide download button. Set `false` to hide                                                                                                                                                                                                     | boolean          | `true`                                                   |
+| `[find]`                      | Show/hide search button. Set `false` to hide                                                                                                                                                                                                       | boolean          | `true`                                                   |
+| `[startDownload]`             | Download document as soon as it opens. You may put this to good use.                                                                                                                                                                               | `boolean`        |                                                          |
+| `[rotatecw]`                  | Rotate document clock wise 90°                                                                                                                                                                                                                     | `boolean`        |                                                          |
+| `[rotateccw]`                 | Rotate document anti-clock wise 90°                                                                                                                                                                                                                | `boolean`        |                                                          |
+| `cursor`                      | Type of cursor. Available options are _`HAND`/`H`_, _`SELECT`/`S`_,_`ZOOM`/`Z`_. Case is irrelevant.                                                                                                                                               | _`SELECT`/`S`_   |                                                          |
+| `scroll`                      | Sets scroll. Available options are _`VERTICAL`/`V`_, _`HORIZONTAL`/`H`_,_`WRAPPED`/`W`_. Case is irrelevant.                                                                                                                                       | _`VERTICAL`/`V`_ |                                                          |
+| `spread`                      | Sets Odd or Even spread. Available options are _`ODD`/`O`_, _`EVEN`/`E`_,_`NONE`/`N`_. Case is irrelevant.                                                                                                                                         | _`NONE`/`N`_     |                                                          |
+| `[fullScreen]`                | Show/hide presentation(full screen) button. Set `false` to hide                                                                                                                                                                                    | `boolean`        | `true`                                                   |
+| `cursor`                      | Type of cursor. Available options are _`HAND`/`H`_, _`SELECT`/`S`_,_`ZOOM`/`Z`_. Case is irrelevant.                                                                                                                                               | _`SELECT`/`S`_   |                                                          |
+| `pagemode`                    | State of sidebar. Available options are _`none`_, _`thumbs`_,_`bookmarks`_,_`attachments`_. E.g. `pagemode=attachments`.                                                                                                                           | _`none`_         |                                                          |
+| `[openFile]`                  | Show/hide open file button. Set `false` to hide                                                                                                                                                                                                    | boolean          | `true`                                                   |
+| `[viewBookmark]`              | Show/hide bookmark button. Set `false` to hide                                                                                                                                                                                                     | boolean          | `true`                                                   |
+| `[showSpinner]`               | Show a simple css based spinner/progress before the document loads                                                                                                                                                                                 | boolean          | `true`                                                   |
+| `locale`                      | Set locale(language) of toolbar/buttons and other viewer elements. E.g. 'de-AT', 'en-GB' etc                                                                                                                                                       | string           | browser's default language if present, otherwise `en-US` |
+| `[useOnlyCssZoom]`            | Instructs the viewer to use css based zoom. This will produce better zoom effect on mobile devices and tablets.                                                                                                                                    | boolean          | `false`                                                  |
+| `errorMessage`                | Custom error message                                                                                                                                                                                                                               | string           |                                                          |
+| `[errorAppend]`               | Appends custom error message to the end of other pdfjs error messages                                                                                                                                                                              | `true`           |
+| `[errorOverride]`             | Overrides all pdfjs error messages and shows only user's custom error message                                                                                                                                                                      | boolean          | `false`                                                  |
+| `[diagnosticLogs]`            | Turns on all diagnostic logs to the console                                                                                                                                                                                                        | boolean          | `true`                                                   |
 
-**_Please note, copy step is mandatory to enjoy all of the different options listed above. You may also avoid this step and could directly use https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website if you wish to just use the default viewer_**  
+**_Please note, copy step is mandatory to enjoy all of the different options listed above. You may also avoid this step and could directly use https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website if you wish to just use the default viewer_**
 
-## Usage    
+## Usage
 
 _For your convenience a sample app using angular is available under this repository, if you would like to see it in action (Folder SampleApp). It shows many ways to configure this component for different needs._
 
-Once your PdfJsViewerComponent is imported  you can use it in your Angular application like this:
+Once your PdfJsViewerComponent is imported you can use it in your Angular application like this:
 
 ```xml
 <!-- You can now use your library component in app.component.html -->
@@ -177,7 +182,7 @@ For [externalWindow]="true" to work, pop-ups needs to be enabled at browser leve
 <button (click)="openPdf();">Open Pdf</button>
 
 <div style="width: 800px; height: 400px">
-  <ng2-pdfjs-viewer 
+  <ng2-pdfjs-viewer
     #pdfViewerOnDemand
     [externalWindow]="true"
     [downloadFileName]="'mytestfile.pdf'"
@@ -229,7 +234,7 @@ export class MyComponent implements OnInit {
 
   public openPdf() {
     let url = "url to fetch pdf as byte array"; // E.g. http://localhost:3000/api/GetMyPdf
-    // url can be local url or remote http request to an api/pdf file. 
+    // url can be local url or remote http request to an api/pdf file.
     // E.g: let url = "assets/pdf-sample.pdf";
     // E.g: https://github.com/intbot/ng2-pdfjs-viewer/tree/master/sampledoc/pdf-sample.pdf
     // E.g: http://localhost:3000/api/GetMyPdf
@@ -245,9 +250,11 @@ export class MyComponent implements OnInit {
 ```
 
 # Additional Information
+
 Given below are examples of writing server apis(In aspnetcore c#) which returns pdfs as byte array. You can choose any server side technology as long as pdf is returned as byte array
 
 Use case 1. As a RDLC local report viewer
+
 ```c#
 [HttpGet]
 [Route("MyReport")]
@@ -273,6 +280,7 @@ public IActionResult GetReport()
 ```
 
 Use case 2. Return a physical pdf from server
+
 ```c#
 [HttpGet]
 [Route("GetMyPdf")]
@@ -280,7 +288,7 @@ public IActionResult GetMyPdf()
 {
    var stream = await {{__get_stream_here__}}
    return File(stream, "application/pdf")); // FileStreamResult
-   
+
   // OR
   // var bytes = await {{__get_bytes_here__}}
   // return File(bytes, "application/pdf")
@@ -299,39 +307,41 @@ public IActionResult GetMyPdf()
 ```
 
 ## E-Signature Support
+
 Original issue -> PDF.JS is not able to load the signature in the pdf if that is done via the any **E-Signature** tool.
 
 Resolution of the issue -> To support this feature need to comment/remove the below code from pdf.worker.js file and file path i.e. lib\pdfjs\build\pdf.worker.js
 
-**Original issue code** 
+**Original issue code**
 
 ```javascript
-if (data.fieldType === 'Sig') {
-      data.fieldValue = null;
+if (data.fieldType === "Sig") {
+  data.fieldValue = null;
 
-      _this3.setFlags(_util.AnnotationFlag.HIDDEN);
+  _this3.setFlags(_util.AnnotationFlag.HIDDEN);
 }
 ```
 
-**Resoultion code** 
+**Resoultion code**
 
 ```javascript
-if (data.fieldType === 'Sig') {
-      data.fieldValue = null;
+if (data.fieldType === "Sig") {
+  data.fieldValue = null;
 
-      _this3.setFlags(_util.AnnotationFlag.HIDDEN); //remove or comment this line
+  _this3.setFlags(_util.AnnotationFlag.HIDDEN); //remove or comment this line
 }
 ```
-
 
 ## Stack Overflow Support
+
 Have a question? Ask questions and find answers on Stack overflow.
 
 [Stack Overflow](https://stackoverflow.com/questions/tagged/ng2-pdfjs-viewer)
 
 ## Looking for old AngularJS? - The below library is quite useful
+
 AngularJS [angular-pdfjs-viewer](https://github.com/legalthings/angular-pdfjs-viewer)
 
-
 ## License
-**Apache V2 License - https://www.apache.org/licenses/LICENSE-2.0
+
+\*\*Apache V2 License - https://www.apache.org/licenses/LICENSE-2.0
