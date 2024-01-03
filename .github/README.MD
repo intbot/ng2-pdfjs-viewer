@@ -1,1 +1,1 @@
-../test-me.md
+../README.MD
