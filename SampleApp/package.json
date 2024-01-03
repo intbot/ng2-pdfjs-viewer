@@ -23,7 +23,7 @@
     "@angular/router": "^17.0.3",
     "core-js": "^3.21.0",
     "hammerjs": "^2.0.8",
-    "ng2-pdfjs-viewer": "file:ng2-pdfjs-viewer-17.0.2.tgz",
+    "ng2-pdfjs-viewer": "file:ng2-pdfjs-viewer-17.0.3.tgz",
     "rxjs": "^7.5.4",
     "zone.js": "~0.14.2"
   },
