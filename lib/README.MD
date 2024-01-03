@@ -54,11 +54,11 @@ Some of below features are unique to this component, which is unavailable in nat
 
 ### Open in a new tab/ external window
 
-![angular pdfjs viewer in new window](../SampleImages/ng2pdfjsviewerExternal.JPG)
+![angular pdfjs viewer in new window](./SampleImages/ng2pdfjsviewerExternal.JPG)
 
 ### Embed pdf into any angular component/page
 
-![angular pdfjs viewer embedded](../SampleImages/ng2pdfjsviewerEmbedded.JPG)
+![angular pdfjs viewer embedded](./SampleImages/ng2pdfjsviewerEmbedded.JPG)
 
 ## Installation
 
