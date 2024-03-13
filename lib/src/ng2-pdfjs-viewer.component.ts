@@ -309,7 +309,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy {
     if (this.externalWindow) {
       this.viewerTab.location.href = viewerUrl;
     } else {
-      this.iframe.nativeElement.src = viewerUrl;
+      this.iframe.nativeElement.contentWindow.location.replace(viewerUrl);
     }
 
     // console.log(`
