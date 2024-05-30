@@ -5,7 +5,7 @@ Let's leave live demo as well. Plan is to rewrite.
 - Assuming shx works on windows as well. New to this.
 - PDF's are loaded inside an iframe. Does document.addEventListner() gets fired even if we use iframe?
 There are two scenarios. PDF can be embedded in html or opened in a new window.
-- I like the way pdfjs's event bus is used. In the beginning I had to hack pdfjs library pdfjs library to send those browser events. :-)
+- I like the way pdfjs's event bus is used. In the beginning I had to hack pdfjs library to send those browser events. :-)
 
 
 
