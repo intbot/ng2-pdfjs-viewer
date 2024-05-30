@@ -1,11 +1,11 @@
 {
   "name": "ng2-pdfjs-viewer",
-  "version": "17.0.3",
+  "version": "18.0.0",
   "$schema": "./node_modules/ng-packagr/package.schema.json",
   "peerDependencies": {
-    "@angular/common": "^17.0.2",
-    "@angular/core": "^17.0.2",
-    "ng-packagr": "^17.0.0"
+    "@angular/common": "^18.0.1",
+    "@angular/core": "^18.0.1",
+    "ng-packagr": "^18.0.0"
   },
   "repository": {
     "type": "git",
