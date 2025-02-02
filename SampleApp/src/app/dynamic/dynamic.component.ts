@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-dynamic',
+  standalone: false,
   templateUrl: './dynamic.component.html',
   styleUrls: ['./dynamic.component.scss']
 })
