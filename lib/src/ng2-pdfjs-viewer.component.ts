@@ -2,6 +2,7 @@ import { Component, Input, Output, OnInit, OnDestroy, ViewChild, EventEmitter, E
 
 @Component({
   selector: 'ng2-pdfjs-viewer',
+  standalone: false,
   template: `<iframe title="ng2-pdfjs-viewer" [hidden]="externalWindow || (!externalWindow && !pdfSrc)" #iframe width="100%" height="100%"></iframe>`
 })
 export class PdfJsViewerComponent implements OnInit, OnDestroy {
