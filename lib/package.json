@@ -1,6 +1,6 @@
 {
   "name": "ng2-pdfjs-viewer",
-  "version": "20.0.0",
+  "version": "20.0.1",
   "$schema": "./node_modules/ng-packagr/package.schema.json",
   "scripts": {
     "build": "ng-packagr -p ng-package.json"
