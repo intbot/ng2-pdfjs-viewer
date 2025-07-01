@@ -16,7 +16,7 @@
   "typings": "./index.d.ts",
   "exports": {},
   "devDependencies": {
-    "ng-packagr": "^19.0.0",
+    "ng-packagr": "^20.0.0",
     "shx": "^0.3.4"
   },
   "peerDependencies": {
