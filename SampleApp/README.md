@@ -1,12 +1,12 @@
+
+Try - https://ng-doc.com/
+
+
+
 # SampleApp
 
 This is a sample app showcasing usage of ng2-pdfjs-viewer. This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.1. 
 
-`1. Please note that pdfjs folder should be copied from node_modules/ng2-pdfjs-viewer to assets folder.`
-
-`2. A sample pdf file should be provided under assets/pdfjs/web/pdf-sample.pdf for testing.`
-
-`3. Configure the local file like this <ng2-pdfjs-viewer pdfSrc="pdf-sample.pdf"></ng2-pdfjs-viewer> `
 
 ## Development server
 

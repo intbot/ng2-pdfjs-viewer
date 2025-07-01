@@ -1,22 +1,28 @@
-name: CI
-
+name: Publish Package to npmjs
 on:
   push:
-    branches:
-    - master
-    - release/*
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
-  build_ng2pdfjsviewer:
-    runs-on: ubuntu-16.04
+  build:
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Build and deploy the Docker image
-      env: 
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        APP_NAME: ${{ 'ng2-pdfjs-viewer' }}
-      run: |
-        cd ./Demo
-        docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
-        heroku container:push web -a ng2-pdfjs-viewer
-        heroku container:release web -a ng2-pdfjs-viewer
+      - uses: actions/checkout@v4
+      # Setup .npmrc file to publish to npm
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install dependencies
+        working-directory: ./lib
+        run: npm ci
+      - name: Build
+        working-directory: ./lib
+        run: npm run build
+      - name: Publish to npm
+        working-directory: ./lib/dist
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

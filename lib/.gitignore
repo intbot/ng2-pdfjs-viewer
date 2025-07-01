@@ -261,3 +261,8 @@ __pycache__/
 *.pyc
 
 dist/
+assets/pdfjs
+node_modules/
+
+# PDF.js v4.x upgrade documentation
+v4-upgrade.md

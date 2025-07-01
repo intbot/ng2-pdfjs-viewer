@@ -8,6 +8,7 @@
       "ES2022",
       "dom"
     ],
+    "sourceMap": true,
     "skipLibCheck": true,
     "target": "ES2022",
     "types": [

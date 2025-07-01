@@ -1,31 +1,35 @@
-# Angular PDFJS viewer with Mozilla's ViewerJS.
+# Angular PDF viewer with Mozilla's PDF.js Viewer
 
-<p align="center">
-  <a href="https://www.npmjs.com/package/ng2-pdfjs-viewer">
-    <img src="https://img.shields.io/npm/dm/ng2-pdfjs-viewer.svg?style=flat" alt="downloads">
-  </a>
-  <a href="https://badge.fury.io/js/ng2-pdfjs-viewer">
-    <img src="https://badge.fury.io/js/ng2-pdfjs-viewer.svg" alt="npm version">
-  </a>
-</p>
+<div align="center">
 
-**_🎉 Thanks a ton to the community - We are talking Downloads in millions now!!!_**
+[![NPM Version](https://img.shields.io/npm/v/ng2-pdfjs-viewer?logo=npm)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+[![PDFJS Version](https://img.shields.io/badge/PDF.js%20Version-4.0.x-blue?logo=mozilla)](https://github.com/mozilla/pdf.js)
+[![Static Badge](https://img.shields.io/badge/Angular%20Version-19-green?logo=angular)](https://angular.dev/overview)
+
+</div>
+<div align="center">
+
+[![NPM Downloads](https://img.shields.io/npm/dy/ng2-pdfjs-viewer)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+[![NPM Downloads](https://img.shields.io/npm/dm/ng2-pdfjs-viewer?label=last%20month)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+
+</div>
+
+**_🎉 Thanks a ton to the community - After 8+ years and consistant support, we are standing tall at 6 million downloads now!!!_**
 
 **_This project is currently maintained by a single developer on his spare time. Inviting contributors and pull requests to pick-up momentum, and handle the expansive userbase and feature requests._**
 
-This is a super simple angular component for displaying pdfs inline(embedded) OR in a new tab along with a feature rich viewer. It uses mozilla's pdfjs viewer(v2.2.171) behind the scenes and supports angular version from 2.0. Extremely lightweight, easiest to integrate and use, most reliable, this library has only one dependancy (@angular/core).
+This is a super simple angular component for displaying PDFs inline(embedded) OR in a new tab along with a feature rich viewer. It is based on Mozilla's PDF.js viewer v4.0 and supports angular version from 2.0. Extremely lightweight, easiest to integrate and use, most reliable, this library has only one dependancy (@angular/core).
 
-## What is new?
+## What's new?
 
-1. **Direct access to underlying viewer** - Exposed PDFViewerApplication and PDFViewerApplicationOptions objects opens a whole world of customizable PDFJS and ViewerJS properties and methods, allowing to change them programmatically; thus producing a unique viewer experience.
-2. **Dynamic page number** - Getter/Setter added for page number. Change page number after document loaded, or access current page in parent component.
-3. **Support for events** - You may now register several events such as document load, page change, before print, after print etc. Please make sure to provide `viewerId` for events to work properly.
+1. **Updated to current version of PDF.js viewer** - Fixes a lot of rendering issues, improves eventing.
+2. **New Events** - Added support for additional event bus activities (page rotation, document scale changes).
+3. **Build Process Improvements** - Made it easier to modify this library and maintain changes with the examples.
 
 ## Tutorials, Demos & Examples
 
 **Hosted Demo app showing unique use cases**: https://ng2-pdfjs-viewer.azurewebsites.net  
 **Minimalistic angular sample app**: https://github.com/intbot/ng2-pdfjs-viewer/tree/master/SampleApp  
-Source code for the demo here : https://github.com/intbot/ng2-pdfjs-viewer/tree/master/Demo
 
 ## Features
 
@@ -34,7 +38,7 @@ Some of below features are unique to this component, which is unavailable in nat
 ✔️ **Direct access to underlying viewer** 👨‍💻👩‍💻- Exposed PDFViewerApplication and PDFViewerApplicationOptions objects opens a whole world of customizable PDFJS and ViewerJS properties and methods, allowing to change them programmatically; thus producing a unique viewer experience.  
 ✔️ **Embed pdf** 🗎 - Embeds viewer and pdf inside your web page/component.  
 ✔️ **Blob and byte arrays** 🔟 - Have pdf as a byte array? Still works.  
-✔️ **Events** ⚡ - Catch events such as document loaded, page change, before/after print etc.Please make sure to provide `viewerId` for events to work properly.  
+✔️ **Events** ⚡ - Handle events such as document loaded, page change, page rotation, scale change, before/after print etc. Please make sure to provide `viewerId` for events to work properly.  
 ✔️ **Print preview** 🖨️ - You can set the pdf to open in a new tab or another browser window and provide an immediate print preview, A use case will be a 'Print' button opening pdf in new window with print dialog.  
 ✔️ **Defaults** - There are a ton of built in functionality Mozilla's viewer supports; such as print, download, bookmark, fullscreen, open file, zoom, search, pan, spread, navigate, attachments etc which is also available as-is in this viewer. Not mentioning them individually.  
 ✔️ **Auto download** 💾 - This option allows you to download the pdf file to user device automatically without manually invoking the download.  
@@ -345,3 +349,31 @@ AngularJS [angular-pdfjs-viewer](https://github.com/legalthings/angular-pdfjs-vi
 ## License
 
 \*\*Apache V2 License - https://www.apache.org/licenses/LICENSE-2.0
+
+## More reading
+https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website
+https://github.com/mozilla/pdf.js/wiki/Third-party-viewer-usage
+https://github.com/mozilla/pdf.js/wiki/Viewer-options
+
+
+## Not working
+downloadFileName
+lastPage
+print
+startPrint
+download
+find
+startDownload
+rotatecw
+rotateccw
+cursor
+scroll
+spread
+fullScreen
+pagemode
+openFile
+viewBookmark
+showSpinner
+locale
+useOnlyCssZoom
+ALL ERRORS

@@ -1,0 +1,34 @@
+{
+  "name": "ng2-pdfjs-viewer",
+  "version": "19.0.0",
+  "$schema": "./node_modules/ng-packagr/package.schema.json",
+  "scripts": {
+    "build": "ng-packagr -p ng-package.json"
+  },
+  "peerDependencies": {
+    "@angular/common": "^19.0.0",
+    "@angular/core": "^19.0.0",
+    "ng-packagr": "^19.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/intbot/ng2-pdfjs-viewer"
+  },
+  "author": {
+    "name": "Code1",
+    "email": "codehippie1@gmail.com"
+  },
+  "keywords": [
+    "angular",
+    "ng",
+    "ng2",
+    "pdfjs",
+    "viewerjs",
+    "viewer.html"
+  ],
+  "license": "Apache",
+  "bugs": {
+    "url": "https://github.com/intbot/ng2-pdfjs-viewer/issues"
+  },
+  "dependencies": {}
+}

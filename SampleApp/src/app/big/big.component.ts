@@ -1,4 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
+import { ChangedScale, ChangedRotation } from 'ng2-pdfjs-viewer';
 
 @Component({
   selector: 'app-big',
@@ -31,5 +32,13 @@ export class BigComponent implements OnInit {
 
   public testPageChange(pageNumber: number) {
     console.log('testPageChange() successfully called. Current page # : ' + pageNumber);
+  }
+
+  public testScaleChange(scale: ChangedScale) {
+    console.log('testScaleChange() successfully called. Scale : ' , scale);
+  }
+
+  public testRotationChange(rotation: ChangedRotation) {
+    console.log('testRotationChange() successfully called. Rotation : ' , rotation);
   }
 }

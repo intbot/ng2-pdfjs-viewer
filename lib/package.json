@@ -1,22 +1,32 @@
 {
   "name": "ng2-pdfjs-viewer",
-  "version": "19.0.0",
-  "$schema": "./node_modules/ng-packagr/package.schema.json",
-  "scripts": {
-    "build": "ng-packagr -p ng-package.json"
-  },
-  "peerDependencies": {
-    "@angular/common": "^19.0.0",
-    "@angular/core": "^19.0.0",
-    "ng-packagr": "^19.0.0"
+  "version": "20.4.0",
+  "author": {
+    "name": "Aneesh Goapalakrishnan",
+    "email": "codehippie1@gmail.com"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/intbot/ng2-pdfjs-viewer"
   },
-  "author": {
-    "name": "Code1",
-    "email": "codehippie1@gmail.com"
+  "publishConfig": {
+    "access": "public"
+  },
+  "module": "./fesm2022/index.mjs",
+  "typings": "./index.d.ts",
+  "exports": {},
+  "devDependencies": {
+    "ng-packagr": "^19.0.0",
+    "shx": "^0.3.4"
+  },
+  "peerDependencies": {
+    "@angular/common": "^20.0.0",
+    "@angular/core": "^20.0.0",
+    "ng-packagr": "^20.0.0"
+  },
+  "$schema": "./node_modules/ng-packagr/package.schema.json",
+  "bugs": {
+    "url": "https://github.com/intbot/ng2-pdfjs-viewer/issues"
   },
   "keywords": [
     "angular",
@@ -27,8 +37,12 @@
     "viewer.html"
   ],
   "license": "Apache",
-  "bugs": {
-    "url": "https://github.com/intbot/ng2-pdfjs-viewer/issues"
-  },
-  "dependencies": {}
+  "scripts": {
+    "clean": "shx rm -rf ./dist",
+    "build": "npm run clean && ng-packagr -p ng-package.json",
+    "package": "npm run build && cd dist && npm pack",
+    "bump": "mkdir .git && npm version patch",
+    "version": "npm run build && git add -A .",
+    "postversion": "git push && git push --tags && rmdir .git"
+  }
 }
