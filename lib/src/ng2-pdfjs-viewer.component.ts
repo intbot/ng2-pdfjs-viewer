@@ -1,5 +1,12 @@
 import { Component, Input, Output, OnInit, OnDestroy, ViewChild, EventEmitter, ElementRef } from '@angular/core';
 
+export type ChangedPage = number;
+export type ChangedScale = number;
+export interface ChangedRotation {
+  rotation: number;
+  page: number;
+}
+
 @Component({
   selector: 'ng2-pdfjs-viewer',
   standalone: false,
@@ -9,16 +16,19 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy {
   @ViewChild('iframe', { static: true }) iframe: ElementRef;
   static lastID = 0;
   @Input() public viewerId = `ng2-pdfjs-viewer-ID${++PdfJsViewerComponent.lastID}`;
-  @Output() onBeforePrint: EventEmitter<any> = new EventEmitter();
-  @Output() onAfterPrint: EventEmitter<any> = new EventEmitter();
-  @Output() onDocumentLoad: EventEmitter<any> = new EventEmitter();
-  @Output() onPageChange: EventEmitter<any> = new EventEmitter();
+  @Output() onBeforePrint: EventEmitter<void> = new EventEmitter();
+  @Output() onAfterPrint: EventEmitter<void> = new EventEmitter();
+  @Output() onDocumentLoad: EventEmitter<void> = new EventEmitter();
+  @Output() onPageChange: EventEmitter<ChangedPage> = new EventEmitter();
+  @Output() onScaleChange: EventEmitter<ChangedScale> = new EventEmitter();
+  @Output() onRotationChange: EventEmitter<ChangedRotation> = new EventEmitter();
   @Input() public viewerFolder: string;
   @Input() public externalWindow: boolean = false;
   @Input() public target: string = '_blank';
   @Input() public showSpinner: boolean = true;
   @Input() public downloadFileName: string;
   @Input() public openFile: boolean = true;
+  @Input() public annotations: boolean = false;
   @Input() public download: boolean = true;
   @Input() public startDownload: boolean;
   @Input() public viewBookmark: boolean = true;
@@ -41,7 +51,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy {
   @Input() public errorOverride: boolean = false;
   @Input() public errorAppend: boolean = true;
   @Input() public errorMessage: string;
-  @Input() public diagnosticLogs: boolean = true;
+  @Input() public diagnosticLogs: boolean = false;
 
   @Input() public externalWindowOptions: string;
   public viewerTab: any;
@@ -100,57 +110,116 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy {
         pdfViewer = this.iframe.nativeElement.contentWindow.PDFViewerApplication;
       }
     }
+    if(this.diagnosticLogs) console.debug("PdfJsViewer: Viewer ->", pdfViewer);
     return pdfViewer;
   }
 
-  public receiveMessage(viewerEvent)  {
-    if (viewerEvent.data && viewerEvent.data.viewerId && viewerEvent.data.event) {
-      let viewerId = viewerEvent.data.viewerId;
-      let event = viewerEvent.data.event;
-      let param = viewerEvent.data.param;
-      if (this.viewerId == viewerId) {
-        if (this.onBeforePrint && event == "beforePrint") {
-          this.onBeforePrint.emit();
-        }
-        else if (this.onAfterPrint && event == "afterPrint") {
-          this.onAfterPrint.emit();
-        }
-        else if (this.onDocumentLoad && event == "pagesLoaded") {
-          this.onDocumentLoad.emit(param);
-        }
-        else if (this.onPageChange && event == "pageChange") {
-          this.onPageChange.emit(param);
-        }
-      }
-    }
+ngOnInit(): void {   
+  // Load PDF for embedded views.
+  if (!this.externalWindow) {
+    this.loadPdf();
   }
 
-  ngOnInit(): void {
-    window.addEventListener("message", this.receiveMessage.bind(this), false);
-    if (!this.externalWindow) { // Load pdf for embedded views
-      this.loadPdf();
-    }
+  // Bind events.
+  this.bindToPdfJsEventBus();
+}
+
+  /**
+   * Waits for the PDF.js viewer to be ready, and binds the the event bus.
+   */
+  private bindToPdfJsEventBus() {
+    document.addEventListener("webviewerloaded", () => {
+      if (this.diagnosticLogs) console.debug("PdfJsViewer: webviewerloaded event received");
+      if (!this.PDFViewerApplication) {
+        if (this.diagnosticLogs) console.debug("PdfJsViewer: Viewer not yet (or no longer) available, events can not yet be bound.");
+        return;
+      }
+
+      // https://github.com/mozilla/pdf.js/issues/9527
+      this.PDFViewerApplication.initializedPromise.then(() => {
+        // Configure the controls.
+        const app = this.configureVisibleFeatures();
+
+        const eventBus = app.eventBus;
+        // Once initialized, attach the events.
+        // Document Loaded.
+        eventBus.on("documentloaded", () => {
+          if (this.diagnosticLogs) console.debug("PdfJsViewer: The document has now been loaded!");
+          this.onDocumentLoad.emit();
+        });
+
+        // Pages init.
+        eventBus.on("pagesinit", () => {
+          if (this.diagnosticLogs) console.debug("PdfJsViewer: All pages have been rendered!");
+        });
+
+        // Before print.
+        eventBus.on("beforeprint", () => {
+          if (this.diagnosticLogs) console.debug("PdfJsViewer: The document is about to be printed!");
+          this.onBeforePrint.emit();
+        });
+
+        // After print.
+        eventBus.on("afterprint", () => {
+          if (this.diagnosticLogs) console.debug("PdfJsViewer: The document has been printed!");
+          this.onAfterPrint.emit();
+        });
+
+        // Page change.
+        eventBus.on("pagechanging", (event) => {
+          if (this.diagnosticLogs) console.debug("PdfJsViewer: The page has changed:", event.pageNumber);
+          this.onPageChange.emit(event.pageNumber);
+        });
+
+        // Rotation change.
+        eventBus.on("rotationchanging", (event) => {
+          const newRotation: ChangedRotation = {
+            rotation: event.pagesRotation,
+            page: event.pageNumber
+          }
+          if (this.diagnosticLogs) console.debug("PdfJsViewer: The rotation has changed!", event);
+          this.onRotationChange.emit(newRotation);
+        })
+
+        // Scale change.
+        eventBus.on("scalechanging", (event) => {
+          const newScale: ChangedScale = event.scale;
+          if (this.diagnosticLogs) console.debug("PdfJsViewer: The document has scale has changed!", newScale);
+          this.onScaleChange.emit(newScale);
+        })
+      });
+    });
+  }
+
+  private configureVisibleFeatures() {
+    const app = this.PDFViewerApplication;
+    const toolbarElement = app.appConfig.secondaryToolbar.toolbar;
+    // Display of "open file" button.
+    app.appConfig.secondaryToolbar.openFileButton.hidden = !this.openFile;
+    // Hide the horizontal separator in the menu if the control is hidden.
+    toolbarElement.querySelector('.horizontalToolbarSeparator').hidden = !this.openFile;
+    // Display of annotations/editor controls.
+    app.appConfig.toolbar.editorFreeTextButton.hidden = !this.annotations;
+    app.appConfig.toolbar.editorStampButton.hidden = !this.annotations;
+    app.appConfig.toolbar.editorInkButton.hidden = !this.annotations;
+    app.appConfig.toolbar.editorHighlightButton.hidden = !this.annotations;
+    return app;
   }
 
   public refresh(): void { // Needs to be invoked for external window or when needs to reload pdf
     this.loadPdf();
   }
 
-  private relaseUrl?: () => void; // Avoid memory leask with `URL.createObjectURL`
+  private relaseUrl?: () => void; // Avoid memory leak with `URL.createObjectURL`
   private loadPdf() {
     if (!this._src) {
       return;
     }
 
-    // console.log(`Tab is - ${this.viewerTab}`);
-    // if (this.viewerTab) {
-    //   console.log(`Status of window - ${this.viewerTab.closed}`);
-    // }
-
     if (this.externalWindow && (typeof this.viewerTab === 'undefined' || this.viewerTab.closed)) {
       this.viewerTab = window.open('', this.target, this.externalWindowOptions || '');
       if (this.viewerTab == null) {
-        if(this.diagnosticLogs) console.error("ng2-pdfjs-viewer: For 'externalWindow = true'. i.e opening in new tab to work, pop-ups should be enabled.");
+        console.error("ng2-pdfjs-viewer: For 'externalWindow = true'. i.e opening in new tab to work, pop-ups should be enabled.");
         return;
       }
 
@@ -184,9 +253,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy {
 
     this.relaseUrl?.();
     let fileUrl;
-    //if (typeof this.src === "string") {
-    //  fileUrl = this.src;
-    //}
     if (this._src instanceof Blob) {
       const url = URL.createObjectURL(this._src);
       fileUrl = encodeURIComponent(url);
@@ -310,37 +376,39 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy {
     if (this.externalWindow) {
       this.viewerTab.location.href = viewerUrl;
     } else {
-      this.iframe.nativeElement.contentWindow ? this.iframe.nativeElement.contentWindow.location.replace(viewerUrl) : this.iframe.nativeElement.src = viewerUrl;
+      this.iframe.nativeElement.contentWindow.location.replace(viewerUrl);
     }
-
-    // console.log(`
-    //   pdfSrc = ${this.pdfSrc}
-    //   fileUrl = ${fileUrl}
-    //   externalWindow = ${this.externalWindow}
-    //   downloadFileName = ${this.downloadFileName}
-    //   viewerFolder = ${this.viewerFolder}
-    //   openFile = ${this.openFile}
-    //   download = ${this.download}
-    //   startDownload = ${this.startDownload}
-    //   viewBookmark = ${this.viewBookmark}
-    //   print = ${this.print}
-    //   startPrint = ${this.startPrint}
-    //   fullScreen = ${this.fullScreen}
-    //   find = ${this.find}
-    //   lastPage = ${this.lastPage}
-    //   rotatecw = ${this.rotatecw}
-    //   rotateccw = ${this.rotateccw}
-    //   cursor = ${this.cursor}
-    //   scrollMode = ${this.scroll}
-    //   spread = ${this.spread}
-    //   page = ${this.page}
-    //   zoom = ${this.zoom}
-    //   nameddest = ${this.nameddest}
-    //   pagemode = ${this.pagemode}
-    //   pagemode = ${this.errorOverride}
-    //   pagemode = ${this.errorAppend}
-    //   pagemode = ${this.errorMessage}
-    // `);
+    
+    if (this.diagnosticLogs) {
+      console.debug(`PdfJsViewer: Viewer URL configuration:
+        pdfSrc = ${this.pdfSrc}
+        fileUrl = ${fileUrl}
+        externalWindow = ${this.externalWindow}
+        downloadFileName = ${this.downloadFileName}
+        viewerFolder = ${this.viewerFolder}
+        openFile = ${this.openFile}
+        download = ${this.download}
+        startDownload = ${this.startDownload}
+        viewBookmark = ${this.viewBookmark}
+        print = ${this.print}
+        startPrint = ${this.startPrint}
+        fullScreen = ${this.fullScreen}
+        find = ${this.find}
+        lastPage = ${this.lastPage}
+        rotatecw = ${this.rotatecw}
+        rotateccw = ${this.rotateccw}
+        cursor = ${this.cursor}
+        scrollMode = ${this.scroll}
+        spread = ${this.spread}
+        page = ${this.page}
+        zoom = ${this.zoom}
+        nameddest = ${this.nameddest}
+        pagemode = ${this.pagemode}
+        errorOverride = ${this.errorOverride}
+        errorAppend = ${this.errorAppend}
+        errorMessage = ${this.errorMessage}
+      `);
+      }
   }
 
   ngOnDestroy(): void {
