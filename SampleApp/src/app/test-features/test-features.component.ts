@@ -30,6 +30,8 @@ export class TestFeaturesComponent implements OnInit {
   public cursor = 'select';
   public scroll = 'vertical';
   public spread = 'none';
+  public nameddest = '';
+  public pagemode = 'none';
 
   // Custom values
   public downloadFileName = 'test-document.pdf';

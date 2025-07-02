@@ -133,6 +133,21 @@
                 </mat-select>
               </mat-form-field>
 
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Named Destination</mat-label>
+                <input matInput [(ngModel)]="nameddest" placeholder="Enter named destination (e.g., 5.1)">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Page Mode (Sidebar)</mat-label>
+                <mat-select [(ngModel)]="pagemode">
+                  <mat-option value="none">None</mat-option>
+                  <mat-option value="thumbs">Thumbnails</mat-option>
+                  <mat-option value="bookmarks">Bookmarks</mat-option>
+                  <mat-option value="attachments">Attachments</mat-option>
+                </mat-select>
+              </mat-form-field>
+
               <mat-slide-toggle [(ngModel)]="useOnlyCssZoom" color="primary">
                 Use Only CSS Zoom (Mobile)
               </mat-slide-toggle>
@@ -275,6 +290,8 @@
             [scroll]="scroll"
             [spread]="spread"
             [zoom]="zoom"
+            [nameddest]="nameddest"
+            [pagemode]="pagemode"
             [locale]="locale"
             [useOnlyCssZoom]="useOnlyCssZoom"
             [errorOverride]="errorOverride"

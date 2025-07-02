@@ -260,6 +260,8 @@ private applyChanges(changes: SimpleChanges): void {
       'scroll': 'set-scroll',
       'spread': 'set-spread',
       'page': 'set-page',
+      'nameddest': 'go-to-named-dest',
+      'pagemode': 'update-page-mode',
       'startDownload': 'trigger-download',
       'startPrint': 'trigger-print',
       'rotatecw': 'trigger-rotate-cw',
@@ -387,6 +389,14 @@ private applyPendingChanges(): void {
     this.updateViewerControl('cursor', this.cursor);
     this.updateViewerControl('scroll', this.scroll);
     this.updateViewerControl('spread', this.spread);
+    
+    // Handle navigation properties
+    if (this.nameddest) {
+      this.updateViewerControl('nameddest', this.nameddest);
+    }
+    if (this.pagemode) {
+      this.updateViewerControl('pagemode', this.pagemode);
+    }
     
     // Handle auto actions
     if (this.startDownload) {
