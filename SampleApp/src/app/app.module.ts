@@ -12,13 +12,31 @@ import {MatButtonModule as MatButtonModule} from '@angular/material/button';
 import { InlineComponent } from './inline/inline.component';
 import { BigComponent } from './big/big.component';
 import { DynamicComponent } from './dynamic/dynamic.component';
+import { TestFeaturesComponent } from './test-features/test-features.component';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatTableModule as MatTableModule} from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { FormsModule } from '@angular/forms';
 
 const MATERIAL_IMPORTS = [
   BrowserAnimationsModule,
   MatToolbarModule,
-  MatButtonModule
+  MatButtonModule,
+  MatCardModule,
+  MatTabsModule,
+  MatSlideToggleModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSelectModule,
+  MatIconModule,
+  MatTooltipModule
 ];
 
 @NgModule({
@@ -26,7 +44,8 @@ const MATERIAL_IMPORTS = [
     AppComponent,
     InlineComponent,
     BigComponent,
-    DynamicComponent
+    DynamicComponent,
+    TestFeaturesComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +53,7 @@ const MATERIAL_IMPORTS = [
     PdfJsViewerModule,
     MatGridListModule,
     MatTableModule,
+    FormsModule,
     MATERIAL_IMPORTS
   ],
   providers: [],

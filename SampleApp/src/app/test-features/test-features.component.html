@@ -1,0 +1,295 @@
+<div class="test-features-container">
+  <mat-toolbar color="primary">
+    <span>PDF.js v4.x Feature Testing</span>
+    <span class="spacer"></span>
+    <button mat-icon-button (click)="resetEventCounts()" matTooltip="Reset Event Counts">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <div class="content">
+    <!-- Control Panel -->
+    <mat-card class="control-panel">
+      <mat-card-header>
+        <mat-card-title>Control Panel</mat-card-title>
+        <mat-card-subtitle>Test all Phase 1 features interactively</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <mat-tab-group>
+          <!-- Control Visibility Tab -->
+          <mat-tab label="Control Visibility">
+            <div class="tab-content">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Download File Name</mat-label>
+                <input matInput [(ngModel)]="downloadFileName" placeholder="Enter custom file name">
+              </mat-form-field>
+
+              <div class="toggle-group">
+                <h4>Show/Hide Controls</h4>
+                <mat-slide-toggle [(ngModel)]="openFile" color="primary">
+                  Open File Button
+                </mat-slide-toggle>
+                <mat-slide-toggle [(ngModel)]="download" color="primary">
+                  Download Button
+                </mat-slide-toggle>
+                <mat-slide-toggle [(ngModel)]="print" color="primary">
+                  Print Button
+                </mat-slide-toggle>
+                <mat-slide-toggle [(ngModel)]="fullScreen" color="primary">
+                  Full Screen Button
+                </mat-slide-toggle>
+                <mat-slide-toggle [(ngModel)]="find" color="primary">
+                  Find Button
+                </mat-slide-toggle>
+                <mat-slide-toggle [(ngModel)]="viewBookmark" color="primary">
+                  View Bookmark Button
+                </mat-slide-toggle>
+                <mat-slide-toggle [(ngModel)]="annotations" color="primary">
+                  Annotations/Editor Controls
+                </mat-slide-toggle>
+              </div>
+            </div>
+          </mat-tab>
+
+          <!-- Auto Actions Tab -->
+          <mat-tab label="Auto Actions">
+            <div class="tab-content">
+              <div class="toggle-group">
+                <h4>Auto Actions (trigger on document load)</h4>
+                <mat-slide-toggle [(ngModel)]="startDownload" color="primary">
+                  Auto Download
+                </mat-slide-toggle>
+                <mat-slide-toggle [(ngModel)]="startPrint" color="primary">
+                  Auto Print
+                </mat-slide-toggle>
+                <mat-slide-toggle [(ngModel)]="lastPage" color="primary">
+                  Go to Last Page
+                </mat-slide-toggle>
+                <mat-slide-toggle [(ngModel)]="rotatecw" color="primary">
+                  Rotate Clockwise
+                </mat-slide-toggle>
+                <mat-slide-toggle [(ngModel)]="rotateccw" color="primary">
+                  Rotate Counter-clockwise
+                </mat-slide-toggle>
+              </div>
+            </div>
+          </mat-tab>
+
+          <!-- Modes Tab -->
+          <mat-tab label="Modes">
+            <div class="tab-content">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Cursor Mode</mat-label>
+                <mat-select [(ngModel)]="cursor">
+                  <mat-option value="select">Select</mat-option>
+                  <mat-option value="hand">Hand</mat-option>
+                  <mat-option value="zoom">Zoom</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Scroll Mode</mat-label>
+                <mat-select [(ngModel)]="scroll">
+                  <mat-option value="vertical">Vertical</mat-option>
+                  <mat-option value="horizontal">Horizontal</mat-option>
+                  <mat-option value="wrapped">Wrapped</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Spread Mode</mat-label>
+                <mat-select [(ngModel)]="spread">
+                  <mat-option value="none">None</mat-option>
+                  <mat-option value="odd">Odd</mat-option>
+                  <mat-option value="even">Even</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Zoom</mat-label>
+                <mat-select [(ngModel)]="zoom">
+                  <mat-option value="auto">Auto</mat-option>
+                  <mat-option value="page-actual">Page Actual</mat-option>
+                  <mat-option value="page-fit">Page Fit</mat-option>
+                  <mat-option value="page-width">Page Width</mat-option>
+                  <mat-option value="0.5">50%</mat-option>
+                  <mat-option value="0.75">75%</mat-option>
+                  <mat-option value="1">100%</mat-option>
+                  <mat-option value="1.25">125%</mat-option>
+                  <mat-option value="1.5">150%</mat-option>
+                  <mat-option value="2">200%</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Locale</mat-label>
+                <mat-select [(ngModel)]="locale">
+                  <mat-option value="en-US">English (US)</mat-option>
+                  <mat-option value="de-AT">German (Austria)</mat-option>
+                  <mat-option value="fr-FR">French (France)</mat-option>
+                  <mat-option value="es-ES">Spanish (Spain)</mat-option>
+                  <mat-option value="it-IT">Italian (Italy)</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-slide-toggle [(ngModel)]="useOnlyCssZoom" color="primary">
+                Use Only CSS Zoom (Mobile)
+              </mat-slide-toggle>
+            </div>
+          </mat-tab>
+
+          <!-- Error Handling Tab -->
+          <mat-tab label="Error Handling">
+            <div class="tab-content">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Custom Error Message</mat-label>
+                <textarea matInput [(ngModel)]="errorMessage" rows="3" placeholder="Enter custom error message"></textarea>
+              </mat-form-field>
+
+              <div class="toggle-group">
+                <mat-slide-toggle [(ngModel)]="errorOverride" color="primary">
+                  Override Default Error
+                </mat-slide-toggle>
+                <mat-slide-toggle [(ngModel)]="errorAppend" color="primary">
+                  Append to Default Error
+                </mat-slide-toggle>
+              </div>
+
+              <div class="button-group">
+                <button mat-raised-button color="warn" (click)="testError()">
+                  Test Error Handling
+                </button>
+                <button mat-raised-button color="primary" (click)="restoreValidPdf()">
+                  Restore Valid PDF
+                </button>
+              </div>
+            </div>
+          </mat-tab>
+
+          <!-- Actions Tab -->
+          <mat-tab label="Actions">
+            <div class="tab-content">
+              <div class="button-group">
+                <button mat-raised-button color="primary" (click)="refreshViewer()">
+                  Refresh Viewer
+                </button>
+                <button mat-raised-button color="accent" (click)="goToPage(1)">
+                  Go to Page 1
+                </button>
+                <button mat-raised-button color="accent" (click)="goToPage(3)">
+                  Go to Page 3
+                </button>
+                <button mat-raised-button color="accent" (click)="goToPage(5)">
+                  Go to Page 5
+                </button>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Event Monitor -->
+    <mat-card class="event-monitor">
+      <mat-card-header>
+        <mat-card-title>Event Monitor</mat-card-title>
+        <mat-card-subtitle>Real-time event tracking</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <div class="event-grid">
+          <div class="event-item">
+            <span class="event-label">Document Load:</span>
+            <span class="event-count">{{eventCounts.documentLoad}}</span>
+          </div>
+          <div class="event-item">
+            <span class="event-label">Page Change:</span>
+            <span class="event-count">{{eventCounts.pageChange}}</span>
+          </div>
+          <div class="event-item">
+            <span class="event-label">Scale Change:</span>
+            <span class="event-count">{{eventCounts.scaleChange}}</span>
+          </div>
+          <div class="event-item">
+            <span class="event-label">Rotation Change:</span>
+            <span class="event-count">{{eventCounts.rotationChange}}</span>
+          </div>
+          <div class="event-item">
+            <span class="event-label">Before Print:</span>
+            <span class="event-count">{{eventCounts.beforePrint}}</span>
+          </div>
+          <div class="event-item">
+            <span class="event-label">After Print:</span>
+            <span class="event-count">{{eventCounts.afterPrint}}</span>
+          </div>
+        </div>
+
+        <div class="current-values">
+          <h4>Current Values</h4>
+          <div class="value-grid">
+            <div class="value-item">
+              <span class="value-label">Current Page:</span>
+              <span class="value-data">{{currentPage}}</span>
+            </div>
+            <div class="value-item">
+              <span class="value-label">Current Scale:</span>
+              <span class="value-data">{{currentScale}}</span>
+            </div>
+            <div class="value-item">
+              <span class="value-label">Current Rotation:</span>
+              <span class="value-data">{{currentRotation}}°</span>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- PDF Viewer -->
+    <mat-card class="pdf-viewer-card">
+      <mat-card-header>
+        <mat-card-title>PDF Viewer</mat-card-title>
+        <mat-card-subtitle>Test all features in real-time</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <div class="pdf-container">
+          <ng2-pdfjs-viewer 
+            #testPdfViewer 
+            pdfSrc="/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf"
+            [viewerId]="'test-viewer'"
+            [downloadFileName]="downloadFileName"
+            [openFile]="openFile"
+            [download]="download"
+            [print]="print"
+            [fullScreen]="fullScreen"
+            [find]="find"
+            [viewBookmark]="viewBookmark"
+            [annotations]="annotations"
+            [startDownload]="startDownload"
+            [startPrint]="startPrint"
+            [lastPage]="lastPage"
+            [rotatecw]="rotatecw"
+            [rotateccw]="rotateccw"
+            [cursor]="cursor"
+            [scroll]="scroll"
+            [spread]="spread"
+            [zoom]="zoom"
+            [locale]="locale"
+            [useOnlyCssZoom]="useOnlyCssZoom"
+            [errorOverride]="errorOverride"
+            [errorAppend]="errorAppend"
+            [errorMessage]="errorMessage"
+            [diagnosticLogs]="true"
+            (onDocumentLoad)="onDocumentLoad()"
+            (onPageChange)="onPageChange($event)"
+            (onScaleChange)="onScaleChange($event)"
+            (onRotationChange)="onRotationChange($event)"
+            (onBeforePrint)="onBeforePrint()"
+            (onAfterPrint)="onAfterPrint()">
+          </ng2-pdfjs-viewer>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div> 

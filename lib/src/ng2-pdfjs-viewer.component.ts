@@ -1,4 +1,22 @@
-import { Component, Input, Output, OnInit, OnDestroy, ViewChild, EventEmitter, ElementRef } from '@angular/core';
+import { Component, Input, Output, OnInit, OnDestroy, ViewChild, EventEmitter, ElementRef, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
+
+// PostMessage interface for control updates
+interface ControlMessage {
+  type: 'control-update';
+  action: string;
+  payload: any;
+  id?: string;
+  timestamp: number;
+}
+
+interface ControlResponse {
+  type: 'control-response';
+  id: string;
+  success: boolean;
+  action: string;
+  payload?: any;
+  error?: string;
+}
 
 export type ChangedPage = number;
 export type ChangedScale = number;
@@ -12,7 +30,7 @@ export interface ChangedRotation {
   standalone: false,
   template: `<iframe title="ng2-pdfjs-viewer" [hidden]="externalWindow || (!externalWindow && !pdfSrc)" #iframe width="100%" height="100%"></iframe>`
 })
-export class PdfJsViewerComponent implements OnInit, OnDestroy {
+export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   @ViewChild('iframe', { static: true }) iframe: ElementRef;
   static lastID = 0;
   @Input() public viewerId = `ng2-pdfjs-viewer-ID${++PdfJsViewerComponent.lastID}`;
@@ -115,6 +133,9 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy {
   }
 
 ngOnInit(): void {   
+  // Set up PostMessage listener
+  this.setupMessageListener();
+  
   // Load PDF for embedded views.
   if (!this.externalWindow) {
     this.loadPdf();
@@ -122,6 +143,165 @@ ngOnInit(): void {
 
   // Bind events.
   this.bindToPdfJsEventBus();
+}
+
+ngAfterViewInit(): void {
+  // Additional initialization after view is ready
+}
+
+ngOnChanges(changes: SimpleChanges): void {
+  console.log('🔍 PdfJsViewer: ngOnChanges called with changes:', changes);
+  console.log('🔍 PdfJsViewer: PDFViewerApplication available:', !!this.PDFViewerApplication);
+  
+  if (this.PDFViewerApplication) {
+    console.log('🔍 PdfJsViewer: PDFViewerApplication.initialized:', this.PDFViewerApplication.initialized);
+    if (this.PDFViewerApplication.initialized) {
+      console.log('🔍 PdfJsViewer: Applying changes immediately');
+      this.applyChanges(changes);
+    } else {
+      console.log('🔍 PdfJsViewer: Viewer not initialized, storing changes for later');
+      this.pendingChanges.push(changes);
+    }
+  } else {
+    console.log('🔍 PdfJsViewer: PDFViewerApplication not available, storing changes');
+    this.pendingChanges.push(changes);
+  }
+}
+
+private applyChanges(changes: SimpleChanges): void {
+  console.log('🔍 PdfJsViewer: applyChanges called with:', changes);
+  Object.keys(changes).forEach(propertyName => {
+    const change = changes[propertyName];
+    console.log(`🔍 PdfJsViewer: Processing property ${propertyName}:`, {
+      currentValue: change.currentValue,
+      previousValue: change.previousValue,
+      isFirstChange: change.isFirstChange
+    });
+    if (change.currentValue !== change.previousValue) {
+      console.log(`🔍 PdfJsViewer: Value changed for ${propertyName}, updating viewer`);
+      this.updateViewerControl(propertyName, change.currentValue);
+    } else {
+      console.log(`🔍 PdfJsViewer: No change detected for ${propertyName}`);
+    }
+  });
+}
+
+  private messageIdCounter = 0;
+  private pendingMessages = new Map<string, { resolve: Function, reject: Function, timeout: any }>();
+
+  private generateMessageId(): string {
+    return `msg_${++this.messageIdCounter}_${Date.now()}`;
+  }
+
+  private sendControlMessage(action: string, payload: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const messageId = this.generateMessageId();
+      
+      const message: ControlMessage = {
+        type: 'control-update',
+        action,
+        payload,
+        id: messageId,
+        timestamp: Date.now()
+      };
+
+      // Set up response handler
+      const timeout = setTimeout(() => {
+        this.pendingMessages.delete(messageId);
+        reject(new Error(`Timeout waiting for response to ${action}`));
+      }, 5000); // 5 second timeout
+
+      this.pendingMessages.set(messageId, { resolve, reject, timeout });
+
+      // Send message to iframe
+      if (this.iframe && this.iframe.nativeElement && this.iframe.nativeElement.contentWindow) {
+        this.iframe.nativeElement.contentWindow.postMessage(message, '*');
+        console.log('🔍 PdfJsViewer: Sent control message:', action, payload);
+      } else {
+        clearTimeout(timeout);
+        this.pendingMessages.delete(messageId);
+        reject(new Error('Iframe not available'));
+      }
+    });
+  }
+
+  private handleControlResponse(response: ControlResponse): void {
+    const pendingMessage = this.pendingMessages.get(response.id);
+    if (pendingMessage) {
+      clearTimeout(pendingMessage.timeout);
+      this.pendingMessages.delete(response.id);
+      
+      if (response.success) {
+        pendingMessage.resolve(response);
+      } else {
+        pendingMessage.reject(new Error(response.error || 'Unknown error'));
+      }
+    }
+  }
+
+  private setupMessageListener(): void {
+    window.addEventListener('message', (event) => {
+      if (event.data && event.data.type === 'control-response') {
+        this.handleControlResponse(event.data as ControlResponse);
+      }
+    });
+  }
+
+  private mapPropertyToAction(propertyName: string): string | null {
+    const actionMap: { [key: string]: string } = {
+      'download': 'show-download',
+      'print': 'show-print',
+      'fullScreen': 'show-fullscreen',
+      'find': 'show-find',
+      'viewBookmark': 'show-bookmark',
+      'openFile': 'show-openfile',
+      'zoom': 'set-zoom',
+      'cursor': 'set-cursor',
+      'scroll': 'set-scroll',
+      'spread': 'set-spread',
+      'page': 'set-page',
+      'startDownload': 'trigger-download',
+      'startPrint': 'trigger-print',
+      'rotatecw': 'trigger-rotate-cw',
+      'rotateccw': 'trigger-rotate-ccw',
+      'lastPage': 'go-to-last-page'
+    };
+    
+    return actionMap[propertyName] || null;
+  }
+
+  private updateViewerControl(propertyName: string, value: any): void {
+    console.log(`🔍 PdfJsViewer: updateViewerControl called with propertyName: ${propertyName}, value:`, value);
+    
+    const action = this.mapPropertyToAction(propertyName);
+    if (action) {
+      this.sendControlMessage(action, value)
+        .then(response => {
+          console.log(`🔍 PdfJsViewer: Successfully updated ${propertyName} to ${value}`, response);
+        })
+        .catch(error => {
+          console.error(`🔍 PdfJsViewer: Failed to update ${propertyName} to ${value}:`, error);
+        });
+    } else {
+      console.warn(`🔍 PdfJsViewer: No action mapping found for property ${propertyName}`);
+    }
+  }
+
+private pendingChanges: SimpleChanges[] = [];
+
+private applyPendingChanges(): void {
+  console.log(`🔍 PdfJsViewer: applyPendingChanges called, pending changes count: ${this.pendingChanges.length}`);
+  if (this.pendingChanges.length > 0) {
+    console.log('🔍 PdfJsViewer: Applying pending changes:', this.pendingChanges);
+    this.pendingChanges.forEach((changes, index) => {
+      console.log(`🔍 PdfJsViewer: Applying pending change ${index + 1}:`, changes);
+      this.applyChanges(changes);
+    });
+    this.pendingChanges = [];
+    console.log('🔍 PdfJsViewer: Cleared pending changes');
+  } else {
+    console.log('🔍 PdfJsViewer: No pending changes to apply');
+  }
 }
 
   /**
@@ -139,6 +319,9 @@ ngOnInit(): void {
       this.PDFViewerApplication.initializedPromise.then(() => {
         // Configure the controls.
         const app = this.configureVisibleFeatures();
+        
+        // Apply any pending changes that occurred before initialization
+        this.applyPendingChanges();
 
         const eventBus = app.eventBus;
         // Once initialized, attach the events.
@@ -193,16 +376,35 @@ ngOnInit(): void {
 
   private configureVisibleFeatures() {
     const app = this.PDFViewerApplication;
-    const toolbarElement = app.appConfig.secondaryToolbar.toolbar;
-    // Display of "open file" button.
-    app.appConfig.secondaryToolbar.openFileButton.hidden = !this.openFile;
-    // Hide the horizontal separator in the menu if the control is hidden.
-    toolbarElement.querySelector('.horizontalToolbarSeparator').hidden = !this.openFile;
-    // Display of annotations/editor controls.
-    app.appConfig.toolbar.editorFreeTextButton.hidden = !this.annotations;
-    app.appConfig.toolbar.editorStampButton.hidden = !this.annotations;
-    app.appConfig.toolbar.editorInkButton.hidden = !this.annotations;
-    app.appConfig.toolbar.editorHighlightButton.hidden = !this.annotations;
+    
+    // Use PostMessage for initial configuration
+    this.updateViewerControl('openFile', this.openFile);
+    this.updateViewerControl('download', this.download);
+    this.updateViewerControl('print', this.print);
+    this.updateViewerControl('fullScreen', this.fullScreen);
+    this.updateViewerControl('find', this.find);
+    this.updateViewerControl('viewBookmark', this.viewBookmark);
+    this.updateViewerControl('cursor', this.cursor);
+    this.updateViewerControl('scroll', this.scroll);
+    this.updateViewerControl('spread', this.spread);
+    
+    // Handle auto actions
+    if (this.startDownload) {
+      this.updateViewerControl('startDownload', true);
+    }
+    if (this.startPrint) {
+      this.updateViewerControl('startPrint', true);
+    }
+    if (this.rotatecw) {
+      this.updateViewerControl('rotatecw', true);
+    }
+    if (this.rotateccw) {
+      this.updateViewerControl('rotateccw', true);
+    }
+    if (this.lastPage) {
+      this.updateViewerControl('lastPage', true);
+    }
+    
     return app;
   }
 

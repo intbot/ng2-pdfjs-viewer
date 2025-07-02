@@ -10,6 +10,7 @@
   <button mat-raised-button routerLink="inline" color="primary" routerLinkActive="mat-accent">Inline PDF</button>
   <button mat-raised-button (click)="openPdf()" color="primary" routerLinkActive="mat-accent">Open in new tab</button>
   <button mat-raised-button routerLink="dynamic" color="primary" routerLinkActive="mat-accent">Dynamic PDF</button>
+  <button mat-raised-button routerLink="test-features" color="accent" routerLinkActive="mat-accent">Test Features</button>
 </mat-toolbar>
 
 <ng2-pdfjs-viewer #externalPdfViewer [externalWindow]="true" openFile="false" [useOnlyCssZoom]=true target="_myWindow"></ng2-pdfjs-viewer>
