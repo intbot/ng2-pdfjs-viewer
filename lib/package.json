@@ -12,9 +12,14 @@
   "publishConfig": {
     "access": "public"
   },
-  "module": "./fesm2022/index.mjs",
-  "typings": "./index.d.ts",
-  "exports": {},
+  "module": "dist/fesm2022/ng2-pdfjs-viewer.mjs",
+  "typings": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/fesm2022/ng2-pdfjs-viewer.mjs"
+    }
+  },
   "devDependencies": {
     "ng-packagr": "^20.0.0",
     "shx": "^0.3.4"

@@ -79,18 +79,23 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   @Input()
   public set page(_page: number) {
     this._page = _page;
-    if(this.PDFViewerApplication) {
+    if (this.PDFViewerApplication && this.PDFViewerApplication.initialized) {
       this.PDFViewerApplication.page = this._page;
     } else {
-      if(this.diagnosticLogs) console.warn("Document is not loaded yet!!!. Try to set page# after full load. Ignore this warning if you are not setting page# using '.' notation. (E.g. pdfViewer.page = 5;)");
+      if (this.diagnosticLogs) {
+        console.warn("Document is not loaded yet!!!. Try to set page# after full load. Ignore this warning if you are not setting page# using '.' notation. (E.g. pdfViewer.page = 5;)");
+      }
     }
   }
 
   public get page() {
-    if(this.PDFViewerApplication) {
+    if (this.PDFViewerApplication && this.PDFViewerApplication.initialized) {
       return this.PDFViewerApplication.page;
     } else {
-      if(this.diagnosticLogs) console.warn("Document is not loaded yet!!!. Try to retrieve page# after full load.");
+      if (this.diagnosticLogs) {
+        console.warn("Document is not loaded yet!!!. Try to retrieve page# after full load.");
+      }
+      return this._page || 1; // Return stored value or default
     }
   }
 
@@ -132,59 +137,74 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     return pdfViewer;
   }
 
-ngOnInit(): void {   
-  // Set up PostMessage listener
-  this.setupMessageListener();
-  
-  // Load PDF for embedded views.
-  if (!this.externalWindow) {
-    this.loadPdf();
+  private isPostMessageReady = false;
+  private pendingInitialConfig = true;
+  private postMessageTimeout: any;
+
+  ngOnInit(): void {   
+    // Set up PostMessage listener
+    this.setupMessageListener();
+    
+    // Set a timeout for PostMessage API readiness
+    this.postMessageTimeout = setTimeout(() => {
+      if (!this.isPostMessageReady) {
+        console.warn('🔍 PdfJsViewer: PostMessage API timeout, proceeding without dynamic controls');
+        this.isPostMessageReady = true;
+        this.pendingInitialConfig = false;
+      }
+    }, 5000); // 5 second timeout
+    
+    // Load PDF for embedded views.
+    if (!this.externalWindow) {
+      this.loadPdf();
+    }
+
+    // Bind events.
+    this.bindToPdfJsEventBus();
   }
 
-  // Bind events.
-  this.bindToPdfJsEventBus();
-}
+  ngAfterViewInit(): void {
+    // Additional initialization after view is ready
+  }
 
-ngAfterViewInit(): void {
-  // Additional initialization after view is ready
-}
-
-ngOnChanges(changes: SimpleChanges): void {
-  console.log('🔍 PdfJsViewer: ngOnChanges called with changes:', changes);
-  console.log('🔍 PdfJsViewer: PDFViewerApplication available:', !!this.PDFViewerApplication);
-  
-  if (this.PDFViewerApplication) {
-    console.log('🔍 PdfJsViewer: PDFViewerApplication.initialized:', this.PDFViewerApplication.initialized);
-    if (this.PDFViewerApplication.initialized) {
-      console.log('🔍 PdfJsViewer: Applying changes immediately');
-      this.applyChanges(changes);
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('🔍 PdfJsViewer: ngOnChanges called with changes:', changes);
+    console.log('🔍 PdfJsViewer: PDFViewerApplication available:', !!this.PDFViewerApplication);
+    
+    if (this.PDFViewerApplication) {
+      console.log('🔍 PdfJsViewer: PDFViewerApplication.initialized:', this.PDFViewerApplication.initialized);
+      
+      // Only apply changes if PostMessage API is ready and viewer is initialized
+      if (this.isPostMessageReady && this.PDFViewerApplication.initialized) {
+        console.log('🔍 PdfJsViewer: Applying changes immediately');
+        this.applyChanges(changes);
+      } else {
+        console.log('🔍 PdfJsViewer: PostMessage API not ready or viewer not initialized, queuing changes');
+        this.pendingChanges.push(changes);
+      }
     } else {
-      console.log('🔍 PdfJsViewer: Viewer not initialized, storing changes for later');
+      console.log('🔍 PdfJsViewer: PDFViewerApplication not available, queuing changes');
       this.pendingChanges.push(changes);
     }
-  } else {
-    console.log('🔍 PdfJsViewer: PDFViewerApplication not available, storing changes');
-    this.pendingChanges.push(changes);
   }
-}
 
-private applyChanges(changes: SimpleChanges): void {
-  console.log('🔍 PdfJsViewer: applyChanges called with:', changes);
-  Object.keys(changes).forEach(propertyName => {
-    const change = changes[propertyName];
-    console.log(`🔍 PdfJsViewer: Processing property ${propertyName}:`, {
-      currentValue: change.currentValue,
-      previousValue: change.previousValue,
-      isFirstChange: change.isFirstChange
+  private applyChanges(changes: SimpleChanges): void {
+    console.log('🔍 PdfJsViewer: applyChanges called with:', changes);
+    Object.keys(changes).forEach(propertyName => {
+      const change = changes[propertyName];
+      console.log(`🔍 PdfJsViewer: Processing property ${propertyName}:`, {
+        currentValue: change.currentValue,
+        previousValue: change.previousValue,
+        isFirstChange: change.isFirstChange
+      });
+      if (change.currentValue !== change.previousValue) {
+        console.log(`🔍 PdfJsViewer: Value changed for ${propertyName}, updating viewer`);
+        this.updateViewerControl(propertyName, change.currentValue);
+      } else {
+        console.log(`🔍 PdfJsViewer: No change detected for ${propertyName}`);
+      }
     });
-    if (change.currentValue !== change.previousValue) {
-      console.log(`🔍 PdfJsViewer: Value changed for ${propertyName}, updating viewer`);
-      this.updateViewerControl(propertyName, change.currentValue);
-    } else {
-      console.log(`🔍 PdfJsViewer: No change detected for ${propertyName}`);
-    }
-  });
-}
+  }
 
   private messageIdCounter = 0;
   private pendingMessages = new Map<string, { resolve: Function, reject: Function, timeout: any }>();
@@ -241,32 +261,75 @@ private applyChanges(changes: SimpleChanges): void {
 
   private setupMessageListener(): void {
     window.addEventListener('message', (event) => {
+      // Handle control responses from the viewer
       if (event.data && event.data.type === 'control-response') {
-        this.handleControlResponse(event.data as ControlResponse);
+        this.handleControlResponse(event.data);
+        return;
+      }
+      
+      // Handle PostMessage API ready notification
+      if (event.data && event.data.type === 'postmessage-ready') {
+        console.log('🔍 PdfJsViewer: PostMessage API ready notification received');
+        this.isPostMessageReady = true;
+        this.pendingInitialConfig = false;
+        
+        // Clear the timeout since we got the ready notification
+        if (this.postMessageTimeout) {
+          clearTimeout(this.postMessageTimeout);
+          this.postMessageTimeout = null;
+        }
+        
+        // Apply any pending changes that occurred before PostMessage API was ready
+        this.applyPendingChanges();
+        return;
       }
     });
   }
 
   private mapPropertyToAction(propertyName: string): string | null {
     const actionMap: { [key: string]: string } = {
+      // Button visibility controls
       'download': 'show-download',
       'print': 'show-print',
       'fullScreen': 'show-fullscreen',
       'find': 'show-find',
       'viewBookmark': 'show-bookmark',
       'openFile': 'show-openfile',
+      
+      // Mode controls
       'zoom': 'set-zoom',
       'cursor': 'set-cursor',
       'scroll': 'set-scroll',
       'spread': 'set-spread',
+      
+      // Navigation controls
       'page': 'set-page',
       'nameddest': 'go-to-named-dest',
       'pagemode': 'update-page-mode',
+      
+      // Auto actions
       'startDownload': 'trigger-download',
       'startPrint': 'trigger-print',
       'rotatecw': 'trigger-rotate-cw',
       'rotateccw': 'trigger-rotate-ccw',
-      'lastPage': 'go-to-last-page'
+      'lastPage': 'go-to-last-page',
+      
+      // Properties that don't need PostMessage (handled via query params or direct API)
+      'pdfSrc': null, // Handled via URL
+      'viewerId': null, // Handled via iframe ID
+      'downloadFileName': null, // Handled via query params
+      'annotations': null, // Handled via query params
+      'locale': null, // Handled via query params
+      'useOnlyCssZoom': null, // Handled via query params
+      'errorOverride': null, // Handled via query params
+      'errorAppend': null, // Handled via query params
+      'errorMessage': null, // Handled via query params
+      'diagnosticLogs': null, // Handled via component logic
+      'viewerFolder': null, // Handled via component logic
+      'externalWindow': null, // Handled via component logic
+      'target': null, // Handled via component logic
+      'showSpinner': null, // Handled via component logic
+      'externalWindowOptions': null // Handled via component logic
     };
     
     return actionMap[propertyName] || null;
@@ -276,7 +339,10 @@ private applyChanges(changes: SimpleChanges): void {
     console.log(`🔍 PdfJsViewer: updateViewerControl called with propertyName: ${propertyName}, value:`, value);
     
     const action = this.mapPropertyToAction(propertyName);
-    if (action) {
+    if (action === null) {
+      // Property is intentionally not mapped (handled via query params or direct API)
+      console.log(`🔍 PdfJsViewer: Property ${propertyName} is handled via query parameters or direct API, skipping PostMessage`);
+    } else if (action) {
       this.sendControlMessage(action, value)
         .then(response => {
           console.log(`🔍 PdfJsViewer: Successfully updated ${propertyName} to ${value}`, response);
@@ -285,26 +351,34 @@ private applyChanges(changes: SimpleChanges): void {
           console.error(`🔍 PdfJsViewer: Failed to update ${propertyName} to ${value}:`, error);
         });
     } else {
-      console.warn(`🔍 PdfJsViewer: No action mapping found for property ${propertyName}`);
+      // Property not found in action map - this should not happen with our current mapping
+      console.warn(`🔍 PdfJsViewer: No action mapping found for property ${propertyName} - this property may need to be added to the action map`);
     }
   }
 
-private pendingChanges: SimpleChanges[] = [];
+  private pendingChanges: SimpleChanges[] = [];
 
-private applyPendingChanges(): void {
-  console.log(`🔍 PdfJsViewer: applyPendingChanges called, pending changes count: ${this.pendingChanges.length}`);
-  if (this.pendingChanges.length > 0) {
-    console.log('🔍 PdfJsViewer: Applying pending changes:', this.pendingChanges);
-    this.pendingChanges.forEach((changes, index) => {
-      console.log(`🔍 PdfJsViewer: Applying pending change ${index + 1}:`, changes);
-      this.applyChanges(changes);
-    });
-    this.pendingChanges = [];
-    console.log('🔍 PdfJsViewer: Cleared pending changes');
-  } else {
-    console.log('🔍 PdfJsViewer: No pending changes to apply');
+  private applyPendingChanges(): void {
+    console.log(`�� PdfJsViewer: applyPendingChanges called, pending changes count: ${this.pendingChanges.length}`);
+    
+    // Only apply pending changes if PostMessage API is ready
+    if (!this.isPostMessageReady) {
+      console.log('🔍 PdfJsViewer: PostMessage API not ready, skipping pending changes');
+      return;
+    }
+    
+    if (this.pendingChanges.length > 0) {
+      console.log('🔍 PdfJsViewer: Applying pending changes:', this.pendingChanges);
+      this.pendingChanges.forEach((changes, index) => {
+        console.log(`🔍 PdfJsViewer: Applying pending change ${index + 1}:`, changes);
+        this.applyChanges(changes);
+      });
+      this.pendingChanges = [];
+      console.log('🔍 PdfJsViewer: Cleared pending changes');
+    } else {
+      console.log('🔍 PdfJsViewer: No pending changes to apply');
+    }
   }
-}
 
   /**
    * Waits for the PDF.js viewer to be ready, and binds the the event bus.
@@ -379,6 +453,15 @@ private applyPendingChanges(): void {
   private configureVisibleFeatures() {
     const app = this.PDFViewerApplication;
     
+    // If PostMessage API is not ready yet, queue the configuration
+    if (!this.isPostMessageReady) {
+      console.log('🔍 PdfJsViewer: PostMessage API not ready, queuing initial configuration');
+      this.pendingInitialConfig = true;
+      return app;
+    }
+    
+    console.log('🔍 PdfJsViewer: Applying initial configuration via PostMessage');
+    
     // Use PostMessage for initial configuration
     this.updateViewerControl('openFile', this.openFile);
     this.updateViewerControl('download', this.download);
@@ -415,6 +498,7 @@ private applyPendingChanges(): void {
       this.updateViewerControl('lastPage', true);
     }
     
+    this.pendingInitialConfig = false;
     return app;
   }
 
@@ -624,6 +708,21 @@ private applyPendingChanges(): void {
   }
 
   ngOnDestroy(): void {
+    // Clean up timeout
+    if (this.postMessageTimeout) {
+      clearTimeout(this.postMessageTimeout);
+      this.postMessageTimeout = null;
+    }
+    
+    // Clean up pending messages
+    this.pendingMessages.forEach((message, id) => {
+      if (message.timeout) {
+        clearTimeout(message.timeout);
+      }
+    });
+    this.pendingMessages.clear();
+    
+    // Clean up URL
     this.relaseUrl?.();
   }
 }

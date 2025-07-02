@@ -7,8 +7,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "prepare": "relative-deps"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -24,7 +23,7 @@
     "@angular/router": "^20.0.0",
     "core-js": "^3.40.0",
     "hammerjs": "^2.0.8",
-    "ng2-pdfjs-viewer": "file:../lib/dist",
+    "ng2-pdfjs-viewer": "file:.yalc/ng2-pdfjs-viewer",
     "rxjs": "^7.8.1",
     "zone.js": "~0.15.0"
   },
@@ -45,7 +44,6 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
     "protractor": "~7.0.0",
-    "relative-deps": "^1.0.7",
     "shx": "^0.3.4",
     "ts-node": "^10.9.2",
     "tslint": "~5.20.1",
@@ -55,8 +53,5 @@
     "last 2 version",
     "> 1%",
     "not dead"
-  ],
-  "relativeDependencies": {
-    "ng2-pdfjs-viewer": "../lib/dist"
-  }
+  ]
 }

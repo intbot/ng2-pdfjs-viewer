@@ -1,1 +1,5 @@
 **/*.tgz
+
+# yalc
+.yalc/
+yalc.lock
