@@ -7,7 +7,7 @@
 .content {
   flex: 1;
   display: grid;
-  grid-template-columns: 800px 1fr;
+  grid-template-columns: 500px 1fr;
   grid-template-rows: 1fr;
   gap: 16px;
   padding: 16px;
@@ -31,8 +31,8 @@
 
 .pdf-container {
   flex: 1;
-  min-height: 600px; // Add minimum height
-  height: 70vh; // Set to 70% of viewport height
+  min-height: 600px;
+  height: 75vh; // Increased to 75% of viewport height for better PDF viewing
   
   ng2-pdfjs-viewer {
     height: 100%;
@@ -148,7 +148,7 @@
 // Responsive design
 @media (max-width: 1200px) {
   .content {
-    grid-template-columns: 600px 1fr;
+    grid-template-columns: 400px 1fr;
   }
 }
 
