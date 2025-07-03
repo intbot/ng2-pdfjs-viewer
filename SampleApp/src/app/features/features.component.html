@@ -36,7 +36,6 @@
     <mat-card class="control-panel">
       <mat-card-header>
         <mat-card-title>Control Panel</mat-card-title>
-        <mat-card-subtitle>Test all Phase 1 features interactively</mat-card-subtitle>
       </mat-card-header>
       
       <mat-card-content>
@@ -49,7 +48,7 @@
                 <input matInput [(ngModel)]="downloadFileName" placeholder="Enter custom file name">
               </mat-form-field>
 
-              <div class="toggle-group">
+              <div class="toggle-group show-hide-controls">
                 <h4>Show/Hide Controls</h4>
                 <mat-slide-toggle [(ngModel)]="openFile" color="primary">
                   Open File Button
@@ -73,13 +72,8 @@
                   Annotations/Editor Controls
                 </mat-slide-toggle>
               </div>
-            </div>
-          </mat-tab>
 
-          <!-- Auto Actions Tab -->
-          <mat-tab label="Auto Actions">
-            <div class="tab-content">
-              <div class="toggle-group">
+              <div class="toggle-group auto-actions">
                 <h4>Auto Actions (trigger on document load)</h4>
                 <mat-slide-toggle [(ngModel)]="startDownload" color="primary">
                   Auto Download
@@ -178,37 +172,10 @@
             </div>
           </mat-tab>
 
-          <!-- Error Handling Tab -->
-          <mat-tab label="Error Handling">
+          <!-- Actions & Error Handling Tab -->
+          <mat-tab label="Actions & Error Handling">
             <div class="tab-content">
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Custom Error Message</mat-label>
-                <textarea matInput [(ngModel)]="errorMessage" rows="3" placeholder="Enter custom error message"></textarea>
-              </mat-form-field>
-
-              <div class="toggle-group">
-                <mat-slide-toggle [(ngModel)]="errorOverride" color="primary">
-                  Override Default Error
-                </mat-slide-toggle>
-                <mat-slide-toggle [(ngModel)]="errorAppend" color="primary">
-                  Append to Default Error
-                </mat-slide-toggle>
-              </div>
-
-              <div class="button-group">
-                <button mat-raised-button color="warn" (click)="testError()">
-                  Test Error Handling
-                </button>
-                <button mat-raised-button color="primary" (click)="restoreValidPdf()">
-                  Restore Valid PDF
-                </button>
-              </div>
-            </div>
-          </mat-tab>
-
-          <!-- Actions Tab -->
-          <mat-tab label="Actions">
-            <div class="tab-content">
+              <div class="section-header">Actions</div>
               <div class="button-group">
                 <button mat-raised-button color="primary" (click)="refreshViewer()">
                   Refresh Viewer
@@ -222,6 +189,30 @@
                 <button mat-raised-button color="accent" (click)="goToPage(5)">
                   Go to Page 5
                 </button>
+              </div>
+
+              <div class="toggle-group error-handling">
+                <h4>Error Handling</h4>
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Custom Error Message</mat-label>
+                  <textarea matInput [(ngModel)]="errorMessage" rows="3" placeholder="Enter custom error message"></textarea>
+                </mat-form-field>
+
+                <mat-slide-toggle [(ngModel)]="errorOverride" color="primary">
+                  Override Default Error
+                </mat-slide-toggle>
+                <mat-slide-toggle [(ngModel)]="errorAppend" color="primary">
+                  Append to Default Error
+                </mat-slide-toggle>
+
+                <div class="button-group">
+                  <button mat-raised-button color="warn" (click)="testError()">
+                    Test Error Handling
+                  </button>
+                  <button mat-raised-button color="primary" (click)="restoreValidPdf()">
+                    Restore Valid PDF
+                  </button>
+                </div>
               </div>
             </div>
           </mat-tab>
