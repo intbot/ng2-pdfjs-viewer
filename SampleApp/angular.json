@@ -89,14 +89,24 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "ng6SampleApp:build"
+            "buildTarget": "ng6SampleApp:build",
+            "headers": {
+              "Cache-Control": "no-cache, no-store, must-revalidate",
+              "Pragma": "no-cache",
+              "Expires": "0"
+            }
           },
           "configurations": {
             "production": {
               "buildTarget": "ng6SampleApp:build:production"
             },
             "development": {
-              "buildTarget": "ng6SampleApp:build:development"
+              "buildTarget": "ng6SampleApp:build:development",
+              "headers": {
+                "Cache-Control": "no-cache, no-store, must-revalidate",
+                "Pragma": "no-cache",
+                "Expires": "0"
+              }
             }
           },
           "defaultConfiguration": "development"
