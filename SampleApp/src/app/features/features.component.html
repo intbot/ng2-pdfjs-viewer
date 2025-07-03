@@ -193,6 +193,10 @@
 
               <div class="toggle-group error-handling">
                 <h4>Error Handling</h4>
+                
+                <mat-slide-toggle [(ngModel)]="diagnosticLogs" color="primary">
+                  Enable Diagnostic Logs
+                </mat-slide-toggle>
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Custom Error Message</mat-label>
                   <textarea matInput [(ngModel)]="errorMessage" rows="3" placeholder="Enter custom error message"></textarea>
@@ -259,7 +263,7 @@
             [errorOverride]="errorOverride"
             [errorAppend]="errorAppend"
             [errorMessage]="errorMessage"
-            [diagnosticLogs]="true"
+            [diagnosticLogs]="diagnosticLogs"
             (onDocumentLoad)="onDocumentLoad()"
             (onPageChange)="onPageChange($event)"
             (onScaleChange)="onScaleChange($event)"

@@ -168,39 +168,55 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('🔍 PdfJsViewer: ngOnChanges called with changes:', changes);
-    console.log('🔍 PdfJsViewer: PDFViewerApplication available:', !!this.PDFViewerApplication);
+    if (this.diagnosticLogs) {
+      console.log('🔍 PdfJsViewer: ngOnChanges called with changes:', changes);
+      console.log('🔍 PdfJsViewer: PDFViewerApplication available:', !!this.PDFViewerApplication);
+    }
     
     if (this.PDFViewerApplication) {
-      console.log('🔍 PdfJsViewer: PDFViewerApplication.initialized:', this.PDFViewerApplication.initialized);
+      if (this.diagnosticLogs) {
+        console.log('🔍 PdfJsViewer: PDFViewerApplication.initialized:', this.PDFViewerApplication.initialized);
+      }
       
       // Only apply changes if PostMessage API is ready and viewer is initialized
       if (this.isPostMessageReady && this.PDFViewerApplication.initialized) {
-        console.log('🔍 PdfJsViewer: Applying changes immediately');
+        if (this.diagnosticLogs) {
+          console.log('🔍 PdfJsViewer: Applying changes immediately');
+        }
         this.applyChanges(changes);
       } else {
-        console.log('🔍 PdfJsViewer: PostMessage API not ready or viewer not initialized, queuing changes');
+        if (this.diagnosticLogs) {
+          console.log('🔍 PdfJsViewer: PostMessage API not ready or viewer not initialized, queuing changes');
+        }
         this.pendingChanges.push(changes);
       }
     } else {
-      console.log('🔍 PdfJsViewer: PDFViewerApplication not available, queuing changes');
+      if (this.diagnosticLogs) {
+        console.log('🔍 PdfJsViewer: PDFViewerApplication not available, queuing changes');
+      }
       this.pendingChanges.push(changes);
     }
   }
 
   private applyChanges(changes: SimpleChanges): void {
-    console.log('🔍 PdfJsViewer: applyChanges called with:', changes);
+    if (this.diagnosticLogs) {
+      console.log('🔍 PdfJsViewer: applyChanges called with:', changes);
+    }
     Object.keys(changes).forEach(propertyName => {
       const change = changes[propertyName];
-      console.log(`🔍 PdfJsViewer: Processing property ${propertyName}:`, {
-        currentValue: change.currentValue,
-        previousValue: change.previousValue,
-        isFirstChange: change.isFirstChange
-      });
-      if (change.currentValue !== change.previousValue) {
-        console.log(`🔍 PdfJsViewer: Value changed for ${propertyName}, updating viewer`);
-        this.updateViewerControl(propertyName, change.currentValue);
-      } else {
+      if (this.diagnosticLogs) {
+        console.log(`🔍 PdfJsViewer: Processing property ${propertyName}:`, {
+          currentValue: change.currentValue,
+          previousValue: change.previousValue,
+          isFirstChange: change.isFirstChange
+        });
+      }
+              if (change.currentValue !== change.previousValue) {
+          if (this.diagnosticLogs) {
+            console.log(`🔍 PdfJsViewer: Value changed for ${propertyName}, updating viewer`);
+          }
+          this.updateViewerControl(propertyName, change.currentValue);
+        } else {
         console.log(`🔍 PdfJsViewer: No change detected for ${propertyName}`);
       }
     });
@@ -236,7 +252,9 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       // Send message to iframe
       if (this.iframe && this.iframe.nativeElement && this.iframe.nativeElement.contentWindow) {
         this.iframe.nativeElement.contentWindow.postMessage(message, '*');
-        console.log('🔍 PdfJsViewer: Sent control message:', action, payload);
+        if (this.diagnosticLogs) {
+          console.log('🔍 PdfJsViewer: Sent control message:', action, payload);
+        }
       } else {
         clearTimeout(timeout);
         this.pendingMessages.delete(messageId);
@@ -269,7 +287,9 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       
       // Handle PostMessage API ready notification
       if (event.data && event.data.type === 'postmessage-ready') {
-        console.log('🔍 PdfJsViewer: PostMessage API ready notification received');
+        if (this.diagnosticLogs) {
+          console.log('🔍 PdfJsViewer: PostMessage API ready notification received');
+        }
         this.isPostMessageReady = true;
         this.pendingInitialConfig = false;
         
@@ -336,23 +356,31 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   }
 
   private updateViewerControl(propertyName: string, value: any): void {
-    console.log(`🔍 PdfJsViewer: updateViewerControl called with propertyName: ${propertyName}, value:`, value);
+    if (this.diagnosticLogs) {
+      console.log(`🔍 PdfJsViewer: updateViewerControl called with propertyName: ${propertyName}, value:`, value);
+    }
     
     const action = this.mapPropertyToAction(propertyName);
     if (action === null) {
       // Property is intentionally not mapped (handled via query params or direct API)
-      console.log(`🔍 PdfJsViewer: Property ${propertyName} is handled via query parameters or direct API, skipping PostMessage`);
+      if (this.diagnosticLogs) {
+        console.log(`🔍 PdfJsViewer: Property ${propertyName} is handled via query parameters or direct API, skipping PostMessage`);
+      }
     } else if (action) {
       this.sendControlMessage(action, value)
         .then(response => {
-          console.log(`🔍 PdfJsViewer: Successfully updated ${propertyName} to ${value}`, response);
+          if (this.diagnosticLogs) {
+            console.log(`🔍 PdfJsViewer: Successfully updated ${propertyName} to ${value}`, response);
+          }
         })
         .catch(error => {
           console.error(`🔍 PdfJsViewer: Failed to update ${propertyName} to ${value}:`, error);
         });
     } else {
       // Property not found in action map - this should not happen with our current mapping
-      console.warn(`🔍 PdfJsViewer: No action mapping found for property ${propertyName} - this property may need to be added to the action map`);
+      if (this.diagnosticLogs) {
+        console.warn(`🔍 PdfJsViewer: No action mapping found for property ${propertyName} - this property may need to be added to the action map`);
+      }
     }
   }
 
@@ -455,12 +483,16 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     
     // If PostMessage API is not ready yet, queue the configuration
     if (!this.isPostMessageReady) {
-      console.log('🔍 PdfJsViewer: PostMessage API not ready, queuing initial configuration');
+      if (this.diagnosticLogs) {
+        console.log('🔍 PdfJsViewer: PostMessage API not ready, queuing initial configuration');
+      }
       this.pendingInitialConfig = true;
       return app;
     }
     
-    console.log('🔍 PdfJsViewer: Applying initial configuration via PostMessage');
+    if (this.diagnosticLogs) {
+      console.log('🔍 PdfJsViewer: Applying initial configuration via PostMessage');
+    }
     
     // Use PostMessage for initial configuration
     this.updateViewerControl('openFile', this.openFile);

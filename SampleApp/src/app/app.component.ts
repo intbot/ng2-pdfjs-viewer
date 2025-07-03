@@ -9,6 +9,7 @@ import { Component, ViewChild } from '@angular/core';
 export class AppComponent {
   title = 'app';
   page: number;
+  diagnosticLogs = false;
 
   @ViewChild('externalPdfViewer', { static: true }) public externalPdfViewer;
   @ViewChild('embeddedPdfViewer', { static: true }) public embeddedPdfViewer;
@@ -23,5 +24,10 @@ export class AppComponent {
     console.log('Changing pdf viewer url!');
     this.embeddedPdfViewer.pdfSrc = '/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf';
     this.embeddedPdfViewer.refresh();
+  }
+
+  public toggleDiagnosticLogs() {
+    this.diagnosticLogs = !this.diagnosticLogs;
+    console.log(`Diagnostic logs ${this.diagnosticLogs ? 'enabled' : 'disabled'}`);
   }
 }

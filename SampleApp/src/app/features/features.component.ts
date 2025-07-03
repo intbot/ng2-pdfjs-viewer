@@ -43,6 +43,9 @@ export class FeaturesComponent implements OnInit {
   public errorOverride = false;
   public errorAppend = true;
   public errorMessage = 'Custom error message';
+  
+  // Debug settings
+  public diagnosticLogs = false;
 
   // Event counters
   public eventCounts = {
