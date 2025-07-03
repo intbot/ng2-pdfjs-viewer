@@ -314,6 +314,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       'fullScreen': 'show-fullscreen',
       'find': 'show-find',
       'viewBookmark': 'show-bookmark',
+      'annotations': 'show-annotations',
       'openFile': 'show-openfile',
       
       // Mode controls
@@ -338,7 +339,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       'pdfSrc': null, // Handled via URL
       'viewerId': null, // Handled via iframe ID
       'downloadFileName': null, // Handled via query params
-      'annotations': null, // Handled via query params
       'locale': null, // Handled via query params
       'useOnlyCssZoom': null, // Handled via query params
       'errorOverride': null, // Handled via query params
@@ -387,7 +387,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   private pendingChanges: SimpleChanges[] = [];
 
   private applyPendingChanges(): void {
-    console.log(`�� PdfJsViewer: applyPendingChanges called, pending changes count: ${this.pendingChanges.length}`);
+    console.log(`🔍 PdfJsViewer: applyPendingChanges called, pending changes count: ${this.pendingChanges.length}`);
     
     // Only apply pending changes if PostMessage API is ready
     if (!this.isPostMessageReady) {
@@ -501,6 +501,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     this.updateViewerControl('fullScreen', this.fullScreen);
     this.updateViewerControl('find', this.find);
     this.updateViewerControl('viewBookmark', this.viewBookmark);
+    this.updateViewerControl('annotations', this.annotations);
     this.updateViewerControl('cursor', this.cursor);
     this.updateViewerControl('scroll', this.scroll);
     this.updateViewerControl('spread', this.spread);
