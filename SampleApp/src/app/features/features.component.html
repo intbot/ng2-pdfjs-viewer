@@ -84,12 +84,18 @@
                 <mat-slide-toggle [(ngModel)]="lastPage" color="primary">
                   Go to Last Page
                 </mat-slide-toggle>
-                <mat-slide-toggle [(ngModel)]="rotatecw" color="primary">
+              </div>
+
+              <div class="button-group rotation-controls">
+                <h4>Rotation Controls</h4>
+                <button mat-raised-button color="primary" (click)="rotateClockwise()" matTooltip="Rotate Clockwise">
+                  <mat-icon>rotate_right</mat-icon>
                   Rotate Clockwise
-                </mat-slide-toggle>
-                <mat-slide-toggle [(ngModel)]="rotateccw" color="primary">
+                </button>
+                <button mat-raised-button color="primary" (click)="rotateCounterClockwise()" matTooltip="Rotate Counter-clockwise">
+                  <mat-icon>rotate_left</mat-icon>
                   Rotate Counter-clockwise
-                </mat-slide-toggle>
+                </button>
               </div>
             </div>
           </mat-tab>
@@ -249,8 +255,6 @@
             [startDownload]="startDownload"
             [startPrint]="startPrint"
             [lastPage]="lastPage"
-            [rotatecw]="rotatecw"
-            [rotateccw]="rotateccw"
             [cursor]="cursor"
             [scroll]="scroll"
             [spread]="spread"

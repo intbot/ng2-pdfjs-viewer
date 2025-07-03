@@ -23,8 +23,6 @@ export class FeaturesComponent implements OnInit {
   public startDownload = false;
   public startPrint = false;
   public lastPage = false;
-  public rotatecw = false;
-  public rotateccw = false;
 
   // Mode settings
   public cursor = 'select';
@@ -115,6 +113,23 @@ export class FeaturesComponent implements OnInit {
       console.log('🧪 TestFeatures: Navigating to page:', page);
       this.testPdfViewer.page = page;
       console.log('🧪 TestFeatures: Navigated to page:', page);
+    }
+  }
+
+  // Rotation action buttons
+  public rotateClockwise() {
+    if (this.testPdfViewer) {
+      console.log('🧪 TestFeatures: Rotating clockwise');
+      this.testPdfViewer.sendControlMessage('trigger-rotate-cw', true);
+      console.log('🧪 TestFeatures: Rotated clockwise');
+    }
+  }
+
+  public rotateCounterClockwise() {
+    if (this.testPdfViewer) {
+      console.log('🧪 TestFeatures: Rotating counter-clockwise');
+      this.testPdfViewer.sendControlMessage('trigger-rotate-ccw', true);
+      console.log('🧪 TestFeatures: Rotated counter-clockwise');
     }
   }
 

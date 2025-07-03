@@ -121,8 +121,8 @@
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
-}
-
+  }
+  
 .event-item-toolbar {
   display: flex;
   align-items: center;
@@ -132,15 +132,15 @@
   border-radius: 4px;
   font-size: 12px;
 }
-
+  
 .event-label-toolbar {
   color: rgba(255, 255, 255, 0.8);
-  font-weight: 500;
-}
-
+    font-weight: 500;
+  }
+  
 .event-count-toolbar {
-  color: white;
-  font-weight: bold;
+    color: white;
+    font-weight: bold;
   min-width: 20px;
   text-align: center;
 }

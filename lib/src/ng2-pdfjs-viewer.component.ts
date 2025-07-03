@@ -59,8 +59,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   @Input() public nameddest: string;
   @Input() public pagemode: string;
   @Input() public lastPage: boolean;
-  @Input() public rotatecw: boolean;
-  @Input() public rotateccw: boolean;
   @Input() public cursor: string;
   @Input() public scroll: string;
   @Input() public spread: string;
@@ -331,8 +329,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       // Auto actions
       'startDownload': 'trigger-download',
       'startPrint': 'trigger-print',
-      'rotatecw': 'trigger-rotate-cw',
-      'rotateccw': 'trigger-rotate-ccw',
+      
       'lastPage': 'go-to-last-page',
       
       // Properties that don't need PostMessage (handled via query params or direct API)
@@ -518,15 +515,9 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     if (this.startDownload) {
       this.updateViewerControl('startDownload', true);
     }
-    if (this.startPrint) {
-      this.updateViewerControl('startPrint', true);
-    }
-    if (this.rotatecw) {
-      this.updateViewerControl('rotatecw', true);
-    }
-    if (this.rotateccw) {
-      this.updateViewerControl('rotateccw', true);
-    }
+          if (this.startPrint) {
+        this.updateViewerControl('startPrint', true);
+      }
     if (this.lastPage) {
       this.updateViewerControl('lastPage', true);
     }
@@ -537,6 +528,11 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
   public refresh(): void { // Needs to be invoked for external window or when needs to reload pdf
     this.loadPdf();
+  }
+
+  // Public method for external control messages
+  public sendViewerControlMessage(action: string, payload: any): Promise<any> {
+    return this.sendControlMessage(action, payload);
   }
 
   private relaseUrl?: () => void; // Avoid memory leak with `URL.createObjectURL`
@@ -656,12 +652,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     if (this.lastPage) {
       viewerUrl += `&lastpage=${this.lastPage}`;
     }
-    if (this.rotatecw) {
-      viewerUrl += `&rotatecw=${this.rotatecw}`;
-    }
-    if (this.rotateccw) {
-      viewerUrl += `&rotateccw=${this.rotateccw}`;
-    }
     if (this.cursor) {
       viewerUrl += `&cursor=${this.cursor}`;
     }
@@ -724,8 +714,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         fullScreen = ${this.fullScreen}
         find = ${this.find}
         lastPage = ${this.lastPage}
-        rotatecw = ${this.rotatecw}
-        rotateccw = ${this.rotateccw}
         cursor = ${this.cursor}
         scrollMode = ${this.scroll}
         spread = ${this.spread}
