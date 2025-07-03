@@ -1,6 +1,30 @@
 <div class="features-container">
   <mat-toolbar color="primary">
-    <span>PDF.js v4.x Feature Testing</span>
+    <div class="event-monitor-toolbar">
+      <div class="event-item-toolbar">
+        <span class="event-label-toolbar">Load:</span>
+        <span class="event-count-toolbar">{{eventCounts.documentLoad}}</span>
+      </div>
+      <div class="event-item-toolbar">
+        <span class="event-label-toolbar">Page:</span>
+        <span class="event-count-toolbar">{{eventCounts.pageChange}}</span>
+      </div>
+      <div class="event-item-toolbar">
+        <span class="event-label-toolbar">Scale:</span>
+        <span class="event-count-toolbar">{{eventCounts.scaleChange}}</span>
+      </div>
+      <div class="event-item-toolbar">
+        <span class="event-label-toolbar">Rotate:</span>
+        <span class="event-count-toolbar">{{eventCounts.rotationChange}}</span>
+      </div>
+      <div class="event-item-toolbar">
+        <span class="event-label-toolbar">Print:</span>
+        <span class="event-count-toolbar">{{eventCounts.beforePrint}}</span>
+      </div>
+      <div class="event-item-toolbar">
+        <span class="event-label-toolbar">Page {{currentPage}} | Scale {{currentScale}} | Rot {{currentRotation}}°</span>
+      </div>
+    </div>
     <span class="spacer"></span>
     <button mat-icon-button (click)="resetEventCounts()" matTooltip="Reset Event Counts">
       <mat-icon>refresh</mat-icon>
@@ -205,60 +229,7 @@
       </mat-card-content>
     </mat-card>
 
-    <!-- Event Monitor -->
-    <mat-card class="event-monitor">
-      <mat-card-header>
-        <mat-card-title>Event Monitor</mat-card-title>
-        <mat-card-subtitle>Real-time event tracking</mat-card-subtitle>
-      </mat-card-header>
-      
-      <mat-card-content>
-        <div class="event-grid">
-          <div class="event-item">
-            <span class="event-label">Document Load:</span>
-            <span class="event-count">{{eventCounts.documentLoad}}</span>
-          </div>
-          <div class="event-item">
-            <span class="event-label">Page Change:</span>
-            <span class="event-count">{{eventCounts.pageChange}}</span>
-          </div>
-          <div class="event-item">
-            <span class="event-label">Scale Change:</span>
-            <span class="event-count">{{eventCounts.scaleChange}}</span>
-          </div>
-          <div class="event-item">
-            <span class="event-label">Rotation Change:</span>
-            <span class="event-count">{{eventCounts.rotationChange}}</span>
-          </div>
-          <div class="event-item">
-            <span class="event-label">Before Print:</span>
-            <span class="event-count">{{eventCounts.beforePrint}}</span>
-          </div>
-          <div class="event-item">
-            <span class="event-label">After Print:</span>
-            <span class="event-count">{{eventCounts.afterPrint}}</span>
-          </div>
-        </div>
 
-        <div class="current-values">
-          <h4>Current Values</h4>
-          <div class="value-grid">
-            <div class="value-item">
-              <span class="value-label">Current Page:</span>
-              <span class="value-data">{{currentPage}}</span>
-            </div>
-            <div class="value-item">
-              <span class="value-label">Current Scale:</span>
-              <span class="value-data">{{currentScale}}</span>
-            </div>
-            <div class="value-item">
-              <span class="value-label">Current Rotation:</span>
-              <span class="value-data">{{currentRotation}}°</span>
-            </div>
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
 
     <!-- PDF Viewer -->
     <mat-card class="pdf-viewer-card">
