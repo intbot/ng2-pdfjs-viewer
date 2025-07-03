@@ -12,7 +12,7 @@ import {MatButtonModule as MatButtonModule} from '@angular/material/button';
 import { InlineComponent } from './inline/inline.component';
 import { BigComponent } from './big/big.component';
 import { DynamicComponent } from './dynamic/dynamic.component';
-import { TestFeaturesComponent } from './test-features/test-features.component';
+import { FeaturesComponent } from './features/features.component';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatTableModule as MatTableModule} from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
@@ -45,7 +45,7 @@ const MATERIAL_IMPORTS = [
     InlineComponent,
     BigComponent,
     DynamicComponent,
-    TestFeaturesComponent
+    FeaturesComponent
   ],
   imports: [
     BrowserModule,

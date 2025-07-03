@@ -2,12 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChangedScale, ChangedRotation } from 'ng2-pdfjs-viewer';
 
 @Component({
-  selector: 'app-test-features',
+  selector: 'app-features',
   standalone: false,
-  templateUrl: './test-features.component.html',
-  styleUrls: ['./test-features.component.scss']
+  templateUrl: './features.component.html',
+  styleUrls: ['./features.component.scss']
 })
-export class TestFeaturesComponent implements OnInit {
+export class FeaturesComponent implements OnInit {
   @ViewChild('testPdfViewer', { static: true }) public testPdfViewer;
 
   // Control visibility toggles

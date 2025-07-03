@@ -3,13 +3,14 @@ import { Routes, RouterModule } from '@angular/router';
 import {InlineComponent} from './inline/inline.component';
 import {BigComponent} from './big/big.component';
 import {DynamicComponent} from './dynamic/dynamic.component';
-import {TestFeaturesComponent} from './test-features/test-features.component';
+import {FeaturesComponent} from './features/features.component';
 
 const routes: Routes = [
-  {path: '', component: BigComponent},
+  {path: '', component: FeaturesComponent},
   {path: 'inline', component: InlineComponent},
   {path: 'dynamic', component:DynamicComponent},
-  {path: 'test-features', component: TestFeaturesComponent}
+  {path: 'big', component: BigComponent},
+  {path: 'features', component: FeaturesComponent}
 ];
 
 @NgModule({
