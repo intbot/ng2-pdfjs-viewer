@@ -117,20 +117,85 @@ export class FeaturesComponent implements OnInit {
   }
 
   // Rotation action buttons
-  public rotateClockwise() {
+  public async rotateClockwise() {
     if (this.testPdfViewer) {
       console.log('🧪 TestFeatures: Rotating clockwise');
-      this.testPdfViewer.sendControlMessage('trigger-rotate-cw', true);
-      console.log('🧪 TestFeatures: Rotated clockwise');
+      try {
+        const result = await this.testPdfViewer.triggerRotation('cw');
+        console.log('🧪 TestFeatures: Rotated clockwise, result:', result);
+      } catch (error) {
+        console.error('🧪 TestFeatures: Failed to rotate clockwise:', error);
+      }
     }
   }
 
-  public rotateCounterClockwise() {
+  public async rotateCounterClockwise() {
     if (this.testPdfViewer) {
       console.log('🧪 TestFeatures: Rotating counter-clockwise');
-      this.testPdfViewer.sendControlMessage('trigger-rotate-ccw', true);
-      console.log('🧪 TestFeatures: Rotated counter-clockwise');
+      try {
+        const result = await this.testPdfViewer.triggerRotation('ccw');
+        console.log('🧪 TestFeatures: Rotated counter-clockwise, result:', result);
+      } catch (error) {
+        console.error('🧪 TestFeatures: Failed to rotate counter-clockwise:', error);
+      }
     }
+  }
+
+  // Additional action methods
+  public async triggerDownloadAction() {
+    if (this.testPdfViewer) {
+      console.log('🧪 TestFeatures: Triggering download');
+      try {
+        const result = await this.testPdfViewer.triggerDownload();
+        console.log('🧪 TestFeatures: Download triggered, result:', result);
+      } catch (error) {
+        console.error('🧪 TestFeatures: Failed to trigger download:', error);
+      }
+    }
+  }
+
+  public async triggerPrintAction() {
+    if (this.testPdfViewer) {
+      console.log('🧪 TestFeatures: Triggering print');
+      try {
+        const result = await this.testPdfViewer.triggerPrint();
+        console.log('🧪 TestFeatures: Print triggered, result:', result);
+      } catch (error) {
+        console.error('🧪 TestFeatures: Failed to trigger print:', error);
+      }
+    }
+  }
+
+  public async goToPageAction(page: number) {
+    if (this.testPdfViewer) {
+      console.log('🧪 TestFeatures: Navigating to page:', page);
+      try {
+        const result = await this.testPdfViewer.goToPage(page);
+        console.log('🧪 TestFeatures: Navigated to page:', page, 'result:', result);
+      } catch (error) {
+        console.error('🧪 TestFeatures: Failed to navigate to page:', page, error);
+      }
+    }
+  }
+
+  public async setZoomAction(zoom: string) {
+    if (this.testPdfViewer) {
+      console.log('🧪 TestFeatures: Setting zoom to:', zoom);
+      try {
+        const result = await this.testPdfViewer.setZoom(zoom);
+        console.log('🧪 TestFeatures: Zoom set to:', zoom, 'result:', result);
+      } catch (error) {
+        console.error('🧪 TestFeatures: Failed to set zoom:', zoom, error);
+      }
+    }
+  }
+
+  // Action queue status
+  public getActionQueueStatus() {
+    if (this.testPdfViewer && typeof this.testPdfViewer.getQueueStatus === 'function') {
+      return this.testPdfViewer.getQueueStatus();
+    }
+    return null;
   }
 
   public resetEventCounts() {

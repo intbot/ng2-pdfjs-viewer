@@ -97,6 +97,42 @@
                   Rotate Counter-clockwise
                 </button>
               </div>
+
+              <div class="button-group on-demand-actions">
+                <h4>On-Demand Actions</h4>
+                <button mat-raised-button color="accent" (click)="triggerDownloadAction()" matTooltip="Trigger Download">
+                  <mat-icon>download</mat-icon>
+                  Download
+                </button>
+                <button mat-raised-button color="accent" (click)="triggerPrintAction()" matTooltip="Trigger Print">
+                  <mat-icon>print</mat-icon>
+                  Print
+                </button>
+                <button mat-raised-button color="accent" (click)="goToPageAction(1)" matTooltip="Go to Page 1">
+                  <mat-icon>first_page</mat-icon>
+                  Page 1
+                </button>
+                <button mat-raised-button color="accent" (click)="setZoomAction('page-fit')" matTooltip="Fit to Page">
+                  <mat-icon>zoom_in</mat-icon>
+                  Fit Page
+                </button>
+              </div>
+
+              <div class="action-queue-status" *ngIf="getActionQueueStatus()">
+                <h4>Action Queue Status</h4>
+                <div class="status-item">
+                  <span>Auto Actions:</span>
+                  <span>{{getActionQueueStatus()?.autoActions || 0}}</span>
+                </div>
+                <div class="status-item">
+                  <span>Pending Actions:</span>
+                  <span>{{getActionQueueStatus()?.pendingActions || 0}}</span>
+                </div>
+                <div class="status-item">
+                  <span>Executed Actions:</span>
+                  <span>{{getActionQueueStatus()?.executedActions || 0}}</span>
+                </div>
+              </div>
             </div>
           </mat-tab>
 
