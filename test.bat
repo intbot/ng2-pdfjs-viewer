@@ -5,6 +5,14 @@ echo ========================================
 echo Building and updating ng2-pdfjs-viewer
 echo ========================================
 
+REM Check if user wants log capture
+set /p enable_logs="Enable console log capture? (Y/n): "
+if /i "!enable_logs!"=="n" (
+    set enable_logs=false
+) else (
+    set enable_logs=true
+)
+
 REM Step 1: Build the library
 echo.
 echo Step 1: Building library...
@@ -114,10 +122,41 @@ REM Step 6: Start the app
 echo.
 echo Step 6: Starting Angular dev server...
 echo Current directory: %CD%
-echo Running: npm start
-echo ========================================
-echo Build complete! Starting SampleApp...
-echo ========================================
-call npm start
+
+if "!enable_logs!"=="true" (
+    echo ========================================
+    echo Build complete! Starting SampleApp with LOG CAPTURE...
+    echo ========================================
+    echo.
+    echo Starting Angular dev server in background...
+    start "Angular Dev Server" cmd /k "npm start"
+    
+    echo Waiting for server to start...
+    timeout /t 20 /nobreak >nul
+    
+    echo Starting console log capture...
+    echo.
+    echo ========================================
+    echo   Console Logs Will Appear Below
+    echo ========================================
+    echo.
+    echo 🚀 Testing ng2-pdfjs-viewer features with real-time logging!
+    echo 📋 You can now test:
+    echo    • Cursor modes (Hand, Select, Zoom)
+    echo    • Scroll modes (Vertical, Horizontal, Wrapped, Page)
+    echo    • Spread modes (None, Odd, Even)
+    echo    • Zoom levels and locale changes
+    echo    • Auto actions (download, print, rotate)
+    echo.
+    echo 💡 Press Ctrl+C to stop logging and close browser.
+    echo.
+    
+    call node log-capture.js
+) else (
+    echo ========================================
+    echo Build complete! Starting SampleApp...
+    echo ========================================
+    call npm start
+)
 
 endlocal 

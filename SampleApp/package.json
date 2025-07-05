@@ -4,6 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --configuration=development",
+    "start:with-logs": "node log-capture.js",
+    "test:with-logs": "start ng serve --configuration=development && timeout 5 && node log-capture.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -44,6 +46,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
     "protractor": "~7.0.0",
+    "puppeteer": "^24.11.2",
     "shx": "^0.3.4",
     "ts-node": "^10.9.2",
     "tslint": "~5.20.1",
