@@ -1,9 +1,41 @@
 const puppeteer = require('puppeteer');
+const http = require('http');
+
+// Function to check if server is available
+function checkServerAvailable(url) {
+  return new Promise((resolve) => {
+    const req = http.get(url, (res) => {
+      resolve(res.statusCode === 200);
+    });
+    
+    req.on('error', () => {
+      resolve(false);
+    });
+    
+    req.setTimeout(5000, () => {
+      req.destroy();
+      resolve(false);
+    });
+  });
+}
 
 async function captureLogs() {
   console.log('🚀 Starting browser with console log capture...');
   console.log('📱 This will open a browser window and capture all console logs.');
   console.log('🔍 Perfect for testing ng2-pdfjs-viewer features!\n');
+  
+  // Check if server is available before launching browser
+  console.log('🔍 Checking if SampleApp server is available...');
+  const serverAvailable = await checkServerAvailable('http://localhost:4200');
+  
+  if (!serverAvailable) {
+    console.error('❌ SampleApp server is not available at http://localhost:4200');
+    console.log('💡 Please make sure the Angular dev server is running');
+    console.log('💡 You can start it manually with: npm start');
+    process.exit(1);
+  }
+  
+  console.log('✅ SampleApp server is available!');
   
   try {
     const browser = await puppeteer.launch({ 
@@ -66,12 +98,36 @@ async function captureLogs() {
     });
     
     console.log('📱 Navigating to SampleApp...');
-    await page.goto('http://localhost:4200', { 
-      waitUntil: 'networkidle2',
-      timeout: 30000 
-    });
     
-    console.log('✅ SampleApp loaded successfully!');
+    // Try to navigate with retry logic
+    let retryCount = 0;
+    const maxRetries = 5;
+    let pageLoaded = false;
+    
+    while (!pageLoaded && retryCount < maxRetries) {
+      try {
+        console.log(`📱 Attempt ${retryCount + 1}/${maxRetries} - Loading SampleApp...`);
+        await page.goto('http://localhost:4200', { 
+          waitUntil: 'networkidle2',
+          timeout: 30000 
+        });
+        pageLoaded = true;
+        console.log('✅ SampleApp loaded successfully!');
+      } catch (error) {
+        retryCount++;
+        if (retryCount < maxRetries) {
+          console.log(`⏳ Failed to load SampleApp (attempt ${retryCount}/${maxRetries}): ${error.message}`);
+          console.log('⏳ Waiting 3 seconds before retry...');
+          await new Promise(resolve => setTimeout(resolve, 3000));
+        } else {
+          console.error('❌ Failed to load SampleApp after all retries:', error.message);
+          console.log('💡 Make sure SampleApp is running on http://localhost:4200');
+          console.log('💡 Check if the Angular dev server has started properly');
+          await browser.close();
+          process.exit(1);
+        }
+      }
+    }
     console.log('🔍 Browser console logs will appear below:');
     console.log('📋 You can now test the PDF viewer features:');
     console.log('   • Cursor modes (Hand, Select, Zoom)');

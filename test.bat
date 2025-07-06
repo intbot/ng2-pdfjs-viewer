@@ -5,14 +5,6 @@ echo ========================================
 echo Building and updating ng2-pdfjs-viewer
 echo ========================================
 
-REM Check if user wants log capture
-set /p enable_logs="Enable console log capture? (Y/n): "
-if /i "!enable_logs!"=="n" (
-    set enable_logs=false
-) else (
-    set enable_logs=true
-)
-
 REM Step 1: Build the library
 echo.
 echo Step 1: Building library...
@@ -118,45 +110,88 @@ if !xcopy_exit_code! neq 0 (
 )
 echo Step 5 completed successfully!
 
-REM Step 6: Start the app
+REM Step 6: Stop any existing process on port 4200
 echo.
-echo Step 6: Starting Angular dev server...
+echo Step 6: Stopping any existing process on port 4200...
+echo Current directory: %CD%
+for /f "tokens=5" %%a in ('netstat -aon ^| findstr :4200') do (
+    echo Stopping process with PID: %%a
+    taskkill /f /pid %%a >nul 2>&1
+)
+echo Port 4200 cleared.
+
+REM Step 7: Start the app with log capture
+echo.
+echo Step 7: Starting Angular dev server with log capture...
 echo Current directory: %CD%
 
-if "!enable_logs!"=="true" (
-    echo ========================================
-    echo Build complete! Starting SampleApp with LOG CAPTURE...
-    echo ========================================
-    echo.
-    echo Starting Angular dev server in background...
-    start "Angular Dev Server" cmd /k "npm start"
-    
-    echo Waiting for server to start...
-    timeout /t 20 /nobreak >nul
-    
-    echo Starting console log capture...
+echo ========================================
+echo Build complete! Starting SampleApp with LOG CAPTURE...
+echo ========================================
+echo.
+echo Starting Angular dev server in background...
+start "Angular Dev Server" cmd /k "npm start"
+
+echo Waiting for server to start (up to 2 minutes)...
+set max_attempts=60
+set attempt=0
+
+:check_server_loop
+set /a attempt+=1
+echo Checking server availability (attempt !attempt!/!max_attempts!)...
+
+REM Try multiple methods to check if server is running
+curl -s -o nul -w "%%{http_code}" http://localhost:4200 > temp_status.txt 2>nul
+set /p server_check=<temp_status.txt
+del temp_status.txt >nul 2>&1
+
+REM Also try a simple connection test
+netstat -an | findstr ":4200" | findstr "LISTENING" >nul 2>&1
+set port_check=%errorlevel%
+
+echo DEBUG: server_check=!server_check!, port_check=!port_check!
+
+REM Check if either method indicates server is ready
+if "!server_check!"=="200" (
+    echo Server is responding with HTTP 200!
+    goto start_logs
+)
+if !port_check! equ 0 (
+    echo Port 4200 is listening!
+    goto start_logs
+)
+
+if !attempt! lss !max_attempts! (
+    echo Server not ready yet, waiting 10 seconds...
+    timeout /t 10 /nobreak >nul
+    goto check_server_loop
+)
+echo Server failed to start within !max_attempts! attempts
+echo The Angular dev server may still be starting up
+echo You can manually check http://localhost:4200
+echo.
+echo Starting log capture anyway (may fail if server isn't ready)...
+goto start_logs
+
+:start_logs
     echo.
     echo ========================================
     echo   Console Logs Will Appear Below
     echo ========================================
     echo.
-    echo 🚀 Testing ng2-pdfjs-viewer features with real-time logging!
-    echo 📋 You can now test:
-    echo    • Cursor modes (Hand, Select, Zoom)
-    echo    • Scroll modes (Vertical, Horizontal, Wrapped, Page)
-    echo    • Spread modes (None, Odd, Even)
-    echo    • Zoom levels and locale changes
-    echo    • Auto actions (download, print, rotate)
+    echo Testing ng2-pdfjs-viewer features with real-time logging!
+    echo You can now test:
+    echo    - Cursor modes (Hand, Select, Zoom)
+    echo    - Scroll modes (Vertical, Horizontal, Wrapped, Page)
+    echo    - Spread modes (None, Odd, Even)
+    echo    - Zoom levels and locale changes
+    echo    - Auto actions (download, print, rotate)
     echo.
-    echo 💡 Press Ctrl+C to stop logging and close browser.
+    echo Press Ctrl+C to stop logging and close browser.
     echo.
-    
     call node log-capture.js
-) else (
-    echo ========================================
-    echo Build complete! Starting SampleApp...
-    echo ========================================
-    call npm start
-)
+    goto end_script
 
-endlocal 
+:end_script
+endlocal
+exit /b 

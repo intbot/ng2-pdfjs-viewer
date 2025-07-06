@@ -612,12 +612,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     }
     
     const action = this.mapPropertyToAction(propertyName);
-    if (action === null) {
-      // Property is intentionally not mapped (handled via query params or direct API)
-      if (this.diagnosticLogs) {
-        console.log(`🔍 PdfJsViewer: Property ${propertyName} is handled via query parameters or direct API, skipping PostMessage`);
-      }
-    } else if (action) {
+    if (action) {
       this.sendControlMessage(action, value)
         .then(response => {
           if (this.diagnosticLogs) {
@@ -628,9 +623,9 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
           console.error(`🔍 PdfJsViewer: Failed to update ${propertyName} to ${value}:`, error);
         });
     } else {
-      // Property not found in action map - this should not happen with our current mapping
+      // Property is intentionally not mapped (handled via query parameters or direct API)
       if (this.diagnosticLogs) {
-        console.warn(`🔍 PdfJsViewer: No action mapping found for property ${propertyName} - this property may need to be added to the action map`);
+        console.log(`🔍 PdfJsViewer: Property ${propertyName} is handled via query parameters or direct API, skipping PostMessage`);
       }
     }
   }
@@ -1029,7 +1024,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         action: action,
         payload: value
       });
-    }
+      }
   }
 
   ngOnDestroy(): void {
