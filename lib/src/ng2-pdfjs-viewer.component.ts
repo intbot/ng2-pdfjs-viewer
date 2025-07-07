@@ -25,9 +25,6 @@ interface ViewerAction {
   action: string;
   payload: any;
   condition?: (viewer: any) => boolean;
-  delay?: number; // milliseconds
-  retryCount?: number;
-  retryDelay?: number;
 }
 
 interface ActionExecutionResult {
@@ -39,12 +36,14 @@ interface ActionExecutionResult {
 
 // Action Queue Manager
 class ActionQueueManager {
-  private immediateActions: ViewerAction[] = []; // Execute when PostMessage API is ready
-  private autoActions: ViewerAction[] = [];      // Execute after PDF loads
+  private immediateActions: ViewerAction[] = []; // Execute when PostMessage API is ready (readiness >= 3)
+  private viewerReadyActions: ViewerAction[] = []; // Execute when components are ready (readiness >= 4)
+  private documentLoadedActions: ViewerAction[] = []; // Execute after PDF loads (readiness >= 5)
   private pendingActions: ViewerAction[] = [];   // On-demand actions
   private executedActions: Map<string, ActionExecutionResult> = new Map();
   private isDocumentLoaded = false;
   private isPostMessageReady = false;
+  private postMessageReadiness = 0;
   private diagnosticLogs = false;
   private postMessageExecutor?: (action: string, payload: any) => Promise<any>;
 
@@ -52,13 +51,17 @@ class ActionQueueManager {
     this.diagnosticLogs = diagnosticLogs;
   }
 
-  setPostMessageReady(ready: boolean): void {
+  setPostMessageReady(ready: boolean, readiness: number = 0): void {
     this.isPostMessageReady = ready;
+    this.postMessageReadiness = readiness;
     if (ready && this.diagnosticLogs) {
-      console.log('🔍 ActionQueueManager: PostMessage API ready, executing immediate actions');
+      console.log(`🔍 ActionQueueManager: PostMessage API ready (readiness: ${readiness}), executing appropriate actions`);
     }
     if (ready) {
       this.executeImmediateActions();
+      if (readiness >= 4) {
+        this.executeViewerReadyActions();
+      }
     }
   }
 
@@ -74,15 +77,27 @@ class ActionQueueManager {
     }
   }
 
-  queueAutoAction(action: ViewerAction): void {
+  queueViewerReadyAction(action: ViewerAction): void {
     if (this.diagnosticLogs) {
-      console.log(`🔍 ActionQueueManager: Queueing auto action: ${action.action} = ${action.payload}`);
+      console.log(`🔍 ActionQueueManager: Queueing viewer ready action: ${action.action} = ${action.payload}`);
     }
-    this.autoActions.push(action);
+    this.viewerReadyActions.push(action);
+    
+    // Execute immediately if components are already ready
+    if (this.postMessageReadiness >= 4) {
+      this.executeViewerReadyActions();
+    }
+  }
+
+  queueDocumentLoadedAction(action: ViewerAction): void {
+    if (this.diagnosticLogs) {
+      console.log(`🔍 ActionQueueManager: Queueing document loaded action: ${action.action} = ${action.payload}`);
+    }
+    this.documentLoadedActions.push(action);
     
     // Execute immediately if document is already loaded
     if (this.isDocumentLoaded) {
-      this.executeAutoActions();
+      this.executeDocumentLoadedActions();
     }
   }
 
@@ -96,10 +111,52 @@ class ActionQueueManager {
 
   onDocumentLoaded(): void {
     if (this.diagnosticLogs) {
-      console.log('🔍 ActionQueueManager: Document loaded, executing auto actions');
+      console.log('🔍 ActionQueueManager: Document loaded, executing document loaded actions');
     }
     this.isDocumentLoaded = true;
-    this.executeAutoActions();
+    this.executeDocumentLoadedActions();
+  }
+
+  private async executeViewerReadyActions(): Promise<void> {
+    if (this.viewerReadyActions.length === 0) return;
+    
+    if (this.diagnosticLogs) {
+      console.log(`🔍 ActionQueueManager: Executing ${this.viewerReadyActions.length} viewer ready actions`);
+    }
+    
+    const actionsToExecute = [...this.viewerReadyActions];
+    this.viewerReadyActions = [];
+    
+    for (const action of actionsToExecute) {
+      try {
+        await this.executeAction(action);
+      } catch (error) {
+        if (this.diagnosticLogs) {
+          console.error(`🔍 ActionQueueManager: Error executing viewer ready action ${action.action}:`, error);
+        }
+      }
+    }
+  }
+
+  private async executeDocumentLoadedActions(): Promise<void> {
+    if (this.documentLoadedActions.length === 0) return;
+    
+    if (this.diagnosticLogs) {
+      console.log(`🔍 ActionQueueManager: Executing ${this.documentLoadedActions.length} document loaded actions`);
+    }
+    
+    const actionsToExecute = [...this.documentLoadedActions];
+    this.documentLoadedActions = [];
+    
+    for (const action of actionsToExecute) {
+      try {
+        await this.executeAction(action);
+      } catch (error) {
+        if (this.diagnosticLogs) {
+          console.error(`🔍 ActionQueueManager: Error executing document loaded action ${action.action}:`, error);
+        }
+      }
+    }
   }
 
   private async executeImmediateActions(): Promise<void> {
@@ -123,26 +180,7 @@ class ActionQueueManager {
     }
   }
 
-  private async executeAutoActions(): Promise<void> {
-    if (this.autoActions.length === 0) return;
-    
-    if (this.diagnosticLogs) {
-      console.log(`🔍 ActionQueueManager: Executing ${this.autoActions.length} auto actions`);
-    }
-    
-    const actionsToExecute = [...this.autoActions];
-    this.autoActions = [];
-    
-    for (const action of actionsToExecute) {
-      try {
-        await this.executeAction(action);
-      } catch (error) {
-        if (this.diagnosticLogs) {
-          console.error(`🔍 ActionQueueManager: Error executing auto action ${action.action}:`, error);
-        }
-      }
-    }
-  }
+
 
   private async executeAction(action: ViewerAction): Promise<ActionExecutionResult> {
     const result: ActionExecutionResult = {
@@ -163,30 +201,13 @@ class ActionQueueManager {
         return result;
       }
 
-      // Apply delay if specified
-      if (action.delay && action.delay > 0) {
-        await new Promise(resolve => setTimeout(resolve, action.delay));
-      }
-
-      // Execute the action
+      // Execute the action (no delays or retries - event-driven only)
       let success = false;
-      let retryCount = 0;
-      const maxRetries = action.retryCount || 0;
-      const retryDelay = action.retryDelay || 1000;
-
-      while (!success && retryCount <= maxRetries) {
-        try {
-          success = await this.executeActionViaPostMessage(action);
-          if (success) break;
-        } catch (error) {
-          if (this.diagnosticLogs) {
-            console.warn(`🔍 ActionQueueManager: Attempt ${retryCount + 1} failed for ${action.action}:`, error);
-          }
-        }
-
-        retryCount++;
-        if (retryCount <= maxRetries) {
-          await new Promise(resolve => setTimeout(resolve, retryDelay));
+      try {
+        success = await this.executeActionViaPostMessage(action);
+      } catch (error) {
+        if (this.diagnosticLogs) {
+          console.error(`🔍 ActionQueueManager: Action ${action.action} failed:`, error);
         }
       }
 
@@ -196,9 +217,9 @@ class ActionQueueManager {
           console.log(`🔍 ActionQueueManager: Action ${action.action} executed successfully`);
         }
       } else {
-        result.error = `Failed after ${retryCount} attempts`;
+        result.error = 'Action failed';
         if (this.diagnosticLogs) {
-          console.error(`🔍 ActionQueueManager: Action ${action.action} failed after ${retryCount} attempts`);
+          console.error(`🔍 ActionQueueManager: Action ${action.action} failed`);
         }
       }
     } catch (error) {
@@ -230,10 +251,11 @@ class ActionQueueManager {
     if (!result) {
       // Check if action is still in queues
       const inImmediate = this.immediateActions.some(a => a.id === actionId);
-      const inAuto = this.autoActions.some(a => a.id === actionId);
+      const inViewerReady = this.viewerReadyActions.some(a => a.id === actionId);
+      const inDocumentLoaded = this.documentLoadedActions.some(a => a.id === actionId);
       const inPending = this.pendingActions.some(a => a.id === actionId);
       
-      if (inImmediate || inAuto || inPending) {
+      if (inImmediate || inViewerReady || inDocumentLoaded || inPending) {
         return 'pending';
       }
       return 'not-found';
@@ -244,7 +266,8 @@ class ActionQueueManager {
 
   clearQueues(): void {
     this.immediateActions = [];
-    this.autoActions = [];
+    this.viewerReadyActions = [];
+    this.documentLoadedActions = [];
     this.pendingActions = [];
     this.executedActions.clear();
     if (this.diagnosticLogs) {
@@ -252,10 +275,11 @@ class ActionQueueManager {
     }
   }
 
-  getQueueStatus(): { immediateActions: number; autoActions: number; pendingActions: number; executedActions: number } {
+  getQueueStatus(): { immediateActions: number; viewerReadyActions: number; documentLoadedActions: number; pendingActions: number; executedActions: number } {
     return {
       immediateActions: this.immediateActions.length,
-      autoActions: this.autoActions.length,
+      viewerReadyActions: this.viewerReadyActions.length,
+      documentLoadedActions: this.documentLoadedActions.length,
       pendingActions: this.pendingActions.length,
       executedActions: this.executedActions.size
     };
@@ -380,8 +404,8 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   }
 
   private isPostMessageReady = false;
+  private postMessageReadiness = 0; // Track readiness level from PostMessage wrapper
   private pendingInitialConfig = true;
-  private postMessageTimeout: any;
   private actionQueueManager: ActionQueueManager;
 
   ngOnInit(): void {   
@@ -394,17 +418,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     // Set up PostMessage listener
     this.setupMessageListener();
     
-    // Set a timeout for PostMessage API readiness
-    this.postMessageTimeout = setTimeout(() => {
-      if (!this.isPostMessageReady) {
-        console.warn('🔍 PdfJsViewer: PostMessage API timeout, proceeding without dynamic controls');
-        this.isPostMessageReady = true;
-        this.pendingInitialConfig = false;
-        this.actionQueueManager.setPostMessageReady(true);
-      }
-    }, 5000); // 5 second timeout
-    
-    // Queue all initial configurations as immediate actions
+    // Queue all initial configurations based on readiness requirements
     this.queueAllConfigurations();
     
     // Load PDF for embedded views.
@@ -476,7 +490,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   }
 
   private messageIdCounter = 0;
-  private pendingMessages = new Map<string, { resolve: Function, reject: Function, timeout: any }>();
+  private pendingMessages = new Map<string, { resolve: Function, reject: Function }>();
 
   private generateMessageId(): string {
     return `msg_${++this.messageIdCounter}_${Date.now()}`;
@@ -494,13 +508,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         timestamp: Date.now()
       };
 
-      // Set up response handler
-      const timeout = setTimeout(() => {
-        this.pendingMessages.delete(messageId);
-        reject(new Error(`Timeout waiting for response to ${action}`));
-      }, 5000); // 5 second timeout
-
-      this.pendingMessages.set(messageId, { resolve, reject, timeout });
+      this.pendingMessages.set(messageId, { resolve, reject });
 
       // Send message to iframe
       if (this.iframe && this.iframe.nativeElement && this.iframe.nativeElement.contentWindow) {
@@ -509,7 +517,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         console.log('🔍 PdfJsViewer: Sent control message:', action, payload);
         }
       } else {
-        clearTimeout(timeout);
         this.pendingMessages.delete(messageId);
         reject(new Error('Iframe not available'));
       }
@@ -519,7 +526,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   private handleControlResponse(response: ControlResponse): void {
     const pendingMessage = this.pendingMessages.get(response.id);
     if (pendingMessage) {
-      clearTimeout(pendingMessage.timeout);
       this.pendingMessages.delete(response.id);
       
       if (response.success) {
@@ -544,13 +550,12 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         console.log('🔍 PdfJsViewer: PostMessage API ready notification received');
         }
         this.isPostMessageReady = true;
+        this.postMessageReadiness = event.data.readiness || 0;
         this.pendingInitialConfig = false;
-        this.actionQueueManager.setPostMessageReady(true);
+        this.actionQueueManager.setPostMessageReady(true, this.postMessageReadiness);
         
-        // Clear the timeout since we got the ready notification
-        if (this.postMessageTimeout) {
-          clearTimeout(this.postMessageTimeout);
-          this.postMessageTimeout = null;
+        if (this.diagnosticLogs) {
+        console.log(`🔍 PdfJsViewer: PostMessage readiness level: ${this.postMessageReadiness}`);
         }
         
         // Apply any pending changes that occurred before PostMessage API was ready
@@ -795,7 +800,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     return this.actionQueueManager.getActionStatus(actionId);
   }
 
-  public getQueueStatus(): { immediateActions: number; autoActions: number; pendingActions: number; executedActions: number } {
+  public getQueueStatus(): { immediateActions: number; viewerReadyActions: number; documentLoadedActions: number; pendingActions: number; executedActions: number } {
     return this.actionQueueManager.getQueueStatus();
   }
 
@@ -991,7 +996,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
     // Queue auto actions (these will be executed after document loads)
     if (this.startDownload) {
-      this.actionQueueManager.queueAutoAction({
+      this.actionQueueManager.queueDocumentLoadedAction({
         id: 'auto-download',
         type: 'auto',
         action: 'trigger-download',
@@ -999,7 +1004,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       });
     }
     if (this.startPrint) {
-      this.actionQueueManager.queueAutoAction({
+      this.actionQueueManager.queueDocumentLoadedAction({
         id: 'auto-print',
         type: 'auto',
         action: 'trigger-print',
@@ -1007,7 +1012,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       });
     }
     if (this.lastPage) {
-      this.actionQueueManager.queueAutoAction({
+      this.actionQueueManager.queueDocumentLoadedAction({
         id: 'auto-last-page',
         type: 'auto',
         action: 'go-to-last-page',
@@ -1018,28 +1023,41 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
   private queueConfiguration(propertyName: string, value: any, action: string): void {
     if (value !== undefined && value !== null) {
-      this.actionQueueManager.queueImmediateAction({
+      // Determine which queue to use based on action requirements
+      const immediateActions = ['show-download', 'show-print', 'show-fullscreen', 'show-find', 'show-bookmark', 'show-openfile', 'show-annotations', 'set-error-message', 'set-error-override', 'set-error-append', 'set-locale', 'set-css-zoom'];
+      const viewerReadyActions = ['set-cursor', 'set-scroll', 'set-spread', 'set-zoom', 'update-page-mode'];
+      const documentLoadedActions = ['set-page', 'set-rotation', 'go-to-last-page', 'go-to-named-dest', 'trigger-download', 'trigger-print', 'trigger-rotate-cw', 'trigger-rotate-ccw'];
+      
+      let actionType: 'immediate' | 'auto' | 'demand' | 'conditional' = 'immediate';
+      let queueMethod = 'queueImmediateAction';
+      
+      if (viewerReadyActions.includes(action)) {
+        actionType = 'auto';
+        queueMethod = 'queueViewerReadyAction';
+      } else if (documentLoadedActions.includes(action)) {
+        actionType = 'auto';
+        queueMethod = 'queueDocumentLoadedAction';
+      }
+      
+      const actionObj: ViewerAction = {
         id: `config-${propertyName}`,
-        type: 'immediate',
+        type: actionType,
         action: action,
         payload: value
-      });
+      };
+      
+      if (queueMethod === 'queueImmediateAction') {
+        this.actionQueueManager.queueImmediateAction(actionObj);
+      } else if (queueMethod === 'queueViewerReadyAction') {
+        this.actionQueueManager.queueViewerReadyAction(actionObj);
+      } else if (queueMethod === 'queueDocumentLoadedAction') {
+        this.actionQueueManager.queueDocumentLoadedAction(actionObj);
       }
+    }
   }
 
   ngOnDestroy(): void {
-    // Clean up timeout
-    if (this.postMessageTimeout) {
-      clearTimeout(this.postMessageTimeout);
-      this.postMessageTimeout = null;
-    }
-    
     // Clean up pending messages
-    this.pendingMessages.forEach((message, id) => {
-      if (message.timeout) {
-        clearTimeout(message.timeout);
-      }
-    });
     this.pendingMessages.clear();
     
     // Clean up URL
