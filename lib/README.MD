@@ -42,7 +42,11 @@ Some of below features are unique to this component, which is unavailable in nat
 ✔️ **Print preview** 🖨️ - You can set the pdf to open in a new tab or another browser window and provide an immediate print preview, A use case will be a 'Print' button opening pdf in new window with print dialog.  
 ✔️ **Defaults** - There are a ton of built in functionality Mozilla's viewer supports; such as print, download, bookmark, fullscreen, open file, zoom, search, pan, spread, navigate, attachments etc which is also available as-is in this viewer. Not mentioning them individually.  
 ✔️ **Auto download** 💾 - This option allows you to download the pdf file to user device automatically without manually invoking the download.  
+✔️ **Auto print** 🖨️ - Automatically trigger print dialog when the document loads.  
 ✔️ **Auto rotate** 🔄 - Rotate the document _clockwise_ or _anti-clockwise_ 90° (+/- 90°) just before displaying. Useful if the document is misaligned.  
+✔️ **Auto mode controls** 🎛️ - Automatically set cursor, scroll, and spread modes when the document loads.  
+✔️ **Auto navigation** 🧭 - Automatically navigate to specific pages, zoom levels, named destinations, and page modes when the document loads.  
+✔️ **Auto configuration** ⚙️ - Automatically set locale and other configuration options when the document loads.  
 ✔️ **Language** 🌍 - Set the language of your choice to the viewer controls.  
 ✔️ **Custom error** ❌ - Hate the defaults pdfjs errors, use this feature to override or append to it.  
 ✔️ **Side bar** 📎 - Open and show the sidebar with relevant information. E.g. Show attachments.  
@@ -135,21 +139,20 @@ _Please note if you decide to put `pdfjs` folder anywhere else other than the `a
 | `(onAfterPrint)`              | Event to be invoked after document gets printed(Must provide `viewerId`). E.g. `(onAfterPrint)="testAfterPrint()"`                                                                                                                                 | `Function`       |                                                          |
 | `downloadFileName`            | Sets/Changes the name of document to be downloaded. If the file name does not ends in `.pdf`, the component will automatically add it for you.                                                                                                     | `string`         | Actual name of the document                              |
 | `[page]`                      | Show specific page. E.g _page=3_. You may also get/set the page number from your component using '.' notation explicitly, after document is loaded. E.g. `myPdfViewer.page = 3;`                                                                   | `number`         | `1`                                                      |
-| `[lastPage]`                  | Show last page of the document once it is loaded(If set to `true`). If you use this option along with _`page`_ option, undesired effects might occur                                                                                               | `boolean`        | `false`                                                  |
-| `nameddest`                   | Go to a named destination. E.g. To go to section _5.1_ use like nameddest=5.1. Do not mix this option with _`page`_ and _`lastPage`_ options                                                                                                       | `string`         |                                                          |
+| `nameddest`                   | Go to a named destination. E.g. To go to section _5.1_ use like nameddest=5.1. Do not mix this option with _`page`_ option                                                                                                                          | `string`         |                                                          |
 | `zoom`                        | Set zoom level of document. Applicable values are `auto`, `page-width`, `page-height`, `page-fit`, `200`_(As a zoom percentage)_, `left offset`_(As in "auto,18,827")_, `top offset`_(As in "auto,18,127")_                                        | `string`         | `auto`                                                   |
 | `[print]`                     | Show/hide print button. Set `false` to hide                                                                                                                                                                                                        | `boolean`        | `true`                                                   |
-| `[startPrint]`                | Start print preview of document. This combined with _`externalWindow`_ could mimic a print preview functionality just like the one in gmail.                                                                                                       | `boolean`        |                                                          |
 | `[download]`                  | Show/hide download button. Set `false` to hide                                                                                                                                                                                                     | boolean          | `true`                                                   |
 | `[find]`                      | Show/hide search button. Set `false` to hide                                                                                                                                                                                                       | boolean          | `true`                                                   |
-| `[startDownload]`             | Download document as soon as it opens. You may put this to good use.                                                                                                                                                                               | `boolean`        |                                                          |
-| `[rotatecw]`                  | Rotate document clock wise 90°                                                                                                                                                                                                                     | `boolean`        |                                                          |
-| `[rotateccw]`                 | Rotate document anti-clock wise 90°                                                                                                                                                                                                                | `boolean`        |                                                          |
+| `[autoDownload]`              | Download document automatically when it opens.                                                                                                                                                                                                     | `boolean`        | `false`                                                 |
+| `[autoPrint]`                 | Print document automatically when it opens.                                                                                                                                                                                                        | `boolean`        | `false`                                                 |
+| `[autoLastPage]`              | Go to last page automatically when document opens.                                                                                                                                                                                                 | `boolean`        | `false`                                                 |
+| `[rotatecw]`                  | Rotate document clock wise 90°                                                                                                                                                                                                                     | `boolean`        | `false`                                                 |
+| `[rotateccw]`                 | Rotate document anti-clock wise 90°                                                                                                                                                                                                                | `boolean`        | `false`                                                 |
 | `cursor`                      | Type of cursor. Available options are _`HAND`/`H`_, _`SELECT`/`S`_,_`ZOOM`/`Z`_. Case is irrelevant.                                                                                                                                               | _`SELECT`/`S`_   |                                                          |
-| `scroll`                      | Sets scroll. Available options are _`VERTICAL`/`V`_, _`HORIZONTAL`/`H`_,_`WRAPPED`/`W`_. Case is irrelevant.                                                                                                                                       | _`VERTICAL`/`V`_ |                                                          |
+| `scroll`                      | Sets scroll. Available options are _`VERTICAL`/`V`_, _`HORIZONTAL`/`H`_,_`WRAPPED`/`W`_, _`PAGE`/`P`_. Case is irrelevant.                                                                                                                           | _`VERTICAL`/`V`_ |                                                          |
 | `spread`                      | Sets Odd or Even spread. Available options are _`ODD`/`O`_, _`EVEN`/`E`_,_`NONE`/`N`_. Case is irrelevant.                                                                                                                                         | _`NONE`/`N`_     |                                                          |
 | `[fullScreen]`                | Show/hide presentation(full screen) button. Set `false` to hide                                                                                                                                                                                    | `boolean`        | `true`                                                   |
-| `cursor`                      | Type of cursor. Available options are _`HAND`/`H`_, _`SELECT`/`S`_,_`ZOOM`/`Z`_. Case is irrelevant.                                                                                                                                               | _`SELECT`/`S`_   |                                                          |
 | `pagemode`                    | State of sidebar. Available options are _`none`_, _`thumbs`_,_`bookmarks`_,_`attachments`_. E.g. `pagemode=attachments`.                                                                                                                           | _`none`_         |                                                          |
 | `[openFile]`                  | Show/hide open file button. Set `false` to hide                                                                                                                                                                                                    | boolean          | `true`                                                   |
 | `[viewBookmark]`              | Show/hide bookmark button. Set `false` to hide                                                                                                                                                                                                     | boolean          | `true`                                                   |
@@ -162,6 +165,41 @@ _Please note if you decide to put `pdfjs` folder anywhere else other than the `a
 | `[diagnosticLogs]`            | Turns on all diagnostic logs to the console                                                                                                                                                                                                        | boolean          | `true`                                                   |
 
 **_Please note, copy step is mandatory to enjoy all of the different options listed above. You may also avoid this step and could directly use https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website if you wish to just use the default viewer_**
+
+**Important Notes:**
+- **Locale changes**: Locale changes require a viewer refresh to take effect, as they affect the entire viewer interface
+- **Page Mode (Bookmarks/Attachments)**: These options will only show content if the PDF document contains bookmarks or attachments
+- **Scroll Mode**: The "Page" scroll mode provides page-by-page scrolling instead of continuous scrolling
+
+## On-Demand Methods
+
+In addition to setting properties, you can also execute actions on-demand using the following methods:
+
+| Method | Description | Parameters | Returns |
+|--------|-------------|------------|---------|
+| `setCursor(cursor)` | Set cursor mode on-demand | `cursor: 'select' \| 'hand' \| 'zoom'` | `Promise<ActionExecutionResult>` |
+| `setScroll(scroll)` | Set scroll mode on-demand | `scroll: 'vertical' \| 'horizontal' \| 'wrapped' \| 'page'` | `Promise<ActionExecutionResult>` |
+| `setSpread(spread)` | Set spread mode on-demand | `spread: 'none' \| 'odd' \| 'even'` | `Promise<ActionExecutionResult>` |
+| `setZoom(zoom)` | Set zoom level on-demand | `zoom: string` | `Promise<ActionExecutionResult>` |
+| `goToPage(page)` | Navigate to specific page on-demand | `page: number` | `Promise<ActionExecutionResult>` |
+| `goToNamedDestination(destination)` | Navigate to named destination on-demand | `destination: string` | `Promise<ActionExecutionResult>` |
+| `setPageMode(mode)` | Set page mode on-demand | `mode: 'none' \| 'thumbs' \| 'bookmarks' \| 'attachments'` | `Promise<ActionExecutionResult>` |
+| `setLocale(locale)` | Set locale on-demand | `locale: string` | `Promise<ActionExecutionResult>` |
+| `triggerDownload()` | Trigger download on-demand | None | `Promise<ActionExecutionResult>` |
+| `triggerPrint()` | Trigger print on-demand | None | `Promise<ActionExecutionResult>` |
+| `triggerRotation(direction)` | Rotate document on-demand | `direction: 'cw' \| 'ccw'` | `Promise<ActionExecutionResult>` |
+
+**Example:**
+```typescript
+// Set cursor to hand mode on-demand
+await pdfViewer.setCursor('hand');
+
+// Set scroll to horizontal mode on-demand
+await pdfViewer.setScroll('horizontal');
+
+// Set spread to odd mode on-demand
+await pdfViewer.setSpread('odd');
+```
 
 ## Usage
 

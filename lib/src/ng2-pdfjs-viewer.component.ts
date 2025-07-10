@@ -316,17 +316,19 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   @Input() public openFile: boolean = true;
   @Input() public annotations: boolean = false;
   @Input() public download: boolean = true;
-  @Input() public startDownload: boolean;
+  @Input() public autoDownload: boolean = false;
   @Input() public viewBookmark: boolean = true;
   @Input() public print: boolean = true;
-  @Input() public startPrint: boolean;
+  @Input() public autoPrint: boolean = false;
+  @Input() public rotatecw: boolean = false;
+  @Input() public rotateccw: boolean = false;
   @Input() public fullScreen: boolean = true;
   //@Input() public showFullScreen: boolean;
   @Input() public find: boolean = true;
   @Input() public zoom: string;
   @Input() public nameddest: string;
   @Input() public pagemode: string;
-  @Input() public lastPage: boolean;
+  @Input() public autoLastPage: boolean = false;
   @Input() public cursor: string;
   @Input() public scroll: string;
   @Input() public spread: string;
@@ -406,10 +408,14 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   private isPostMessageReady = false;
   private postMessageReadiness = 0; // Track readiness level from PostMessage wrapper
   private pendingInitialConfig = true;
+  private initialConfigQueued = false; // Track if initial configuration has been queued
   private actionQueueManager: ActionQueueManager;
 
-  ngOnInit(): void {   
-    // Initialize action queue manager
+      ngOnInit(): void {   
+      // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
+      console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-07-09T22-30-15-000Z');
+    
+    // Configure action queue manager with diagnostic logs
     this.actionQueueManager = new ActionQueueManager(this.diagnosticLogs);
     
     // Connect action queue manager to PostMessage system
@@ -417,9 +423,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     
     // Set up PostMessage listener
     this.setupMessageListener();
-    
-    // Queue all initial configurations based on readiness requirements
-    this.queueAllConfigurations();
     
     // Load PDF for embedded views.
     if (!this.externalWindow) {
@@ -479,9 +482,35 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       });
       }
       if (change.currentValue !== change.previousValue) {
+        // Handle auto-actions - queue for document load, don't execute immediately
+        const autoActions = ['autoDownload', 'autoPrint', 'autoLastPage', 'rotatecw', 'rotateccw'];
+        if (autoActions.includes(propertyName)) {
           if (this.diagnosticLogs) {
-        console.log(`🔍 PdfJsViewer: Value changed for ${propertyName}, updating viewer`);
+            console.log(`🔍 PdfJsViewer: Auto-action ${propertyName} changed to ${change.currentValue} - re-queueing configurations`);
           }
+          // Re-queue all configurations when auto-actions change
+          this.initialConfigQueued = false;
+          if (this.isPostMessageReady) {
+            this.queueAllConfigurations();
+            this.initialConfigQueued = true;
+          }
+          return;
+        }
+        
+        // Handle immediate actions (show/hide controls) - execute immediately
+        const immediateActions = ['openFile', 'download', 'print', 'fullScreen', 'find', 'viewBookmark', 'annotations'];
+        if (immediateActions.includes(propertyName)) {
+          if (this.diagnosticLogs) {
+            console.log(`🔍 PdfJsViewer: Immediate action ${propertyName} changed to ${change.currentValue} - executing immediately`);
+          }
+        this.updateViewerControl(propertyName, change.currentValue);
+          return;
+        }
+        
+        // Handle all other actions (including auto-actions) - execute immediately if PostMessage API is ready
+        if (this.diagnosticLogs) {
+          console.log(`🔍 PdfJsViewer: Action ${propertyName} changed to ${change.currentValue} - executing immediately`);
+        }
         this.updateViewerControl(propertyName, change.currentValue);
       } else {
         console.log(`🔍 PdfJsViewer: No change detected for ${propertyName}`);
@@ -558,6 +587,12 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         console.log(`🔍 PdfJsViewer: PostMessage readiness level: ${this.postMessageReadiness}`);
         }
         
+        // Queue all initial configurations now that PostMessage API is ready (only once)
+        if (!this.initialConfigQueued) {
+          this.queueAllConfigurations();
+          this.initialConfigQueued = true;
+        }
+        
         // Apply any pending changes that occurred before PostMessage API was ready
         this.applyPendingChanges();
         return;
@@ -576,7 +611,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       'viewBookmark': 'show-bookmark',
       'annotations': 'show-annotations',
       
-      // Mode controls
+      // Mode controls (can be auto-actions or on-demand)
       'cursor': 'set-cursor',
       'scroll': 'set-scroll',
       'spread': 'set-spread',
@@ -587,10 +622,8 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       'nameddest': 'go-to-named-dest',
       'pagemode': 'update-page-mode',
       
-      // Auto actions
-      'startDownload': 'trigger-download',
-      'startPrint': 'trigger-print',
-      'lastPage': 'go-to-last-page',
+      // Auto actions (handled separately, not via dynamic updates)
+      'autoLastPage': 'go-to-last-page',
       
       // Error handling
       'errorMessage': 'set-error-message',
@@ -609,6 +642,28 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     };
     
     return actionMap[propertyName] || null;
+  }
+
+  /**
+   * Determines if a property can be used as an auto-action
+   */
+  private canBeAutoAction(propertyName: string): boolean {
+    const autoActionProperties = [
+      'autoDownload', 'autoPrint', 'autoLastPage', 'rotatecw', 'rotateccw',
+      'cursor', 'scroll', 'spread', // Mode controls can now be auto-actions
+      'page', 'zoom', 'nameddest', 'pagemode', 'locale' // Navigation and configuration can also be auto-actions
+    ];
+    return autoActionProperties.includes(propertyName);
+  }
+
+  /**
+   * Determines if a property can be executed on-demand
+   */
+  private canBeOnDemandAction(propertyName: string): boolean {
+    const onDemandProperties = [
+      'cursor', 'scroll', 'spread', 'zoom', 'page', 'nameddest', 'pagemode'
+    ];
+    return onDemandProperties.includes(propertyName);
   }
 
   private updateViewerControl(propertyName: string, value: any): void {
@@ -647,10 +702,10 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     }
     
     if (this.pendingChanges.length > 0) {
-      console.log('🔍 PdfJsViewer: Applying pending changes:', this.pendingChanges);
+      console.log('🔍 PdfJsViewer: Processing pending changes for proper queuing');
       this.pendingChanges.forEach((changes, index) => {
-        console.log(`🔍 PdfJsViewer: Applying pending change ${index + 1}:`, changes);
-        this.applyChanges(changes);
+        console.log(`🔍 PdfJsViewer: Processing pending change ${index + 1}:`, changes);
+        this.processChangesForQueuing(changes);
       });
       this.pendingChanges = [];
       console.log('🔍 PdfJsViewer: Cleared pending changes');
@@ -659,11 +714,49 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     }
   }
 
+  private processChangesForQueuing(changes: SimpleChanges): void {
+    if (this.diagnosticLogs) {
+      console.log('🔍 PdfJsViewer: processChangesForQueuing called with:', changes);
+    }
+    
+    Object.keys(changes).forEach(propertyName => {
+      const change = changes[propertyName];
+      if (this.diagnosticLogs) {
+        console.log(`🔍 PdfJsViewer: Processing property ${propertyName} for queuing:`, {
+          currentValue: change.currentValue,
+          previousValue: change.previousValue,
+          isFirstChange: change.isFirstChange
+        });
+      }
+      
+      if (change.currentValue !== change.previousValue) {
+        // Handle immediate actions (show/hide controls) - execute immediately
+        const immediateActions = ['openFile', 'download', 'print', 'fullScreen', 'find', 'viewBookmark', 'annotations'];
+        if (immediateActions.includes(propertyName)) {
+          if (this.diagnosticLogs) {
+            console.log(`🔍 PdfJsViewer: Immediate action ${propertyName} changed to ${change.currentValue} - executing immediately`);
+          }
+          this.updateViewerControl(propertyName, change.currentValue);
+          return;
+        }
+        
+        // Handle all other actions (including auto-actions) - execute immediately if PostMessage API is ready
+        if (this.diagnosticLogs) {
+          console.log(`🔍 PdfJsViewer: Action ${propertyName} changed to ${change.currentValue} - executing immediately`);
+        }
+        this.updateViewerControl(propertyName, change.currentValue);
+      } else {
+        console.log(`🔍 PdfJsViewer: No change detected for ${propertyName}`);
+      }
+    });
+  }
+
   /**
    * Waits for the PDF.js viewer to be ready, and binds the the event bus.
    */
   private bindToPdfJsEventBus() {
-    document.addEventListener("webviewerloaded", () => {
+    // Store the event listener reference so we can remove it later
+    const webviewerLoadedHandler = () => {
       if (this.diagnosticLogs) console.debug("PdfJsViewer: webviewerloaded event received");
       if (!this.PDFViewerApplication) {
         if (this.diagnosticLogs) console.debug("PdfJsViewer: Viewer not yet (or no longer) available, events can not yet be bound.");
@@ -680,57 +773,89 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
         const app = this.PDFViewerApplication;
         const eventBus = app.eventBus;
-        // Once initialized, attach the events.
-        // Document Loaded.
-        eventBus.on("documentloaded", () => {
+        
+        // Store event handler references for cleanup
+        const documentLoadedHandler = () => {
           if (this.diagnosticLogs) console.debug("PdfJsViewer: The document has now been loaded!");
           this.onDocumentLoad.emit();
           
+          // Queue auto-actions for this document load (not from component initialization)
+          this.queueAutoActionsForDocumentLoad();
+          
           // Execute all queued auto-actions
           this.actionQueueManager.onDocumentLoaded();
-        });
+        };
 
-        // Pages init.
-        eventBus.on("pagesinit", () => {
+        const pagesInitHandler = () => {
           if (this.diagnosticLogs) console.debug("PdfJsViewer: All pages have been rendered!");
-        });
+        };
 
-        // Before print.
-        eventBus.on("beforeprint", () => {
+        const pagesLoadedHandler = () => {
+          if (this.diagnosticLogs) console.debug("PdfJsViewer: All pages have been fully loaded!");
+        };
+
+        const beforePrintHandler = () => {
           if (this.diagnosticLogs) console.debug("PdfJsViewer: The document is about to be printed!");
           this.onBeforePrint.emit();
-        });
+        };
 
-        // After print.
-        eventBus.on("afterprint", () => {
+        const afterPrintHandler = () => {
           if (this.diagnosticLogs) console.debug("PdfJsViewer: The document has been printed!");
           this.onAfterPrint.emit();
-        });
+        };
 
-        // Page change.
-        eventBus.on("pagechanging", (event) => {
+        const pageChangingHandler = (event: any) => {
           if (this.diagnosticLogs) console.debug("PdfJsViewer: The page has changed:", event.pageNumber);
           this.onPageChange.emit(event.pageNumber);
-        });
+        };
 
-        // Rotation change.
-        eventBus.on("rotationchanging", (event) => {
+        const rotationChangingHandler = (event: any) => {
           const newRotation: ChangedRotation = {
             rotation: event.pagesRotation,
             page: event.pageNumber
           }
           if (this.diagnosticLogs) console.debug("PdfJsViewer: The rotation has changed!", event);
           this.onRotationChange.emit(newRotation);
-        })
+        };
 
-        // Scale change.
-        eventBus.on("scalechanging", (event) => {
+        const scaleChangingHandler = (event: any) => {
           const newScale: ChangedScale = event.scale;
           if (this.diagnosticLogs) console.debug("PdfJsViewer: The document has scale has changed!", newScale);
           this.onScaleChange.emit(newScale);
-        })
+        };
+        
+        // Store handlers for cleanup
+        (this as any)._pdfEventHandlers = {
+          documentloaded: documentLoadedHandler,
+          pagesinit: pagesInitHandler,
+          pagesloaded: pagesLoadedHandler,
+          beforeprint: beforePrintHandler,
+          afterprint: afterPrintHandler,
+          pagechanging: pageChangingHandler,
+          rotationchanging: rotationChangingHandler,
+          scalechanging: scaleChangingHandler
+        };
+        
+        // Attach event listeners
+        eventBus.on("documentloaded", documentLoadedHandler);
+        eventBus.on("pagesinit", pagesInitHandler);
+        eventBus.on("pagesloaded", pagesLoadedHandler);
+        eventBus.on("beforeprint", beforePrintHandler);
+        eventBus.on("afterprint", afterPrintHandler);
+        eventBus.on("pagechanging", pageChangingHandler);
+        eventBus.on("rotationchanging", rotationChangingHandler);
+        eventBus.on("scalechanging", scaleChangingHandler);
+        
+        if (this.diagnosticLogs) {
+          console.log('🔍 PdfJsViewer: PDF.js events successfully bound');
+        }
       });
-    });
+    };
+    
+    // Store the handler reference for cleanup
+    (this as any)._webviewerLoadedHandler = webviewerLoadedHandler;
+    
+    document.addEventListener("webviewerloaded", webviewerLoadedHandler);
   }
 
   // Remove the old configureVisibleFeatures method since all configurations
@@ -740,6 +865,40 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   // }
 
   public refresh(): void { // Needs to be invoked for external window or when needs to reload pdf
+    if (this.diagnosticLogs) {
+      console.log('🔍 PdfJsViewer: Refreshing viewer - clearing action queue and reloading PDF');
+    }
+    
+    // Clean up existing event listeners
+    if ((this as any)._webviewerLoadedHandler) {
+      document.removeEventListener("webviewerloaded", (this as any)._webviewerLoadedHandler);
+      (this as any)._webviewerLoadedHandler = null;
+    }
+    
+    // Clean up PDF.js event listeners
+    if ((this as any)._pdfEventHandlers && this.PDFViewerApplication && this.PDFViewerApplication.eventBus) {
+      const eventBus = this.PDFViewerApplication.eventBus;
+      const handlers = (this as any)._pdfEventHandlers;
+      
+      Object.keys(handlers).forEach(eventName => {
+        eventBus.off(eventName, handlers[eventName]);
+      });
+      
+      (this as any)._pdfEventHandlers = null;
+    }
+    
+    // Clear the action queue to ensure clean state
+    if (this.actionQueueManager) {
+      this.actionQueueManager.clearQueues();
+    }
+    
+    // Reset PostMessage readiness state
+    this.isPostMessageReady = false;
+    this.postMessageReadiness = 0;
+    this.pendingInitialConfig = true;
+    this.initialConfigQueued = false; // Reset initial config flag
+    
+    // Reload the PDF - this will trigger queueAllConfigurations() when PostMessage API is ready
     this.loadPdf();
   }
 
@@ -750,6 +909,9 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
   // Public methods for on-demand actions
   public triggerDownload(): Promise<ActionExecutionResult> {
+    if (!this.actionQueueManager) {
+      return Promise.reject(new Error('ActionQueueManager not initialized'));
+    }
     return this.actionQueueManager.queueOnDemandAction({
       id: `download-${Date.now()}`,
       type: 'demand',
@@ -759,6 +921,9 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   }
 
   public triggerPrint(): Promise<ActionExecutionResult> {
+    if (!this.actionQueueManager) {
+      return Promise.reject(new Error('ActionQueueManager not initialized'));
+    }
     return this.actionQueueManager.queueOnDemandAction({
       id: `print-${Date.now()}`,
       type: 'demand',
@@ -768,6 +933,9 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   }
 
   public triggerRotation(direction: 'cw' | 'ccw'): Promise<ActionExecutionResult> {
+    if (!this.actionQueueManager) {
+      return Promise.reject(new Error('ActionQueueManager not initialized'));
+    }
     const action = direction === 'cw' ? 'trigger-rotate-cw' : 'trigger-rotate-ccw';
     return this.actionQueueManager.queueOnDemandAction({
       id: `rotate-${direction}-${Date.now()}`,
@@ -778,6 +946,9 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     }
     
   public goToPage(page: number): Promise<ActionExecutionResult> {
+    if (!this.actionQueueManager) {
+      return Promise.reject(new Error('ActionQueueManager not initialized'));
+    }
     return this.actionQueueManager.queueOnDemandAction({
       id: `page-${page}-${Date.now()}`,
       type: 'demand',
@@ -787,25 +958,114 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     }
 
   public setZoom(zoom: string): Promise<ActionExecutionResult> {
+    if (!this.actionQueueManager) {
+      return Promise.reject(new Error('ActionQueueManager not initialized'));
+    }
     return this.actionQueueManager.queueOnDemandAction({
       id: `zoom-${zoom}-${Date.now()}`,
       type: 'demand',
       action: 'set-zoom',
       payload: zoom
     });
+  }
+
+  public setCursor(cursor: string): Promise<ActionExecutionResult> {
+    if (!this.actionQueueManager) {
+      return Promise.reject(new Error('ActionQueueManager not initialized'));
     }
+    return this.actionQueueManager.queueOnDemandAction({
+      id: `cursor-${cursor}-${Date.now()}`,
+      type: 'demand',
+      action: 'set-cursor',
+      payload: cursor
+    });
+  }
+
+  public setScroll(scroll: string): Promise<ActionExecutionResult> {
+    if (!this.actionQueueManager) {
+      return Promise.reject(new Error('ActionQueueManager not initialized'));
+    }
+    return this.actionQueueManager.queueOnDemandAction({
+      id: `scroll-${scroll}-${Date.now()}`,
+      type: 'demand',
+      action: 'set-scroll',
+      payload: scroll
+    });
+  }
+
+  public setSpread(spread: string): Promise<ActionExecutionResult> {
+    if (!this.actionQueueManager) {
+      return Promise.reject(new Error('ActionQueueManager not initialized'));
+    }
+    return this.actionQueueManager.queueOnDemandAction({
+      id: `spread-${spread}-${Date.now()}`,
+      type: 'demand',
+      action: 'set-spread',
+      payload: spread
+    });
+  }
+
+  public goToNamedDestination(destination: string): Promise<ActionExecutionResult> {
+    if (!this.actionQueueManager) {
+      return Promise.reject(new Error('ActionQueueManager not initialized'));
+    }
+    return this.actionQueueManager.queueOnDemandAction({
+      id: `nameddest-${destination}-${Date.now()}`,
+      type: 'demand',
+      action: 'go-to-named-dest',
+      payload: destination
+    });
+  }
+
+  public setPageMode(mode: string): Promise<ActionExecutionResult> {
+    if (!this.actionQueueManager) {
+      return Promise.reject(new Error('ActionQueueManager not initialized'));
+    }
+    return this.actionQueueManager.queueOnDemandAction({
+      id: `pagemode-${mode}-${Date.now()}`,
+      type: 'demand',
+      action: 'update-page-mode',
+      payload: mode
+    });
+  }
+
+  public setLocale(locale: string): Promise<ActionExecutionResult> {
+    if (!this.actionQueueManager) {
+      return Promise.reject(new Error('ActionQueueManager not initialized'));
+    }
+    return this.actionQueueManager.queueOnDemandAction({
+      id: `locale-${locale}-${Date.now()}`,
+      type: 'demand',
+      action: 'set-locale',
+      payload: locale
+    });
+  }
 
   // Action queue management methods
   public getActionStatus(actionId: string): 'pending' | 'executing' | 'completed' | 'failed' | 'not-found' {
+    if (!this.actionQueueManager) {
+      return 'not-found';
+    }
     return this.actionQueueManager.getActionStatus(actionId);
   }
 
   public getQueueStatus(): { immediateActions: number; viewerReadyActions: number; documentLoadedActions: number; pendingActions: number; executedActions: number } {
+    if (!this.actionQueueManager) {
+      return {
+        immediateActions: 0,
+        viewerReadyActions: 0,
+        documentLoadedActions: 0,
+        pendingActions: 0,
+        executedActions: 0
+      };
+    }
     return this.actionQueueManager.getQueueStatus();
   }
 
   public clearActionQueue(): void {
-    this.actionQueueManager.clearQueues();
+    if (this.actionQueueManager) {
+      this.actionQueueManager.clearQueues();
+    }
   }
 
   private relaseUrl?: () => void; // Avoid memory leak with `URL.createObjectURL`
@@ -871,11 +1131,33 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       viewerUrl = `assets/pdfjs/web/viewer.html`;
     }
 
-    // Minimal URL with only essential parameters
-    viewerUrl += `?file=${fileUrl}`;
+    // Add cache-busting timestamp only in development mode
+    const isDevelopment = window.location.hostname === 'localhost' || 
+                         window.location.hostname === '127.0.0.1' || 
+                         window.location.port === '4200' ||
+                         window.location.href.includes('localhost:4200');
+    
+    let cacheBuster: number | undefined;
+    if (isDevelopment) {
+      cacheBuster = Date.now();
+      viewerUrl += `?file=${fileUrl}&cb=${cacheBuster}`;
+      if (this.diagnosticLogs) {
+        console.log(`🔍 PdfJsViewer: Development mode detected, using cache-busting timestamp: ${cacheBuster}`);
+      }
+    } else {
+      viewerUrl += `?file=${fileUrl}`;
+      if (this.diagnosticLogs) {
+        console.log(`🔍 PdfJsViewer: Production mode detected, no cache-busting applied`);
+      }
+    }
 
     if (typeof this.viewerId !== 'undefined') {
       viewerUrl += `&viewerId=${this.viewerId}`;
+    }
+    
+    // Add additional cache-busting for the viewerId to ensure unique iframe URLs (development only)
+    if (isDevelopment && cacheBuster) {
+      viewerUrl += `&_t=${cacheBuster}`;
     }
 
     // All other configurations are now handled via PostMessage system
@@ -916,9 +1198,9 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         useOnlyCssZoom = ${this.useOnlyCssZoom}
         
         Auto-actions (handled by action queue):
-        startDownload = ${this.startDownload}
-        startPrint = ${this.startPrint}
-        lastPage = ${this.lastPage}
+        autoDownload = ${this.autoDownload}
+        autoPrint = ${this.autoPrint}
+        autoLastPage = ${this.autoLastPage}
       `);
       }
   }
@@ -928,7 +1210,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       console.log('🔍 PdfJsViewer: Queueing all initial configurations');
     }
 
-    // Queue control visibility configurations
+    // Queue control visibility configurations (non-auto-actions)
     this.queueConfiguration('openFile', this.openFile, 'show-openfile');
     this.queueConfiguration('download', this.download, 'show-download');
     this.queueConfiguration('print', this.print, 'show-print');
@@ -936,7 +1218,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     this.queueConfiguration('find', this.find, 'show-find');
     this.queueConfiguration('viewBookmark', this.viewBookmark, 'show-bookmark');
 
-    // Queue mode configurations
+    // Queue mode configurations (can be auto-actions or immediate)
     if (this.cursor) {
       this.queueConfiguration('cursor', this.cursor, 'set-cursor');
     }
@@ -947,7 +1229,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       this.queueConfiguration('spread', this.spread, 'set-spread');
     }
 
-    // Queue navigation configurations
+    // Queue navigation configurations (can be auto-actions or immediate)
     if (this._page) {
       this.queueConfiguration('page', this._page, 'set-page');
     }
@@ -961,7 +1243,15 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       this.queueConfiguration('pagemode', this.pagemode, 'update-page-mode');
     }
 
-    // Queue error handling configurations
+    // Queue rotation configurations (immediate actions, not auto-actions)
+    if (this.rotatecw === true) {
+      this.queueConfiguration('rotatecw', this.rotatecw, 'trigger-rotate-cw');
+    }
+    if (this.rotateccw === true) {
+      this.queueConfiguration('rotateccw', this.rotateccw, 'trigger-rotate-ccw');
+    }
+
+    // Queue error handling configurations (non-auto-actions)
     if (this.errorMessage) {
       this.queueConfiguration('errorMessage', this.errorMessage, 'set-error-message');
     }
@@ -972,7 +1262,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       this.queueConfiguration('errorAppend', this.errorAppend, 'set-error-append');
     }
 
-    // Queue locale and CSS zoom configurations
+    // Queue locale and CSS zoom configurations (non-auto-actions)
     if (this.locale) {
       this.queueConfiguration('locale', this.locale, 'set-locale');
     }
@@ -980,7 +1270,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       this.queueConfiguration('useOnlyCssZoom', this.useOnlyCssZoom, 'set-css-zoom');
     }
 
-    // Queue event configurations
+    // Queue event configurations (non-auto-actions)
     if (this.onBeforePrint) {
       this.queueConfiguration('beforePrint', true, 'enable-before-print');
     }
@@ -994,8 +1284,20 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       this.queueConfiguration('pageChange', true, 'enable-page-change');
     }
 
+    // Note: Auto-actions are now queued when the document loads, not during component initialization
+    // This ensures they use the current property values at the time of document load
+  }
+
+  private queueAutoActionsForDocumentLoad(): void {
+    if (this.diagnosticLogs) {
+      console.log('🔍 PdfJsViewer: Queueing auto-actions for current document load');
+    }
+    
     // Queue auto actions (these will be executed after document loads)
-    if (this.startDownload) {
+    if (this.autoDownload === true) {
+      if (this.diagnosticLogs) {
+        console.log('🔍 PdfJsViewer: Queueing auto-download for document load');
+      }
       this.actionQueueManager.queueDocumentLoadedAction({
         id: 'auto-download',
         type: 'auto',
@@ -1003,7 +1305,10 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         payload: true
       });
     }
-    if (this.startPrint) {
+    if (this.autoPrint === true) {
+      if (this.diagnosticLogs) {
+        console.log('🔍 PdfJsViewer: Queueing auto-print for document load');
+      }
       this.actionQueueManager.queueDocumentLoadedAction({
         id: 'auto-print',
         type: 'auto',
@@ -1011,7 +1316,10 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         payload: true
       });
     }
-    if (this.lastPage) {
+    if (this.autoLastPage === true) {
+      if (this.diagnosticLogs) {
+        console.log('🔍 PdfJsViewer: Queueing auto-last-page for document load');
+      }
       this.actionQueueManager.queueDocumentLoadedAction({
         id: 'auto-last-page',
         type: 'auto',
@@ -1019,13 +1327,14 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         payload: true
       });
     }
+
   }
 
   private queueConfiguration(propertyName: string, value: any, action: string): void {
     if (value !== undefined && value !== null) {
       // Determine which queue to use based on action requirements
-      const immediateActions = ['show-download', 'show-print', 'show-fullscreen', 'show-find', 'show-bookmark', 'show-openfile', 'show-annotations', 'set-error-message', 'set-error-override', 'set-error-append', 'set-locale', 'set-css-zoom'];
-      const viewerReadyActions = ['set-cursor', 'set-scroll', 'set-spread', 'set-zoom', 'update-page-mode'];
+      const immediateActions = ['show-download', 'show-print', 'show-fullscreen', 'show-find', 'show-bookmark', 'show-openfile', 'show-annotations', 'set-error-message', 'set-error-override', 'set-error-append', 'set-css-zoom'];
+      const viewerReadyActions = ['set-cursor', 'set-scroll', 'set-spread', 'set-zoom', 'update-page-mode', 'set-locale'];
       const documentLoadedActions = ['set-page', 'set-rotation', 'go-to-last-page', 'go-to-named-dest', 'trigger-download', 'trigger-print', 'trigger-rotate-cw', 'trigger-rotate-ccw'];
       
       let actionType: 'immediate' | 'auto' | 'demand' | 'conditional' = 'immediate';
@@ -1059,6 +1368,27 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   ngOnDestroy(): void {
     // Clean up pending messages
     this.pendingMessages.clear();
+    
+    // Clean up event listeners
+    if ((this as any)._webviewerLoadedHandler) {
+      document.removeEventListener("webviewerloaded", (this as any)._webviewerLoadedHandler);
+      (this as any)._webviewerLoadedHandler = null;
+    }
+    
+    // Clean up PDF.js event listeners
+    if ((this as any)._pdfEventHandlers && this.PDFViewerApplication && this.PDFViewerApplication.eventBus) {
+      const eventBus = this.PDFViewerApplication.eventBus;
+      const handlers = (this as any)._pdfEventHandlers;
+      
+      Object.keys(handlers).forEach(eventName => {
+        eventBus.off(eventName, handlers[eventName]);
+      });
+      
+      (this as any)._pdfEventHandlers = null;
+    }
+    
+    // Reset state flags
+    this.initialConfigQueued = false;
     
     // Clean up URL
     this.relaseUrl?.();

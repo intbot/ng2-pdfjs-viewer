@@ -19,10 +19,20 @@ export class FeaturesComponent implements OnInit {
   public viewBookmark = true;
   public annotations = false;
 
-  // Auto action toggles
-  public startDownload = false;
-  public startPrint = false;
-  public lastPage = false;
+  // Auto action settings (stored separately for demo purposes)
+  public autoActionSettings = {
+    autoDownload: false,
+    autoPrint: false,
+    autoLastPage: false
+  };
+
+  // Actual viewer properties (initially set to false for auto-actions)
+  public autoDownload = false;
+  public autoPrint = false;
+  public autoLastPage = false;
+
+  // In-memory state management for mode values
+  private savedModeValues: { [key: string]: any } = {};
 
   // Mode settings
   public cursor = 'select';
@@ -43,7 +53,7 @@ export class FeaturesComponent implements OnInit {
   public errorMessage = 'Custom error message';
   
   // Debug settings
-  public diagnosticLogs = false;
+  public diagnosticLogs = true;
 
   // Event counters
   public eventCounts = {
@@ -70,7 +80,11 @@ export class FeaturesComponent implements OnInit {
   // Event handlers
   public onDocumentLoad() {
     this.eventCounts.documentLoad++;
-    console.log('🧪 TestFeatures: Document loaded!', this.eventCounts.documentLoad);
+    // Get total pages from the viewer
+    if (this.testPdfViewer && this.testPdfViewer.PDFViewerApplication) {
+      this.totalPages = this.testPdfViewer.PDFViewerApplication.pagesCount || 0;
+    }
+    console.log('🧪 TestFeatures: Document loaded!', this.eventCounts.documentLoad, 'Total pages:', this.totalPages);
   }
 
   public onPageChange(pageNumber: number) {
@@ -103,9 +117,52 @@ export class FeaturesComponent implements OnInit {
 
   // Action buttons
   public refreshViewer() {
-    console.log('🧪 TestFeatures: Refreshing viewer');
+    console.log('🧪 TestFeatures: Refreshing viewer with auto-actions');
+    
+    // Apply auto-action settings to actual viewer properties
+    this.applyAutoActionSettings();
+    
+    // Save current mode values before refreshing
+    this.saveCurrentModeValues();
+    
     this.testPdfViewer.refresh();
-    console.log('🧪 TestFeatures: Viewer refreshed');
+    console.log('🧪 TestFeatures: Viewer refreshed with auto-actions applied');
+  }
+
+  // Apply auto-action settings to actual viewer properties
+  private applyAutoActionSettings() {
+    console.log('🧪 TestFeatures: Applying auto-action settings:', this.autoActionSettings);
+    
+    // Apply auto-action settings to actual viewer properties
+    this.autoDownload = this.autoActionSettings.autoDownload;
+    this.autoPrint = this.autoActionSettings.autoPrint;
+    this.autoLastPage = this.autoActionSettings.autoLastPage;
+    
+    console.log('🧪 TestFeatures: Auto-actions applied - Download:', this.autoDownload, 'Print:', this.autoPrint, 'LastPage:', this.autoLastPage);
+  }
+
+  // Clear auto-action settings (for demo purposes)
+  public clearAutoActionSettings() {
+    console.log('🧪 TestFeatures: Clearing auto-action settings');
+    this.autoActionSettings = {
+      autoDownload: false,
+      autoPrint: false,
+      autoLastPage: false
+    };
+    console.log('🧪 TestFeatures: Auto-action settings cleared');
+  }
+
+  // Save current mode values to memory
+  private saveCurrentModeValues() {
+    const modeProperties = ['cursor', 'scroll', 'spread', 'zoom', 'locale', 'nameddest', 'pagemode'];
+    modeProperties.forEach(property => {
+      const value = (this as any)[property];
+      if (value !== null && value !== undefined && value !== '') {
+        this.savedModeValues[property] = value;
+        console.log(`🧪 TestFeatures: Saved ${property} = ${value} to memory`);
+      }
+    });
+    console.log('🧪 TestFeatures: Saved current mode values before refresh');
   }
 
   public goToPage(page: number) {
@@ -166,6 +223,18 @@ export class FeaturesComponent implements OnInit {
     }
   }
 
+  public async goToLastPageAction() {
+    if (this.testPdfViewer) {
+      console.log('🧪 TestFeatures: Going to last page');
+      try {
+        const result = await this.testPdfViewer.goToPage(this.totalPages);
+        console.log('🧪 TestFeatures: Went to last page, result:', result);
+      } catch (error) {
+        console.error('🧪 TestFeatures: Failed to go to last page:', error);
+      }
+    }
+  }
+
   public async goToPageAction(page: number) {
     if (this.testPdfViewer) {
       console.log('🧪 TestFeatures: Navigating to page:', page);
@@ -188,6 +257,93 @@ export class FeaturesComponent implements OnInit {
         console.error('🧪 TestFeatures: Failed to set zoom:', zoom, error);
       }
     }
+  }
+
+  public async setCursorAction(cursor: string) {
+    if (this.testPdfViewer) {
+      console.log('🧪 TestFeatures: Setting cursor to:', cursor);
+      try {
+        const result = await this.testPdfViewer.setCursor(cursor);
+        console.log('🧪 TestFeatures: Cursor set to:', cursor, 'result:', result);
+      } catch (error) {
+        console.error('🧪 TestFeatures: Failed to set cursor:', cursor, error);
+      }
+    }
+  }
+
+  public async setScrollAction(scroll: string) {
+    if (this.testPdfViewer) {
+      console.log('🧪 TestFeatures: Setting scroll to:', scroll);
+      try {
+        const result = await this.testPdfViewer.setScroll(scroll);
+        console.log('🧪 TestFeatures: Scroll set to:', scroll, 'result:', result);
+      } catch (error) {
+        console.error('🧪 TestFeatures: Failed to set scroll:', scroll, error);
+      }
+    }
+  }
+
+  public async setSpreadAction(spread: string) {
+    if (this.testPdfViewer) {
+      console.log('🧪 TestFeatures: Setting spread to:', spread);
+      try {
+        const result = await this.testPdfViewer.setSpread(spread);
+        console.log('🧪 TestFeatures: Spread set to:', spread, 'result:', result);
+      } catch (error) {
+        console.error('🧪 TestFeatures: Failed to set spread:', spread, error);
+      }
+    }
+  }
+
+  public async goToNamedDestinationAction(destination: string) {
+    if (this.testPdfViewer) {
+      console.log('🧪 TestFeatures: Going to named destination:', destination);
+      try {
+        const result = await this.testPdfViewer.goToNamedDestination(destination);
+        console.log('🧪 TestFeatures: Navigated to destination:', destination, 'result:', result);
+      } catch (error) {
+        console.error('🧪 TestFeatures: Failed to navigate to destination:', destination, error);
+      }
+    }
+  }
+
+  public async setPageModeAction(mode: string) {
+    if (this.testPdfViewer) {
+      console.log('🧪 TestFeatures: Setting page mode to:', mode);
+      try {
+        const result = await this.testPdfViewer.setPageMode(mode);
+        console.log('🧪 TestFeatures: Page mode set to:', mode, 'result:', result);
+      } catch (error) {
+        console.error('🧪 TestFeatures: Failed to set page mode:', mode, error);
+      }
+    }
+  }
+
+  public async setLocaleAction(locale: string) {
+    if (this.testPdfViewer) {
+      console.log('🧪 TestFeatures: Setting locale to:', locale);
+      try {
+        const result = await this.testPdfViewer.setLocale(locale);
+        console.log('🧪 TestFeatures: Locale set to:', locale, 'result:', result);
+      } catch (error) {
+        console.error('🧪 TestFeatures: Failed to set locale:', locale, error);
+      }
+    }
+  }
+
+  // Simple mode change handler - let the library handle everything
+  public onModeChange(property: string, value: any) {
+    console.log(`🧪 TestFeatures: Mode ${property} changed to:`, value);
+    
+    // Save the value to memory
+    this.savedModeValues[property] = value;
+    console.log(`🧪 TestFeatures: Saved ${property} = ${value} to memory`);
+  }
+
+  // Clear all saved values
+  public clearSavedValues() {
+    this.savedModeValues = {};
+    console.log('🧪 TestFeatures: Cleared all saved values from memory');
   }
 
   // Action queue status

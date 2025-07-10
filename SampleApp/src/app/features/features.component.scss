@@ -45,10 +45,42 @@
   padding: 16px 0;
 }
 
+.tab-content.compact-modes {
+  padding: 12px 0;
+}
+
 .full-width {
   width: 100%;
   margin-bottom: 16px;
 }
+
+.compact-field {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.modes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.toggle-container {
+  grid-column: 1 / -1;
+  margin-top: 8px;
+}
+
+.state-management-section {
+  margin-top: 16px;
+  text-align: center;
+  
+  button {
+    width: 100%;
+  }
+}
+
+
 
 .toggle-group {
   h4 {
@@ -78,6 +110,50 @@
 .toggle-group.auto-actions {
   h4 {
     margin-top: 24px;
+  }
+  
+  .help-text {
+    margin-bottom: 16px;
+    padding: 12px;
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 4px;
+    color: #856404;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  
+  .auto-action-status {
+    margin-top: 16px;
+    padding: 12px;
+    background: #e3f2fd;
+    border: 1px solid #bbdefb;
+    border-radius: 4px;
+    
+    p {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      
+      strong {
+        color: #1976d2;
+      }
+      
+      em {
+        color: #666;
+        font-style: italic;
+      }
+    }
+    
+    ul {
+      margin: 8px 0;
+      padding-left: 20px;
+      
+      li {
+        margin-bottom: 4px;
+        font-size: 13px;
+        color: #555;
+      }
+    }
   }
 }
 

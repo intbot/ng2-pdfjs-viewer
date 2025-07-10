@@ -1,23 +1,67 @@
 @echo off
 setlocal enabledelayedexpansion
+
+echo ========================================
+echo BUILD AND TEST SCRIPT
+echo ========================================
+echo.
+echo This script builds the ng2-pdfjs-viewer library and runs the SampleApp.
+echo All steps are executed in order and the script will FAIL if any step fails.
+echo.
+echo USAGE: test.bat [--sample-only]
+echo   --sample-only: Skip library build and yalc, run SampleApp only
+echo.
+echo STEPS EXECUTED IN ORDER (FULL BUILD):
+echo 1. Build library - Installs dependencies and builds the library package
+echo 2. Publish to yalc - Publishes built library to local yalc repository
+echo 3. Update SampleApp - Updates SampleApp to use the latest library version
+echo 4. Install dependencies - Installs SampleApp dependencies if needed
+echo 5. Update assets - Copies PDF.js assets from library to SampleApp
+echo 6. Stop dev server - Kills any existing Angular dev server on port 4200
+echo 7. Start dev server - Starts Angular dev server with log capture
+echo.
+echo STEPS EXECUTED IN ORDER (SAMPLE-ONLY):
+echo 1. Install dependencies - Installs SampleApp dependencies if needed
+echo 2. Update assets - Copies PDF.js assets from library to SampleApp
+echo 3. Stop dev server - Kills any existing Angular dev server on port 4200
+echo 4. Start dev server - Starts Angular dev server with log capture
+echo.
+
 set build_lib=true
 if "%1"=="--sample-only" (
     set build_lib=false
 )
-echo DEBUG: build_lib value is !build_lib!
+
 if "!build_lib!"=="true" (
     echo ========================================
     echo Building and updating ng2-pdfjs-viewer
     echo ========================================
     echo.
-    echo Usage: test.bat [--sample-only]
-    echo   --sample-only: Skip library build and yalc, run SampleApp only
-    echo.
-REM Step 1: Build the library
+    
+    REM Step 1: Build the library
     echo.
     echo Step 1: Building library...
-cd lib
+    cd lib
     echo Current directory: %CD%
+    
+    REM Check if node_modules exists, install if needed
+    if exist "node_modules" (
+        echo node_modules found, skipping npm install...
+    ) else (
+        echo node_modules not found, installing dependencies...
+        echo Running: npm install
+        call npm install
+        set npm_install_exit_code=%errorlevel%
+        if !npm_install_exit_code! neq 0 (
+            echo ERROR: lib npm install failed with exit code !npm_install_exit_code!
+            echo.
+            echo Please check the npm install output above for errors.
+            pause
+            exit /b 1
+        )
+        echo ✅ lib dependencies installed
+    )
+    
     echo Running: npm run build
     echo (This may take a few minutes...)
     call npm run build
@@ -65,37 +109,61 @@ cd lib
     REM Step 3: Update SampleApp
     echo.
     echo Step 3: Updating SampleApp...
-cd ..\SampleApp
+    cd ..\SampleApp
     echo Current directory: %CD%
-    echo Running: yalc update
-    call yalc update
-    set yalc_update_exit_code=%errorlevel%
-    echo Yalc update exit code: !yalc_update_exit_code!
-    if !yalc_update_exit_code! neq 0 (
-        echo ERROR: Yalc update failed with exit code !yalc_update_exit_code!
-        echo.
-        echo Please check the yalc update output above for errors.
-        pause
-        exit /b 1
+    
+    REM Check if .yalc folder exists to determine whether to use add or update
+    if exist ".yalc" (
+        echo .yalc folder found, using yalc update...
+        echo Running: yalc update
+        call yalc update
+        set yalc_update_exit_code=%errorlevel%
+        echo Yalc update exit code: !yalc_update_exit_code!
+        if !yalc_update_exit_code! neq 0 (
+            echo ERROR: Yalc update failed with exit code !yalc_update_exit_code!
+            echo.
+            echo Please check the yalc update output above for errors.
+            pause
+            exit /b 1
+        )
+    ) else (
+        echo .yalc folder not found, using yalc add...
+        echo Running: yalc add ng2-pdfjs-viewer
+        call yalc add ng2-pdfjs-viewer
+        set yalc_add_exit_code=%errorlevel%
+        echo Yalc add exit code: !yalc_add_exit_code!
+        if !yalc_add_exit_code! neq 0 (
+            echo ERROR: Yalc add failed with exit code !yalc_add_exit_code!
+            echo.
+            echo Please check the yalc add output above for errors.
+            pause
+            exit /b 1
+        )
     )
     echo Step 3 completed successfully!
 
-    REM Step 4: Install dependencies
+    REM Step 4: Install dependencies (only if node_modules doesn't exist)
     echo.
-    echo Step 4: Installing dependencies...
+    echo Step 4: Checking dependencies...
     echo Current directory: %CD%
-    echo Running: npm install
-    call npm install
-    set npm_install_exit_code=%errorlevel%
-    echo npm install exit code: !npm_install_exit_code!
-    if !npm_install_exit_code! neq 0 (
-        echo ERROR: npm install failed with exit code !npm_install_exit_code!
-        echo.
-        echo Please check the npm install output above for errors.
-        pause
-        exit /b 1
+    if exist "node_modules" (
+        echo node_modules found, skipping npm install...
+        echo Step 4 completed successfully!
+    ) else (
+        echo node_modules not found, installing dependencies...
+        echo Running: npm install
+        call npm install
+        set npm_install_exit_code=%errorlevel%
+        echo npm install exit code: !npm_install_exit_code!
+        if !npm_install_exit_code! neq 0 (
+            echo ERROR: npm install failed with exit code !npm_install_exit_code!
+            echo.
+            echo Please check the npm install output above for errors.
+            pause
+            exit /b 1
+        )
+        echo Step 4 completed successfully!
     )
-    echo Step 4 completed successfully!
 
     REM Step 5: Update assets
     echo.
@@ -104,6 +172,14 @@ cd ..\SampleApp
     if exist "src\assets\pdfjs" (
         echo Removing old assets...
         rmdir /s /q "src\assets\pdfjs"
+        set rmdir_exit_code=%errorlevel%
+        if !rmdir_exit_code! neq 0 (
+            echo ERROR: Failed to remove old assets with exit code !rmdir_exit_code!
+            echo.
+            echo Please check if any files are locked or in use.
+            pause
+            exit /b 1
+        )
     )
     echo Copying new assets from node_modules...
     xcopy "node_modules\ng2-pdfjs-viewer\pdfjs" "src\assets\pdfjs" /e /i /y
@@ -125,6 +201,10 @@ cd ..\SampleApp
     for /f "tokens=5" %%a in ('netstat -aon ^| findstr :4200') do (
         echo Stopping process with PID: %%a
         taskkill /f /pid %%a >nul 2>&1
+        set taskkill_exit_code=%errorlevel%
+        if !taskkill_exit_code! neq 0 (
+            echo WARNING: Failed to stop process %%a (may already be stopped)
+        )
     )
     echo Port 4200 cleared.
 
@@ -143,28 +223,35 @@ cd ..\SampleApp
     set attempt=0
     goto check_server_loop
 ) else (
-    echo DEBUG: Entering sample-only block
     echo ========================================
     echo Running SampleApp only (skipping library build)
     echo ========================================
     echo.
     cd SampleApp
-    REM Step 1: Install dependencies
-    echo.
-    echo Step 1: Installing dependencies...
     echo Current directory: %CD%
-    echo Running: npm install
-    call npm install
-    set npm_install_exit_code=%errorlevel%
-    echo npm install exit code: !npm_install_exit_code!
-    if !npm_install_exit_code! neq 0 (
-        echo ERROR: npm install failed with exit code !npm_install_exit_code!
-        echo.
-        echo Please check the npm install output above for errors.
-        pause
-        exit /b 1
+    
+    REM Step 1: Install dependencies (only if needed)
+    echo.
+    echo Step 1: Checking dependencies...
+    echo Current directory: %CD%
+    if exist "node_modules" (
+        echo node_modules found, skipping npm install...
+        echo Step 1 completed successfully!
+    ) else (
+        echo node_modules not found, installing dependencies...
+        echo Running: npm install
+        call npm install
+        set npm_install_exit_code=%errorlevel%
+        echo npm install exit code: !npm_install_exit_code!
+        if !npm_install_exit_code! neq 0 (
+            echo ERROR: npm install failed with exit code !npm_install_exit_code!
+            echo.
+            echo Please check the npm install output above for errors.
+            pause
+            exit /b 1
+        )
+        echo Step 1 completed successfully!
     )
-    echo Step 1 completed successfully!
 
     REM Step 2: Update assets
     echo.
@@ -173,6 +260,14 @@ cd ..\SampleApp
     if exist "src\assets\pdfjs" (
         echo Removing old assets...
         rmdir /s /q "src\assets\pdfjs"
+        set rmdir_exit_code=%errorlevel%
+        if !rmdir_exit_code! neq 0 (
+            echo ERROR: Failed to remove old assets with exit code !rmdir_exit_code!
+            echo.
+            echo Please check if any files are locked or in use.
+            pause
+            exit /b 1
+        )
     )
     echo Copying new assets from node_modules...
     xcopy "node_modules\ng2-pdfjs-viewer\pdfjs" "src\assets\pdfjs" /e /i /y
@@ -194,6 +289,10 @@ cd ..\SampleApp
     for /f "tokens=5" %%a in ('netstat -aon ^| findstr :4200') do (
         echo Stopping process with PID: %%a
         taskkill /f /pid %%a >nul 2>&1
+        set taskkill_exit_code=%errorlevel%
+        if !taskkill_exit_code! neq 0 (
+            echo WARNING: Failed to stop process %%a (may already be stopped)
+        )
     )
     echo Port 4200 cleared.
 
