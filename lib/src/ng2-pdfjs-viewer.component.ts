@@ -313,31 +313,156 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   @Input() public target: string = '_blank';
   @Input() public showSpinner: boolean = true;
   @Input() public downloadFileName: string;
-  @Input() public openFile: boolean = true;
-  @Input() public annotations: boolean = false;
-  @Input() public download: boolean = true;
-  @Input() public autoDownload: boolean = false;
-  @Input() public viewBookmark: boolean = true;
-  @Input() public print: boolean = true;
-  @Input() public autoPrint: boolean = false;
-  @Input() public rotatecw: boolean = false;
-  @Input() public rotateccw: boolean = false;
-  @Input() public fullScreen: boolean = true;
-  //@Input() public showFullScreen: boolean;
-  @Input() public find: boolean = true;
-  @Input() public zoom: string;
-  @Input() public nameddest: string;
-  @Input() public pagemode: string;
-  @Input() public autoLastPage: boolean = false;
-  @Input() public cursor: string;
-  @Input() public scroll: string;
-  @Input() public spread: string;
-  @Input() public locale: string;
-  @Input() public useOnlyCssZoom: boolean = false;
+  @Input() public showOpenFile: boolean = true;
+  @Input() public showAnnotations: boolean = false;
+  @Input() public showDownload: boolean = true;
+  @Input() public downloadOnLoad: boolean = false;
+  @Input() public showViewBookmark: boolean = true;
+  @Input() public showPrint: boolean = true;
+  @Input() public printOnLoad: boolean = false;
+  @Input() public initialRotateCW: boolean = false;
+  @Input() public initialRotateCCW: boolean = false;
+  @Input() public showFullScreen: boolean = true;
+  @Input() public showFind: boolean = true;
+  @Input() public initialZoom: string;
+  @Input() public initialNamedDest: string;
+  @Input() public initialPageMode: string;
+  @Input() public showLastPageOnLoad: boolean = false;
+  @Input() public initialCursor: string;
+  @Input() public initialScroll: string;
+  @Input() public initialSpread: string;
+  @Input() public initialLocale: string;
+  @Input() public initialUseOnlyCssZoom: boolean = false;
   @Input() public errorOverride: boolean = false;
   @Input() public errorAppend: boolean = true;
   @Input() public errorMessage: string;
   @Input() public diagnosticLogs: boolean = false;
+
+  // ============================================================================
+  // DEPRECATED PROPERTIES - For backward compatibility
+  // These properties are deprecated and will be removed in a future version.
+  // Please use the new property names instead.
+  // ============================================================================
+
+  /** @deprecated Use `downloadOnLoad` instead. This property will be removed in a future version. */
+  @Input() public set startDownload(value: boolean) {
+    console.warn('⚠️ DEPRECATED: Property "startDownload" is deprecated. Use "downloadOnLoad" instead.');
+    this.downloadOnLoad = value;
+  }
+
+  /** @deprecated Use `printOnLoad` instead. This property will be removed in a future version. */
+  @Input() public set startPrint(value: boolean) {
+    console.warn('⚠️ DEPRECATED: Property "startPrint" is deprecated. Use "printOnLoad" instead.');
+    this.printOnLoad = value;
+  }
+
+
+
+  /** @deprecated Use `initialCursor` instead. This property will be removed in a future version. */
+  @Input() public set cursor(value: string) {
+    console.warn('⚠️ DEPRECATED: Property "cursor" is deprecated. Use "initialCursor" instead.');
+    this.initialCursor = value;
+  }
+
+  /** @deprecated Use `initialScroll` instead. This property will be removed in a future version. */
+  @Input() public set scroll(value: string) {
+    console.warn('⚠️ DEPRECATED: Property "scroll" is deprecated. Use "initialScroll" instead.');
+    this.initialScroll = value;
+  }
+
+  /** @deprecated Use `initialSpread` instead. This property will be removed in a future version. */
+  @Input() public set spread(value: string) {
+    console.warn('⚠️ DEPRECATED: Property "spread" is deprecated. Use "initialSpread" instead.');
+    this.initialSpread = value;
+  }
+
+  /** @deprecated Use `initialZoom` instead. This property will be removed in a future version. */
+  @Input() public set zoom(value: string) {
+    console.warn('⚠️ DEPRECATED: Property "zoom" is deprecated. Use "initialZoom" instead.');
+    this.initialZoom = value;
+  }
+
+  /** @deprecated Use `initialNamedDest` instead. This property will be removed in a future version. */
+  @Input() public set nameddest(value: string) {
+    console.warn('⚠️ DEPRECATED: Property "nameddest" is deprecated. Use "initialNamedDest" instead.');
+    this.initialNamedDest = value;
+  }
+
+  /** @deprecated Use `initialPageMode` instead. This property will be removed in a future version. */
+  @Input() public set pagemode(value: string) {
+    console.warn('⚠️ DEPRECATED: Property "pagemode" is deprecated. Use "initialPageMode" instead.');
+    this.initialPageMode = value;
+  }
+
+  /** @deprecated Use `initialLocale` instead. This property will be removed in a future version. */
+  @Input() public set locale(value: string) {
+    console.warn('⚠️ DEPRECATED: Property "locale" is deprecated. Use "initialLocale" instead.');
+    this.initialLocale = value;
+  }
+
+  /** @deprecated Use `initialUseOnlyCssZoom` instead. This property will be removed in a future version. */
+  @Input() public set useOnlyCssZoom(value: boolean) {
+    console.warn('⚠️ DEPRECATED: Property "useOnlyCssZoom" is deprecated. Use "initialUseOnlyCssZoom" instead.');
+    this.initialUseOnlyCssZoom = value;
+  }
+
+  /** @deprecated Use `initialRotateCW` instead. This property will be removed in a future version. */
+  @Input() public set rotatecw(value: boolean) {
+    console.warn('⚠️ DEPRECATED: Property "rotatecw" is deprecated. Use "initialRotateCW" instead.');
+    this.initialRotateCW = value;
+  }
+
+  /** @deprecated Use `initialRotateCCW` instead. This property will be removed in a future version. */
+  @Input() public set rotateccw(value: boolean) {
+    console.warn('⚠️ DEPRECATED: Property "rotateccw" is deprecated. Use "initialRotateCCW" instead.');
+    this.initialRotateCCW = value;
+  }
+
+  /** @deprecated Use `showOpenFile` instead. This property will be removed in a future version. */
+  @Input() public set openFile(value: boolean) {
+    console.warn('⚠️ DEPRECATED: Property "openFile" is deprecated. Use "showOpenFile" instead.');
+    this.showOpenFile = value;
+  }
+
+  /** @deprecated Use `showDownload` instead. This property will be removed in a future version. */
+  @Input() public set download(value: boolean) {
+    console.warn('⚠️ DEPRECATED: Property "download" is deprecated. Use "showDownload" instead.');
+    this.showDownload = value;
+  }
+
+  /** @deprecated Use `showPrint` instead. This property will be removed in a future version. */
+  @Input() public set print(value: boolean) {
+    console.warn('⚠️ DEPRECATED: Property "print" is deprecated. Use "showPrint" instead.');
+    this.showPrint = value;
+  }
+
+  /** @deprecated Use `showFullScreen` instead. This property will be removed in a future version. */
+  @Input() public set fullScreen(value: boolean) {
+    console.warn('⚠️ DEPRECATED: Property "fullScreen" is deprecated. Use "showFullScreen" instead.');
+    this.showFullScreen = value;
+  }
+
+  /** @deprecated Use `showFind` instead. This property will be removed in a future version. */
+  @Input() public set find(value: boolean) {
+    console.warn('⚠️ DEPRECATED: Property "find" is deprecated. Use "showFind" instead.');
+    this.showFind = value;
+  }
+
+  /** @deprecated Use `showViewBookmark` instead. This property will be removed in a future version. */
+  @Input() public set viewBookmark(value: boolean) {
+    console.warn('⚠️ DEPRECATED: Property "viewBookmark" is deprecated. Use "showViewBookmark" instead.');
+    this.showViewBookmark = value;
+  }
+
+  /** @deprecated Use `showLastPageOnLoad` instead. This property will be removed in a future version. */
+  @Input() public set lastPage(value: boolean) {
+    console.warn('⚠️ DEPRECATED: Property "lastPage" is deprecated. Use "showLastPageOnLoad" instead.');
+    this.showLastPageOnLoad = value;
+  }
+
+  // ============================================================================
+  // END DEPRECATED PROPERTIES
+  // ============================================================================
 
   @Input() public externalWindowOptions: string;
   public viewerTab: any;
@@ -413,7 +538,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
       ngOnInit(): void {   
       // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
-      console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-07-09T22-30-15-000Z');
+      console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-07-09T23-25-45-000Z');
     
     // Configure action queue manager with diagnostic logs
     this.actionQueueManager = new ActionQueueManager(this.diagnosticLogs);
@@ -483,7 +608,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       }
       if (change.currentValue !== change.previousValue) {
         // Handle auto-actions - queue for document load, don't execute immediately
-        const autoActions = ['autoDownload', 'autoPrint', 'autoLastPage', 'rotatecw', 'rotateccw'];
+        const autoActions = ['downloadOnLoad', 'printOnLoad', 'showLastPageOnLoad', 'initialRotateCW', 'initialRotateCCW'];
         if (autoActions.includes(propertyName)) {
           if (this.diagnosticLogs) {
             console.log(`🔍 PdfJsViewer: Auto-action ${propertyName} changed to ${change.currentValue} - re-queueing configurations`);
@@ -498,7 +623,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         }
         
         // Handle immediate actions (show/hide controls) - execute immediately
-        const immediateActions = ['openFile', 'download', 'print', 'fullScreen', 'find', 'viewBookmark', 'annotations'];
+        const immediateActions = ['showOpenFile', 'showDownload', 'showPrint', 'showFullScreen', 'showFind', 'showViewBookmark', 'showAnnotations'];
         if (immediateActions.includes(propertyName)) {
           if (this.diagnosticLogs) {
             console.log(`🔍 PdfJsViewer: Immediate action ${propertyName} changed to ${change.currentValue} - executing immediately`);
@@ -603,27 +728,27 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   private mapPropertyToAction(propertyName: string): string | null {
     const actionMap: { [key: string]: string } = {
       // Control visibility
-      'openFile': 'show-openfile',
-      'download': 'show-download',
-      'print': 'show-print',
-      'fullScreen': 'show-fullscreen',
-      'find': 'show-find',
-      'viewBookmark': 'show-bookmark',
-      'annotations': 'show-annotations',
+      'showOpenFile': 'show-openfile',
+      'showDownload': 'show-download',
+      'showPrint': 'show-print',
+      'showFullScreen': 'show-fullscreen',
+      'showFind': 'show-find',
+      'showViewBookmark': 'show-bookmark',
+      'showAnnotations': 'show-annotations',
       
       // Mode controls (can be auto-actions or on-demand)
-      'cursor': 'set-cursor',
-      'scroll': 'set-scroll',
-      'spread': 'set-spread',
+      'initialCursor': 'set-cursor',
+      'initialScroll': 'set-scroll',
+      'initialSpread': 'set-spread',
       
       // Navigation controls
       'page': 'set-page',
-      'zoom': 'set-zoom',
-      'nameddest': 'go-to-named-dest',
-      'pagemode': 'update-page-mode',
+      'initialZoom': 'set-zoom',
+      'initialNamedDest': 'go-to-named-dest',
+      'initialPageMode': 'update-page-mode',
       
       // Auto actions (handled separately, not via dynamic updates)
-      'autoLastPage': 'go-to-last-page',
+      'showLastPageOnLoad': 'go-to-last-page',
       
       // Error handling
       'errorMessage': 'set-error-message',
@@ -631,8 +756,8 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       'errorAppend': 'set-error-append',
       
       // Locale and CSS zoom
-      'locale': 'set-locale',
-      'useOnlyCssZoom': 'set-css-zoom',
+      'initialLocale': 'set-locale',
+      'initialUseOnlyCssZoom': 'set-css-zoom',
       
       // Event configuration
       'beforePrint': 'enable-before-print',
@@ -644,27 +769,9 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     return actionMap[propertyName] || null;
   }
 
-  /**
-   * Determines if a property can be used as an auto-action
-   */
-  private canBeAutoAction(propertyName: string): boolean {
-    const autoActionProperties = [
-      'autoDownload', 'autoPrint', 'autoLastPage', 'rotatecw', 'rotateccw',
-      'cursor', 'scroll', 'spread', // Mode controls can now be auto-actions
-      'page', 'zoom', 'nameddest', 'pagemode', 'locale' // Navigation and configuration can also be auto-actions
-    ];
-    return autoActionProperties.includes(propertyName);
-  }
 
-  /**
-   * Determines if a property can be executed on-demand
-   */
-  private canBeOnDemandAction(propertyName: string): boolean {
-    const onDemandProperties = [
-      'cursor', 'scroll', 'spread', 'zoom', 'page', 'nameddest', 'pagemode'
-    ];
-    return onDemandProperties.includes(propertyName);
-  }
+
+
 
   private updateViewerControl(propertyName: string, value: any): void {
     if (this.diagnosticLogs) {
@@ -731,7 +838,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       
       if (change.currentValue !== change.previousValue) {
         // Handle immediate actions (show/hide controls) - execute immediately
-        const immediateActions = ['openFile', 'download', 'print', 'fullScreen', 'find', 'viewBookmark', 'annotations'];
+        const immediateActions = ['showOpenFile', 'showDownload', 'showPrint', 'showFullScreen', 'showFind', 'showViewBookmark', 'showAnnotations'];
         if (immediateActions.includes(propertyName)) {
           if (this.diagnosticLogs) {
             console.log(`🔍 PdfJsViewer: Immediate action ${propertyName} changed to ${change.currentValue} - executing immediately`);
@@ -1178,29 +1285,29 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         viewerId = ${this.viewerId}
         
         All other configurations handled via PostMessage system:
-        openFile = ${this.openFile}
-        download = ${this.download}
-        viewBookmark = ${this.viewBookmark}
-        print = ${this.print}
-        fullScreen = ${this.fullScreen}
-        find = ${this.find}
-        cursor = ${this.cursor}
-        scrollMode = ${this.scroll}
-        spread = ${this.spread}
+        showOpenFile = ${this.showOpenFile}
+        showDownload = ${this.showDownload}
+        showViewBookmark = ${this.showViewBookmark}
+        showPrint = ${this.showPrint}
+        showFullScreen = ${this.showFullScreen}
+        showFind = ${this.showFind}
+        initialCursor = ${this.initialCursor}
+        initialScroll = ${this.initialScroll}
+        initialSpread = ${this.initialSpread}
         page = ${this.page}
-        zoom = ${this.zoom}
-        nameddest = ${this.nameddest}
-        pagemode = ${this.pagemode}
+        initialZoom = ${this.initialZoom}
+        initialNamedDest = ${this.initialNamedDest}
+        initialPageMode = ${this.initialPageMode}
         errorOverride = ${this.errorOverride}
         errorAppend = ${this.errorAppend}
         errorMessage = ${this.errorMessage}
-        locale = ${this.locale}
-        useOnlyCssZoom = ${this.useOnlyCssZoom}
+        initialLocale = ${this.initialLocale}
+        initialUseOnlyCssZoom = ${this.initialUseOnlyCssZoom}
         
         Auto-actions (handled by action queue):
-        autoDownload = ${this.autoDownload}
-        autoPrint = ${this.autoPrint}
-        autoLastPage = ${this.autoLastPage}
+        downloadOnLoad = ${this.downloadOnLoad}
+        printOnLoad = ${this.printOnLoad}
+        showLastPageOnLoad = ${this.showLastPageOnLoad}
       `);
       }
   }
@@ -1210,45 +1317,46 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       console.log('🔍 PdfJsViewer: Queueing all initial configurations');
     }
 
-    // Queue control visibility configurations (non-auto-actions)
-    this.queueConfiguration('openFile', this.openFile, 'show-openfile');
-    this.queueConfiguration('download', this.download, 'show-download');
-    this.queueConfiguration('print', this.print, 'show-print');
-    this.queueConfiguration('fullScreen', this.fullScreen, 'show-fullscreen');
-    this.queueConfiguration('find', this.find, 'show-find');
-    this.queueConfiguration('viewBookmark', this.viewBookmark, 'show-bookmark');
+    // Queue control visibility configurations (immediate actions)
+    this.queueConfiguration('showOpenFile', this.showOpenFile, 'show-openfile');
+    this.queueConfiguration('showDownload', this.showDownload, 'show-download');
+    this.queueConfiguration('showPrint', this.showPrint, 'show-print');
+    this.queueConfiguration('showFullScreen', this.showFullScreen, 'show-fullscreen');
+    this.queueConfiguration('showFind', this.showFind, 'show-find');
+    this.queueConfiguration('showViewBookmark', this.showViewBookmark, 'show-bookmark');
+    this.queueConfiguration('showAnnotations', this.showAnnotations, 'show-annotations');
 
-    // Queue mode configurations (can be auto-actions or immediate)
-    if (this.cursor) {
-      this.queueConfiguration('cursor', this.cursor, 'set-cursor');
+    // Queue mode configurations (immediate actions)
+    if (this.initialCursor) {
+      this.queueConfiguration('initialCursor', this.initialCursor, 'set-cursor');
     }
-    if (this.scroll) {
-      this.queueConfiguration('scroll', this.scroll, 'set-scroll');
+    if (this.initialScroll) {
+      this.queueConfiguration('initialScroll', this.initialScroll, 'set-scroll');
     }
-    if (this.spread) {
-      this.queueConfiguration('spread', this.spread, 'set-spread');
+    if (this.initialSpread) {
+      this.queueConfiguration('initialSpread', this.initialSpread, 'set-spread');
     }
 
-    // Queue navigation configurations (can be auto-actions or immediate)
+    // Queue navigation configurations (immediate actions)
     if (this._page) {
       this.queueConfiguration('page', this._page, 'set-page');
     }
-    if (this.zoom) {
-      this.queueConfiguration('zoom', this.zoom, 'set-zoom');
+    if (this.initialZoom) {
+      this.queueConfiguration('initialZoom', this.initialZoom, 'set-zoom');
     }
-    if (this.nameddest) {
-      this.queueConfiguration('nameddest', this.nameddest, 'go-to-named-dest');
+    if (this.initialNamedDest) {
+      this.queueConfiguration('initialNamedDest', this.initialNamedDest, 'go-to-named-dest');
     }
-    if (this.pagemode) {
-      this.queueConfiguration('pagemode', this.pagemode, 'update-page-mode');
+    if (this.initialPageMode) {
+      this.queueConfiguration('initialPageMode', this.initialPageMode, 'update-page-mode');
     }
 
-    // Queue rotation configurations (immediate actions, not auto-actions)
-    if (this.rotatecw === true) {
-      this.queueConfiguration('rotatecw', this.rotatecw, 'trigger-rotate-cw');
+    // Queue rotation configurations (immediate actions)
+    if (this.initialRotateCW === true) {
+      this.queueConfiguration('initialRotateCW', this.initialRotateCW, 'trigger-rotate-cw');
     }
-    if (this.rotateccw === true) {
-      this.queueConfiguration('rotateccw', this.rotateccw, 'trigger-rotate-ccw');
+    if (this.initialRotateCCW === true) {
+      this.queueConfiguration('initialRotateCCW', this.initialRotateCCW, 'trigger-rotate-ccw');
     }
 
     // Queue error handling configurations (non-auto-actions)
@@ -1262,12 +1370,12 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       this.queueConfiguration('errorAppend', this.errorAppend, 'set-error-append');
     }
 
-    // Queue locale and CSS zoom configurations (non-auto-actions)
-    if (this.locale) {
-      this.queueConfiguration('locale', this.locale, 'set-locale');
+    // Queue locale and CSS zoom configurations (immediate actions)
+    if (this.initialLocale) {
+      this.queueConfiguration('initialLocale', this.initialLocale, 'set-locale');
     }
-    if (this.useOnlyCssZoom !== undefined) {
-      this.queueConfiguration('useOnlyCssZoom', this.useOnlyCssZoom, 'set-css-zoom');
+    if (this.initialUseOnlyCssZoom !== undefined) {
+      this.queueConfiguration('initialUseOnlyCssZoom', this.initialUseOnlyCssZoom, 'set-css-zoom');
     }
 
     // Queue event configurations (non-auto-actions)
@@ -1294,7 +1402,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     }
     
     // Queue auto actions (these will be executed after document loads)
-    if (this.autoDownload === true) {
+    if (this.downloadOnLoad === true) {
       if (this.diagnosticLogs) {
         console.log('🔍 PdfJsViewer: Queueing auto-download for document load');
       }
@@ -1305,7 +1413,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         payload: true
       });
     }
-    if (this.autoPrint === true) {
+    if (this.printOnLoad === true) {
       if (this.diagnosticLogs) {
         console.log('🔍 PdfJsViewer: Queueing auto-print for document load');
       }
@@ -1316,7 +1424,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         payload: true
       });
     }
-    if (this.autoLastPage === true) {
+    if (this.showLastPageOnLoad === true) {
       if (this.diagnosticLogs) {
         console.log('🔍 PdfJsViewer: Queueing auto-last-page for document load');
       }

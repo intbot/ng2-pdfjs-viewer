@@ -50,25 +50,25 @@
 
               <div class="toggle-group show-hide-controls">
                 <h4>Show/Hide Controls</h4>
-                <mat-slide-toggle [(ngModel)]="openFile" color="primary">
+                <mat-slide-toggle [(ngModel)]="showOpenFile" color="primary">
                   Open File Button
                 </mat-slide-toggle>
-                <mat-slide-toggle [(ngModel)]="download" color="primary">
+                <mat-slide-toggle [(ngModel)]="showDownload" color="primary">
                   Download Button
                 </mat-slide-toggle>
-                <mat-slide-toggle [(ngModel)]="print" color="primary">
+                <mat-slide-toggle [(ngModel)]="showPrint" color="primary">
                   Print Button
                 </mat-slide-toggle>
-                <mat-slide-toggle [(ngModel)]="fullScreen" color="primary">
+                <mat-slide-toggle [(ngModel)]="showFullScreen" color="primary">
                   Full Screen Button
                 </mat-slide-toggle>
-                <mat-slide-toggle [(ngModel)]="find" color="primary">
+                <mat-slide-toggle [(ngModel)]="showFind" color="primary">
                   Find Button
                 </mat-slide-toggle>
-                <mat-slide-toggle [(ngModel)]="viewBookmark" color="primary">
+                <mat-slide-toggle [(ngModel)]="showViewBookmark" color="primary">
                   View Bookmark Button
                 </mat-slide-toggle>
-                <mat-slide-toggle [(ngModel)]="annotations" color="primary">
+                <mat-slide-toggle [(ngModel)]="showAnnotations" color="primary">
                   Annotations/Editor Controls
                 </mat-slide-toggle>
               </div>
@@ -76,15 +76,15 @@
               <div class="toggle-group auto-actions">
                 <h4>Auto Actions (queued for next refresh)</h4>
                 <p class="help-text">These actions are queued and will execute automatically when the PDF document loads after pressing "Refresh Viewer". This demonstrates the library's action queuing capability.</p>
-                <mat-slide-toggle [(ngModel)]="autoActionSettings.autoDownload" color="primary">
-                  Auto Download
-                </mat-slide-toggle>
-                <mat-slide-toggle [(ngModel)]="autoActionSettings.autoPrint" color="primary">
-                  Auto Print
-                </mat-slide-toggle>
-                <mat-slide-toggle [(ngModel)]="autoActionSettings.autoLastPage" color="primary">
-                  Go to Last Page
-                </mat-slide-toggle>
+                        <mat-slide-toggle [(ngModel)]="autoActionSettings.downloadOnLoad" color="primary">
+          Auto Download
+        </mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="autoActionSettings.printOnLoad" color="primary">
+          Auto Print
+        </mat-slide-toggle>
+                        <mat-slide-toggle [(ngModel)]="autoActionSettings.showLastPageOnLoad" color="primary">
+          Go to Last Page
+        </mat-slide-toggle>
                 <div class="button-group">
                   <button mat-raised-button color="warn" (click)="refreshViewer()" matTooltip="Refresh viewer to trigger queued auto-actions">
                     <mat-icon>refresh</mat-icon>
@@ -98,9 +98,9 @@
                 <div class="auto-action-status">
                   <p><strong>Current Auto-Action Settings:</strong></p>
                   <ul>
-                    <li>Auto Download: {{autoActionSettings.autoDownload ? 'Enabled' : 'Disabled'}}</li>
-                    <li>Auto Print: {{autoActionSettings.autoPrint ? 'Enabled' : 'Disabled'}}</li>
-                    <li>Go to Last Page: {{autoActionSettings.autoLastPage ? 'Enabled' : 'Disabled'}}</li>
+                    <li>Auto Download: {{autoActionSettings.downloadOnLoad ? 'Enabled' : 'Disabled'}}</li>
+                    <li>Auto Print: {{autoActionSettings.printOnLoad ? 'Enabled' : 'Disabled'}}</li>
+                                          <li>Go to Last Page: {{autoActionSettings.showLastPageOnLoad ? 'Enabled' : 'Disabled'}}</li>
                   </ul>
                   <p><em>These will be applied when you click "Refresh Viewer"</em></p>
                 </div>
@@ -209,7 +209,7 @@
               <div class="modes-grid">
                 <mat-form-field appearance="outline" class="compact-field">
                   <mat-label>Cursor Mode</mat-label>
-                  <mat-select [(ngModel)]="cursor" (selectionChange)="onModeChange('cursor', $event.value)">
+                  <mat-select [(ngModel)]="initialCursor" (selectionChange)="onModeChange('initialCursor', $event.value)">
                     <mat-option value="select">Text Selection</mat-option>
                     <mat-option value="hand">Hand</mat-option>
                   </mat-select>
@@ -217,7 +217,7 @@
 
                 <mat-form-field appearance="outline" class="compact-field">
                   <mat-label>Scroll Mode</mat-label>
-                  <mat-select [(ngModel)]="scroll" (selectionChange)="onModeChange('scroll', $event.value)">
+                  <mat-select [(ngModel)]="initialScroll" (selectionChange)="onModeChange('initialScroll', $event.value)">
                     <mat-option value="vertical">Vertical</mat-option>
                     <mat-option value="horizontal">Horizontal</mat-option>
                     <mat-option value="wrapped">Wrapped</mat-option>
@@ -227,7 +227,7 @@
 
                 <mat-form-field appearance="outline" class="compact-field">
                   <mat-label>Spread Mode</mat-label>
-                  <mat-select [(ngModel)]="spread" (selectionChange)="onModeChange('spread', $event.value)">
+                  <mat-select [(ngModel)]="initialSpread" (selectionChange)="onModeChange('initialSpread', $event.value)">
                     <mat-option value="none">None</mat-option>
                     <mat-option value="odd">Odd</mat-option>
                     <mat-option value="even">Even</mat-option>
@@ -236,7 +236,7 @@
 
                 <mat-form-field appearance="outline" class="compact-field">
                   <mat-label>Zoom</mat-label>
-                  <mat-select [(ngModel)]="zoom" (selectionChange)="onModeChange('zoom', $event.value)">
+                  <mat-select [(ngModel)]="initialZoom" (selectionChange)="onModeChange('initialZoom', $event.value)">
                     <mat-option value="auto">Auto</mat-option>
                     <mat-option value="page-actual">Page Actual</mat-option>
                     <mat-option value="page-fit">Page Fit</mat-option>
@@ -252,7 +252,7 @@
 
                 <mat-form-field appearance="outline" class="compact-field">
                   <mat-label>Locale</mat-label>
-                  <mat-select [(ngModel)]="locale" (selectionChange)="onModeChange('locale', $event.value)">
+                  <mat-select [(ngModel)]="initialLocale" (selectionChange)="onModeChange('initialLocale', $event.value)">
                     <mat-option value="en-US">English (US)</mat-option>
                     <mat-option value="de-AT">German (Austria)</mat-option>
                     <mat-option value="fr-FR">French (France)</mat-option>
@@ -266,12 +266,12 @@
 
                 <mat-form-field appearance="outline" class="compact-field">
                   <mat-label>Named Destination</mat-label>
-                  <input matInput [(ngModel)]="nameddest" (ngModelChange)="onModeChange('nameddest', $event)" placeholder="Enter named destination (e.g., 5.1)">
+                  <input matInput [(ngModel)]="initialNamedDest" (ngModelChange)="onModeChange('initialNamedDest', $event)" placeholder="Enter named destination (e.g., 5.1)">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="compact-field">
                   <mat-label>Page Mode (Sidebar)</mat-label>
-                  <mat-select [(ngModel)]="pagemode" (selectionChange)="onModeChange('pagemode', $event.value)">
+                  <mat-select [(ngModel)]="initialPageMode" (selectionChange)="onModeChange('initialPageMode', $event.value)">
                     <mat-option value="none">None</mat-option>
                     <mat-option value="thumbs">Thumbnails</mat-option>
                     <mat-option value="bookmarks">Bookmarks</mat-option>
@@ -281,7 +281,7 @@
                 </mat-form-field>
 
                 <div class="toggle-container">
-                  <mat-slide-toggle [(ngModel)]="useOnlyCssZoom" color="primary">
+                  <mat-slide-toggle [(ngModel)]="initialUseOnlyCssZoom" color="primary">
                     Use Only CSS Zoom (Mobile)
                   </mat-slide-toggle>
                 </div>
@@ -364,24 +364,24 @@
             pdfSrc="/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf"
             [viewerId]="'test-viewer'"
             [downloadFileName]="downloadFileName"
-            [openFile]="openFile"
-            [download]="download"
-            [print]="print"
-            [fullScreen]="fullScreen"
-            [find]="find"
-            [viewBookmark]="viewBookmark"
-            [annotations]="annotations"
-            [autoDownload]="autoDownload"
-            [autoPrint]="autoPrint"
-            [autoLastPage]="autoLastPage"
-            [cursor]="cursor"
-            [scroll]="scroll"
-            [spread]="spread"
-            [zoom]="zoom"
-            [nameddest]="nameddest"
-            [pagemode]="pagemode"
-            [locale]="locale"
-            [useOnlyCssZoom]="useOnlyCssZoom"
+            [showOpenFile]="showOpenFile"
+            [showDownload]="showDownload"
+            [showPrint]="showPrint"
+            [showFullScreen]="showFullScreen"
+            [showFind]="showFind"
+            [showViewBookmark]="showViewBookmark"
+            [showAnnotations]="showAnnotations"
+                [downloadOnLoad]="downloadOnLoad"
+    [printOnLoad]="printOnLoad"
+            [showLastPageOnLoad]="showLastPageOnLoad"
+            [initialCursor]="initialCursor"
+            [initialScroll]="initialScroll"
+            [initialSpread]="initialSpread"
+            [initialZoom]="initialZoom"
+            [initialNamedDest]="initialNamedDest"
+            [initialPageMode]="initialPageMode"
+            [initialLocale]="initialLocale"
+            [initialUseOnlyCssZoom]="initialUseOnlyCssZoom"
             [errorOverride]="errorOverride"
             [errorAppend]="errorAppend"
             [errorMessage]="errorMessage"

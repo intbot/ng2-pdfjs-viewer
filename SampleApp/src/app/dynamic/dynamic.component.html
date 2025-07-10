@@ -3,8 +3,8 @@
     [colspan]="3"
     [rowspan]="1">
     <ng2-pdfjs-viewer class="fill" viewerId="MyID2" #viewer pdfSrc="compressed.tracemonkey-pldi-09.pdf"
-      locale="de-AT" (onDocumentLoad)="pdfLoaded()" [zoom]="zoom"
-      cursor="HAND" downloadFileName="research.pdf" scroll="W" spred="E" [print]="false"
+      [initialLocale]="'de-AT'" (onDocumentLoad)="pdfLoaded()" [initialZoom]="zoom"
+      [initialCursor]="'HAND'" downloadFileName="research.pdf" [initialScroll]="'W'" [initialSpread]="'E'" [showPrint]="false"
     [errorOverride]="true" errorMessage="My error Message"></ng2-pdfjs-viewer>
   </mat-grid-tile>
   @if (isPdfLoaded) {
@@ -29,27 +29,27 @@
           </tr>
           <tr>
             <td data-column="Attribute">Print</td>
-            <td data-column="Value">{{viewer.print}}</td>
+            <td data-column="Value">{{viewer.showPrint}}</td>
           </tr>
           <tr>
             <td data-column="Attribute">Download</td>
-            <td data-column="Value">{{viewer.download}}</td>
+            <td data-column="Value">{{viewer.showDownload}}</td>
           </tr>
           <tr>
             <td data-column="Attribute">Find</td>
-            <td data-column="Value">{{viewer.find}}</td>
+            <td data-column="Value">{{viewer.showFind}}</td>
           </tr>
           <tr>
             <td data-column="Attribute">Cursor</td>
-            <td data-column="Value">{{viewer.cursor}}</td>
+            <td data-column="Value">{{viewer.initialCursor}}</td>
           </tr>
           <tr>
             <td data-column="Attribute">Locale</td>
-            <td data-column="Value">{{viewer.locale}}</td>
+            <td data-column="Value">{{viewer.initialLocale}}</td>
           </tr>
           <tr>
             <td data-column="Attribute">Zoom</td>
-            <td data-column="Value">{{viewer.zoom}}</td>
+            <td data-column="Value">{{viewer.initialZoom}}</td>
           </tr>
         </tbody>
       </table>

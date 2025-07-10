@@ -1,9 +1,9 @@
 <div class="h-100">
-  <ng2-pdfjs-viewer #bigPdfViewer pdfSrc="/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf" downloadFileName="mySample" zoom="auto"
-                    viewerId="MyID" (onDocumentLoad)="testPagesLoaded($event)" (onPageChange)="testPageChange($event)" [annotations]="true"
+  <ng2-pdfjs-viewer #bigPdfViewer pdfSrc="/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf" downloadFileName="mySample" [initialZoom]="'auto'"
+                    viewerId="MyID" (onDocumentLoad)="testPagesLoaded($event)" (onPageChange)="testPageChange($event)" [showAnnotations]="true"
                     (onScaleChange)="testScaleChange($event)" (onRotationChange)="testRotationChange($event)"
                     (onBeforePrint)="testBeforePrint()" (onAfterPrint)="testAfterPrint()"
-                    (diagnosticLogs)="true" [fullScreen]="true"
+                    [diagnosticLogs]="true" [showFullScreen]="true"
                     >
   </ng2-pdfjs-viewer>
 </div>

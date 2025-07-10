@@ -139,32 +139,60 @@ _Please note if you decide to put `pdfjs` folder anywhere else other than the `a
 | `(onAfterPrint)`              | Event to be invoked after document gets printed(Must provide `viewerId`). E.g. `(onAfterPrint)="testAfterPrint()"`                                                                                                                                 | `Function`       |                                                          |
 | `downloadFileName`            | Sets/Changes the name of document to be downloaded. If the file name does not ends in `.pdf`, the component will automatically add it for you.                                                                                                     | `string`         | Actual name of the document                              |
 | `[page]`                      | Show specific page. E.g _page=3_. You may also get/set the page number from your component using '.' notation explicitly, after document is loaded. E.g. `myPdfViewer.page = 3;`                                                                   | `number`         | `1`                                                      |
-| `nameddest`                   | Go to a named destination. E.g. To go to section _5.1_ use like nameddest=5.1. Do not mix this option with _`page`_ option                                                                                                                          | `string`         |                                                          |
-| `zoom`                        | Set zoom level of document. Applicable values are `auto`, `page-width`, `page-height`, `page-fit`, `200`_(As a zoom percentage)_, `left offset`_(As in "auto,18,827")_, `top offset`_(As in "auto,18,127")_                                        | `string`         | `auto`                                                   |
-| `[print]`                     | Show/hide print button. Set `false` to hide                                                                                                                                                                                                        | `boolean`        | `true`                                                   |
-| `[download]`                  | Show/hide download button. Set `false` to hide                                                                                                                                                                                                     | boolean          | `true`                                                   |
-| `[find]`                      | Show/hide search button. Set `false` to hide                                                                                                                                                                                                       | boolean          | `true`                                                   |
-| `[autoDownload]`              | Download document automatically when it opens.                                                                                                                                                                                                     | `boolean`        | `false`                                                 |
-| `[autoPrint]`                 | Print document automatically when it opens.                                                                                                                                                                                                        | `boolean`        | `false`                                                 |
-| `[autoLastPage]`              | Go to last page automatically when document opens.                                                                                                                                                                                                 | `boolean`        | `false`                                                 |
-| `[rotatecw]`                  | Rotate document clock wise 90°                                                                                                                                                                                                                     | `boolean`        | `false`                                                 |
-| `[rotateccw]`                 | Rotate document anti-clock wise 90°                                                                                                                                                                                                                | `boolean`        | `false`                                                 |
-| `cursor`                      | Type of cursor. Available options are _`HAND`/`H`_, _`SELECT`/`S`_,_`ZOOM`/`Z`_. Case is irrelevant.                                                                                                                                               | _`SELECT`/`S`_   |                                                          |
-| `scroll`                      | Sets scroll. Available options are _`VERTICAL`/`V`_, _`HORIZONTAL`/`H`_,_`WRAPPED`/`W`_, _`PAGE`/`P`_. Case is irrelevant.                                                                                                                           | _`VERTICAL`/`V`_ |                                                          |
-| `spread`                      | Sets Odd or Even spread. Available options are _`ODD`/`O`_, _`EVEN`/`E`_,_`NONE`/`N`_. Case is irrelevant.                                                                                                                                         | _`NONE`/`N`_     |                                                          |
-| `[fullScreen]`                | Show/hide presentation(full screen) button. Set `false` to hide                                                                                                                                                                                    | `boolean`        | `true`                                                   |
-| `pagemode`                    | State of sidebar. Available options are _`none`_, _`thumbs`_,_`bookmarks`_,_`attachments`_. E.g. `pagemode=attachments`.                                                                                                                           | _`none`_         |                                                          |
-| `[openFile]`                  | Show/hide open file button. Set `false` to hide                                                                                                                                                                                                    | boolean          | `true`                                                   |
-| `[viewBookmark]`              | Show/hide bookmark button. Set `false` to hide                                                                                                                                                                                                     | boolean          | `true`                                                   |
+| `initialNamedDest`            | Go to a named destination. E.g. To go to section _5.1_ use like initialNamedDest=5.1. Do not mix this option with _`page`_ option                                                                                                                          | `string`         |                                                          |
+| `initialZoom`                 | Set zoom level of document. Applicable values are `auto`, `page-width`, `page-height`, `page-fit`, `200`_(As a zoom percentage)_, `left offset`_(As in "auto,18,827")_, `top offset`_(As in "auto,18,127")_                                        | `string`         | `auto`                                                   |
+| `[showPrint]`                 | Show/hide print button. Set `false` to hide                                                                                                                                                                                                        | `boolean`        | `true`                                                   |
+| `[showDownload]`              | Show/hide download button. Set `false` to hide                                                                                                                                                                                                     | boolean          | `true`                                                   |
+| `[showFind]`                  | Show/hide search button. Set `false` to hide                                                                                                                                                                                                       | boolean          | `true`                                                   |
+| `[downloadOnLoad]`            | Download document automatically when it opens.                                                                                                                                                                                                     | `boolean`        | `false`                                                 |
+| `[printOnLoad]`               | Print document automatically when it opens.                                                                                                                                                                                                        | `boolean`        | `false`                                                 |
+| `[showLastPageOnLoad]`        | Go to last page automatically when document opens.                                                                                                                                                                                                 | `boolean`        | `false`                                                 |
+| `[initialRotateCW]`           | Rotate document clockwise 90° initially                                                                                                                                                                                                             | `boolean`        | `false`                                                 |
+| `[initialRotateCCW]`          | Rotate document counter-clockwise 90° initially                                                                                                                                                                                                    | `boolean`        | `false`                                                 |
+| `[initialCursor]`             | Type of cursor. Available options are _`HAND`/`H`_, _`SELECT`/`S`_,_`ZOOM`/`Z`_. Case is irrelevant.                                                                                                                                               | _`SELECT`/`S`_   |                                                          |
+| `[initialScroll]`             | Sets scroll. Available options are _`VERTICAL`/`V`_, _`HORIZONTAL`/`H`_,_`WRAPPED`/`W`_, _`PAGE`/`P`_. Case is irrelevant.                                                                                                                           | _`VERTICAL`/`V`_ |                                                          |
+| `[initialSpread]`             | Sets Odd or Even spread. Available options are _`ODD`/`O`_, _`EVEN`/`E`_,_`NONE`/`N`_. Case is irrelevant.                                                                                                                                         | _`NONE`/`N`_     |                                                          |
+| `[showFullScreen]`            | Show/hide presentation(full screen) button. Set `false` to hide                                                                                                                                                                                    | `boolean`        | `true`                                                   |
+| `[initialPageMode]`           | State of sidebar. Available options are _`none`_, _`thumbs`_,_`bookmarks`_,_`attachments`_. E.g. `initialPageMode=attachments`.                                                                                                                     | _`none`_         |                                                          |
+| `[showOpenFile]`              | Show/hide open file button. Set `false` to hide                                                                                                                                                                                                    | boolean          | `true`                                                   |
+| `[showViewBookmark]`          | Show/hide bookmark button. Set `false` to hide                                                                                                                                                                                                     | boolean          | `true`                                                   |
 | `[showSpinner]`               | Show a simple css based spinner/progress before the document loads                                                                                                                                                                                 | boolean          | `true`                                                   |
-| `locale`                      | Set locale(language) of toolbar/buttons and other viewer elements. E.g. 'de-AT', 'en-GB' etc                                                                                                                                                       | string           | browser's default language if present, otherwise `en-US` |
-| `[useOnlyCssZoom]`            | Instructs the viewer to use css based zoom. This will produce better zoom effect on mobile devices and tablets.                                                                                                                                    | boolean          | `false`                                                  |
+| `[initialLocale]`             | Set locale(language) of toolbar/buttons and other viewer elements. E.g. 'de-AT', 'en-GB' etc                                                                                                                                                       | string           | browser's default language if present, otherwise `en-US` |
+| `[initialUseOnlyCssZoom]`     | Instructs the viewer to use css based zoom. This will produce better zoom effect on mobile devices and tablets.                                                                                                                                    | boolean          | `false`                                                  |
 | `errorMessage`                | Custom error message                                                                                                                                                                                                                               | string           |                                                          |
 | `[errorAppend]`               | Appends custom error message to the end of other pdfjs error messages                                                                                                                                                                              | `true`           |
 | `[errorOverride]`             | Overrides all pdfjs error messages and shows only user's custom error message                                                                                                                                                                      | boolean          | `false`                                                  |
 | `[diagnosticLogs]`            | Turns on all diagnostic logs to the console                                                                                                                                                                                                        | boolean          | `true`                                                   |
 
 **_Please note, copy step is mandatory to enjoy all of the different options listed above. You may also avoid this step and could directly use https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website if you wish to just use the default viewer_**
+
+## Deprecated Properties
+
+The following properties are deprecated and will be removed in a future version. Please use the new property names instead.
+
+| Deprecated Property | New Property | Description |
+|-------------------|--------------|-------------|
+| `[startDownload]` | `[downloadOnLoad]` | Download document automatically when it opens |
+| `[startPrint]` | `[printOnLoad]` | Print document automatically when it opens |
+| `[cursor]` | `[initialCursor]` | Type of cursor (HAND/SELECT/ZOOM) |
+| `[scroll]` | `[initialScroll]` | Sets scroll mode (VERTICAL/HORIZONTAL/WRAPPED/PAGE) |
+| `[spread]` | `[initialSpread]` | Sets spread mode (ODD/EVEN/NONE) |
+| `[zoom]` | `[initialZoom]` | Set zoom level of document |
+| `[nameddest]` | `[initialNamedDest]` | Go to a named destination |
+| `[pagemode]` | `[initialPageMode]` | State of sidebar (none/thumbs/bookmarks/attachments) |
+| `[locale]` | `[initialLocale]` | Set locale of toolbar/buttons |
+| `[useOnlyCssZoom]` | `[initialUseOnlyCssZoom]` | Use CSS-based zoom for mobile devices |
+| `[rotatecw]` | `[initialRotateCW]` | Rotate document clockwise 90° initially |
+| `[rotateccw]` | `[initialRotateCCW]` | Rotate document counter-clockwise 90° initially |
+| `[openFile]` | `[showOpenFile]` | Show/hide open file button |
+| `[download]` | `[showDownload]` | Show/hide download button |
+| `[print]` | `[showPrint]` | Show/hide print button |
+| `[fullScreen]` | `[showFullScreen]` | Show/hide full screen button |
+| `[find]` | `[showFind]` | Show/hide search button |
+| `[viewBookmark]` | `[showViewBookmark]` | Show/hide bookmark button |
+| `[lastPage]` | `[showLastPageOnLoad]` | Go to last page automatically when document opens |
+
+**Note**: When using deprecated properties, a console warning will be displayed to remind you to update to the new property names.
 
 **Important Notes:**
 - **Locale changes**: Locale changes require a viewer refresh to take effect, as they affect the entire viewer interface
@@ -228,9 +256,9 @@ For [externalWindow]="true" to work, pop-ups needs to be enabled at browser leve
     #pdfViewerOnDemand
     [externalWindow]="true"
     [downloadFileName]="'mytestfile.pdf'"
-    [openFile]="false"
-    [viewBookmark]="false"
-    [download]="false"></ng2-pdfjs-viewer>
+    [showOpenFile]="false"
+    [showViewBookmark]="false"
+    [showDownload]="false"></ng2-pdfjs-viewer>
 </div>
 <div>
 <div style="width: 800px; height: 400px">
@@ -394,24 +422,3 @@ https://github.com/mozilla/pdf.js/wiki/Third-party-viewer-usage
 https://github.com/mozilla/pdf.js/wiki/Viewer-options
 
 
-## Not working
-downloadFileName
-lastPage
-print
-startPrint
-download
-find
-startDownload
-rotatecw
-rotateccw
-cursor
-scroll
-spread
-fullScreen
-pagemode
-openFile
-viewBookmark
-showSpinner
-locale
-useOnlyCssZoom
-ALL ERRORS

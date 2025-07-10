@@ -11,41 +11,41 @@ export class FeaturesComponent implements OnInit {
   @ViewChild('testPdfViewer', { static: true }) public testPdfViewer;
 
   // Control visibility toggles
-  public openFile = true;
-  public download = true;
-  public print = true;
-  public fullScreen = true;
-  public find = true;
-  public viewBookmark = true;
-  public annotations = false;
+  public showOpenFile = true;
+  public showDownload = true;
+  public showPrint = true;
+  public showFullScreen = true;
+  public showFind = true;
+  public showViewBookmark = true;
+  public showAnnotations = false;
 
   // Auto action settings (stored separately for demo purposes)
   public autoActionSettings = {
-    autoDownload: false,
-    autoPrint: false,
-    autoLastPage: false
+    downloadOnLoad: false,
+    printOnLoad: false,
+    showLastPageOnLoad: false
   };
 
   // Actual viewer properties (initially set to false for auto-actions)
-  public autoDownload = false;
-  public autoPrint = false;
-  public autoLastPage = false;
+  public downloadOnLoad = false;
+  public printOnLoad = false;
+  public showLastPageOnLoad = false;
 
   // In-memory state management for mode values
   private savedModeValues: { [key: string]: any } = {};
 
   // Mode settings
-  public cursor = 'select';
-  public scroll = 'vertical';
-  public spread = 'none';
-  public nameddest = '';
-  public pagemode = 'none';
+  public initialCursor = 'select';
+  public initialScroll = 'vertical';
+  public initialSpread = 'none';
+  public initialNamedDest = '';
+  public initialPageMode = 'none';
 
   // Custom values
   public downloadFileName = 'test-document.pdf';
-  public zoom = 'auto';
-  public locale = 'en-US';
-  public useOnlyCssZoom = false;
+  public initialZoom = 'auto';
+  public initialLocale = 'en-US';
+  public initialUseOnlyCssZoom = false;
 
   // Error handling
   public errorOverride = false;
@@ -134,27 +134,27 @@ export class FeaturesComponent implements OnInit {
     console.log('🧪 TestFeatures: Applying auto-action settings:', this.autoActionSettings);
     
     // Apply auto-action settings to actual viewer properties
-    this.autoDownload = this.autoActionSettings.autoDownload;
-    this.autoPrint = this.autoActionSettings.autoPrint;
-    this.autoLastPage = this.autoActionSettings.autoLastPage;
+    this.downloadOnLoad = this.autoActionSettings.downloadOnLoad;
+    this.printOnLoad = this.autoActionSettings.printOnLoad;
+    this.showLastPageOnLoad = this.autoActionSettings.showLastPageOnLoad;
     
-    console.log('🧪 TestFeatures: Auto-actions applied - Download:', this.autoDownload, 'Print:', this.autoPrint, 'LastPage:', this.autoLastPage);
+    console.log('🧪 TestFeatures: Auto-actions applied - Download:', this.downloadOnLoad, 'Print:', this.printOnLoad, 'LastPage:', this.showLastPageOnLoad);
   }
 
   // Clear auto-action settings (for demo purposes)
   public clearAutoActionSettings() {
     console.log('🧪 TestFeatures: Clearing auto-action settings');
     this.autoActionSettings = {
-      autoDownload: false,
-      autoPrint: false,
-      autoLastPage: false
+      downloadOnLoad: false,
+      printOnLoad: false,
+      showLastPageOnLoad: false
     };
     console.log('🧪 TestFeatures: Auto-action settings cleared');
   }
 
   // Save current mode values to memory
   private saveCurrentModeValues() {
-    const modeProperties = ['cursor', 'scroll', 'spread', 'zoom', 'locale', 'nameddest', 'pagemode'];
+    const modeProperties = ['initialCursor', 'initialScroll', 'initialSpread', 'initialZoom', 'initialLocale', 'initialNamedDest', 'initialPageMode'];
     modeProperties.forEach(property => {
       const value = (this as any)[property];
       if (value !== null && value !== undefined && value !== '') {
