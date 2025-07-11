@@ -20,6 +20,49 @@
   grid-row: 1;
   overflow-y: auto;
   max-height: 80vh;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.control-panel-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f8f9fa;
+  border-radius: 8px 8px 0 0;
+  
+  h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+    color: #333;
+  }
+}
+
+.control-tabs {
+  flex: 1;
+  overflow: hidden;
+  
+  ::ng-deep {
+    .mat-mdc-tab-group {
+      height: 100%;
+    }
+    
+    .mat-mdc-tab-body-wrapper {
+      height: 100%;
+      overflow-y: auto;
+    }
+    
+    .mat-mdc-tab-body-content {
+      height: 100%;
+    }
+    
+    .mat-mdc-tab-header {
+      border-bottom: 1px solid #e0e0e0;
+    }
+  }
 }
 
 .pdf-viewer-card {
@@ -42,7 +85,9 @@
 }
 
 .tab-content {
-  padding: 16px 0;
+  padding: 24px;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .tab-content.compact-modes {
