@@ -167,6 +167,10 @@ class ActionQueueManager {
       if (readiness >= 4) {
         this.executeViewerReadyActions();
       }
+      if (readiness >= 5) {
+        this.isDocumentLoaded = true;
+        this.executeDocumentLoadedActions();
+      }
     }
   }
 
@@ -721,8 +725,18 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
   private applyRotationToViewer(rotation: number): void {
     if (this.isPostMessageReady) {
-      // Use direct PostMessage for immediate updates
-      this.updateViewerControl('rotation', rotation);
+      // Rotation requires document loaded (readiness >= 5)
+      if (this.postMessageReadiness >= 5) {
+        this.updateViewerControl('rotation', rotation);
+      } else {
+        // Queue for when document is loaded
+        this.actionQueueManager.queueDocumentLoadedAction({
+          id: `twoway-rotation-${Date.now()}`,
+          type: 'auto',
+          action: 'set-rotation',
+          payload: rotation
+        });
+      }
     }
   }
 
@@ -762,7 +776,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
   ngOnInit(): void {   
          // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
-       console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-01-11T05-30-00-000Z');
+       console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-07-11T12-41-25-000Z');
     
     // Configure action queue manager with diagnostic logs
     this.actionQueueManager = new ActionQueueManager(this.diagnosticLogs);

@@ -8,7 +8,7 @@ import { ChangedScale, ChangedRotation } from 'ng2-pdfjs-viewer';
   styleUrls: ['./features.component.scss']
 })
 export class FeaturesComponent implements OnInit {
-  @ViewChild('testPdfViewer', { static: true }) public testPdfViewer;
+  @ViewChild('testPdfViewer', { static: false }) public testPdfViewer;
 
   // Control visibility toggles
   public showOpenFile = true;
