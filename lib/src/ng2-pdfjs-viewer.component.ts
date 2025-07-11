@@ -761,8 +761,8 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   // ============================================================================
 
   ngOnInit(): void {   
-    // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
-      console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-07-10T23-42-10-000Z');
+         // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
+       console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-01-11T05-30-00-000Z');
     
     // Configure action queue manager with diagnostic logs
     this.actionQueueManager = new ActionQueueManager(this.diagnosticLogs);

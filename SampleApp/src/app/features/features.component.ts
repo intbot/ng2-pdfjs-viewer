@@ -43,8 +43,55 @@ export class FeaturesComponent implements OnInit {
   public spread = 'none';
   public namedDest = '';
   public pageMode = 'none';
-  public zoom = 'auto';
+  private _zoom = 'auto';
   public rotation = 0;
+
+  // Zoom property with transformation for SampleApp dropdown compatibility
+  public get zoom(): any {
+    return this._zoom;
+  }
+
+  public set zoom(value: any) {
+    // Transform library zoom values to SampleApp dropdown values
+    const transformedValue = this.transformZoomForDropdown(value);
+    this._zoom = transformedValue;
+    console.log(`🧪 TestFeatures: Zoom transformed from ${value} to ${transformedValue}`);
+  }
+
+  /**
+   * Transform zoom values from the library to match SampleApp dropdown options
+   */
+  private transformZoomForDropdown(libraryValue: any): any {
+    // Handle null/undefined
+    if (libraryValue == null) {
+      return 'auto';
+    }
+
+    // Convert to string for processing
+    const valueStr = String(libraryValue);
+
+    // Handle special zoom modes (pass through as-is)
+    if (['auto', 'page-actual', 'page-fit', 'page-width'].includes(valueStr)) {
+      return valueStr;
+    }
+
+    // Handle percentage strings like '125%', '150%', etc.
+    if (valueStr.includes('%')) {
+      const percentage = parseFloat(valueStr.replace('%', ''));
+      if (!isNaN(percentage)) {
+        return percentage / 100; // Convert '125%' to 1.25
+      }
+    }
+
+    // Handle decimal strings like '1.25', '1.5', etc.
+    const numericValue = parseFloat(valueStr);
+    if (!isNaN(numericValue)) {
+      return numericValue;
+    }
+
+    // Default fallback
+    return 'auto';
+  }
 
   // Custom values
   public downloadFileName = 'test-document.pdf';
