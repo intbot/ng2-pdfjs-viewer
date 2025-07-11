@@ -6,23 +6,23 @@
         <span class="event-count-toolbar">{{eventCounts.documentLoad}}</span>
       </div>
       <div class="event-item-toolbar" [class.active]="eventCounts.pageChange > 0">
-        <span class="event-label-toolbar">📖 Page:</span>
+        <span class="event-label-toolbar">📖 Page Change:</span>
         <span class="event-count-toolbar">{{eventCounts.pageChange}}</span>
       </div>
       <div class="event-item-toolbar" [class.active]="eventCounts.scaleChange > 0">
-        <span class="event-label-toolbar">🔍 Scale:</span>
+        <span class="event-label-toolbar">🔍 Scale Change:</span>
         <span class="event-count-toolbar">{{eventCounts.scaleChange}}</span>
       </div>
       <div class="event-item-toolbar" [class.active]="eventCounts.rotationChange > 0">
-        <span class="event-label-toolbar">🔄 Rotate:</span>
+        <span class="event-label-toolbar">🔄 Rotation Change:</span>
         <span class="event-count-toolbar">{{eventCounts.rotationChange}}</span>
       </div>
       <div class="event-item-toolbar" [class.active]="eventCounts.beforePrint > 0">
-        <span class="event-label-toolbar">🖨️ Print:</span>
+        <span class="event-label-toolbar">🖨️ Before Print:</span>
         <span class="event-count-toolbar">{{eventCounts.beforePrint}}</span>
       </div>
       <div class="event-item-toolbar" [class.active]="eventCounts.afterPrint > 0">
-        <span class="event-label-toolbar">✅ After:</span>
+        <span class="event-label-toolbar">✅ After Print:</span>
         <span class="event-count-toolbar">{{eventCounts.afterPrint}}</span>
       </div>
       <div class="event-item-toolbar">
@@ -312,72 +312,7 @@
             </div>
           </mat-tab>
 
-          <!-- Event Monitoring Tab -->
-          <mat-tab label="Event Monitoring">
-            <div class="tab-content">
-              <div class="section-header">
-                <h3>Event Monitoring</h3>
-                <p class="section-subtitle">Monitor PDF.js events and viewer state changes in real-time.</p>
-              </div>
 
-              <div class="event-counters-grid">
-                <div class="event-counter" [class.active]="eventCounts.documentLoad > 0">
-                  <div class="event-icon">📄</div>
-                  <div class="event-info">
-                    <div class="event-name">Document Load</div>
-                    <div class="event-count">{{eventCounts.documentLoad}}</div>
-                  </div>
-                </div>
-
-                <div class="event-counter" [class.active]="eventCounts.pageChange > 0">
-                  <div class="event-icon">📖</div>
-                  <div class="event-info">
-                    <div class="event-name">Page Change</div>
-                    <div class="event-count">{{eventCounts.pageChange}}</div>
-                  </div>
-                </div>
-
-                <div class="event-counter" [class.active]="eventCounts.scaleChange > 0">
-                  <div class="event-icon">🔍</div>
-                  <div class="event-info">
-                    <div class="event-name">Scale Change</div>
-                    <div class="event-count">{{eventCounts.scaleChange}}</div>
-                  </div>
-                </div>
-
-                <div class="event-counter" [class.active]="eventCounts.rotationChange > 0">
-                  <div class="event-icon">🔄</div>
-                  <div class="event-info">
-                    <div class="event-name">Rotation Change</div>
-                    <div class="event-count">{{eventCounts.rotationChange}}</div>
-                  </div>
-                </div>
-
-                <div class="event-counter" [class.active]="eventCounts.beforePrint > 0">
-                  <div class="event-icon">🖨️</div>
-                  <div class="event-info">
-                    <div class="event-name">Before Print</div>
-                    <div class="event-count">{{eventCounts.beforePrint}}</div>
-                  </div>
-                </div>
-
-                <div class="event-counter" [class.active]="eventCounts.afterPrint > 0">
-                  <div class="event-icon">✅</div>
-                  <div class="event-info">
-                    <div class="event-name">After Print</div>
-                    <div class="event-count">{{eventCounts.afterPrint}}</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="button-group">
-                <button mat-raised-button color="warn" (click)="resetEventCounts()" matTooltip="Reset all event counters">
-                  <mat-icon>refresh</mat-icon>
-                  Reset Event Counters
-                </button>
-              </div>
-            </div>
-          </mat-tab>
 
           <!-- Two-Way Binding Tab -->
           <mat-tab label="Two-Way Binding">
