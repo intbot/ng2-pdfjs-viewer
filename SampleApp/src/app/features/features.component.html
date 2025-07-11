@@ -46,20 +46,16 @@
         <mat-tab-group>
           <mat-tab label="Configuration">
             <div class="tab-content">
-              <div class="section-header">
-                <h3>Configuration</h3>
-                <p class="section-subtitle">Set initial properties and on-load actions that will be applied when the PDF viewer loads.</p>
-              </div>
 
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Download File Name</mat-label>
                 <input matInput [(ngModel)]="downloadFileName" placeholder="Enter custom file name">
               </mat-form-field>
 
+              <mat-divider></mat-divider>
+
               <div class="toggle-group show-hide-controls">
-                <div class="section-header">
                 <h4>Show/Hide Controls</h4>
-                </div>
                 <mat-slide-toggle [(ngModel)]="showOpenFile" color="primary">
                   Open File Button
                 </mat-slide-toggle>
@@ -83,11 +79,12 @@
                 </mat-slide-toggle>
               </div>
 
+              <mat-divider></mat-divider>
+
               <div class="toggle-group auto-actions">
-                <div class="section-header">
-                  <h4>On-Load Actions</h4>
-                  <p class="section-subtitle">Execute when PDF loads. Download and last-page execute on document load, print executes when all pages are fully rendered.</p>
-                </div>
+                <h4>On-Load Actions</h4>
+                  
+                                      <p class="section-subtitle highlight-yellow">Actions that execute automatically when the PDF loads. Download and last-page execute on document load, print executes when all pages are fully rendered.</p>
                         <mat-slide-toggle [(ngModel)]="autoActionSettings.downloadOnLoad" color="primary">
           Download on Load
                 </mat-slide-toggle>
@@ -97,27 +94,33 @@
                         <mat-slide-toggle [(ngModel)]="autoActionSettings.showLastPageOnLoad" color="primary">
           Show Last Page on Load
                 </mat-slide-toggle>
-                <div class="button-group">
-                          <button mat-raised-button color="warn" (click)="reloadViewer()" matTooltip="Reload viewer to trigger queued on-load actions">
-                    <mat-icon>refresh</mat-icon>
-          Reload Viewer (Execute On-Load Actions)
-        </button>
-                  <button mat-stroked-button color="primary" (click)="clearAutoActionSettings()" matTooltip="Clear all on-load action settings">
-                    <mat-icon>clear</mat-icon>
-                    Clear On-Load Action Settings
-                  </button>
-                </div>
+                
                 <div class="auto-action-status">
                   <p><strong>Current On-Load Action Settings:</strong></p>
                   <ul>
                     <li>Download on Load: {{autoActionSettings.downloadOnLoad ? 'Enabled' : 'Disabled'}}</li>
                     <li>Print on Load: {{autoActionSettings.printOnLoad ? 'Enabled' : 'Disabled'}}</li>
-                                          <li>Show Last Page on Load: {{autoActionSettings.showLastPageOnLoad ? 'Enabled' : 'Disabled'}}</li>
+                    <li>Show Last Page on Load: {{autoActionSettings.showLastPageOnLoad ? 'Enabled' : 'Disabled'}}</li>
                   </ul>
                   <p><em>These will be applied when you click "Reload Viewer"</em></p>
                 </div>
+                
+                <div class="button-group">
+                  <button mat-raised-button color="warn" (click)="reloadViewer()" matTooltip="Reload viewer to trigger queued on-load actions">
+                    <mat-icon>refresh</mat-icon>
+                    Reload Viewer (Execute On-Load Actions)
+                  </button>
+                  <button mat-stroked-button color="primary" (click)="clearAutoActionSettings()" matTooltip="Clear all on-load action settings">
+                    <mat-icon>clear</mat-icon>
+                    Clear On-Load Action Settings
+                  </button>
+                </div>
               </div>
 
+              <mat-divider></mat-divider>
+              <h4>Initial Configuration</h4>
+              <p class="section-subtitle highlight-yellow">These properties also get set on the load/reload of the PDF.</p>
+              
               <div class="modes-grid">
                 <mat-form-field appearance="outline" class="compact-field">
                   <mat-label>Cursor Mode</mat-label>
@@ -207,120 +210,13 @@
             </div>
           </mat-tab>
 
-          <!-- On-Demand Controls Tab -->
-          <mat-tab label="On-Demand Controls">
-            <div class="tab-content">
-              <div class="section-header">
-                <h3>On-Demand Controls</h3>
-                <p class="section-subtitle">Execute actions and set properties immediately when clicked.</p>
-              </div>
-
-              <div class="button-group on-demand-actions">
-                <div class="section-header">
-                  <h4>Immediate Actions</h4>
-                  <p class="section-subtitle">Execute immediately when clicked, regardless of on-load action settings.</p>
-                </div>
-                <button mat-raised-button color="accent" (click)="triggerDownloadAction()" matTooltip="Trigger Download">
-                  <mat-icon>download</mat-icon>
-                  Download Now
-                </button>
-                <button mat-raised-button color="accent" (click)="triggerPrintAction()" matTooltip="Trigger Print">
-                  <mat-icon>print</mat-icon>
-                  Print Now
-                </button>
-                <button mat-raised-button color="accent" (click)="goToLastPageAction()" matTooltip="Go to Last Page">
-                  <mat-icon>last_page</mat-icon>
-                  Go to Last Page
-                </button>
-                <button mat-raised-button color="accent" (click)="goToPageAction(1)" matTooltip="Go to Page 1">
-                  <mat-icon>first_page</mat-icon>
-                  Page 1
-                </button>
-                <button mat-raised-button color="accent" (click)="setZoomAction('page-fit')" matTooltip="Fit to Page">
-                  <mat-icon>zoom_in</mat-icon>
-                  Fit Page
-                </button>
-              </div>
-
-              <div class="button-group on-demand-mode-controls">
-                <div class="section-header">
-                  <h4>Mode Controls</h4>
-                  <p class="section-subtitle">Set viewer modes and properties immediately on-demand.</p>
-                </div>
-                <button mat-raised-button color="primary" (click)="setCursorAction('hand')" matTooltip="Set Cursor to Hand">
-                  <mat-icon>pan_tool</mat-icon>
-                  Hand Cursor
-                </button>
-                <button mat-raised-button color="primary" (click)="setCursorAction('select')" matTooltip="Set Cursor to Select">
-                  <mat-icon>mouse</mat-icon>
-                  Select Cursor
-                </button>
-
-                <button mat-raised-button color="primary" (click)="setScrollAction('horizontal')" matTooltip="Set Scroll to Horizontal">
-                  <mat-icon>horizontal_split</mat-icon>
-                  Horizontal Scroll
-                </button>
-                <button mat-raised-button color="primary" (click)="setScrollAction('wrapped')" matTooltip="Set Scroll to Wrapped">
-                  <mat-icon>wrap_text</mat-icon>
-                  Wrapped Scroll
-                </button>
-                <button mat-raised-button color="primary" (click)="setSpreadAction('odd')" matTooltip="Set Spread to Odd">
-                  <mat-icon>view_agenda</mat-icon>
-                  Odd Spread
-                </button>
-                <button mat-raised-button color="primary" (click)="setSpreadAction('even')" matTooltip="Set Spread to Even">
-                  <mat-icon>view_column</mat-icon>
-                  Even Spread
-                </button>
-                <button mat-raised-button color="primary" (click)="rotateClockwise()" matTooltip="Rotate Clockwise">
-                  <mat-icon>rotate_right</mat-icon>
-                  Rotate Clockwise
-                </button>
-                <button mat-raised-button color="primary" (click)="rotateCounterClockwise()" matTooltip="Rotate Counter-clockwise">
-                  <mat-icon>rotate_left</mat-icon>
-                  Rotate Counter-clockwise
-                </button>
-                <button mat-raised-button color="primary" (click)="goToNamedDestinationAction('5.1')" matTooltip="Go to Named Destination">
-                  <mat-icon>bookmark</mat-icon>
-                  Named Dest
-                </button>
-                <button mat-raised-button color="primary" (click)="setPageModeAction('thumbs')" matTooltip="Set Page Mode to Thumbnails">
-                  <mat-icon>photo_library</mat-icon>
-                  Thumbnails
-                </button>
-                <button mat-raised-button color="primary" (click)="setLocaleAction('de-AT')" matTooltip="Set Locale to German">
-                  <mat-icon>language</mat-icon>
-                  German Locale
-                </button>
-              </div>
-
-              <div class="action-queue-status" *ngIf="getActionQueueStatus()">
-                <h4>Action Queue Status</h4>
-                <div class="status-item">
-                  <span>On-Load Actions:</span>
-                  <span>{{getActionQueueStatus()?.documentLoadedActions || 0}}</span>
-                </div>
-                <div class="status-item">
-                  <span>Pending Actions:</span>
-                  <span>{{getActionQueueStatus()?.pendingActions || 0}}</span>
-                </div>
-                <div class="status-item">
-                  <span>Executed Actions:</span>
-                  <span>{{getActionQueueStatus()?.executedActions || 0}}</span>
-                </div>
-              </div>
-            </div>
-          </mat-tab>
-
-
-
           <!-- Two-Way Binding Tab -->
           <mat-tab label="Two-Way Binding">
             <div class="tab-content">
               <div class="section-header">
                 <h3>Two-Way Binding Demonstration</h3>
-                <p class="section-subtitle">Test Angular two-way binding with PDF.js viewer properties. Changes sync automatically between Angular and PDF.js.</p>
               </div>
+              <p class="section-subtitle highlight-yellow">Test Angular two-way binding with PDF.js viewer properties. Changes sync automatically between Angular and PDF.js.</p>
 
               <div class="two-way-binding-grid">
                 <mat-form-field appearance="outline" class="compact-field">
@@ -394,8 +290,13 @@
                 </mat-form-field>
               </div>
 
+              <mat-divider></mat-divider>
+
               <div class="two-way-binding-info">
-                <h4>Two-Way Binding Status</h4>
+                <div class="section-header">
+                  <h4>Current Property Values</h4>
+                  <p class="section-subtitle">Live display of current property values in the Angular component.</p>
+                </div>
                 <div class="binding-status-grid">
                   <div class="status-item">
                     <span class="status-label">Zoom:</span>
@@ -424,9 +325,13 @@
                 </div>
               </div>
 
+              <mat-divider></mat-divider>
+
               <div class="two-way-binding-actions">
-                <h4>Test Actions</h4>
-                <p class="section-subtitle">These buttons demonstrate programmatic changes that should update the UI controls above.</p>
+                <div class="section-header">
+                  <h4>Programmatic Test Actions</h4>
+                  <p class="section-subtitle">These buttons demonstrate programmatic changes that should update the UI controls above.</p>
+                </div>
                 <div class="button-group">
                   <button mat-raised-button color="primary" (click)="zoom = 'page-fit'">
                     Set Zoom to Page Fit
@@ -446,6 +351,99 @@
                   <button mat-raised-button color="primary" (click)="rotation = 90">
                     Set Rotation to 90°
                   </button>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+
+          <!-- On-Demand Controls Tab -->
+          <mat-tab label="On-Demand">
+            <div class="tab-content">
+
+              <div class="button-group on-demand-actions">
+                <button mat-raised-button color="accent" (click)="triggerDownloadAction()" matTooltip="Trigger Download">
+                  <mat-icon>download</mat-icon>
+                  Download Now
+                </button>
+                <button mat-raised-button color="accent" (click)="triggerPrintAction()" matTooltip="Trigger Print">
+                  <mat-icon>print</mat-icon>
+                  Print Now
+                </button>
+                <button mat-raised-button color="accent" (click)="goToLastPageAction()" matTooltip="Go to Last Page">
+                  <mat-icon>last_page</mat-icon>
+                  Go to Last Page
+                </button>
+                <button mat-raised-button color="accent" (click)="goToPageAction(1)" matTooltip="Go to Page 1">
+                  <mat-icon>first_page</mat-icon>
+                  Page 1
+                </button>
+                <button mat-raised-button color="accent" (click)="setZoomAction('page-fit')" matTooltip="Fit to Page">
+                  <mat-icon>zoom_in</mat-icon>
+                  Fit Page
+                </button>
+              </div>
+
+              <div class="button-group on-demand-mode-controls">
+                <button mat-raised-button color="primary" (click)="setCursorAction('hand')" matTooltip="Set Cursor to Hand">
+                  <mat-icon>pan_tool</mat-icon>
+                  Hand Cursor
+                </button>
+                <button mat-raised-button color="primary" (click)="setCursorAction('select')" matTooltip="Set Cursor to Select">
+                  <mat-icon>mouse</mat-icon>
+                  Select Cursor
+                </button>
+
+                <button mat-raised-button color="primary" (click)="setScrollAction('horizontal')" matTooltip="Set Scroll to Horizontal">
+                  <mat-icon>horizontal_split</mat-icon>
+                  Horizontal Scroll
+                </button>
+                <button mat-raised-button color="primary" (click)="setScrollAction('wrapped')" matTooltip="Set Scroll to Wrapped">
+                  <mat-icon>wrap_text</mat-icon>
+                  Wrapped Scroll
+                </button>
+                <button mat-raised-button color="primary" (click)="setSpreadAction('odd')" matTooltip="Set Spread to Odd">
+                  <mat-icon>view_agenda</mat-icon>
+                  Odd Spread
+                </button>
+                <button mat-raised-button color="primary" (click)="setSpreadAction('even')" matTooltip="Set Spread to Even">
+                  <mat-icon>view_column</mat-icon>
+                  Even Spread
+                </button>
+                <button mat-raised-button color="primary" (click)="rotateClockwise()" matTooltip="Rotate Clockwise">
+                  <mat-icon>rotate_right</mat-icon>
+                  Rotate Clockwise
+                </button>
+                <button mat-raised-button color="primary" (click)="rotateCounterClockwise()" matTooltip="Rotate Counter-clockwise">
+                  <mat-icon>rotate_left</mat-icon>
+                  Rotate Counter-clockwise
+                </button>
+                <button mat-raised-button color="primary" (click)="goToNamedDestinationAction('5.1')" matTooltip="Go to Named Destination">
+                  <mat-icon>bookmark</mat-icon>
+                  Named Dest
+                </button>
+                <button mat-raised-button color="primary" (click)="setPageModeAction('thumbs')" matTooltip="Set Page Mode to Thumbnails">
+                  <mat-icon>photo_library</mat-icon>
+                  Thumbnails
+                </button>
+                <button mat-raised-button color="primary" (click)="setLocaleAction('de-AT')" matTooltip="Set Locale to German">
+                  <mat-icon>language</mat-icon>
+                  German Locale
+                </button>
+              </div>
+
+              <div class="action-queue-status" *ngIf="getActionQueueStatus()">
+                <h4>Action Queue Status</h4>
+                <div class="status-item">
+                  <span>On-Load Actions:</span>
+                  <span>{{getActionQueueStatus()?.documentLoadedActions || 0}}</span>
+                </div>
+                <div class="status-item">
+                  <span>Pending Actions:</span>
+                  <span>{{getActionQueueStatus()?.pendingActions || 0}}</span>
+                </div>
+                <div class="status-item">
+                  <span>Executed Actions:</span>
+                  <span>{{getActionQueueStatus()?.executedActions || 0}}</span>
                 </div>
               </div>
             </div>
