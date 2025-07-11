@@ -10,6 +10,9 @@ export class DynamicComponent implements OnInit {
   @ViewChild('viewer', { static: false }) public embeddedPdfViewer;
   isPdfLoaded = false;
   zoom = 'auto';
+  cursor = 'hand';
+  scroll = 'wrapped';
+  spread = 'even';
 
   constructor() { }
 

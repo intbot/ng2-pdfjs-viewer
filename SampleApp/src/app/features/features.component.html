@@ -1,25 +1,29 @@
 <div class="features-container">
   <mat-toolbar color="primary">
     <div class="event-monitor-toolbar">
-      <div class="event-item-toolbar">
-        <span class="event-label-toolbar">Load:</span>
+      <div class="event-item-toolbar" [class.active]="eventCounts.documentLoad > 0">
+        <span class="event-label-toolbar">📄 Load:</span>
         <span class="event-count-toolbar">{{eventCounts.documentLoad}}</span>
       </div>
-      <div class="event-item-toolbar">
-        <span class="event-label-toolbar">Page:</span>
+      <div class="event-item-toolbar" [class.active]="eventCounts.pageChange > 0">
+        <span class="event-label-toolbar">📖 Page:</span>
         <span class="event-count-toolbar">{{eventCounts.pageChange}}</span>
       </div>
-      <div class="event-item-toolbar">
-        <span class="event-label-toolbar">Scale:</span>
+      <div class="event-item-toolbar" [class.active]="eventCounts.scaleChange > 0">
+        <span class="event-label-toolbar">🔍 Scale:</span>
         <span class="event-count-toolbar">{{eventCounts.scaleChange}}</span>
       </div>
-      <div class="event-item-toolbar">
-        <span class="event-label-toolbar">Rotate:</span>
+      <div class="event-item-toolbar" [class.active]="eventCounts.rotationChange > 0">
+        <span class="event-label-toolbar">🔄 Rotate:</span>
         <span class="event-count-toolbar">{{eventCounts.rotationChange}}</span>
       </div>
-      <div class="event-item-toolbar">
-        <span class="event-label-toolbar">Print:</span>
+      <div class="event-item-toolbar" [class.active]="eventCounts.beforePrint > 0">
+        <span class="event-label-toolbar">🖨️ Print:</span>
         <span class="event-count-toolbar">{{eventCounts.beforePrint}}</span>
+      </div>
+      <div class="event-item-toolbar" [class.active]="eventCounts.afterPrint > 0">
+        <span class="event-label-toolbar">✅ After:</span>
+        <span class="event-count-toolbar">{{eventCounts.afterPrint}}</span>
       </div>
       <div class="event-item-toolbar">
         <span class="event-label-toolbar">Page {{currentPage}} | Scale {{currentScale}} | Rot {{currentRotation}}°</span>
@@ -40,16 +44,22 @@
       
       <mat-card-content>
         <mat-tab-group>
-          <!-- Control Visibility Tab -->
-          <mat-tab label="Control Visibility">
+          <mat-tab label="Configuration">
             <div class="tab-content">
+              <div class="section-header">
+                <h3>Configuration</h3>
+                <p class="section-subtitle">Set initial properties and on-load actions that will be applied when the PDF viewer loads.</p>
+              </div>
+
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Download File Name</mat-label>
                 <input matInput [(ngModel)]="downloadFileName" placeholder="Enter custom file name">
               </mat-form-field>
 
               <div class="toggle-group show-hide-controls">
+                <div class="section-header">
                 <h4>Show/Hide Controls</h4>
+                </div>
                 <mat-slide-toggle [(ngModel)]="showOpenFile" color="primary">
                   Open File Button
                 </mat-slide-toggle>
@@ -74,41 +84,140 @@
               </div>
 
               <div class="toggle-group auto-actions">
-                <h4>Auto Actions (queued for next refresh)</h4>
-                <p class="help-text">These actions are queued and will execute automatically when the PDF document loads after pressing "Refresh Viewer". This demonstrates the library's action queuing capability.</p>
+                <div class="section-header">
+                  <h4>On-Load Actions</h4>
+                  <p class="section-subtitle">Execute when PDF loads. Download and last-page execute on document load, print executes when all pages are fully rendered.</p>
+                </div>
                         <mat-slide-toggle [(ngModel)]="autoActionSettings.downloadOnLoad" color="primary">
-          Auto Download
-        </mat-slide-toggle>
+          Download on Load
+                </mat-slide-toggle>
         <mat-slide-toggle [(ngModel)]="autoActionSettings.printOnLoad" color="primary">
-          Auto Print
-        </mat-slide-toggle>
+          Print on Load
+                </mat-slide-toggle>
                         <mat-slide-toggle [(ngModel)]="autoActionSettings.showLastPageOnLoad" color="primary">
-          Go to Last Page
-        </mat-slide-toggle>
+          Show Last Page on Load
+                </mat-slide-toggle>
                 <div class="button-group">
-                  <button mat-raised-button color="warn" (click)="refreshViewer()" matTooltip="Refresh viewer to trigger queued auto-actions">
+                          <button mat-raised-button color="warn" (click)="reloadViewer()" matTooltip="Reload viewer to trigger queued on-load actions">
                     <mat-icon>refresh</mat-icon>
-                    Refresh Viewer (Execute Queued Auto-Actions)
-                  </button>
-                  <button mat-stroked-button color="primary" (click)="clearAutoActionSettings()" matTooltip="Clear all auto-action settings">
+          Reload Viewer (Execute On-Load Actions)
+        </button>
+                  <button mat-stroked-button color="primary" (click)="clearAutoActionSettings()" matTooltip="Clear all on-load action settings">
                     <mat-icon>clear</mat-icon>
-                    Clear Auto-Action Settings
+                    Clear On-Load Action Settings
                   </button>
                 </div>
                 <div class="auto-action-status">
-                  <p><strong>Current Auto-Action Settings:</strong></p>
+                  <p><strong>Current On-Load Action Settings:</strong></p>
                   <ul>
-                    <li>Auto Download: {{autoActionSettings.downloadOnLoad ? 'Enabled' : 'Disabled'}}</li>
-                    <li>Auto Print: {{autoActionSettings.printOnLoad ? 'Enabled' : 'Disabled'}}</li>
-                                          <li>Go to Last Page: {{autoActionSettings.showLastPageOnLoad ? 'Enabled' : 'Disabled'}}</li>
+                    <li>Download on Load: {{autoActionSettings.downloadOnLoad ? 'Enabled' : 'Disabled'}}</li>
+                    <li>Print on Load: {{autoActionSettings.printOnLoad ? 'Enabled' : 'Disabled'}}</li>
+                                          <li>Show Last Page on Load: {{autoActionSettings.showLastPageOnLoad ? 'Enabled' : 'Disabled'}}</li>
                   </ul>
-                  <p><em>These will be applied when you click "Refresh Viewer"</em></p>
+                  <p><em>These will be applied when you click "Reload Viewer"</em></p>
                 </div>
               </div>
 
+              <div class="modes-grid">
+                <mat-form-field appearance="outline" class="compact-field">
+                  <mat-label>Cursor Mode</mat-label>
+                  <mat-select [(ngModel)]="cursor" (selectionChange)="onModeChange('cursor', $event.value)">
+                    <mat-option value="select">Text Selection</mat-option>
+                    <mat-option value="hand">Hand</mat-option>
+                  </mat-select>
+                  <mat-hint>Current: {{cursor}}</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="compact-field">
+                  <mat-label>Scroll Mode</mat-label>
+                  <mat-select [(ngModel)]="scroll" (selectionChange)="onModeChange('scroll', $event.value)">
+                    <mat-option value="vertical">Vertical</mat-option>
+                    <mat-option value="horizontal">Horizontal</mat-option>
+                    <mat-option value="wrapped">Wrapped</mat-option>
+                    <mat-option value="page">Page</mat-option>
+                  </mat-select>
+                  <mat-hint>Current: {{scroll}}</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="compact-field">
+                  <mat-label>Spread Mode</mat-label>
+                  <mat-select [(ngModel)]="spread" (selectionChange)="onModeChange('spread', $event.value)">
+                    <mat-option value="none">None</mat-option>
+                    <mat-option value="odd">Odd</mat-option>
+                    <mat-option value="even">Even</mat-option>
+                  </mat-select>
+                  <mat-hint>Current: {{spread}}</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="compact-field">
+                  <mat-label>Zoom</mat-label>
+                  <mat-select [(ngModel)]="zoom" (selectionChange)="onModeChange('zoom', $event.value)">
+                    <mat-option value="auto">Auto</mat-option>
+                    <mat-option value="page-actual">Page Actual</mat-option>
+                    <mat-option value="page-fit">Page Fit</mat-option>
+                    <mat-option value="page-width">Page Width</mat-option>
+                    <mat-option value="0.5">50%</mat-option>
+                    <mat-option value="0.75">75%</mat-option>
+                    <mat-option value="1">100%</mat-option>
+                    <mat-option value="1.25">125%</mat-option>
+                    <mat-option value="1.5">150%</mat-option>
+                    <mat-option value="2">200%</mat-option>
+                  </mat-select>
+                  <mat-hint>Current: {{zoom}}</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="compact-field">
+                  <mat-label>Locale</mat-label>
+                  <mat-select [(ngModel)]="locale" (selectionChange)="onModeChange('locale', $event.value)">
+                    <mat-option value="en-US">English (US)</mat-option>
+                    <mat-option value="de-AT">German (Austria)</mat-option>
+                    <mat-option value="fr-FR">French (France)</mat-option>
+                    <mat-option value="es-ES">Spanish (Spain)</mat-option>
+                    <mat-option value="it-IT">Italian (Italy)</mat-option>
+                    <mat-option value="ja-JP">Japanese (Japan)</mat-option>
+                    <mat-option value="zh-CN">Chinese (Simplified)</mat-option>
+                  </mat-select>
+                  <mat-hint>Requires reload to apply</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="compact-field">
+                  <mat-label>Named Destination</mat-label>
+                  <input matInput [(ngModel)]="namedDest" (ngModelChange)="onModeChange('namedDest', $event)" placeholder="Enter named destination (e.g., 5.1)">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="compact-field">
+                  <mat-label>Page Mode (Sidebar)</mat-label>
+                  <mat-select [(ngModel)]="pageMode" (selectionChange)="onModeChange('pageMode', $event.value)">
+                    <mat-option value="none">None</mat-option>
+                    <mat-option value="thumbs">Thumbnails</mat-option>
+                    <mat-option value="bookmarks">Bookmarks</mat-option>
+                    <mat-option value="attachments">Attachments</mat-option>
+                  </mat-select>
+                  <mat-hint>Current: {{pageMode}} (only shows if PDF has content)</mat-hint>
+                </mat-form-field>
+
+                <div class="toggle-container">
+                  <mat-slide-toggle [(ngModel)]="useOnlyCssZoom" color="primary">
+                    Use Only CSS Zoom (Mobile)
+                  </mat-slide-toggle>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+
+          <!-- On-Demand Controls Tab -->
+          <mat-tab label="On-Demand Controls">
+            <div class="tab-content">
+              <div class="section-header">
+                <h3>On-Demand Controls</h3>
+                <p class="section-subtitle">Execute actions and set properties immediately when clicked.</p>
+              </div>
+
               <div class="button-group on-demand-actions">
-                <h4>On-Demand Actions (execute immediately)</h4>
-                <p class="help-text">These actions execute immediately when clicked, regardless of auto-action settings.</p>
+                <div class="section-header">
+                  <h4>Immediate Actions</h4>
+                  <p class="section-subtitle">Execute immediately when clicked, regardless of on-load action settings.</p>
+                </div>
                 <button mat-raised-button color="accent" (click)="triggerDownloadAction()" matTooltip="Trigger Download">
                   <mat-icon>download</mat-icon>
                   Download Now
@@ -131,21 +240,11 @@
                 </button>
               </div>
 
-              <div class="button-group rotation-controls">
-                <h4>Rotation Controls</h4>
-                <button mat-raised-button color="primary" (click)="rotateClockwise()" matTooltip="Rotate Clockwise">
-                  <mat-icon>rotate_right</mat-icon>
-                  Rotate Clockwise
-                </button>
-                <button mat-raised-button color="primary" (click)="rotateCounterClockwise()" matTooltip="Rotate Counter-clockwise">
-                  <mat-icon>rotate_left</mat-icon>
-                  Rotate Counter-clockwise
-                </button>
-              </div>
-
               <div class="button-group on-demand-mode-controls">
-                <h4>On-Demand Mode Controls</h4>
-                <p class="help-text">These controls can be executed immediately on-demand, in addition to being set as auto-actions above.</p>
+                <div class="section-header">
+                  <h4>Mode Controls</h4>
+                  <p class="section-subtitle">Set viewer modes and properties immediately on-demand.</p>
+                </div>
                 <button mat-raised-button color="primary" (click)="setCursorAction('hand')" matTooltip="Set Cursor to Hand">
                   <mat-icon>pan_tool</mat-icon>
                   Hand Cursor
@@ -171,6 +270,14 @@
                   <mat-icon>view_column</mat-icon>
                   Even Spread
                 </button>
+                <button mat-raised-button color="primary" (click)="rotateClockwise()" matTooltip="Rotate Clockwise">
+                  <mat-icon>rotate_right</mat-icon>
+                  Rotate Clockwise
+                </button>
+                <button mat-raised-button color="primary" (click)="rotateCounterClockwise()" matTooltip="Rotate Counter-clockwise">
+                  <mat-icon>rotate_left</mat-icon>
+                  Rotate Counter-clockwise
+                </button>
                 <button mat-raised-button color="primary" (click)="goToNamedDestinationAction('5.1')" matTooltip="Go to Named Destination">
                   <mat-icon>bookmark</mat-icon>
                   Named Dest
@@ -188,7 +295,7 @@
               <div class="action-queue-status" *ngIf="getActionQueueStatus()">
                 <h4>Action Queue Status</h4>
                 <div class="status-item">
-                  <span>Auto Actions:</span>
+                  <span>On-Load Actions:</span>
                   <span>{{getActionQueueStatus()?.documentLoadedActions || 0}}</span>
                 </div>
                 <div class="status-item">
@@ -203,96 +310,206 @@
             </div>
           </mat-tab>
 
-          <!-- Modes Tab -->
-          <mat-tab label="Modes">
-            <div class="tab-content compact-modes">
-              <div class="modes-grid">
-                <mat-form-field appearance="outline" class="compact-field">
-                  <mat-label>Cursor Mode</mat-label>
-                  <mat-select [(ngModel)]="initialCursor" (selectionChange)="onModeChange('initialCursor', $event.value)">
-                    <mat-option value="select">Text Selection</mat-option>
-                    <mat-option value="hand">Hand</mat-option>
-                  </mat-select>
-                </mat-form-field>
+          <!-- Event Monitoring Tab -->
+          <mat-tab label="Event Monitoring">
+            <div class="tab-content">
+              <div class="section-header">
+                <h3>Event Monitoring</h3>
+                <p class="section-subtitle">Monitor PDF.js events and viewer state changes in real-time.</p>
+              </div>
 
-                <mat-form-field appearance="outline" class="compact-field">
-                  <mat-label>Scroll Mode</mat-label>
-                  <mat-select [(ngModel)]="initialScroll" (selectionChange)="onModeChange('initialScroll', $event.value)">
-                    <mat-option value="vertical">Vertical</mat-option>
-                    <mat-option value="horizontal">Horizontal</mat-option>
-                    <mat-option value="wrapped">Wrapped</mat-option>
-                    <mat-option value="page">Page</mat-option>
-                  </mat-select>
-                </mat-form-field>
+              <div class="event-counters-grid">
+                <div class="event-counter" [class.active]="eventCounts.documentLoad > 0">
+                  <div class="event-icon">📄</div>
+                  <div class="event-info">
+                    <div class="event-name">Document Load</div>
+                    <div class="event-count">{{eventCounts.documentLoad}}</div>
+                  </div>
+                </div>
 
-                <mat-form-field appearance="outline" class="compact-field">
-                  <mat-label>Spread Mode</mat-label>
-                  <mat-select [(ngModel)]="initialSpread" (selectionChange)="onModeChange('initialSpread', $event.value)">
-                    <mat-option value="none">None</mat-option>
-                    <mat-option value="odd">Odd</mat-option>
-                    <mat-option value="even">Even</mat-option>
-                  </mat-select>
-                </mat-form-field>
+                <div class="event-counter" [class.active]="eventCounts.pageChange > 0">
+                  <div class="event-icon">📖</div>
+                  <div class="event-info">
+                    <div class="event-name">Page Change</div>
+                    <div class="event-count">{{eventCounts.pageChange}}</div>
+                  </div>
+                </div>
 
+                <div class="event-counter" [class.active]="eventCounts.scaleChange > 0">
+                  <div class="event-icon">🔍</div>
+                  <div class="event-info">
+                    <div class="event-name">Scale Change</div>
+                    <div class="event-count">{{eventCounts.scaleChange}}</div>
+                  </div>
+                </div>
+
+                <div class="event-counter" [class.active]="eventCounts.rotationChange > 0">
+                  <div class="event-icon">🔄</div>
+                  <div class="event-info">
+                    <div class="event-name">Rotation Change</div>
+                    <div class="event-count">{{eventCounts.rotationChange}}</div>
+                  </div>
+                </div>
+
+                <div class="event-counter" [class.active]="eventCounts.beforePrint > 0">
+                  <div class="event-icon">🖨️</div>
+                  <div class="event-info">
+                    <div class="event-name">Before Print</div>
+                    <div class="event-count">{{eventCounts.beforePrint}}</div>
+                  </div>
+                </div>
+
+                <div class="event-counter" [class.active]="eventCounts.afterPrint > 0">
+                  <div class="event-icon">✅</div>
+                  <div class="event-info">
+                    <div class="event-name">After Print</div>
+                    <div class="event-count">{{eventCounts.afterPrint}}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="button-group">
+                <button mat-raised-button color="warn" (click)="resetEventCounts()" matTooltip="Reset all event counters">
+                  <mat-icon>refresh</mat-icon>
+                  Reset Event Counters
+                </button>
+              </div>
+            </div>
+          </mat-tab>
+
+          <!-- Two-Way Binding Tab -->
+          <mat-tab label="Two-Way Binding">
+            <div class="tab-content">
+              <div class="section-header">
+                <h3>Two-Way Binding Demonstration</h3>
+                <p class="section-subtitle">Test Angular two-way binding with PDF.js viewer properties. Changes sync automatically between Angular and PDF.js.</p>
+              </div>
+
+              <div class="two-way-binding-grid">
                 <mat-form-field appearance="outline" class="compact-field">
-                  <mat-label>Zoom</mat-label>
-                  <mat-select [(ngModel)]="initialZoom" (selectionChange)="onModeChange('initialZoom', $event.value)">
+                  <mat-label>Zoom (Two-Way)</mat-label>
+                  <mat-select [(ngModel)]="zoom">
                     <mat-option value="auto">Auto</mat-option>
                     <mat-option value="page-actual">Page Actual</mat-option>
                     <mat-option value="page-fit">Page Fit</mat-option>
                     <mat-option value="page-width">Page Width</mat-option>
-                    <mat-option value="0.5">50%</mat-option>
-                    <mat-option value="0.75">75%</mat-option>
-                    <mat-option value="1">100%</mat-option>
-                    <mat-option value="1.25">125%</mat-option>
-                    <mat-option value="1.5">150%</mat-option>
-                    <mat-option value="2">200%</mat-option>
+                    <mat-option value="50%">50%</mat-option>
+                    <mat-option value="75%">75%</mat-option>
+                    <mat-option value="100%">100%</mat-option>
+                    <mat-option value="125%">125%</mat-option>
+                    <mat-option value="150%">150%</mat-option>
+                    <mat-option value="200%">200%</mat-option>
                   </mat-select>
+                  <mat-hint>Current: {{zoom}}</mat-hint>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="compact-field">
-                  <mat-label>Locale</mat-label>
-                  <mat-select [(ngModel)]="initialLocale" (selectionChange)="onModeChange('initialLocale', $event.value)">
-                    <mat-option value="en-US">English (US)</mat-option>
-                    <mat-option value="de-AT">German (Austria)</mat-option>
-                    <mat-option value="fr-FR">French (France)</mat-option>
-                    <mat-option value="es-ES">Spanish (Spain)</mat-option>
-                    <mat-option value="it-IT">Italian (Italy)</mat-option>
-                    <mat-option value="ja-JP">Japanese (Japan)</mat-option>
-                    <mat-option value="zh-CN">Chinese (Simplified)</mat-option>
-                  </mat-select>
-                  <mat-hint>Requires refresh to apply</mat-hint>
-                </mat-form-field>
+                  <mat-label>Cursor (Two-Way)</mat-label>
+                <mat-select [(ngModel)]="cursor">
+                    <mat-option value="select">Text Selection</mat-option>
+                  <mat-option value="hand">Hand</mat-option>
+                  <mat-option value="zoom">Zoom</mat-option>
+                </mat-select>
+                  <mat-hint>Current: {{cursor}}</mat-hint>
+              </mat-form-field>
 
                 <mat-form-field appearance="outline" class="compact-field">
-                  <mat-label>Named Destination</mat-label>
-                  <input matInput [(ngModel)]="initialNamedDest" (ngModelChange)="onModeChange('initialNamedDest', $event)" placeholder="Enter named destination (e.g., 5.1)">
-                </mat-form-field>
+                  <mat-label>Scroll (Two-Way)</mat-label>
+                <mat-select [(ngModel)]="scroll">
+                  <mat-option value="vertical">Vertical</mat-option>
+                  <mat-option value="horizontal">Horizontal</mat-option>
+                  <mat-option value="wrapped">Wrapped</mat-option>
+                    <mat-option value="page">Page</mat-option>
+                </mat-select>
+                  <mat-hint>Current: {{scroll}}</mat-hint>
+              </mat-form-field>
 
                 <mat-form-field appearance="outline" class="compact-field">
-                  <mat-label>Page Mode (Sidebar)</mat-label>
-                  <mat-select [(ngModel)]="initialPageMode" (selectionChange)="onModeChange('initialPageMode', $event.value)">
-                    <mat-option value="none">None</mat-option>
-                    <mat-option value="thumbs">Thumbnails</mat-option>
-                    <mat-option value="bookmarks">Bookmarks</mat-option>
-                    <mat-option value="attachments">Attachments</mat-option>
-                  </mat-select>
-                  <mat-hint>Only shows if PDF has content</mat-hint>
-                </mat-form-field>
+                  <mat-label>Spread (Two-Way)</mat-label>
+                <mat-select [(ngModel)]="spread">
+                  <mat-option value="none">None</mat-option>
+                  <mat-option value="odd">Odd</mat-option>
+                  <mat-option value="even">Even</mat-option>
+                </mat-select>
+                  <mat-hint>Current: {{spread}}</mat-hint>
+              </mat-form-field>
 
-                <div class="toggle-container">
-                  <mat-slide-toggle [(ngModel)]="initialUseOnlyCssZoom" color="primary">
-                    Use Only CSS Zoom (Mobile)
-                  </mat-slide-toggle>
+                <mat-form-field appearance="outline" class="compact-field">
+                  <mat-label>Page Mode (Two-Way)</mat-label>
+                  <mat-select [(ngModel)]="pageMode">
+                  <mat-option value="none">None</mat-option>
+                  <mat-option value="thumbs">Thumbnails</mat-option>
+                  <mat-option value="bookmarks">Bookmarks</mat-option>
+                  <mat-option value="attachments">Attachments</mat-option>
+                </mat-select>
+                  <mat-hint>Current: {{pageMode}}</mat-hint>
+              </mat-form-field>
+
+                <mat-form-field appearance="outline" class="compact-field">
+                  <mat-label>Rotation (Two-Way)</mat-label>
+                  <mat-select [(ngModel)]="rotation">
+                    <mat-option [value]="0">0°</mat-option>
+                    <mat-option [value]="90">90°</mat-option>
+                    <mat-option [value]="180">180°</mat-option>
+                    <mat-option [value]="270">270°</mat-option>
+                  </mat-select>
+                  <mat-hint>Current: {{rotation}}°</mat-hint>
+                </mat-form-field>
+              </div>
+
+              <div class="two-way-binding-info">
+                <h4>Two-Way Binding Status</h4>
+                <div class="binding-status-grid">
+                  <div class="status-item">
+                    <span class="status-label">Zoom:</span>
+                    <span class="status-value">{{zoom}}</span>
+                  </div>
+                  <div class="status-item">
+                    <span class="status-label">Cursor:</span>
+                    <span class="status-value">{{cursor}}</span>
+                  </div>
+                  <div class="status-item">
+                    <span class="status-label">Scroll:</span>
+                    <span class="status-value">{{scroll}}</span>
+                  </div>
+                  <div class="status-item">
+                    <span class="status-label">Spread:</span>
+                    <span class="status-value">{{spread}}</span>
+                  </div>
+                  <div class="status-item">
+                    <span class="status-label">Page Mode:</span>
+                    <span class="status-value">{{pageMode}}</span>
+                  </div>
+                  <div class="status-item">
+                    <span class="status-label">Rotation:</span>
+                    <span class="status-value">{{rotation}}°</span>
+                  </div>
                 </div>
               </div>
 
-              <!-- State Management Section -->
-              <div class="state-management-section">
-                <button mat-raised-button color="primary" (click)="refreshViewer()" matTooltip="Refresh viewer to apply saved mode values">
-                  <mat-icon>refresh</mat-icon>
-                  Refresh Viewer
-                </button>
+              <div class="two-way-binding-actions">
+                <h4>Test Actions</h4>
+                <p class="section-subtitle">These buttons demonstrate programmatic changes that should update the UI controls above.</p>
+                <div class="button-group">
+                  <button mat-raised-button color="primary" (click)="zoom = 'page-fit'">
+                    Set Zoom to Page Fit
+                  </button>
+                  <button mat-raised-button color="primary" (click)="cursor = 'hand'">
+                    Set Cursor to Hand
+                  </button>
+                  <button mat-raised-button color="primary" (click)="scroll = 'horizontal'">
+                    Set Scroll to Horizontal
+                  </button>
+                  <button mat-raised-button color="primary" (click)="spread = 'odd'">
+                    Set Spread to Odd
+                  </button>
+                  <button mat-raised-button color="primary" (click)="pageMode = 'thumbs'">
+                    Set Page Mode to Thumbnails
+                  </button>
+                  <button mat-raised-button color="primary" (click)="rotation = 90">
+                    Set Rotation to 90°
+                  </button>
+                </div>
               </div>
             </div>
           </mat-tab>
@@ -302,8 +519,8 @@
             <div class="tab-content">
               <div class="section-header">Actions</div>
               <div class="button-group">
-                <button mat-raised-button color="primary" (click)="refreshViewer()">
-                  Refresh Viewer
+                        <button mat-raised-button color="primary" (click)="reloadViewer()">
+          Reload Viewer
                 </button>
                 <button mat-raised-button color="accent" (click)="goToPage(1)">
                   Go to Page 1
@@ -360,6 +577,7 @@
       <mat-card-content>
         <div class="pdf-container">
           <ng2-pdfjs-viewer 
+            *ngIf="showPdfViewer"
             #testPdfViewer 
             pdfSrc="/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf"
             [viewerId]="'test-viewer'"
@@ -371,21 +589,22 @@
             [showFind]="showFind"
             [showViewBookmark]="showViewBookmark"
             [showAnnotations]="showAnnotations"
-                [downloadOnLoad]="downloadOnLoad"
-    [printOnLoad]="printOnLoad"
+            [downloadOnLoad]="downloadOnLoad"
+            [printOnLoad]="printOnLoad"
             [showLastPageOnLoad]="showLastPageOnLoad"
-            [initialCursor]="initialCursor"
-            [initialScroll]="initialScroll"
-            [initialSpread]="initialSpread"
-            [initialZoom]="initialZoom"
-            [initialNamedDest]="initialNamedDest"
-            [initialPageMode]="initialPageMode"
-            [initialLocale]="initialLocale"
-            [initialUseOnlyCssZoom]="initialUseOnlyCssZoom"
+            [namedDest]="namedDest"
+            [locale]="locale"
+            [useOnlyCssZoom]="useOnlyCssZoom"
             [errorOverride]="errorOverride"
             [errorAppend]="errorAppend"
             [errorMessage]="errorMessage"
             [diagnosticLogs]="diagnosticLogs"
+            [(zoom)]="zoom"
+            [(cursor)]="cursor"
+            [(scroll)]="scroll"
+            [(spread)]="spread"
+            [(pageMode)]="pageMode"
+            [(rotation)]="rotation"
             (onDocumentLoad)="onDocumentLoad()"
             (onPageChange)="onPageChange($event)"
             (onScaleChange)="onScaleChange($event)"

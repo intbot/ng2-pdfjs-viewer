@@ -3,8 +3,8 @@
     [colspan]="3"
     [rowspan]="1">
     <ng2-pdfjs-viewer class="fill" viewerId="MyID2" #viewer pdfSrc="compressed.tracemonkey-pldi-09.pdf"
-      [initialLocale]="'de-AT'" (onDocumentLoad)="pdfLoaded()" [initialZoom]="zoom"
-      [initialCursor]="'HAND'" downloadFileName="research.pdf" [initialScroll]="'W'" [initialSpread]="'E'" [showPrint]="false"
+      [locale]="'de-AT'" (onDocumentLoad)="pdfLoaded()" [(zoom)]="zoom"
+      [(cursor)]="cursor" downloadFileName="research.pdf" [(scroll)]="scroll" [(spread)]="spread" [showPrint]="false"
     [errorOverride]="true" errorMessage="My error Message"></ng2-pdfjs-viewer>
   </mat-grid-tile>
   @if (isPdfLoaded) {
@@ -41,15 +41,15 @@
           </tr>
           <tr>
             <td data-column="Attribute">Cursor</td>
-            <td data-column="Value">{{viewer.initialCursor}}</td>
+            <td data-column="Value">{{viewer.cursor}}</td>
           </tr>
           <tr>
             <td data-column="Attribute">Locale</td>
-            <td data-column="Value">{{viewer.initialLocale}}</td>
+            <td data-column="Value">{{viewer.locale}}</td>
           </tr>
           <tr>
             <td data-column="Attribute">Zoom</td>
-            <td data-column="Value">{{viewer.initialZoom}}</td>
+            <td data-column="Value">{{viewer.zoom}}</td>
           </tr>
         </tbody>
       </table>

@@ -1,0 +1,26 @@
+# ng2-pdfjs-viewer Project Rules
+
+## Rule 1: Always Use test.bat for Testing
+- NEVER run individual commands like `npm run build` or `ng serve`
+- ALWAYS use `./test.bat` for complete build → publish → update → install → run workflow
+
+## Rule 2: Verify BUILD_ID Before Debugging
+- ALWAYS check console logs for BUILD_ID before analyzing any issues
+- Expected BUILD_ID logs:
+  - `🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID: [timestamp]`
+  - `🟢 postmessage-wrapper.js: TEST LOG - BUILD_ID: [timestamp]`
+- If BUILD_ID logs are missing:
+  1. Stop debugging immediately (old code is running)
+  2. Clear browser cache (Ctrl+F5)
+  3. Clear yalc cache if needed
+  4. Re-run test.bat and verify BUILD_ID logs appear
+  5. Only then proceed with debugging
+
+## Rule 3: Follow PDF.js v4.x Standards
+- Adhere 100% to PDF.js v4.x standards and APIs
+- Avoid fragile implementations
+- Use event-driven architecture, no timeout-based hacks
+
+## Rule 4: Avoid Code Bloat
+- Don't add unnecessary code or content
+- Keep implementations clean and focused 

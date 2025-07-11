@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ChangedScale, ChangedRotation } from 'ng2-pdfjs-viewer';
 
 @Component({
@@ -31,21 +31,25 @@ export class FeaturesComponent implements OnInit {
   public printOnLoad = false;
   public showLastPageOnLoad = false;
 
+  // Component reload control
+  public showPdfViewer = true;
+
   // In-memory state management for mode values
   private savedModeValues: { [key: string]: any } = {};
 
-  // Mode settings
-  public initialCursor = 'select';
-  public initialScroll = 'vertical';
-  public initialSpread = 'none';
-  public initialNamedDest = '';
-  public initialPageMode = 'none';
+  // Mode settings (now using two-way binding)
+  public cursor = 'select';
+  public scroll = 'vertical';
+  public spread = 'none';
+  public namedDest = '';
+  public pageMode = 'none';
+  public zoom = 'auto';
+  public rotation = 0;
 
   // Custom values
   public downloadFileName = 'test-document.pdf';
-  public initialZoom = 'auto';
-  public initialLocale = 'en-US';
-  public initialUseOnlyCssZoom = false;
+  public locale = 'en-US';
+  public useOnlyCssZoom = false;
 
   // Error handling
   public errorOverride = false;
@@ -54,6 +58,9 @@ export class FeaturesComponent implements OnInit {
   
   // Debug settings
   public diagnosticLogs = true;
+
+  // Note: These are the same properties used for both initial configuration and two-way binding
+  // No need for separate "viewer*" properties - just use the natural property names
 
   // Event counters
   public eventCounts = {
@@ -71,10 +78,13 @@ export class FeaturesComponent implements OnInit {
   public currentRotation = 0;
   public totalPages = 0;
 
-  constructor() { }
+  constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     console.log('🧪 TestFeatures: Component initialized');
+    
+    // Properties are already initialized with their default values
+    console.log('🧪 TestFeatures: Using existing properties for two-way binding');
   }
 
   // Event handlers
@@ -116,45 +126,66 @@ export class FeaturesComponent implements OnInit {
   }
 
   // Action buttons
-  public refreshViewer() {
-    console.log('🧪 TestFeatures: Refreshing viewer with auto-actions');
+  public reloadViewer() {
+    console.log('🧪 TestFeatures: Reloading viewer with on-load actions');
     
-    // Apply auto-action settings to actual viewer properties
+    // Apply on-load action settings to actual viewer properties
     this.applyAutoActionSettings();
     
-    // Save current mode values before refreshing
+    // Save current mode values before reloading
     this.saveCurrentModeValues();
     
-    this.testPdfViewer.refresh();
-    console.log('🧪 TestFeatures: Viewer refreshed with auto-actions applied');
+    // Full component reload using Angular's lifecycle management
+    this.performComponentReload();
   }
 
-  // Apply auto-action settings to actual viewer properties
-  private applyAutoActionSettings() {
-    console.log('🧪 TestFeatures: Applying auto-action settings:', this.autoActionSettings);
+  /**
+   * Performs a clean component reload without timeouts
+   */
+  private performComponentReload(): void {
+    console.log('🧪 TestFeatures: Performing full component reload');
     
-    // Apply auto-action settings to actual viewer properties
+    // Destroy the component
+    this.showPdfViewer = false;
+    this.cdr.detectChanges();
+    
+    // Recreate the component in the next change detection cycle
+    this.cdr.markForCheck();
+    
+    // Use Promise.resolve() to ensure proper lifecycle management
+    Promise.resolve().then(() => {
+      this.showPdfViewer = true;
+      this.cdr.detectChanges();
+      console.log('🧪 TestFeatures: Component recreated - auto-actions will be processed on initialization');
+    });
+  }
+
+  // Apply on-load action settings to actual viewer properties
+  private applyAutoActionSettings() {
+    console.log('🧪 TestFeatures: Applying on-load action settings:', this.autoActionSettings);
+    
+    // Apply on-load action settings to actual viewer properties
     this.downloadOnLoad = this.autoActionSettings.downloadOnLoad;
     this.printOnLoad = this.autoActionSettings.printOnLoad;
     this.showLastPageOnLoad = this.autoActionSettings.showLastPageOnLoad;
     
-    console.log('🧪 TestFeatures: Auto-actions applied - Download:', this.downloadOnLoad, 'Print:', this.printOnLoad, 'LastPage:', this.showLastPageOnLoad);
+    console.log('🧪 TestFeatures: On-load actions applied - Download:', this.downloadOnLoad, 'Print:', this.printOnLoad, 'LastPage:', this.showLastPageOnLoad);
   }
 
-  // Clear auto-action settings (for demo purposes)
+  // Clear on-load action settings (for demo purposes)
   public clearAutoActionSettings() {
-    console.log('🧪 TestFeatures: Clearing auto-action settings');
+    console.log('🧪 TestFeatures: Clearing on-load action settings');
     this.autoActionSettings = {
       downloadOnLoad: false,
       printOnLoad: false,
       showLastPageOnLoad: false
     };
-    console.log('🧪 TestFeatures: Auto-action settings cleared');
+    console.log('🧪 TestFeatures: On-load action settings cleared');
   }
 
   // Save current mode values to memory
   private saveCurrentModeValues() {
-    const modeProperties = ['initialCursor', 'initialScroll', 'initialSpread', 'initialZoom', 'initialLocale', 'initialNamedDest', 'initialPageMode'];
+    const modeProperties = ['cursor', 'scroll', 'spread', 'zoom', 'locale', 'namedDest', 'pageMode'];
     modeProperties.forEach(property => {
       const value = (this as any)[property];
       if (value !== null && value !== undefined && value !== '') {
@@ -162,7 +193,7 @@ export class FeaturesComponent implements OnInit {
         console.log(`🧪 TestFeatures: Saved ${property} = ${value} to memory`);
       }
     });
-    console.log('🧪 TestFeatures: Saved current mode values before refresh');
+    console.log('🧪 TestFeatures: Saved current mode values before reload');
   }
 
   public goToPage(page: number) {
@@ -335,6 +366,12 @@ export class FeaturesComponent implements OnInit {
   public onModeChange(property: string, value: any) {
     console.log(`🧪 TestFeatures: Mode ${property} changed to:`, value);
     
+    // Update the property directly - no need for separate viewer properties
+    if (this.hasOwnProperty(property)) {
+      (this as any)[property] = value;
+      console.log(`🧪 TestFeatures: Updated ${property} = ${value}`);
+    }
+    
     // Save the value to memory
     this.savedModeValues[property] = value;
     console.log(`🧪 TestFeatures: Saved ${property} = ${value} to memory`);
@@ -390,4 +427,6 @@ export class FeaturesComponent implements OnInit {
       totalPages: this.totalPages
     };
   }
+
+
 } 

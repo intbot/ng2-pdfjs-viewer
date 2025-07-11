@@ -18,6 +18,111 @@ interface ControlResponse {
   error?: string;
 }
 
+// Two-way binding support interfaces
+interface PropertyChangeEvent {
+  property: string;
+  value: any;
+  source: 'user' | 'programmatic';
+  timestamp: number;
+}
+
+// Property transformation utilities
+class PropertyTransformers {
+  static transformZoom = {
+    toViewer: (zoom: string): string => {
+      // Convert Angular zoom format to PDF.js format
+      if (!zoom) return 'auto';
+      return zoom;
+    },
+    fromViewer: (scale: number | string): string => {
+      // Convert PDF.js scale to Angular zoom format
+      if (typeof scale === 'string') {
+        return scale; // Return string values as-is (auto, page-fit, etc.)
+      }
+      if (typeof scale === 'number') {
+        return `${Math.round(scale * 100)}%`;
+      }
+      return 'auto';
+    }
+  };
+
+  static transformRotation = {
+    toViewer: (rotation: number): number => {
+      // Ensure rotation is in valid range (0, 90, 180, 270)
+      return ((rotation % 360) + 360) % 360;
+    },
+    fromViewer: (rotation: number): number => {
+      return ((rotation % 360) + 360) % 360;
+    }
+  };
+
+  static transformCursor = {
+    toViewer: (cursor: string): string => {
+      const validCursors = ['select', 'hand', 'zoom'];
+      return validCursors.includes(cursor) ? cursor : 'select';
+    },
+    fromViewer: (cursor: string): string => {
+      return cursor || 'select';
+    }
+  };
+
+  static transformScroll = {
+    toViewer: (scroll: string): string => {
+      const validScrolls = ['vertical', 'horizontal', 'wrapped', 'page'];
+      return validScrolls.includes(scroll) ? scroll : 'vertical';
+    },
+    fromViewer: (scroll: string): string => {
+      return scroll || 'vertical';
+    }
+  };
+
+  static transformSpread = {
+    toViewer: (spread: string): string => {
+      const validSpreads = ['none', 'odd', 'even'];
+      return validSpreads.includes(spread) ? spread : 'none';
+    },
+    fromViewer: (spread: string): string => {
+      return spread || 'none';
+    }
+  };
+
+  static transformPageMode = {
+    toViewer: (pageMode: string): string => {
+      const validModes = ['none', 'thumbs', 'bookmarks', 'attachments'];
+      return validModes.includes(pageMode) ? pageMode : 'none';
+    },
+    fromViewer: (pageMode: string): string => {
+      return pageMode || 'none';
+    }
+  };
+}
+
+// Change origin tracking to prevent infinite loops
+class ChangeOriginTracker {
+  private userInitiatedChanges = new Set<string>();
+  private programmaticChanges = new Set<string>();
+
+  markUserInitiated(property: string): void {
+    this.userInitiatedChanges.add(property);
+    // Clear after next tick to avoid memory leaks
+    setTimeout(() => this.userInitiatedChanges.delete(property), 0);
+  }
+
+  markProgrammatic(property: string): void {
+    this.programmaticChanges.add(property);
+    // Clear after next tick to avoid memory leaks
+    setTimeout(() => this.programmaticChanges.delete(property), 0);
+  }
+
+  isUserInitiated(property: string): boolean {
+    return this.userInitiatedChanges.has(property);
+  }
+
+  isProgrammatic(property: string): boolean {
+    return this.programmaticChanges.has(property);
+  }
+}
+
 // Action Queue System Interfaces
 interface ViewerAction {
   id: string;
@@ -320,19 +425,15 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   @Input() public showViewBookmark: boolean = true;
   @Input() public showPrint: boolean = true;
   @Input() public printOnLoad: boolean = false;
-  @Input() public initialRotateCW: boolean = false;
-  @Input() public initialRotateCCW: boolean = false;
+  @Input() public rotateCW: boolean = false;
+  @Input() public rotateCCW: boolean = false;
   @Input() public showFullScreen: boolean = true;
   @Input() public showFind: boolean = true;
-  @Input() public initialZoom: string;
-  @Input() public initialNamedDest: string;
-  @Input() public initialPageMode: string;
+  @Input() public namedDest: string;
+  // Note: zoom, cursor, scroll, spread, pageMode are now two-way binding properties: [(zoom)], [(cursor)], [(scroll)], [(spread)], [(pageMode)]
   @Input() public showLastPageOnLoad: boolean = false;
-  @Input() public initialCursor: string;
-  @Input() public initialScroll: string;
-  @Input() public initialSpread: string;
-  @Input() public initialLocale: string;
-  @Input() public initialUseOnlyCssZoom: boolean = false;
+  @Input() public locale: string;
+  @Input() public useOnlyCssZoom: boolean = false;
   @Input() public errorOverride: boolean = false;
   @Input() public errorAppend: boolean = true;
   @Input() public errorMessage: string;
@@ -354,68 +455,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   @Input() public set startPrint(value: boolean) {
     console.warn('⚠️ DEPRECATED: Property "startPrint" is deprecated. Use "printOnLoad" instead.');
     this.printOnLoad = value;
-  }
-
-
-
-  /** @deprecated Use `initialCursor` instead. This property will be removed in a future version. */
-  @Input() public set cursor(value: string) {
-    console.warn('⚠️ DEPRECATED: Property "cursor" is deprecated. Use "initialCursor" instead.');
-    this.initialCursor = value;
-  }
-
-  /** @deprecated Use `initialScroll` instead. This property will be removed in a future version. */
-  @Input() public set scroll(value: string) {
-    console.warn('⚠️ DEPRECATED: Property "scroll" is deprecated. Use "initialScroll" instead.');
-    this.initialScroll = value;
-  }
-
-  /** @deprecated Use `initialSpread` instead. This property will be removed in a future version. */
-  @Input() public set spread(value: string) {
-    console.warn('⚠️ DEPRECATED: Property "spread" is deprecated. Use "initialSpread" instead.');
-    this.initialSpread = value;
-  }
-
-  /** @deprecated Use `initialZoom` instead. This property will be removed in a future version. */
-  @Input() public set zoom(value: string) {
-    console.warn('⚠️ DEPRECATED: Property "zoom" is deprecated. Use "initialZoom" instead.');
-    this.initialZoom = value;
-  }
-
-  /** @deprecated Use `initialNamedDest` instead. This property will be removed in a future version. */
-  @Input() public set nameddest(value: string) {
-    console.warn('⚠️ DEPRECATED: Property "nameddest" is deprecated. Use "initialNamedDest" instead.');
-    this.initialNamedDest = value;
-  }
-
-  /** @deprecated Use `initialPageMode` instead. This property will be removed in a future version. */
-  @Input() public set pagemode(value: string) {
-    console.warn('⚠️ DEPRECATED: Property "pagemode" is deprecated. Use "initialPageMode" instead.');
-    this.initialPageMode = value;
-  }
-
-  /** @deprecated Use `initialLocale` instead. This property will be removed in a future version. */
-  @Input() public set locale(value: string) {
-    console.warn('⚠️ DEPRECATED: Property "locale" is deprecated. Use "initialLocale" instead.');
-    this.initialLocale = value;
-  }
-
-  /** @deprecated Use `initialUseOnlyCssZoom` instead. This property will be removed in a future version. */
-  @Input() public set useOnlyCssZoom(value: boolean) {
-    console.warn('⚠️ DEPRECATED: Property "useOnlyCssZoom" is deprecated. Use "initialUseOnlyCssZoom" instead.');
-    this.initialUseOnlyCssZoom = value;
-  }
-
-  /** @deprecated Use `initialRotateCW` instead. This property will be removed in a future version. */
-  @Input() public set rotatecw(value: boolean) {
-    console.warn('⚠️ DEPRECATED: Property "rotatecw" is deprecated. Use "initialRotateCW" instead.');
-    this.initialRotateCW = value;
-  }
-
-  /** @deprecated Use `initialRotateCCW` instead. This property will be removed in a future version. */
-  @Input() public set rotateccw(value: boolean) {
-    console.warn('⚠️ DEPRECATED: Property "rotateccw" is deprecated. Use "initialRotateCCW" instead.');
-    this.initialRotateCCW = value;
   }
 
   /** @deprecated Use `showOpenFile` instead. This property will be removed in a future version. */
@@ -535,10 +574,195 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   private pendingInitialConfig = true;
   private initialConfigQueued = false; // Track if initial configuration has been queued
   private actionQueueManager: ActionQueueManager;
+  private changeOriginTracker = new ChangeOriginTracker();
 
-      ngOnInit(): void {   
-      // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
-      console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-07-09T23-25-45-000Z');
+  // ============================================================================
+  // TWO-WAY BINDING PROPERTIES
+  // ============================================================================
+
+  // Private backing fields for two-way binding properties
+  private _zoom: string = 'auto';
+  private _rotation: number = 0;
+  private _cursor: string = 'select';
+  private _scroll: string = 'vertical';
+  private _spread: string = 'none';
+  private _pageMode: string = 'none';
+  // Two-way binding Output events
+  @Output() zoomChange = new EventEmitter<string>();
+  @Output() rotationChange = new EventEmitter<number>();
+  @Output() cursorChange = new EventEmitter<string>();
+  @Output() scrollChange = new EventEmitter<string>();
+  @Output() spreadChange = new EventEmitter<string>();
+  @Output() pageModeChange = new EventEmitter<string>();
+
+  /**
+   * Two-way binding for zoom level
+   * Supports: auto, page-fit, page-width, page-actual, percentage values (e.g., "150%")
+   */
+  @Input()
+  get zoom(): string {
+    return this._zoom;
+  }
+  set zoom(value: string) {
+    if (this._zoom !== value) {
+      this.changeOriginTracker.markProgrammatic('zoom');
+      this._zoom = PropertyTransformers.transformZoom.toViewer(value);
+      this.applyZoomToViewer(this._zoom);
+      this.zoomChange.emit(this._zoom);
+    }
+  }
+
+  /**
+   * Two-way binding for document rotation
+   * Supports: 0, 90, 180, 270 degrees
+   */
+  @Input()
+  get rotation(): number {
+    return this._rotation;
+  }
+  set rotation(value: number) {
+    const normalizedValue = PropertyTransformers.transformRotation.toViewer(value);
+    if (this._rotation !== normalizedValue) {
+      this.changeOriginTracker.markProgrammatic('rotation');
+      this._rotation = normalizedValue;
+      this.applyRotationToViewer(this._rotation);
+      this.rotationChange.emit(this._rotation);
+    }
+  }
+
+  /**
+   * Two-way binding for cursor mode
+   * Supports: select, hand, zoom
+   */
+  @Input()
+  get cursor(): string {
+    return this._cursor;
+  }
+  set cursor(value: string) {
+    const normalizedValue = PropertyTransformers.transformCursor.toViewer(value);
+    if (this._cursor !== normalizedValue) {
+      this.changeOriginTracker.markProgrammatic('cursor');
+      this._cursor = normalizedValue;
+      this.applyCursorToViewer(this._cursor);
+      this.cursorChange.emit(this._cursor);
+    }
+  }
+
+  /**
+   * Two-way binding for scroll mode
+   * Supports: vertical, horizontal, wrapped, page
+   */
+  @Input()
+  get scroll(): string {
+    return this._scroll;
+  }
+  set scroll(value: string) {
+    const normalizedValue = PropertyTransformers.transformScroll.toViewer(value);
+    if (this._scroll !== normalizedValue) {
+      this.changeOriginTracker.markProgrammatic('scroll');
+      this._scroll = normalizedValue;
+      this.applyScrollToViewer(this._scroll);
+      this.scrollChange.emit(this._scroll);
+    }
+  }
+
+  /**
+   * Two-way binding for spread mode
+   * Supports: none, odd, even
+   */
+  @Input()
+  get spread(): string {
+    return this._spread;
+  }
+  set spread(value: string) {
+    const normalizedValue = PropertyTransformers.transformSpread.toViewer(value);
+    if (this._spread !== normalizedValue) {
+      this.changeOriginTracker.markProgrammatic('spread');
+      this._spread = normalizedValue;
+      this.applySpreadToViewer(this._spread);
+      this.spreadChange.emit(this._spread);
+    }
+  }
+
+  /**
+   * Two-way binding for page mode (sidebar state)
+   * Supports: none, thumbs, bookmarks, attachments
+   */
+  @Input()
+  get pageMode(): string {
+    return this._pageMode;
+  }
+  set pageMode(value: string) {
+    const normalizedValue = PropertyTransformers.transformPageMode.toViewer(value);
+    if (this._pageMode !== normalizedValue) {
+      this.changeOriginTracker.markProgrammatic('pageMode');
+      this._pageMode = normalizedValue;
+      this.applyPageModeToViewer(this._pageMode);
+      this.pageModeChange.emit(this._pageMode);
+    }
+  }
+
+  // Note: namedDest is now a simple input property for one-time navigation
+
+  // ============================================================================
+  // END TWO-WAY BINDING PROPERTIES
+  // ============================================================================
+
+  // ============================================================================
+  // TWO-WAY BINDING HELPER METHODS
+  // ============================================================================
+
+  private applyZoomToViewer(zoom: string): void {
+    if (this.isPostMessageReady) {
+      // Use direct PostMessage for immediate updates
+      this.updateViewerControl('zoom', zoom);
+    }
+  }
+
+  private applyRotationToViewer(rotation: number): void {
+    if (this.isPostMessageReady) {
+      // Use direct PostMessage for immediate updates
+      this.updateViewerControl('rotation', rotation);
+    }
+  }
+
+  private applyCursorToViewer(cursor: string): void {
+    if (this.isPostMessageReady) {
+      // Use direct PostMessage for immediate updates
+      this.updateViewerControl('cursor', cursor);
+    }
+  }
+
+  private applyScrollToViewer(scroll: string): void {
+    if (this.isPostMessageReady) {
+      // Use direct PostMessage for immediate updates
+      this.updateViewerControl('scroll', scroll);
+    }
+  }
+
+  private applySpreadToViewer(spread: string): void {
+    if (this.isPostMessageReady) {
+      // Use direct PostMessage for immediate updates
+      this.updateViewerControl('spread', spread);
+    }
+  }
+
+  private applyPageModeToViewer(pageMode: string): void {
+    if (this.isPostMessageReady) {
+      // Use direct PostMessage for immediate updates
+      this.updateViewerControl('pageMode', pageMode);
+    }
+  }
+
+  // Note: namedDest is now handled as a simple input property
+
+  // ============================================================================
+  // END TWO-WAY BINDING HELPER METHODS
+  // ============================================================================
+
+  ngOnInit(): void {   
+    // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
+      console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-07-10T23-06-31-000Z');
     
     // Configure action queue manager with diagnostic logs
     this.actionQueueManager = new ActionQueueManager(this.diagnosticLogs);
@@ -608,7 +832,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       }
       if (change.currentValue !== change.previousValue) {
         // Handle auto-actions - queue for document load, don't execute immediately
-        const autoActions = ['downloadOnLoad', 'printOnLoad', 'showLastPageOnLoad', 'initialRotateCW', 'initialRotateCCW'];
+        const autoActions = ['downloadOnLoad', 'printOnLoad', 'showLastPageOnLoad', 'rotateCW', 'rotateCCW'];
         if (autoActions.includes(propertyName)) {
           if (this.diagnosticLogs) {
             console.log(`🔍 PdfJsViewer: Auto-action ${propertyName} changed to ${change.currentValue} - re-queueing configurations`);
@@ -722,7 +946,81 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         this.applyPendingChanges();
         return;
       }
+      
+      // Handle state change notifications from PostMessage wrapper
+      if (event.data && event.data.type === 'state-change') {
+        this.handleStateChangeNotification(event.data);
+        return;
+      }
     });
+  }
+
+  private handleStateChangeNotification(notification: any): void {
+    const { property, value, source } = notification;
+    
+    if (this.diagnosticLogs) {
+      console.log(`🔍 PdfJsViewer: State change notification received: ${property} = ${value} (source: ${source})`);
+    }
+
+    // Always log state change notifications for debugging
+    console.log(`🔍 PdfJsViewer: [DEBUG] State change notification: ${property} = ${value} (source: ${source})`);
+
+    // Only process user-initiated changes to avoid infinite loops
+    if (source === 'user' && !this.changeOriginTracker.isProgrammatic(property)) {
+      this.changeOriginTracker.markUserInitiated(property);
+      console.log(`🔍 PdfJsViewer: [DEBUG] Processing user-initiated change for ${property}`);
+      
+      switch (property) {
+        case 'cursor':
+          if (this._cursor !== value) {
+            this._cursor = PropertyTransformers.transformCursor.fromViewer(value);
+            this.cursorChange.emit(this._cursor);
+          }
+          break;
+          
+        case 'scroll':
+          if (this._scroll !== value) {
+            this._scroll = PropertyTransformers.transformScroll.fromViewer(value);
+            this.scrollChange.emit(this._scroll);
+          }
+          break;
+          
+        case 'spread':
+          if (this._spread !== value) {
+            this._spread = PropertyTransformers.transformSpread.fromViewer(value);
+            this.spreadChange.emit(this._spread);
+          }
+          break;
+          
+        case 'pageMode':
+          if (this._pageMode !== value) {
+            this._pageMode = PropertyTransformers.transformPageMode.fromViewer(value);
+            this.pageModeChange.emit(this._pageMode);
+          }
+          break;
+          
+        case 'zoom':
+          if (this._zoom !== value) {
+            this._zoom = PropertyTransformers.transformZoom.fromViewer(value);
+            this.zoomChange.emit(this._zoom);
+          }
+          break;
+          
+        case 'rotation':
+          if (this._rotation !== value) {
+            this._rotation = PropertyTransformers.transformRotation.fromViewer(value);
+            this.rotationChange.emit(this._rotation);
+          }
+          break;
+          
+        // Note: namedDest is now a simple input property, not a two-way binding
+          
+        default:
+          if (this.diagnosticLogs) {
+            console.log(`🔍 PdfJsViewer: Unknown state change property: ${property}`);
+          }
+      }
+    }
   }
 
   private mapPropertyToAction(propertyName: string): string | null {
@@ -736,16 +1034,20 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       'showViewBookmark': 'show-bookmark',
       'showAnnotations': 'show-annotations',
       
-      // Mode controls (can be auto-actions or on-demand)
-      'initialCursor': 'set-cursor',
-      'initialScroll': 'set-scroll',
-      'initialSpread': 'set-spread',
+      // Mode controls (now handled by two-way binding)
       
       // Navigation controls
       'page': 'set-page',
-      'initialZoom': 'set-zoom',
-      'initialNamedDest': 'go-to-named-dest',
-      'initialPageMode': 'update-page-mode',
+      'namedDest': 'go-to-named-dest',
+      // Note: zoom is now handled by two-way binding
+      
+      // Two-way binding properties
+      'zoom': 'set-zoom',
+      'cursor': 'set-cursor',
+      'scroll': 'set-scroll',
+      'spread': 'set-spread',
+      'pageMode': 'update-page-mode',
+      'rotation': 'set-rotation',
       
       // Auto actions (handled separately, not via dynamic updates)
       'showLastPageOnLoad': 'go-to-last-page',
@@ -756,8 +1058,8 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       'errorAppend': 'set-error-append',
       
       // Locale and CSS zoom
-      'initialLocale': 'set-locale',
-      'initialUseOnlyCssZoom': 'set-css-zoom',
+      'locale': 'set-locale',
+      'useOnlyCssZoom': 'set-css-zoom',
       
       // Event configuration
       'beforePrint': 'enable-before-print',
@@ -899,6 +1201,19 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
         const pagesLoadedHandler = () => {
           if (this.diagnosticLogs) console.debug("PdfJsViewer: All pages have been fully loaded!");
+
+          // Execute auto-print on pages loaded (ensures PDF is fully ready for printing)
+          if (this.printOnLoad === true) {
+            if (this.diagnosticLogs) {
+              console.log('🔍 PdfJsViewer: Executing auto-print on pages loaded');
+            }
+            this.actionQueueManager.queueDocumentLoadedAction({
+              id: 'auto-print-pages-loaded',
+              type: 'auto',
+              action: 'trigger-print',
+              payload: true
+            });
+          }
         };
 
         const beforePrintHandler = () => {
@@ -913,6 +1228,14 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
         const pageChangingHandler = (event: any) => {
           if (this.diagnosticLogs) console.debug("PdfJsViewer: The page has changed:", event.pageNumber);
+          
+          // Update two-way binding for page
+          if (this._page !== event.pageNumber && !this.changeOriginTracker.isProgrammatic('page')) {
+            this.changeOriginTracker.markUserInitiated('page');
+            this._page = event.pageNumber;
+            // Note: page property uses existing setter/getter, no need to emit pageChange here
+          }
+          
           this.onPageChange.emit(event.pageNumber);
         };
 
@@ -922,12 +1245,30 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
             page: event.pageNumber
           }
           if (this.diagnosticLogs) console.debug("PdfJsViewer: The rotation has changed!", event);
+          
+          // Update two-way binding for rotation
+          const normalizedRotation = PropertyTransformers.transformRotation.fromViewer(event.pagesRotation);
+          if (this._rotation !== normalizedRotation && !this.changeOriginTracker.isProgrammatic('rotation')) {
+            this.changeOriginTracker.markUserInitiated('rotation');
+            this._rotation = normalizedRotation;
+            this.rotationChange.emit(normalizedRotation);
+          }
+          
           this.onRotationChange.emit(newRotation);
         };
 
         const scaleChangingHandler = (event: any) => {
           const newScale: ChangedScale = event.scale;
           if (this.diagnosticLogs) console.debug("PdfJsViewer: The document has scale has changed!", newScale);
+          
+          // Update two-way binding for zoom
+          const normalizedZoom = PropertyTransformers.transformZoom.fromViewer(event.scale);
+          if (this._zoom !== normalizedZoom && !this.changeOriginTracker.isProgrammatic('zoom')) {
+            this.changeOriginTracker.markUserInitiated('zoom');
+            this._zoom = normalizedZoom;
+            this.zoomChange.emit(normalizedZoom);
+          }
+          
           this.onScaleChange.emit(newScale);
         };
         
@@ -1002,7 +1343,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     // Reset PostMessage readiness state
     this.isPostMessageReady = false;
     this.postMessageReadiness = 0;
-    this.pendingInitialConfig = true;
+      this.pendingInitialConfig = true;
     this.initialConfigQueued = false; // Reset initial config flag
     
     // Reload the PDF - this will trigger queueAllConfigurations() when PostMessage API is ready
@@ -1291,18 +1632,18 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         showPrint = ${this.showPrint}
         showFullScreen = ${this.showFullScreen}
         showFind = ${this.showFind}
-        initialCursor = ${this.initialCursor}
-        initialScroll = ${this.initialScroll}
-        initialSpread = ${this.initialSpread}
+        cursor = ${this.cursor}
+        scroll = ${this.scroll}
+        spread = ${this.spread}
         page = ${this.page}
-        initialZoom = ${this.initialZoom}
-        initialNamedDest = ${this.initialNamedDest}
-        initialPageMode = ${this.initialPageMode}
+        zoom = ${this.zoom}
+        namedDest = ${this.namedDest}
+        pageMode = ${this.pageMode}
         errorOverride = ${this.errorOverride}
         errorAppend = ${this.errorAppend}
         errorMessage = ${this.errorMessage}
-        initialLocale = ${this.initialLocale}
-        initialUseOnlyCssZoom = ${this.initialUseOnlyCssZoom}
+        locale = ${this.locale}
+        useOnlyCssZoom = ${this.useOnlyCssZoom}
         
         Auto-actions (handled by action queue):
         downloadOnLoad = ${this.downloadOnLoad}
@@ -1327,36 +1668,37 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     this.queueConfiguration('showAnnotations', this.showAnnotations, 'show-annotations');
 
     // Queue mode configurations (immediate actions)
-    if (this.initialCursor) {
-      this.queueConfiguration('initialCursor', this.initialCursor, 'set-cursor');
+    if (this.cursor) {
+      this.queueConfiguration('cursor', this.cursor, 'set-cursor');
     }
-    if (this.initialScroll) {
-      this.queueConfiguration('initialScroll', this.initialScroll, 'set-scroll');
+    if (this.scroll) {
+      this.queueConfiguration('scroll', this.scroll, 'set-scroll');
     }
-    if (this.initialSpread) {
-      this.queueConfiguration('initialSpread', this.initialSpread, 'set-spread');
+    if (this.spread) {
+      this.queueConfiguration('spread', this.spread, 'set-spread');
     }
 
     // Queue navigation configurations (immediate actions)
     if (this._page) {
       this.queueConfiguration('page', this._page, 'set-page');
     }
-    if (this.initialZoom) {
-      this.queueConfiguration('initialZoom', this.initialZoom, 'set-zoom');
+    if (this.zoom) {
+      this.queueConfiguration('zoom', this.zoom, 'set-zoom');
     }
-    if (this.initialNamedDest) {
-      this.queueConfiguration('initialNamedDest', this.initialNamedDest, 'go-to-named-dest');
+    // Note: zoom is now handled by two-way binding [(zoom)]
+    if (this.namedDest) {
+      this.queueConfiguration('namedDest', this.namedDest, 'go-to-named-dest');
     }
-    if (this.initialPageMode) {
-      this.queueConfiguration('initialPageMode', this.initialPageMode, 'update-page-mode');
+    if (this.pageMode) {
+      this.queueConfiguration('pageMode', this.pageMode, 'update-page-mode');
     }
 
     // Queue rotation configurations (immediate actions)
-    if (this.initialRotateCW === true) {
-      this.queueConfiguration('initialRotateCW', this.initialRotateCW, 'trigger-rotate-cw');
+    if (this.rotateCW === true) {
+      this.queueConfiguration('rotateCW', this.rotateCW, 'trigger-rotate-cw');
     }
-    if (this.initialRotateCCW === true) {
-      this.queueConfiguration('initialRotateCCW', this.initialRotateCCW, 'trigger-rotate-ccw');
+    if (this.rotateCCW === true) {
+      this.queueConfiguration('rotateCCW', this.rotateCCW, 'trigger-rotate-ccw');
     }
 
     // Queue error handling configurations (non-auto-actions)
@@ -1371,11 +1713,11 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     }
 
     // Queue locale and CSS zoom configurations (immediate actions)
-    if (this.initialLocale) {
-      this.queueConfiguration('initialLocale', this.initialLocale, 'set-locale');
+    if (this.locale) {
+      this.queueConfiguration('locale', this.locale, 'set-locale');
     }
-    if (this.initialUseOnlyCssZoom !== undefined) {
-      this.queueConfiguration('initialUseOnlyCssZoom', this.initialUseOnlyCssZoom, 'set-css-zoom');
+    if (this.useOnlyCssZoom !== undefined) {
+      this.queueConfiguration('useOnlyCssZoom', this.useOnlyCssZoom, 'set-css-zoom');
     }
 
     // Queue event configurations (non-auto-actions)
@@ -1413,17 +1755,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         payload: true
       });
     }
-    if (this.printOnLoad === true) {
-      if (this.diagnosticLogs) {
-        console.log('🔍 PdfJsViewer: Queueing auto-print for document load');
-      }
-      this.actionQueueManager.queueDocumentLoadedAction({
-        id: 'auto-print',
-        type: 'auto',
-        action: 'trigger-print',
-        payload: true
-      });
-    }
+    // Note: Auto-print is now handled in pagesLoadedHandler to ensure PDF is fully ready for printing
     if (this.showLastPageOnLoad === true) {
       if (this.diagnosticLogs) {
         console.log('🔍 PdfJsViewer: Queueing auto-last-page for document load');

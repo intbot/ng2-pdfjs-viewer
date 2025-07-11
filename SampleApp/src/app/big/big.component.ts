@@ -9,6 +9,8 @@ import { ChangedScale, ChangedRotation } from 'ng2-pdfjs-viewer';
 })
 export class BigComponent implements OnInit {
   @ViewChild('bigPdfViewer', { static: true }) public bigPdfViewer;
+  
+  public zoom = 'auto';
 
   constructor() { }
 
