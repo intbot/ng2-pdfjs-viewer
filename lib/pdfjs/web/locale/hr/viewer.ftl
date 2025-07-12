@@ -49,8 +49,8 @@ pdfjs-download-button =
 # Length of the translation matters since we are in a mobile context, with limited screen estate.
 pdfjs-download-button-label = Preuzimanja
 pdfjs-bookmark-button =
-    .title = Trenutna stranica (pogledajte URL s trenutne stranice)
-pdfjs-bookmark-button-label = Trenutna stranica
+    .title = Trenutačna stranica (pogledaj URL s trenutačne stranice)
+pdfjs-bookmark-button-label = Trenutačna stranica
 
 ##  Secondary toolbar and context menu
 
@@ -61,14 +61,14 @@ pdfjs-first-page-button =
     .title = Idi na prvu stranicu
 pdfjs-first-page-button-label = Idi na prvu stranicu
 pdfjs-last-page-button =
-    .title = Idi na posljednju stranicu
-pdfjs-last-page-button-label = Idi na posljednju stranicu
+    .title = Idi na zadnju stranicu
+pdfjs-last-page-button-label = Idi na zadnju stranicu
 pdfjs-page-rotate-cw-button =
-    .title = Rotiraj u smjeru kazaljke na satu
-pdfjs-page-rotate-cw-button-label = Rotiraj u smjeru kazaljke na satu
+    .title = Okreni nadesno
+pdfjs-page-rotate-cw-button-label = Okreni nadesno
 pdfjs-page-rotate-ccw-button =
-    .title = Rotiraj obrnutno od smjera kazaljke na satu
-pdfjs-page-rotate-ccw-button-label = Rotiraj obrnutno od smjera kazaljke na satu
+    .title = Okreni nalijevo
+pdfjs-page-rotate-ccw-button-label = Okreni nalijevo
 pdfjs-cursor-text-select-tool-button =
     .title = Aktiviraj alat za biranje teksta
 pdfjs-cursor-text-select-tool-button-label = Alat za označavanje teksta
@@ -184,7 +184,7 @@ pdfjs-toggle-sidebar-notification-button =
     .title = Prikazivanje i sklanjanje bočne trake (dokument sadrži strukturu/privitke/slojeve)
 pdfjs-toggle-sidebar-button-label = Prikaži/sakrij bočnu traku
 pdfjs-document-outline-button =
-    .title = Prikaži strukturu dokumenta (dvostruki klik za rasklapanje/sklapanje svih stavki)
+    .title = Prikaži strukturu dokumenta (dvoklik za rasklapanje/sklapanje svih stavki)
 pdfjs-document-outline-button-label = Struktura dokumenta
 pdfjs-attachments-button =
     .title = Prikaži privitke
@@ -309,8 +309,8 @@ pdfjs-editor-ink-button =
     .title = Crtanje
 pdfjs-editor-ink-button-label = Crtanje
 pdfjs-editor-stamp-button =
-    .title = Dodajte ili uredite slike
-pdfjs-editor-stamp-button-label = Dodajte ili uredite slike
+    .title = Dodaj ili uredi slike
+pdfjs-editor-stamp-button-label = Dodaj ili uredi slike
 pdfjs-editor-highlight-button =
     .title = Istakni
 pdfjs-editor-highlight-button-label = Istakni
@@ -318,6 +318,12 @@ pdfjs-highlight-floating-button1 =
     .title = Istakni
     .aria-label = Istakni
 pdfjs-highlight-floating-button-label = Istakni
+pdfjs-editor-signature-button =
+    .title = Dodaj potpis
+pdfjs-editor-signature-button-label = Dodaj potpis
+
+## Default editor aria labels
+
 
 ## Remove button for the various kind of editor.
 
@@ -345,6 +351,13 @@ pdfjs-editor-stamp-add-image-button-label = Dodaj sliku
 pdfjs-editor-free-highlight-thickness-input = Debljina
 pdfjs-editor-free-highlight-thickness-title =
     .title = Promjeni debljinu pri isticanju drugih stavki osim teksta
+pdfjs-editor-signature-add-signature-button =
+    .title = Dodaj novi potpis
+pdfjs-editor-signature-add-signature-button-label = Dodaj novi potpis
+# .default-content is used as a placeholder in an empty text editor.
+pdfjs-free-text2 =
+    .aria-label = Uređivač teksta
+    .default-content = Počni tipkati …
 pdfjs-free-text =
     .aria-label = Uređivač teksta
 pdfjs-free-text-default-content = Počni tipkati …
@@ -356,6 +369,8 @@ pdfjs-ink-canvas =
 ## Alt-text dialog
 
 pdfjs-editor-alt-text-button-label = Alternativni tekst
+pdfjs-editor-alt-text-edit-button =
+    .aria-label = Uredi alternativni tekst
 pdfjs-editor-alt-text-edit-button-label = Uredi alternativni tekst
 pdfjs-editor-alt-text-dialog-label = Odaberi jednu opciju
 pdfjs-editor-alt-text-dialog-description = Alternativni tekst pomaže slijepim osobama ili kada se slika ne učita.
@@ -369,6 +384,9 @@ pdfjs-editor-alt-text-decorative-tooltip = Označeno kao ukrasno
 # .placeholder: This is a placeholder for the alt text input area
 pdfjs-editor-alt-text-textarea =
     .placeholder = Na primjer, „Mladić sjeda za stol kako bi jeo”
+# Alternative text (alt text) helps when people can't see the image.
+pdfjs-editor-alt-text-button =
+    .aria-label = Alternativni tekst
 
 ## Editor resizers
 ## This is used in an aria label to help to understand the role of the resizer.
@@ -427,20 +445,34 @@ pdfjs-editor-highlight-show-all-button =
 ## New alt-text dialog
 ## Group note for entire feature: Alternative text (alt text) helps when people can't see the image. This feature includes a tool to create alt text automatically using an AI model that works locally on the user's device to preserve privacy.
 
+# Modal header positioned above a text box where users can edit the alt text.
+pdfjs-editor-new-alt-text-dialog-edit-label = Uredi alternativni tekst (opis slike)
+# Modal header positioned above a text box where users can add the alt text.
+pdfjs-editor-new-alt-text-dialog-add-label = Dodaj alternativni tekst (opis slike)
 pdfjs-editor-new-alt-text-textarea =
     .placeholder = Ovdje upiši tvoj opis …
+# This text refers to the alt text box above this description. It offers a definition of alt text.
+pdfjs-editor-new-alt-text-description = Kratki opis koji pomažu osobama koji ne mogu vidjeti sliku ili kada se slika ne učita.
 # This is a required legal disclaimer that refers to the automatically created text inside the alt text box above this text. It disappears if the text is edited by a human.
 pdfjs-editor-new-alt-text-disclaimer1 = Ovaj je alternativni tekst stvoren automatski i može biti netočan.
 pdfjs-editor-new-alt-text-disclaimer-learn-more-url = Saznaj više
 pdfjs-editor-new-alt-text-create-automatically-button-label = Automatski stvori alternativni tekst
+pdfjs-editor-new-alt-text-not-now-button = Ne sada
 pdfjs-editor-new-alt-text-error-title = Nije bilo moguće automatski izraditi alternativni tekst
+pdfjs-editor-new-alt-text-error-description = Napiši vlastiti alternativni tekst ili pokušaj kasnije ponovo.
+pdfjs-editor-new-alt-text-error-close-button = Zatvori
 # Variables:
 #   $totalSize (Number) - the total size (in MB) of the AI model.
 #   $downloadedSize (Number) - the downloaded size (in MB) of the AI model.
-#   $percent (Number) - the percentage of the downloaded size.
 pdfjs-editor-new-alt-text-ai-model-downloading-progress = Preuzimanje alternativnog teksta UI modela ({ $downloadedSize } od { $totalSize } MB)
     .aria-valuetext = Preuzimanje alternativnog teksta UI modela ({ $downloadedSize } od { $totalSize } MB)
+# This is a button that users can click to edit the alt text they have already added.
+pdfjs-editor-new-alt-text-added-button =
+    .aria-label = Alternativni tekst je dodan
 pdfjs-editor-new-alt-text-added-button-label = Alternativni tekst je dodan
+# This is a button that users can click to open the alt text editor and add alt text when it is not present.
+pdfjs-editor-new-alt-text-missing-button =
+    .aria-label = Nedostaje alternativni tekst
 pdfjs-editor-new-alt-text-missing-button-label = Nedostaje alternativni tekst
 # This is a button that opens up the alt text modal where users should review the alt text that was automatically generated.
 pdfjs-editor-new-alt-text-to-review-button =
@@ -471,3 +503,50 @@ pdfjs-editor-alt-text-settings-editor-title = Uređivač alternativnog teksta
 pdfjs-editor-alt-text-settings-show-dialog-button-label = Prikaži uređivač alternativnog teksta odmah pri dodavanju slike
 pdfjs-editor-alt-text-settings-show-dialog-description = Pomaže osigurati da sve tvoje slike imaju alternativni tekst.
 pdfjs-editor-alt-text-settings-close-button = Zatvori
+
+## "Annotations removed" bar
+
+pdfjs-editor-undo-bar-message-highlight = Isticanje uklonjeno
+pdfjs-editor-undo-bar-message-freetext = Tekst uklonjen
+pdfjs-editor-undo-bar-message-ink = Crtež uklonjen
+pdfjs-editor-undo-bar-message-stamp = Slika uklonjena
+# Variables:
+#   $count (Number) - the number of removed annotations.
+pdfjs-editor-undo-bar-message-multiple =
+    { $count ->
+        [one] { $count } pribilješka uklonjena
+        [few] { $count } pribilješke uklonjene
+       *[other] { $count } pribilješki uklonjeno
+    }
+pdfjs-editor-undo-bar-undo-button =
+    .title = Poništi
+pdfjs-editor-undo-bar-undo-button-label = Poništi
+pdfjs-editor-undo-bar-close-button =
+    .title = Zatvori
+pdfjs-editor-undo-bar-close-button-label = Zatvori
+
+## Add a signature dialog
+
+pdfjs-editor-add-signature-dialog-label = Ovaj prozor omogućuje korisniku stvoriti potpis i dodati ga u PDF dokument. Korisnik može urediti ime (koje služi i kao alternativni tekst) i opcionalno spremiti potpis za ponovnu upotrebu.
+pdfjs-editor-add-signature-dialog-title = Dodaj potpis
+
+## Tab names
+
+
+## Tab panels
+
+
+## Controls
+
+
+## Dialog buttons
+
+
+## Main menu for adding/removing signatures
+
+
+## Editor toolbar
+
+
+## Edit signature description dialog
+

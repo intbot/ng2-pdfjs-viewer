@@ -281,6 +281,9 @@ pdfjs-editor-stamp-button =
     .title = ᱪᱤᱛᱟᱹᱨᱠᱚ ᱥᱮᱞᱮᱫ ᱥᱮ ᱥᱟᱯᱲᱟᱣ ᱢᱮ
 pdfjs-editor-stamp-button-label = ᱪᱤᱛᱟᱹᱨᱠᱚ ᱥᱮᱞᱮᱫ ᱥᱮ ᱥᱟᱯᱲᱟᱣ ᱢᱮ
 
+## Default editor aria labels
+
+
 ## Remove button for the various kind of editor.
 
 
@@ -322,4 +325,31 @@ pdfjs-ink-canvas =
 
 
 ## Image alt-text settings
+
+
+## "Annotations removed" bar
+
+
+## Add a signature dialog
+
+
+## Tab names
+
+
+## Tab panels
+
+
+## Controls
+
+
+## Dialog buttons
+
+
+## Main menu for adding/removing signatures
+
+
+## Editor toolbar
+
+
+## Edit signature description dialog
 

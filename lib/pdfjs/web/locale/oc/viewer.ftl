@@ -306,6 +306,9 @@ pdfjs-highlight-floating-button1 =
     .aria-label = Subrelinhar
 pdfjs-highlight-floating-button-label = Subrelinhar
 
+## Default editor aria labels
+
+
 ## Remove button for the various kind of editor.
 
 pdfjs-editor-remove-ink-button =
@@ -407,3 +410,27 @@ pdfjs-editor-undo-bar-undo-button-label = Anullar
 pdfjs-editor-undo-bar-close-button =
     .title = Tampar
 pdfjs-editor-undo-bar-close-button-label = Tampar
+
+## Add a signature dialog
+
+
+## Tab names
+
+
+## Tab panels
+
+
+## Controls
+
+
+## Dialog buttons
+
+
+## Main menu for adding/removing signatures
+
+
+## Editor toolbar
+
+
+## Edit signature description dialog
+

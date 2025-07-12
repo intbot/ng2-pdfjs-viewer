@@ -296,6 +296,9 @@ pdfjs-editor-stamp-button =
     .title = Engadir ou editar imaxes
 pdfjs-editor-stamp-button-label = Engadir ou editar imaxes
 
+## Default editor aria labels
+
+
 ## Remove button for the various kind of editor.
 
 pdfjs-editor-remove-freetext-button =
@@ -328,7 +331,6 @@ pdfjs-ink-canvas =
 
 ## Alt-text dialog
 
-# Alternative text (alt text) helps when people can't see the image.
 pdfjs-editor-alt-text-button-label = Texto alternativo
 pdfjs-editor-alt-text-edit-button-label = Editar o texto alternativo
 pdfjs-editor-alt-text-dialog-label = Escoller unha opción
@@ -382,4 +384,31 @@ pdfjs-editor-resizer-middle-left =
 
 
 ## Image alt-text settings
+
+
+## "Annotations removed" bar
+
+
+## Add a signature dialog
+
+
+## Tab names
+
+
+## Tab panels
+
+
+## Controls
+
+
+## Dialog buttons
+
+
+## Main menu for adding/removing signatures
+
+
+## Editor toolbar
+
+
+## Edit signature description dialog
 

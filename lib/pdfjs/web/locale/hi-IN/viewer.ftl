@@ -237,6 +237,9 @@ pdfjs-web-fonts-disabled = वेब फॉन्ट्स निष्क्र
 ## Editing
 
 
+## Default editor aria labels
+
+
 ## Remove button for the various kind of editor.
 
 
@@ -264,4 +267,31 @@ pdfjs-editor-free-text-color-input = रंग
 
 
 ## Image alt-text settings
+
+
+## "Annotations removed" bar
+
+
+## Add a signature dialog
+
+
+## Tab names
+
+
+## Tab panels
+
+
+## Controls
+
+
+## Dialog buttons
+
+
+## Main menu for adding/removing signatures
+
+
+## Editor toolbar
+
+
+## Edit signature description dialog
 

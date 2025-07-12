@@ -317,6 +317,9 @@ pdfjs-highlight-floating-button1 =
     .aria-label = نمایاں کرو
 pdfjs-highlight-floating-button-label = نمایاں کرو
 
+## Default editor aria labels
+
+
 ## Remove button for the various kind of editor.
 
 pdfjs-editor-remove-ink-button =
@@ -447,7 +450,6 @@ pdfjs-editor-new-alt-text-error-close-button = بند کرو
 # Variables:
 #   $totalSize (Number) - the total size (in MB) of the AI model.
 #   $downloadedSize (Number) - the downloaded size (in MB) of the AI model.
-#   $percent (Number) - the percentage of the downloaded size.
 pdfjs-editor-new-alt-text-ai-model-downloading-progress = آلٹ عبارت اے آئی ماڈل({ $totalSize }ایم بی دے { $downloadedSize }) ڈاؤن لوڈ تھیندا پئے
     .aria-valuetext = آلٹ عبارت اے آئی ماڈل({ $totalSize }ایم بی دے { $downloadedSize }) ڈاؤن لوڈ تھیندا پئے
 # This is a button that users can click to edit the alt text they have already added.
@@ -496,3 +498,27 @@ pdfjs-editor-undo-bar-undo-button-label = کیتا اݨ کیتا
 pdfjs-editor-undo-bar-close-button =
     .title = بند کرو
 pdfjs-editor-undo-bar-close-button-label = بند کرو
+
+## Add a signature dialog
+
+
+## Tab names
+
+
+## Tab panels
+
+
+## Controls
+
+
+## Dialog buttons
+
+
+## Main menu for adding/removing signatures
+
+
+## Editor toolbar
+
+
+## Edit signature description dialog
+

@@ -272,6 +272,9 @@ pdfjs-editor-ink-button =
     .title = ແຕ້ມ
 pdfjs-editor-ink-button-label = ແຕ້ມ
 
+## Default editor aria labels
+
+
 ## Remove button for the various kind of editor.
 
 
@@ -310,4 +313,31 @@ pdfjs-ink-canvas =
 
 
 ## Image alt-text settings
+
+
+## "Annotations removed" bar
+
+
+## Add a signature dialog
+
+
+## Tab names
+
+
+## Tab panels
+
+
+## Controls
+
+
+## Dialog buttons
+
+
+## Main menu for adding/removing signatures
+
+
+## Editor toolbar
+
+
+## Edit signature description dialog
 

@@ -146,7 +146,7 @@ pdfjs-print-progress-message = Se pregătește documentul pentru tipărire…
 # Variables:
 #   $progress (Number) - percent value
 pdfjs-print-progress-percent = { $progress }%
-pdfjs-print-progress-close-button = Renunță
+pdfjs-print-progress-close-button = Anulează
 pdfjs-printing-not-supported = Avertisment: Tipărirea nu este suportată în totalitate de acest browser.
 pdfjs-printing-not-ready = Avertisment: PDF-ul nu este încărcat complet pentru tipărire.
 
@@ -237,15 +237,66 @@ pdfjs-text-annotation-type =
 pdfjs-password-label = Introdu parola pentru a deschide acest fișier PDF.
 pdfjs-password-invalid = Parolă nevalidă. Te rugăm să încerci din nou.
 pdfjs-password-ok-button = OK
-pdfjs-password-cancel-button = Renunță
+pdfjs-password-cancel-button = Anulează
 pdfjs-web-fonts-disabled = Fonturile web sunt dezactivate: nu se pot folosi fonturile PDF încorporate.
 
 ## Editing
 
 
+## Default editor aria labels
+
+
+## Remove button for the various kind of editor.
+
+
+##
+
+
 ## Alt-text dialog
 
+pdfjs-editor-alt-text-cancel-button = Anulează
 
 ## Editor resizers
 ## This is used in an aria label to help to understand the role of the resizer.
+
+
+## Color picker
+
+
+## Show all highlights
+## This is a toggle button to show/hide all the highlights.
+
+
+## New alt-text dialog
+## Group note for entire feature: Alternative text (alt text) helps when people can't see the image. This feature includes a tool to create alt text automatically using an AI model that works locally on the user's device to preserve privacy.
+
+
+## Image alt-text settings
+
+
+## "Annotations removed" bar
+
+
+## Add a signature dialog
+
+
+## Tab names
+
+
+## Tab panels
+
+
+## Controls
+
+
+## Dialog buttons
+
+
+## Main menu for adding/removing signatures
+
+
+## Editor toolbar
+
+
+## Edit signature description dialog
 

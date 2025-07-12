@@ -308,6 +308,25 @@ pdfjs-highlight-floating-button1 =
     .title = เน้นสี
     .aria-label = เน้นสี
 pdfjs-highlight-floating-button-label = เน้นสี
+pdfjs-editor-signature-button =
+    .title = เพิ่มลายเซ็น
+pdfjs-editor-signature-button-label = เพิ่มลายเซ็น
+
+## Default editor aria labels
+
+# “Highlight” is a noun, the string is used on the editor for highlights.
+pdfjs-editor-highlight-editor =
+    .aria-label = ตัวแก้ไขสีเน้น
+# “Drawing” is a noun, the string is used on the editor for drawings.
+pdfjs-editor-ink-editor =
+    .aria-label = ตัวแก้ไขรูปวาด
+# Used when a signature editor is selected/hovered.
+# Variables:
+#   $description (String) - a string describing/labeling the signature.
+pdfjs-editor-signature-editor1 =
+    .aria-description = ตัวแก้ไขลายเซ็น: { $description }
+pdfjs-editor-stamp-editor =
+    .aria-label = ตัวแก้ไขภาพ
 
 ## Remove button for the various kind of editor.
 
@@ -319,6 +338,8 @@ pdfjs-editor-remove-stamp-button =
     .title = เอาภาพออก
 pdfjs-editor-remove-highlight-button =
     .title = เอาการเน้นสีออก
+pdfjs-editor-remove-signature-button =
+    .title = ลบลายเซ็น
 
 ##
 
@@ -335,6 +356,16 @@ pdfjs-editor-stamp-add-image-button-label = เพิ่มภาพ
 pdfjs-editor-free-highlight-thickness-input = ความหนา
 pdfjs-editor-free-highlight-thickness-title =
     .title = เปลี่ยนความหนาเมื่อเน้นรายการอื่นๆ ที่ไม่ใช่ข้อความ
+pdfjs-editor-add-signature-container =
+    .aria-label = ส่วนควบคุมลายเซ็นและลายเซ็นที่บันทึกไว้
+pdfjs-editor-signature-add-signature-button =
+    .title = เพิ่มลายเซ็นใหม่
+pdfjs-editor-signature-add-signature-button-label = เพิ่มลายเซ็นใหม่
+# Used on the button to use an already saved signature.
+# Variables:
+#   $description (String) - a string describing/labeling the signature.
+pdfjs-editor-add-saved-signature-button =
+    .title = ลายเซ็นที่บันทึกไว้: { $description }
 # .default-content is used as a placeholder in an empty text editor.
 pdfjs-free-text2 =
     .aria-label = ตัวแก้ไขข้อความ
@@ -445,7 +476,6 @@ pdfjs-editor-new-alt-text-error-close-button = ปิด
 # Variables:
 #   $totalSize (Number) - the total size (in MB) of the AI model.
 #   $downloadedSize (Number) - the downloaded size (in MB) of the AI model.
-#   $percent (Number) - the percentage of the downloaded size.
 pdfjs-editor-new-alt-text-ai-model-downloading-progress = กำลังดาวน์โหลดโมเดล AI สำหรับข้อความทดแทน ({ $downloadedSize } จาก { $totalSize } MB)
     .aria-valuetext = กำลังดาวน์โหลดโมเดล AI สำหรับข้อความทดแทน ({ $downloadedSize } จาก { $totalSize } MB)
 # This is a button that users can click to edit the alt text they have already added.
@@ -492,6 +522,7 @@ pdfjs-editor-undo-bar-message-highlight = เอาการเน้นสี�
 pdfjs-editor-undo-bar-message-freetext = เอาข้อความออกแล้ว
 pdfjs-editor-undo-bar-message-ink = เอาภาพวาดออกแล้ว
 pdfjs-editor-undo-bar-message-stamp = เอาภาพออกแล้ว
+pdfjs-editor-undo-bar-message-signature = ลบลายเซ็นแล้ว
 # Variables:
 #   $count (Number) - the number of removed annotations.
 pdfjs-editor-undo-bar-message-multiple = เอาคำอธิบายประกอบ { $count } รายการออกแล้ว
@@ -501,3 +532,72 @@ pdfjs-editor-undo-bar-undo-button-label = เลิกทำ
 pdfjs-editor-undo-bar-close-button =
     .title = ปิด
 pdfjs-editor-undo-bar-close-button-label = ปิด
+
+## Add a signature dialog
+
+pdfjs-editor-add-signature-dialog-label = โมดัลนี้ช่วยให้ผู้ใช้สามารถสร้างลายเซ็นเพื่อใช้เพิ่มลงในเอกสาร PDF ได้ ผู้ใช้สามารถแก้ไขชื่อ (ซึ่งใช้เป็นข้อความทดแทนได้ด้วย) และสามารถเลือกบันทึกลายเซ็นเพื่อใช้งานซ้ำได้
+pdfjs-editor-add-signature-dialog-title = เพิ่มลายเซ็น
+
+## Tab names
+
+# Type is a verb (you can type your name as signature)
+pdfjs-editor-add-signature-type-button = พิมพ์
+    .title = พิมพ์
+# Draw is a verb (you can draw your signature)
+pdfjs-editor-add-signature-draw-button = วาด
+    .title = วาด
+pdfjs-editor-add-signature-image-button = ภาพ
+    .title = ภาพ
+
+## Tab panels
+
+pdfjs-editor-add-signature-type-input =
+    .aria-label = พิมพ์ลายเซ็นของคุณ
+    .placeholder = พิมพ์ลายเซ็นของคุณ
+pdfjs-editor-add-signature-draw-placeholder = วาดลายเซ็นของคุณ
+pdfjs-editor-add-signature-draw-thickness-range-label = ความหนา
+# Variables:
+#   $thickness (Number) - the thickness (in pixels) of the line used to draw a signature.
+pdfjs-editor-add-signature-draw-thickness-range =
+    .title = ความหนาของการวาด: { $thickness }
+pdfjs-editor-add-signature-image-placeholder = ลากไฟล์มาที่นี่เพื่ออัปโหลด
+pdfjs-editor-add-signature-image-browse-link =
+    { PLATFORM() ->
+        [macos] หรือเลือกไฟล์ภาพ
+       *[other] หรือเรียกดูไฟล์ภาพ
+    }
+
+## Controls
+
+pdfjs-editor-add-signature-description-label = คำอธิบาย (ข้อความทดแทน)
+pdfjs-editor-add-signature-description-input =
+    .title = คำอธิบาย (ข้อความทดแทน)
+pdfjs-editor-add-signature-description-default-when-drawing = ลายเซ็น
+pdfjs-editor-add-signature-clear-button-label = ล้างลายเซ็น
+pdfjs-editor-add-signature-clear-button =
+    .title = ล้างลายเซ็น
+pdfjs-editor-add-signature-save-checkbox = บันทึกลายเซ็น
+pdfjs-editor-add-signature-save-warning-message = คุณมีลายเซ็นที่บันทึกถึงจำนวนสูงสุด 5 รายการแล้ว โปรดลบรายการหนึ่งออกเมื่อจะบันทึกเพิ่ม
+pdfjs-editor-add-signature-image-upload-error-title = ไม่สามารถอัปโหลดภาพได้
+pdfjs-editor-add-signature-image-upload-error-description = ตรวจสอบการเชื่อมต่อเครือข่ายของคุณหรือลองใช้ภาพอื่น
+pdfjs-editor-add-signature-error-close-button = ปิด
+
+## Dialog buttons
+
+pdfjs-editor-add-signature-cancel-button = ยกเลิก
+pdfjs-editor-add-signature-add-button = เพิ่ม
+pdfjs-editor-edit-signature-update-button = อัปเดต
+
+## Main menu for adding/removing signatures
+
+pdfjs-editor-delete-signature-button1 =
+    .title = ลบลายเซ็นที่บันทึกไว้
+pdfjs-editor-delete-signature-button-label1 = ลบลายเซ็นที่บันทึกไว้
+
+## Editor toolbar
+
+pdfjs-editor-add-signature-edit-button-label = แก้ไขคำอธิบาย
+
+## Edit signature description dialog
+
+pdfjs-editor-edit-signature-dialog-title = แก้ไขคำอธิบาย

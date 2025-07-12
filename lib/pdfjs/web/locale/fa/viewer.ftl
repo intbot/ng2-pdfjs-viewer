@@ -279,6 +279,9 @@ pdfjs-highlight-floating-button1 =
     .aria-label = برجسته کردن
 pdfjs-highlight-floating-button-label = برجسته کردن
 
+## Default editor aria labels
+
+
 ## Remove button for the various kind of editor.
 
 
@@ -346,3 +349,30 @@ pdfjs-editor-alt-text-settings-delete-model-button = حذف
 pdfjs-editor-alt-text-settings-download-model-button = دریافت
 pdfjs-editor-alt-text-settings-downloading-model-button = در حال دریافت…
 pdfjs-editor-alt-text-settings-close-button = بستن
+
+## "Annotations removed" bar
+
+
+## Add a signature dialog
+
+
+## Tab names
+
+
+## Tab panels
+
+
+## Controls
+
+
+## Dialog buttons
+
+
+## Main menu for adding/removing signatures
+
+
+## Editor toolbar
+
+
+## Edit signature description dialog
+
