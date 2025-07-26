@@ -778,7 +778,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   // #region Lifecycle Methods
   ngOnInit(): void {   
          // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
-       console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-07-25T22-26-10-000Z');
+       console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-07-25T22-34-07-000Z');
     
     // Configure action queue manager with diagnostic logs
     this.actionQueueManager = new ActionQueueManager(this.diagnosticLogs);
@@ -1482,6 +1482,32 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   public goToLastPage(): Promise<ActionExecutionResult> {
     // Use universal dispatcher for user interactions - now always returns Promise<ActionExecutionResult>
     return this.dispatchAction('go-to-last-page', true, 'user-interaction');
+  }
+
+  public setCursor(cursor: string): Promise<ActionExecutionResult> {
+    // Use universal dispatcher for user interactions
+    return this.dispatchAction('set-cursor', cursor, 'user-interaction');
+  }
+
+  public setScroll(scroll: string): Promise<ActionExecutionResult> {
+    // Use universal dispatcher for user interactions
+    return this.dispatchAction('set-scroll', scroll, 'user-interaction');
+  }
+
+  public setSpread(spread: string): Promise<ActionExecutionResult> {
+    // Use universal dispatcher for user interactions
+    return this.dispatchAction('set-spread', spread, 'user-interaction');
+  }
+
+  public triggerRotation(direction: 'cw' | 'ccw'): Promise<ActionExecutionResult> {
+    // Use universal dispatcher for user interactions
+    const action = direction === 'cw' ? 'trigger-rotate-cw' : 'trigger-rotate-ccw';
+    return this.dispatchAction(action, true, 'user-interaction');
+  }
+
+  public goToPage(page: number): Promise<ActionExecutionResult> {
+    // Alias for setPage for backward compatibility
+    return this.setPage(page);
   }
   // #endregion
 
