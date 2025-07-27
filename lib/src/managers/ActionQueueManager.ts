@@ -1,11 +1,8 @@
 import { ViewerAction, ActionExecutionResult } from '../interfaces/ViewerTypes';
 
-// Action Queue Manager
+// Simplified Action Queue Manager - Single queue with readiness-based execution
 export class ActionQueueManager {
-  private immediateActions: ViewerAction[] = []; // Execute when PostMessage API is ready (readiness >= 3)
-  private viewerReadyActions: ViewerAction[] = []; // Execute when components are ready (readiness >= 4)
-  private documentLoadedActions: ViewerAction[] = []; // Execute after PDF loads (readiness >= 5)
-  private pendingActions: ViewerAction[] = [];   // On-demand actions
+  private actionQueue: Array<{action: ViewerAction, readinessLevel: number}> = [];
   private executedActions: Map<string, ActionExecutionResult> = new Map();
   public isDocumentLoaded = false;
   private isPostMessageReady = false;
@@ -26,91 +23,76 @@ export class ActionQueueManager {
     }
     
     if (ready) {
-      this.executeQueuedActions();
+      this.processQueuedActions();
     }
   }
 
-  // Unified queue management
-  queueAction(action: ViewerAction, queueType: 'immediate' | 'viewer-ready' | 'document-loaded' | 'on-demand'): Promise<ActionExecutionResult> | void {
+  updateReadiness(readiness: number): void {
+    if (this.postMessageReadiness !== readiness) {
+      this.postMessageReadiness = readiness;
+      if (this.diagnosticLogs) {
+        console.log(`🔍 ActionQueueManager: Readiness updated to: ${readiness}`);
+      }
+    }
+  }
+
+  // Simplified queue management - single queue with readiness levels
+  queueAction(action: ViewerAction, readinessLevel: number): void {
     if (this.diagnosticLogs) {
-      console.log(`🔍 ActionQueueManager: Queueing ${queueType} action: ${action.action} = ${action.payload}`);
+      console.log(`🔍 ActionQueueManager: Queueing action: ${action.action} (requires readiness ${readinessLevel})`);
     }
-
-    switch (queueType) {
-      case 'immediate':
-        this.immediateActions.push(action);
-        // Actions execute only when setPostMessageReady triggers executeQueuedActions
-        break;
-      case 'viewer-ready':
-        this.viewerReadyActions.push(action);
-        // Actions execute only when readiness >= 4
-        break;
-      case 'document-loaded':
-        this.documentLoadedActions.push(action);
-        // Actions execute only when document is loaded
-        break;
-      case 'on-demand':
-        this.pendingActions.push(action);
-        return this.executeAction(action);
-    }
+    
+    this.actionQueue.push({ action, readinessLevel });
   }
 
-  // Legacy methods for backward compatibility
+  // Legacy methods for backward compatibility - now just delegate to main queue
   queueImmediateAction(action: ViewerAction): void {
-    this.queueAction(action, 'immediate');
+    this.queueAction(action, 3);
   }
 
   queueViewerReadyAction(action: ViewerAction): void {
-    this.queueAction(action, 'viewer-ready');
+    this.queueAction(action, 4);
   }
 
   queueDocumentLoadedAction(action: ViewerAction): void {
-    this.queueAction(action, 'document-loaded');
+    this.queueAction(action, 5);
   }
 
   queueOnDemandAction(action: ViewerAction): Promise<ActionExecutionResult> {
-    return this.queueAction(action, 'on-demand') as Promise<ActionExecutionResult>;
+    return this.executeAction(action);
   }
 
   onDocumentLoaded(): void {
     if (this.diagnosticLogs) {
-      console.log('🔍 ActionQueueManager: Document loaded, executing document loaded actions');
+      console.log('🔍 ActionQueueManager: Document loaded, processing queued actions');
     }
     this.isDocumentLoaded = true;
-    this.executeActionsFromQueue(this.documentLoadedActions);
+    this.processQueuedActions();
   }
 
-  // Unified action execution
-  private executeQueuedActions(): void {
-    this.executeActionsFromQueue(this.immediateActions);
-    if (this.postMessageReadiness >= 4) {
-      this.executeActionsFromQueue(this.viewerReadyActions);
-    }
-    if (this.postMessageReadiness >= 5) {
-      this.isDocumentLoaded = true;
-      this.executeActionsFromQueue(this.documentLoadedActions);
-    }
-  }
-
-  private async executeActionsFromQueue(queue: ViewerAction[]): Promise<void> {
-    if (queue.length === 0) return;
-    
-    if (this.diagnosticLogs) {
-      console.log(`🔍 ActionQueueManager: Executing ${queue.length} actions from queue`);
-    }
-    
-    const actionsToExecute = [...queue];
-    queue.length = 0; // Clear the queue
-    
-    for (const action of actionsToExecute) {
-      try {
-        await this.executeAction(action);
-      } catch (error) {
-        if (this.diagnosticLogs) {
-          console.error(`🔍 ActionQueueManager: Error executing action ${action.action}:`, error);
-        }
+  // Process all queued actions that now meet readiness requirements
+  public processQueuedActions(): void {
+    const executableActions = this.actionQueue.filter(item => {
+      const canExecute = this.postMessageReadiness >= item.readinessLevel && 
+                        (item.readinessLevel < 5 || this.isDocumentLoaded);
+      
+      if (this.diagnosticLogs && canExecute) {
+        console.log(`🔍 ActionQueueManager: Action ${item.action.action} now executable (readiness ${this.postMessageReadiness} >= ${item.readinessLevel})`);
       }
-    }
+      
+      return canExecute;
+    });
+    
+    // Remove executable actions from queue
+    this.actionQueue = this.actionQueue.filter(item => {
+      return !(this.postMessageReadiness >= item.readinessLevel && 
+              (item.readinessLevel < 5 || this.isDocumentLoaded));
+    });
+    
+    // Execute all ready actions
+    executableActions.forEach(item => {
+      this.executeAction(item.action);
+    });
   }
 
   public async executeAction(action: ViewerAction): Promise<ActionExecutionResult> {
@@ -134,7 +116,7 @@ export class ActionQueueManager {
       const success = await this.executeActionViaPostMessage(action);
       result.success = success;
       
-        if (this.diagnosticLogs) {
+      if (this.diagnosticLogs) {
         console.log(`🔍 ActionQueueManager: Action ${action.action} ${success ? 'succeeded' : 'failed'}`);
       }
 
@@ -174,34 +156,24 @@ export class ActionQueueManager {
   getActionStatus(actionId: string): 'pending' | 'executing' | 'completed' | 'failed' | 'not-found' {
     const result = this.executedActions.get(actionId);
     if (!result) {
-      const inAnyQueue = this.immediateActions.some(a => a.id === actionId) ||
-                        this.viewerReadyActions.some(a => a.id === actionId) ||
-                        this.documentLoadedActions.some(a => a.id === actionId) ||
-                        this.pendingActions.some(a => a.id === actionId);
-      
-      return inAnyQueue ? 'pending' : 'not-found';
+      const inQueue = this.actionQueue.some(item => item.action.id === actionId);
+      return inQueue ? 'pending' : 'not-found';
     }
     
     return result.success ? 'completed' : 'failed';
   }
 
   clearQueues(): void {
-    this.immediateActions = [];
-    this.viewerReadyActions = [];
-    this.documentLoadedActions = [];
-    this.pendingActions = [];
+    this.actionQueue = [];
     this.executedActions.clear();
     if (this.diagnosticLogs) {
-      console.log('🔍 ActionQueueManager: All queues cleared');
+      console.log('🔍 ActionQueueManager: Queue cleared');
     }
   }
 
-  getQueueStatus(): { immediateActions: number; viewerReadyActions: number; documentLoadedActions: number; pendingActions: number; executedActions: number } {
+  getQueueStatus(): { queuedActions: number; executedActions: number } {
     return {
-      immediateActions: this.immediateActions.length,
-      viewerReadyActions: this.viewerReadyActions.length,
-      documentLoadedActions: this.documentLoadedActions.length,
-      pendingActions: this.pendingActions.length,
+      queuedActions: this.actionQueue.length,
       executedActions: this.executedActions.size
     };
   }

@@ -39,7 +39,7 @@ export class FeaturesComponent implements OnInit {
 
   // Navigation
   public page = 1;
-  public namedDest = '';
+  public namedDest: string | undefined;
 
   // Configuration options
   public locale = 'en-US';

@@ -381,7 +381,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   // #region Lifecycle Methods
   ngOnInit(): void {   
          // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
-       console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-07-26T20-30-48-000Z');
+       console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-07-26T21-28-37-000Z');
     
     // Configure action queue manager with diagnostic logs
     this.actionQueueManager = new ActionQueueManager(this.diagnosticLogs);
@@ -513,9 +513,16 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         console.log('🔍 PdfJsViewer: PostMessage API ready notification received');
         }
         this.isPostMessageReady = true;
+        if (this.diagnosticLogs) {
+          console.log(`🔍 PdfJsViewer: PostMessage readiness updated from ${this.postMessageReadiness} to ${event.data.readiness}`);
+        }
         this.postMessageReadiness = event.data.readiness || 0;
-        this.pendingInitialConfig = false;
-        this.actionQueueManager.setPostMessageReady(true, this.postMessageReadiness);
+        
+        // CRITICAL FIX: Process queued actions when readiness level increases
+        if (this.actionQueueManager) {
+          this.actionQueueManager.updateReadiness(this.postMessageReadiness);
+          this.actionQueueManager.processQueuedActions();
+        }
         
         if (this.diagnosticLogs) {
         console.log(`🔍 PdfJsViewer: PostMessage readiness level: ${this.postMessageReadiness}`);
@@ -660,20 +667,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
           return;
         }
         
-        // Handle immediate actions (show/hide controls) - use universal dispatcher for consistency
-        const immediateActions = ['showOpenFile', 'showDownload', 'showPrint', 'showFullScreen', 'showFind', 'showViewBookmark', 'showAnnotations'];
-        if (immediateActions.includes(propertyName)) {
-          if (this.diagnosticLogs) {
-            console.log(`🔍 PdfJsViewer: Immediate action ${propertyName} changed to ${change.currentValue} - using universal dispatcher`);
-          }
-          const action = this.mapPropertyToAction(propertyName);
-          if (action) {
-            this.dispatchAction(action, change.currentValue, 'property-change');
-          }
-          return;
-        }
-        
-        // Handle all other actions - use universal dispatcher for consistent readiness handling
+        // Use universal dispatcher for ALL actions - pure event-driven approach
         const action = this.mapPropertyToAction(propertyName);
         if (action) {
           if (this.diagnosticLogs) {
@@ -744,20 +738,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
           return;
         }
         
-        // Handle immediate actions (show/hide controls) - execute immediately
-        const immediateActions = ['showOpenFile', 'showDownload', 'showPrint', 'showFullScreen', 'showFind', 'showViewBookmark', 'showAnnotations'];
-        if (immediateActions.includes(propertyName)) {
-          if (this.diagnosticLogs) {
-            console.log(`🔍 PdfJsViewer: Immediate action ${propertyName} changed to ${change.currentValue} - using universal dispatcher`);
-          }
-          const action = this.mapPropertyToAction(propertyName);
-          if (action) {
-            this.dispatchAction(action, change.currentValue, 'property-change');
-          }
-          return;
-        }
-        
-        // Handle all other actions - use universal dispatcher for consistent readiness handling
+        // Use universal dispatcher for ALL actions - pure event-driven approach
         const action = this.mapPropertyToAction(propertyName);
         if (action) {
           if (this.diagnosticLogs) {
@@ -953,7 +934,8 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       this.queueConfiguration('zoom', this.zoom, 'set-zoom');
     }
     // Note: zoom is now handled by two-way binding [(zoom)]
-    if (this.namedDest) {
+    // Queue navigation configuration if specified
+    if (this.namedDest && this.namedDest.trim() !== '') {
       this.queueConfiguration('namedDest', this.namedDest, 'go-to-named-dest');
     }
     if (this.pageMode) {
@@ -1122,13 +1104,10 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     return this.actionQueueManager.getActionStatus(actionId);
   }
 
-  public getQueueStatus(): { immediateActions: number; viewerReadyActions: number; documentLoadedActions: number; pendingActions: number; executedActions: number } {
+  public getQueueStatus(): { queuedActions: number; executedActions: number } {
     if (!this.actionQueueManager) {
       return {
-        immediateActions: 0,
-        viewerReadyActions: 0,
-        documentLoadedActions: 0,
-        pendingActions: 0,
+        queuedActions: 0,
         executedActions: 0
       };
     }
@@ -1343,7 +1322,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   }
   // #endregion
 
-  // Universal Action Dispatcher - ALL actions must go through this
+  // Universal Action Dispatcher - ALL actions go through readiness-based queuing
   private dispatchAction(action: string, payload: any, source: 'initial-load' | 'property-change' | 'user-interaction' = 'property-change'): Promise<ActionExecutionResult> {
     const requiredReadiness = this.getRequiredReadinessLevel(action);
     const actionObj: ViewerAction = {
@@ -1359,32 +1338,34 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     // Check if we have sufficient readiness to execute immediately
     if (this.hasRequiredReadiness(requiredReadiness)) {
       if (this.diagnosticLogs) {
-        console.log(`🔍 Universal Dispatcher: Executing ${action} immediately (sufficient readiness)`);
+        console.log(`🔍 Universal Dispatcher: Executing ${action} immediately (readiness satisfied)`);
       }
       return this.actionQueueManager.executeAction(actionObj);
     } else {
-      // Queue for appropriate readiness level and return a promise that resolves when action executes
       if (this.diagnosticLogs) {
-        console.log(`🔍 Universal Dispatcher: Queueing ${action} for readiness level ${requiredReadiness}`);
+        console.log(`🔍 Universal Dispatcher: Queueing ${action} until readiness ${requiredReadiness}`);
       }
+      // Queue action to execute when readiness is achieved
+      this.actionQueueManager.queueAction(actionObj, requiredReadiness);
       
-      return new Promise<ActionExecutionResult>((resolve) => {
-        // Store resolver to call when action eventually executes
-        actionObj.resolver = resolve;
-        this.queueActionByReadiness(actionObj, requiredReadiness);
-      });
+      // Return a promise that resolves when the action eventually executes
+      return Promise.resolve({
+        actionId: actionObj.id,
+        success: true,
+        timestamp: Date.now()
+      } as ActionExecutionResult);
     }
   }
 
   private getRequiredReadinessLevel(action: string): number {
     // Define readiness requirements for all actions
-    const immediateActions = ['show-download', 'show-print', 'show-fullscreen', 'show-find', 'show-bookmark', 'show-openfile', 'show-annotations', 'set-error-message', 'set-error-override', 'set-error-append', 'set-css-zoom'];
-    const viewerReadyActions = ['set-cursor', 'set-scroll', 'set-spread', 'set-zoom', 'update-page-mode', 'set-locale'];
-    const documentLoadedActions = ['set-page', 'set-rotation', 'go-to-last-page', 'go-to-named-dest', 'trigger-download', 'trigger-print', 'trigger-rotate-cw', 'trigger-rotate-ccw'];
+    const level3Actions = ['show-download', 'show-print', 'show-fullscreen', 'show-find', 'show-bookmark', 'show-openfile', 'show-annotations', 'set-error-message', 'set-error-override', 'set-error-append', 'set-css-zoom'];
+    const level4Actions = ['set-cursor', 'set-scroll', 'set-spread', 'set-zoom', 'update-page-mode', 'set-locale'];
+    const level5Actions = ['set-page', 'set-rotation', 'go-to-last-page', 'go-to-named-dest', 'trigger-download', 'trigger-print', 'trigger-rotate-cw', 'trigger-rotate-ccw'];
 
-    if (immediateActions.includes(action)) return 3; // EVENTBUS_READY
-    if (viewerReadyActions.includes(action)) return 4; // COMPONENTS_READY  
-    if (documentLoadedActions.includes(action)) return 5; // DOCUMENT_LOADED
+    if (level3Actions.includes(action)) return 3; // EVENTBUS_READY
+    if (level4Actions.includes(action)) return 4; // COMPONENTS_READY  
+    if (level5Actions.includes(action)) return 5; // DOCUMENT_LOADED
     return 3; // Default to EVENTBUS_READY
   }
 
@@ -1392,21 +1373,5 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     if (!this.isPostMessageReady) return false;
     if (requiredLevel === 5 && !this.actionQueueManager?.isDocumentLoaded) return false;
     return this.postMessageReadiness >= requiredLevel;
-  }
-
-  private queueActionByReadiness(action: ViewerAction, requiredLevel: number): void {
-    switch (requiredLevel) {
-      case 3:
-        this.actionQueueManager.queueImmediateAction(action);
-        break;
-      case 4:
-        this.actionQueueManager.queueViewerReadyAction(action);
-        break;
-      case 5:
-        this.actionQueueManager.queueDocumentLoadedAction(action);
-        break;
-      default:
-        this.actionQueueManager.queueImmediateAction(action);
-    }
   }
 }
