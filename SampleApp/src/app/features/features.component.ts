@@ -114,46 +114,46 @@ export class FeaturesComponent implements OnInit {
     try {
       const result = await this.pdfViewer.triggerDownload();
       console.log('🎬 Features Demo: Download triggered:', result);
-    } catch (error) {
+      } catch (error) {
       console.error('🎬 Features Demo: Download failed:', error);
     }
   }
 
   public async triggerPrint() {
-    try {
+      try {
       const result = await this.pdfViewer.triggerPrint();
       console.log('🎬 Features Demo: Print triggered:', result);
-    } catch (error) {
+      } catch (error) {
       console.error('🎬 Features Demo: Print failed:', error);
     }
   }
 
   public async goToPage(pageNumber: number) {
-    try {
+      try {
       const result = await this.pdfViewer.goToPage(pageNumber);
       console.log('🎬 Features Demo: Navigated to page:', pageNumber, result);
-    } catch (error) {
+      } catch (error) {
       console.error('🎬 Features Demo: Navigation failed:', error);
     }
   }
 
   public async rotateClockwise() {
-    try {
+      try {
       const result = await this.pdfViewer.triggerRotation('cw');
       console.log('🎬 Features Demo: Rotated clockwise:', result);
-    } catch (error) {
+      } catch (error) {
       console.error('🎬 Features Demo: Rotation failed:', error);
     }
   }
 
   public async rotateCounterClockwise() {
-    try {
+      try {
       const result = await this.pdfViewer.triggerRotation('ccw');
       console.log('🎬 Features Demo: Rotated counter-clockwise:', result);
-    } catch (error) {
+      } catch (error) {
       console.error('🎬 Features Demo: Rotation failed:', error);
+      }
     }
-  }
 
   // Convenience setter demonstrations
   public useTraditionalApproach = true;

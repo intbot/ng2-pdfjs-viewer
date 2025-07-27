@@ -37,12 +37,12 @@
             Configure the PDF viewer using different approaches
           </mat-card-subtitle>
         </mat-card-header>
-        
+      
         <mat-card-content>
           <mat-tab-group>
             <!-- Traditional Individual Properties -->
             <mat-tab label="Individual Properties">
-              <div class="tab-content">
+            <div class="tab-content">
                 <h3>Control Visibility</h3>
                 <div class="toggle-grid">
                   <mat-slide-toggle [(ngModel)]="showOpenFile">Open File</mat-slide-toggle>
@@ -52,9 +52,9 @@
                   <mat-slide-toggle [(ngModel)]="showFind">Find</mat-slide-toggle>
                   <mat-slide-toggle [(ngModel)]="showViewBookmark">Bookmarks</mat-slide-toggle>
                   <mat-slide-toggle [(ngModel)]="showAnnotations">Annotations</mat-slide-toggle>
-                </div>
+              </div>
 
-                <mat-divider></mat-divider>
+              <mat-divider></mat-divider>
 
                 <h3>Auto Actions (execute on load)</h3>
                 <div class="toggle-grid">
@@ -62,7 +62,7 @@
                   <mat-slide-toggle [(ngModel)]="printOnLoad">Print on Load</mat-slide-toggle>
                   <mat-slide-toggle [(ngModel)]="showLastPageOnLoad">Show Last Page</mat-slide-toggle>
                 </div>
-
+                
                 <mat-divider></mat-divider>
 
                 <h3>Basic Configuration</h3>
@@ -130,75 +130,75 @@
                     <pre class="code-example">{{errorConfig | json}}</pre>
                     <p>Usage: <code>[errorHandling]="errorConfig"</code></p>
                   </mat-expansion-panel>
-                </div>
               </div>
-            </mat-tab>
+            </div>
+          </mat-tab>
 
             <!-- Two-Way Binding Demo -->
-            <mat-tab label="Two-Way Binding">
-              <div class="tab-content">
+          <mat-tab label="Two-Way Binding">
+            <div class="tab-content">
                 <h3>Live Two-Way Property Binding</h3>
                 <div class="binding-grid">
                   <mat-form-field>
                     <mat-label>Zoom</mat-label>
-                    <mat-select [(ngModel)]="zoom">
-                      <mat-option value="auto">Auto</mat-option>
-                      <mat-option value="page-fit">Page Fit</mat-option>
-                      <mat-option value="page-width">Page Width</mat-option>
+                  <mat-select [(ngModel)]="zoom">
+                    <mat-option value="auto">Auto</mat-option>
+                    <mat-option value="page-fit">Page Fit</mat-option>
+                    <mat-option value="page-width">Page Width</mat-option>
                       <mat-option value="page-actual">Actual Size</mat-option>
-                      <mat-option value="50%">50%</mat-option>
-                      <mat-option value="125%">125%</mat-option>
-                      <mat-option value="200%">200%</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                    <mat-option value="50%">50%</mat-option>
+                    <mat-option value="125%">125%</mat-option>
+                    <mat-option value="200%">200%</mat-option>
+                  </mat-select>
+                </mat-form-field>
 
                   <mat-form-field>
                     <mat-label>Cursor</mat-label>
-                    <mat-select [(ngModel)]="cursor">
-                      <mat-option value="select">Text Selection</mat-option>
-                      <mat-option value="hand">Hand</mat-option>
-                      <mat-option value="zoom">Zoom</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                <mat-select [(ngModel)]="cursor">
+                    <mat-option value="select">Text Selection</mat-option>
+                  <mat-option value="hand">Hand</mat-option>
+                  <mat-option value="zoom">Zoom</mat-option>
+                </mat-select>
+              </mat-form-field>
 
                   <mat-form-field>
                     <mat-label>Scroll</mat-label>
-                    <mat-select [(ngModel)]="scroll">
-                      <mat-option value="vertical">Vertical</mat-option>
-                      <mat-option value="horizontal">Horizontal</mat-option>
-                      <mat-option value="wrapped">Wrapped</mat-option>
-                      <mat-option value="page">Page</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                <mat-select [(ngModel)]="scroll">
+                  <mat-option value="vertical">Vertical</mat-option>
+                  <mat-option value="horizontal">Horizontal</mat-option>
+                  <mat-option value="wrapped">Wrapped</mat-option>
+                    <mat-option value="page">Page</mat-option>
+                </mat-select>
+              </mat-form-field>
 
                   <mat-form-field>
                     <mat-label>Spread</mat-label>
-                    <mat-select [(ngModel)]="spread">
-                      <mat-option value="none">None</mat-option>
-                      <mat-option value="odd">Odd</mat-option>
-                      <mat-option value="even">Even</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                <mat-select [(ngModel)]="spread">
+                  <mat-option value="none">None</mat-option>
+                  <mat-option value="odd">Odd</mat-option>
+                  <mat-option value="even">Even</mat-option>
+                </mat-select>
+              </mat-form-field>
 
                   <mat-form-field>
                     <mat-label>Page Mode</mat-label>
-                    <mat-select [(ngModel)]="pageMode">
-                      <mat-option value="none">None</mat-option>
-                      <mat-option value="thumbs">Thumbnails</mat-option>
-                      <mat-option value="bookmarks">Bookmarks</mat-option>
-                      <mat-option value="attachments">Attachments</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                  <mat-select [(ngModel)]="pageMode">
+                  <mat-option value="none">None</mat-option>
+                  <mat-option value="thumbs">Thumbnails</mat-option>
+                  <mat-option value="bookmarks">Bookmarks</mat-option>
+                  <mat-option value="attachments">Attachments</mat-option>
+                </mat-select>
+              </mat-form-field>
 
                   <mat-form-field>
                     <mat-label>Rotation</mat-label>
-                    <mat-select [(ngModel)]="rotation">
-                      <mat-option [value]="0">0°</mat-option>
-                      <mat-option [value]="90">90°</mat-option>
-                      <mat-option [value]="180">180°</mat-option>
-                      <mat-option [value]="270">270°</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                  <mat-select [(ngModel)]="rotation">
+                    <mat-option [value]="0">0°</mat-option>
+                    <mat-option [value]="90">90°</mat-option>
+                    <mat-option [value]="180">180°</mat-option>
+                    <mat-option [value]="270">270°</mat-option>
+                  </mat-select>
+                </mat-form-field>
                 </div>
 
                 <div class="current-values">
@@ -246,7 +246,7 @@
                 <div class="management-buttons">
                   <button mat-raised-button color="accent" (click)="reloadViewer()">
                     <mat-icon>refresh</mat-icon> Reload Viewer
-                  </button>
+                </button>
                   <button mat-raised-button color="warn" (click)="testError()">
                     <mat-icon>error</mat-icon> Test Error
                   </button>
@@ -265,10 +265,10 @@
                   </mat-form-field>
                   <mat-slide-toggle [(ngModel)]="errorOverride">Override Default Error</mat-slide-toggle>
                   <mat-slide-toggle [(ngModel)]="errorAppend">Append to Default Error</mat-slide-toggle>
-                </div>
               </div>
-            </mat-tab>
-          </mat-tab-group>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
         </mat-card-content>
       </mat-card>
     </div>
@@ -276,12 +276,12 @@
     <!-- PDF Viewer -->
     <div class="viewer-panel">
       <mat-card>
-        <mat-card-header>
+      <mat-card-header>
           <mat-card-title>ng2-pdfjs-viewer</mat-card-title>
           <mat-card-subtitle>Live Demo with Current Configuration</mat-card-subtitle>
-        </mat-card-header>
-        
-        <mat-card-content>
+      </mat-card-header>
+      
+      <mat-card-content>
           <!-- Using Traditional Individual Properties (cleaner for examples) -->
           <ng2-pdfjs-viewer 
             #pdfViewer
@@ -318,8 +318,8 @@
             (onBeforePrint)="onBeforePrint()"
             (onAfterPrint)="onAfterPrint()">
           </ng2-pdfjs-viewer>
-        </mat-card-content>
-      </mat-card>
+      </mat-card-content>
+    </mat-card>
     </div>
   </div>
 </div> 

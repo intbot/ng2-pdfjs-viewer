@@ -17,7 +17,11 @@ export class PropertyTransformers {
     
     fromViewer: (viewerZoom: any): string => {
       if (typeof viewerZoom === 'string') return viewerZoom;
-      if (typeof viewerZoom === 'number') return `${Math.round(viewerZoom * 100)}%`;
+      if (typeof viewerZoom === 'number') {
+        // Convert numeric zoom to string without % to avoid feedback loop
+        // PDF.js accepts numeric strings like "1.25" directly
+        return viewerZoom.toString();
+      }
       return 'auto';
     }
   };
