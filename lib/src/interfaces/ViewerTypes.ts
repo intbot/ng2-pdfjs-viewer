@@ -48,13 +48,13 @@ export interface ChangedRotation {
   page: number;
 }
 
-// Convenience configuration interfaces
+// Convenience configuration interfaces for grouping related properties
 export interface ControlVisibilityConfig {
-  download?: boolean;
-  print?: boolean; 
-  find?: boolean;
-  fullScreen?: boolean;
   openFile?: boolean;
+  download?: boolean;
+  print?: boolean;
+  fullScreen?: boolean;
+  find?: boolean;
   viewBookmark?: boolean;
   annotations?: boolean;
 }
@@ -68,17 +68,88 @@ export interface AutoActionConfig {
 }
 
 export interface ErrorConfig {
+  message?: string;
   override?: boolean;
   append?: boolean;
-  message?: string;
 }
 
 export interface ViewerConfig {
-  externalWindow?: boolean;
   showSpinner?: boolean;
   useOnlyCssZoom?: boolean;
   diagnosticLogs?: boolean;
-  viewerFolder?: string;
   locale?: string;
+}
+
+// New event data interfaces for enhanced PDF viewer functionality
+export interface DocumentError {
+  message: string;
+  source?: any;
+  name?: string;
+}
+
+export interface PagesInfo {
+  pagesCount: number;
+}
+
+export interface PresentationMode {
+  active: boolean;
+  switchInProgress?: boolean;
+}
+
+export interface FindOperation {
+  query: string;
+  phraseSearch: boolean;
+  caseSensitive: boolean;
+  entireWord?: boolean;
+  highlightAll?: boolean;
+  findPrevious?: boolean;
+}
+
+export interface FindMatchesCount {
+  current: number;
+  total: number;
+}
+
+export interface DocumentMetadata {
+  title?: string;
+  author?: string;
+  subject?: string;
+  keywords?: string;
+  creator?: string;
+  producer?: string;
+  creationDate?: string; 
+  modificationDate?: string;
+  pdfFormatVersion?: string;
+  isLinearized?: boolean;
+  isAcroFormPresent?: boolean;
+  isXFAPresent?: boolean;
+  isCollectionPresent?: boolean;
+}
+
+export interface DocumentOutline {
+  items?: any[];
+  hasOutline: boolean;
+}
+
+export interface PageRenderInfo {
+  pageNumber: number;
+  source: string;
+  timestamp?: number;
+}
+
+// New high-value events (Phase 2)
+export interface AnnotationLayerRenderEvent {
+  pageNumber: number;
+  error?: Error;
+  timestamp: number;
+}
+
+export interface BookmarkClick {
+  title: string;
+  dest: string | null;
+  action?: string;
+  url?: string;
+  pageNumber?: number;
+  isCurrentItem: boolean;
 }
 // #endregion 

@@ -17,10 +17,19 @@
         border-radius: 4px;
         background: rgba(255, 255, 255, 0.1);
         font-size: 0.875rem;
+        transition: all 0.3s ease;
         
         &.active {
           background: rgba(76, 175, 80, 0.8);
           color: white;
+        }
+
+        &.blinking {
+          animation: blink-highlight 1s ease-in-out;
+          background: rgba(255, 193, 7, 0.9) !important;
+          color: #000 !important;
+          font-weight: bold;
+          transform: scale(1.05);
         }
       }
       
@@ -45,6 +54,7 @@
 
     .config-panel {
       overflow-y: auto;
+      max-height: calc(100vh - 120px); // Ensure proper scrolling
       
       mat-card {
         height: fit-content;
@@ -193,6 +203,99 @@
     
     .event-item {
       padding: 0.125rem 0.25rem;
+    }
+  }
+}
+
+// New styles for enhanced features
+.action-button-container {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.toggle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+// Blinking animation for event counters
+@keyframes blink-highlight {
+  0% {
+    background: rgba(255, 193, 7, 0.9);
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.6);
+  }
+  50% {
+    background: rgba(255, 193, 7, 1);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.8);
+  }
+  100% {
+    background: rgba(76, 175, 80, 0.8);
+    transform: scale(1);
+    box-shadow: none;
+  }
+}
+
+// Override Material Design amber theme to force green switches (Material v15+)
+::ng-deep {
+  .mat-mdc-slide-toggle {
+    // Override CSS custom properties used by Material Design
+    --mdc-switch-selected-track-color: rgba(76, 175, 80, 0.54);
+    --mdc-switch-selected-handle-color: #4caf50;
+    --mdc-switch-selected-hover-handle-color: #388e3c;
+    --mdc-switch-selected-focus-handle-color: #4caf50;
+    --mdc-switch-selected-pressed-handle-color: #2e7d32;
+    
+    // Force override on checked state with maximum specificity
+    &.mat-checked.mat-mdc-slide-toggle {
+      .mdc-switch--selected {
+        .mdc-switch__handle {
+          &::before,
+          &::after {
+            background-color: #4caf50 !important;
+          }
+        }
+        
+        .mdc-switch__thumb {
+          background-color: #4caf50 !important;
+          border-color: #4caf50 !important;
+        }
+        
+        .mdc-switch__track {
+          background-color: rgba(76, 175, 80, 0.54) !important;
+          
+          &::before,
+          &::after {
+            background-color: rgba(76, 175, 80, 0.54) !important;
+          }
+        }
+      }
+      
+      // Additional selector for different Material versions
+      .mdc-switch.mdc-switch--selected {
+        .mdc-switch__track {
+          background-color: rgba(76, 175, 80, 0.54) !important;
+        }
+        
+        .mdc-switch__handle .mdc-switch__thumb {
+          background-color: #4caf50 !important;
+        }
+      }
+    }
+  }
+  
+  // Fallback for older Material Design versions
+  .mat-slide-toggle.mat-checked {
+    .mat-slide-toggle-thumb {
+      background-color: #4caf50 !important;
+    }
+    
+    .mat-slide-toggle-bar {
+      background-color: rgba(76, 175, 80, 0.54) !important;
     }
   }
 }

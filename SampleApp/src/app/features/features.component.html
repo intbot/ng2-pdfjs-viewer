@@ -2,21 +2,66 @@
   <!-- Event Monitor -->
   <mat-toolbar color="primary" class="event-monitor">
     <div class="event-stats">
-      <span class="event-item" [class.active]="eventCounts.documentLoad > 0">
-        📄 Load: {{eventCounts.documentLoad}}
+      <span class="event-item" [class.active]="eventCounts.documentLoad > 0" [class.blinking]="blinkingEvents.documentLoad">
+        📄 Document Loads: {{eventCounts.documentLoad}}
       </span>
-      <span class="event-item" [class.active]="eventCounts.pageChange > 0">
-        📖 Page: {{eventCounts.pageChange}}
+      <span class="event-item" [class.active]="eventCounts.pageChange > 0" [class.blinking]="blinkingEvents.pageChange">
+        📖 Page Changes: {{eventCounts.pageChange}}
       </span>
-      <span class="event-item" [class.active]="eventCounts.scaleChange > 0">
-        🔍 Scale: {{eventCounts.scaleChange}}
+      <span class="event-item" [class.active]="eventCounts.scaleChange > 0" [class.blinking]="blinkingEvents.scaleChange">
+        🔍 Scale Changes: {{eventCounts.scaleChange}}
       </span>
-      <span class="event-item" [class.active]="eventCounts.rotationChange > 0">
-        🔄 Rotation: {{eventCounts.rotationChange}}
+      <span class="event-item" [class.active]="eventCounts.rotationChange > 0" [class.blinking]="blinkingEvents.rotationChange">
+        🔄 Rotation Changes: {{eventCounts.rotationChange}}
       </span>
-      <span class="event-item" [class.active]="eventCounts.beforePrint > 0">
-        🖨️ Print: {{eventCounts.beforePrint}}/{{eventCounts.afterPrint}}
+      <span class="event-item" [class.active]="eventCounts.beforePrint > 0" [class.blinking]="blinkingEvents.beforePrint">
+        🖨️ Before Print Events: {{eventCounts.beforePrint}}
       </span>
+      <span class="event-item" [class.active]="eventCounts.afterPrint > 0" [class.blinking]="blinkingEvents.afterPrint">
+        📄 After Print Events: {{eventCounts.afterPrint}}
+      </span>
+      
+      <!-- New High-Value Events (13 total) -->
+      <span class="event-item" [class.active]="eventCounts.documentError > 0" [class.blinking]="blinkingEvents.documentError">
+        ❌ Document Errors: {{eventCounts.documentError}}
+      </span>
+      <span class="event-item" [class.active]="eventCounts.documentInit > 0" [class.blinking]="blinkingEvents.documentInit">
+        🚀 Document Inits: {{eventCounts.documentInit}}
+      </span>
+      <span class="event-item" [class.active]="eventCounts.pagesInit > 0" [class.blinking]="blinkingEvents.pagesInit">
+        📚 Pages Inits: {{eventCounts.pagesInit}}
+      </span>
+      <span class="event-item" [class.active]="eventCounts.presentationModeChanged > 0" [class.blinking]="blinkingEvents.presentationModeChanged">
+        🎥 Presentation Mode: {{eventCounts.presentationModeChanged}}
+      </span>
+      <span class="event-item" [class.active]="eventCounts.openFile > 0" [class.blinking]="blinkingEvents.openFile">
+        📂 File Opens: {{eventCounts.openFile}}
+      </span>
+      <span class="event-item" [class.active]="eventCounts.find > 0" [class.blinking]="blinkingEvents.find">
+        🔍 Find Operations: {{eventCounts.find}}
+      </span>
+      <span class="event-item" [class.active]="eventCounts.updateFindMatchesCount > 0" [class.blinking]="blinkingEvents.updateFindMatchesCount">
+        🎯 Find Matches: {{eventCounts.updateFindMatchesCount}}
+      </span>
+      <span class="event-item" [class.active]="eventCounts.metadataLoaded > 0" [class.blinking]="blinkingEvents.metadataLoaded">
+        📋 Metadata Loads: {{eventCounts.metadataLoaded}}
+      </span>
+      <span class="event-item" [class.active]="eventCounts.outlineLoaded > 0" [class.blinking]="blinkingEvents.outlineLoaded">
+        📖 Outline Loads: {{eventCounts.outlineLoaded}}
+      </span>
+      <span class="event-item" [class.active]="eventCounts.pageRendered > 0" [class.blinking]="blinkingEvents.pageRendered">
+        🎨 Page Renders: {{eventCounts.pageRendered}}
+      </span>
+      <span class="event-item" [class.active]="eventCounts.annotationLayerRendered > 0" [class.blinking]="blinkingEvents.annotationLayerRendered">
+        📝 Annotation Layers: {{eventCounts.annotationLayerRendered}}
+      </span>
+      <span class="event-item" [class.active]="eventCounts.bookmarkClick > 0" [class.blinking]="blinkingEvents.bookmarkClick">
+        🔖 Bookmark Clicks: {{eventCounts.bookmarkClick}}
+      </span>
+      <span class="event-item" [class.active]="eventCounts.idle > 0" [class.blinking]="blinkingEvents.idle">
+        😴 Idle Events: {{eventCounts.idle}}
+      </span>
+      
       <span class="status-info">
         Page {{currentPage}}/{{totalPages}} | {{currentScale}} | {{currentRotation}}°
       </span>
@@ -63,27 +108,36 @@
                   <mat-slide-toggle [(ngModel)]="showLastPageOnLoad">Show Last Page</mat-slide-toggle>
                 </div>
                 
-                <mat-divider></mat-divider>
+                <div class="action-button-container">
+                  <button mat-raised-button color="primary" (click)="testAutoActions()" matTooltip="Reload viewer to test auto actions">
+                    <mat-icon>refresh</mat-icon> Test Auto Actions
+                  </button>
+              </div>
+
+              <mat-divider></mat-divider>
 
                 <h3>Basic Configuration</h3>
                 <div class="config-grid">
                   <mat-form-field>
                     <mat-label>Download File Name</mat-label>
                     <input matInput [(ngModel)]="downloadFileName">
-                  </mat-form-field>
+                </mat-form-field>
                   <mat-form-field>
-                    <mat-label>Locale</mat-label>
+                  <mat-label>Locale</mat-label>
                     <mat-select [(ngModel)]="locale">
                       <mat-option value="en-US">English</mat-option>
                       <mat-option value="de-AT">German</mat-option>
                       <mat-option value="fr-FR">French</mat-option>
                       <mat-option value="es-ES">Spanish</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                  </mat-select>
+                </mat-form-field>
                   <div class="toggle-container">
                     <mat-slide-toggle [(ngModel)]="useOnlyCssZoom">CSS Zoom Only</mat-slide-toggle>
                   </div>
                   <div class="toggle-container">
+                    <mat-slide-toggle [(ngModel)]="showSpinner">Show Loading Spinner</mat-slide-toggle>
+                  </div>
+                <div class="toggle-container">
                     <mat-slide-toggle [(ngModel)]="diagnosticLogs">Diagnostic Logs</mat-slide-toggle>
                   </div>
                 </div>
@@ -287,6 +341,7 @@
             #pdfViewer
             [pdfSrc]="pdfSrc"
             [downloadFileName]="downloadFileName"
+            [showSpinner]="showSpinner"
             [showOpenFile]="showOpenFile"
             [showDownload]="showDownload"
             [showPrint]="showPrint"
@@ -297,6 +352,8 @@
             [downloadOnLoad]="downloadOnLoad"
             [printOnLoad]="printOnLoad"
             [showLastPageOnLoad]="showLastPageOnLoad"
+            [rotateCW]="rotateCW"
+            [rotateCCW]="rotateCCW"
             [namedDest]="namedDest"
             [locale]="locale"
             [useOnlyCssZoom]="useOnlyCssZoom"
@@ -316,7 +373,20 @@
             (onScaleChange)="onScaleChange($event)"
             (onRotationChange)="onRotationChange($event)"
             (onBeforePrint)="onBeforePrint()"
-            (onAfterPrint)="onAfterPrint()">
+            (onAfterPrint)="onAfterPrint()"
+            (onDocumentError)="onDocumentError($event)"
+            (onDocumentInit)="onDocumentInit()"
+            (onPagesInit)="onPagesInit($event)"
+            (onPresentationModeChanged)="onPresentationModeChanged($event)"
+            (onOpenFile)="onOpenFile()"
+            (onFind)="onFind($event)"
+            (onUpdateFindMatchesCount)="onUpdateFindMatchesCount($event)"
+            (onMetadataLoaded)="onMetadataLoaded($event)"
+            (onOutlineLoaded)="onOutlineLoaded($event)"
+            (onPageRendered)="onPageRendered($event)"
+            (onAnnotationLayerRendered)="onAnnotationLayerRendered($event)"
+            (onBookmarkClick)="onBookmarkClick($event)"
+            (onIdle)="onIdle()">
           </ng2-pdfjs-viewer>
       </mat-card-content>
     </mat-card>

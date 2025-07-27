@@ -13,7 +13,18 @@ import {
   ControlVisibilityConfig,
   AutoActionConfig,
   ErrorConfig,
-  ViewerConfig
+  ViewerConfig,
+  DocumentError,
+  PagesInfo,
+  PresentationMode,
+  FindOperation,
+  FindMatchesCount,
+  DocumentMetadata,
+  DocumentOutline,
+  PageRenderInfo,
+  // New high-value events (Phase 2)
+  AnnotationLayerRenderEvent,
+  BookmarkClick
 } from './interfaces/ViewerTypes';
 import { ActionQueueManager } from './managers/ActionQueueManager';
 import { PropertyTransformers } from './utils/PropertyTransformers';
@@ -38,6 +49,23 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   @Output() onPageChange: EventEmitter<ChangedPage> = new EventEmitter();
   @Output() onScaleChange: EventEmitter<ChangedScale> = new EventEmitter();
   @Output() onRotationChange: EventEmitter<ChangedRotation> = new EventEmitter();
+
+  // New high-value events for enhanced PDF viewer functionality
+  @Output() onDocumentError: EventEmitter<DocumentError> = new EventEmitter();
+  @Output() onDocumentInit: EventEmitter<void> = new EventEmitter();
+  @Output() onPagesInit: EventEmitter<PagesInfo> = new EventEmitter();
+  @Output() onPresentationModeChanged: EventEmitter<PresentationMode> = new EventEmitter();
+  @Output() onOpenFile: EventEmitter<void> = new EventEmitter();
+  @Output() onFind: EventEmitter<FindOperation> = new EventEmitter();
+  @Output() onUpdateFindMatchesCount: EventEmitter<FindMatchesCount> = new EventEmitter();
+  @Output() onMetadataLoaded: EventEmitter<DocumentMetadata> = new EventEmitter();
+  @Output() onOutlineLoaded: EventEmitter<DocumentOutline> = new EventEmitter();
+  @Output() onPageRendered: EventEmitter<PageRenderInfo> = new EventEmitter();
+
+  // New high-value events (Phase 2)
+  @Output() onAnnotationLayerRendered: EventEmitter<AnnotationLayerRenderEvent> = new EventEmitter();
+  @Output() onBookmarkClick: EventEmitter<BookmarkClick> = new EventEmitter();
+  @Output() onIdle: EventEmitter<void> = new EventEmitter();
   // #endregion
 
   // #region Basic Configuration Properties
@@ -105,11 +133,9 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   }
 
   @Input() public set viewerConfig(config: ViewerConfig) {
-    if (config.externalWindow !== undefined) this.externalWindow = config.externalWindow;
     if (config.showSpinner !== undefined) this.showSpinner = config.showSpinner;
     if (config.useOnlyCssZoom !== undefined) this.useOnlyCssZoom = config.useOnlyCssZoom;
     if (config.diagnosticLogs !== undefined) this.diagnosticLogs = config.diagnosticLogs;
-    if (config.viewerFolder !== undefined) this.viewerFolder = config.viewerFolder;
     if (config.locale !== undefined) this.locale = config.locale;
   }
   // #endregion
@@ -381,7 +407,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   // #region Lifecycle Methods
   ngOnInit(): void {   
          // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
-       console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-07-26T21-41-16-000Z');
+       console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-07-27T24-30-04-000Z');
     
     // Configure action queue manager with diagnostic logs
     this.actionQueueManager = new ActionQueueManager(this.diagnosticLogs);
@@ -544,6 +570,12 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         this.handleStateChangeNotification(event.data);
         return;
       }
+
+      // Handle event notifications from PostMessage wrapper
+      if (event.data && event.data.type === 'event-notification') {
+        this.handleEventNotification(event.data);
+        return;
+      }
     });
   }
 
@@ -612,6 +644,74 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
             console.log(`🔍 PdfJsViewer: Unknown state change property: ${property}`);
           }
       }
+    }
+  }
+
+  private handleEventNotification(notification: any): void {
+    const { eventName, eventData } = notification;
+    
+    if (this.diagnosticLogs) {
+      console.log(`🔍 PdfJsViewer: Event notification received: ${eventName}`, eventData);
+    }
+
+    // Emit the appropriate event based on the event name
+    switch (eventName) {
+      case 'documentError':
+        this.onDocumentError.emit(eventData);
+        break;
+        
+      case 'documentInit':
+        this.onDocumentInit.emit();
+        break;
+        
+      case 'pagesInit':
+        this.onPagesInit.emit(eventData);
+        break;
+        
+      case 'presentationModeChanged':
+        this.onPresentationModeChanged.emit(eventData);
+        break;
+        
+      case 'openFile':
+        this.onOpenFile.emit();
+        break;
+        
+      case 'find':
+        this.onFind.emit(eventData);
+        break;
+        
+      case 'updateFindMatchesCount':
+        this.onUpdateFindMatchesCount.emit(eventData);
+        break;
+        
+      case 'metadataLoaded':
+        this.onMetadataLoaded.emit(eventData);
+        break;
+        
+      case 'outlineLoaded':
+        this.onOutlineLoaded.emit(eventData);
+        break;
+        
+      case 'pageRendered':
+        this.onPageRendered.emit(eventData);
+        break;
+        
+      case 'annotationLayerRendered':
+        this.onAnnotationLayerRendered.emit(eventData);
+        break;
+        
+      case 'bookmarkClick':
+        this.onBookmarkClick.emit(eventData);
+        break;
+        
+      case 'idle':
+        this.onIdle.emit();
+        break;
+        
+      default:
+        if (this.diagnosticLogs) {
+          console.log(`🔍 PdfJsViewer: Unknown event notification: ${eventName}`);
+        }
     }
   }
   // #endregion
@@ -793,9 +893,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
           this.actionQueueManager.onDocumentLoaded();
         };
 
-        const pagesInitHandler = () => {
-          if (this.diagnosticLogs) console.debug("PdfJsViewer: All pages have been rendered!");
-        };
+        // Note: pagesInit event is now handled via the PostMessage wrapper event system
 
         const pagesLoadedHandler = () => {
           if (this.diagnosticLogs) console.debug("PdfJsViewer: All pages have been fully loaded!");
@@ -868,7 +966,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         // Store handlers for cleanup
         (this as any)._pdfEventHandlers = {
           documentloaded: documentLoadedHandler,
-          pagesinit: pagesInitHandler,
           pagesloaded: pagesLoadedHandler,
           beforeprint: beforePrintHandler,
           afterprint: afterPrintHandler,
@@ -879,7 +976,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         
         // Attach event listeners
         eventBus.on("documentloaded", documentLoadedHandler);
-        eventBus.on("pagesinit", pagesInitHandler);
         eventBus.on("pagesloaded", pagesLoadedHandler);
         eventBus.on("beforeprint", beforePrintHandler);
         eventBus.on("afterprint", afterPrintHandler);
@@ -981,6 +1077,49 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     }
     if (this.onPageChange) {
       this.queueConfiguration('pageChange', true, 'enable-page-change');
+    }
+
+    // Queue new high-value event configurations
+    if (this.onDocumentError) {
+      this.queueConfiguration('documentError', true, 'enable-document-error');
+    }
+    if (this.onDocumentInit) {
+      this.queueConfiguration('documentInit', true, 'enable-document-init');
+    }
+    if (this.onPagesInit) {
+      this.queueConfiguration('pagesInit', true, 'enable-pages-init');
+    }
+    if (this.onPresentationModeChanged) {
+      this.queueConfiguration('presentationModeChanged', true, 'enable-presentation-mode-changed');
+    }
+    if (this.onOpenFile) {
+      this.queueConfiguration('openFile', true, 'enable-open-file');
+    }
+    if (this.onFind) {
+      this.queueConfiguration('find', true, 'enable-find');
+    }
+    if (this.onUpdateFindMatchesCount) {
+      this.queueConfiguration('updateFindMatchesCount', true, 'enable-update-find-matches-count');
+    }
+    if (this.onMetadataLoaded) {
+      this.queueConfiguration('metadataLoaded', true, 'enable-metadata-loaded');
+    }
+    if (this.onOutlineLoaded) {
+      this.queueConfiguration('outlineLoaded', true, 'enable-outline-loaded');
+    }
+    if (this.onPageRendered) {
+      this.queueConfiguration('pageRendered', true, 'enable-page-rendered');
+    }
+    
+    // New high-value events (Phase 2)
+    if (this.onAnnotationLayerRendered) {
+      this.queueConfiguration('annotationLayerRendered', true, 'enable-annotation-layer-rendered');
+    }
+    if (this.onBookmarkClick) {
+      this.queueConfiguration('bookmarkClick', true, 'enable-bookmark-click');
+    }
+    if (this.onIdle) {
+      this.queueConfiguration('idle', true, 'enable-idle');
     }
 
     // Note: Auto-actions are now queued when the document loads, not during component initialization

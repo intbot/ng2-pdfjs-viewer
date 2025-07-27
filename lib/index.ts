@@ -8,5 +8,17 @@ export {
   ControlVisibilityConfig,
   AutoActionConfig,
   ErrorConfig,
-  ViewerConfig 
+  ViewerConfig,
+  // New event data interfaces
+  DocumentError,
+  PagesInfo,
+  PresentationMode,
+  FindOperation,
+  FindMatchesCount,
+  DocumentMetadata,
+  DocumentOutline,
+  PageRenderInfo,
+  // New high-value events (Phase 2)
+  AnnotationLayerRenderEvent,
+  BookmarkClick
 } from './src/interfaces/ViewerTypes';
