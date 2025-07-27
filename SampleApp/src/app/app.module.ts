@@ -25,6 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { FormsModule } from '@angular/forms';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 const MATERIAL_IMPORTS = [
   BrowserAnimationsModule,
@@ -38,7 +39,8 @@ const MATERIAL_IMPORTS = [
   MatSelectModule,
   MatIconModule,
   MatTooltipModule,
-  MatDividerModule
+  MatDividerModule,
+  MatExpansionModule
 ];
 
 @NgModule({

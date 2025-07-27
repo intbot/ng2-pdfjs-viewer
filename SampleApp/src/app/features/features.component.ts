@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChangedScale, ChangedRotation } from 'ng2-pdfjs-viewer';
 
 @Component({
@@ -8,9 +8,14 @@ import { ChangedScale, ChangedRotation } from 'ng2-pdfjs-viewer';
   styleUrls: ['./features.component.scss']
 })
 export class FeaturesComponent implements OnInit {
-  @ViewChild('testPdfViewer', { static: false }) public testPdfViewer;
+  @ViewChild('pdfViewer', { static: false }) public pdfViewer;
 
-  // Control visibility toggles
+  // Configuration properties - directly bound to the viewer
+  public pdfSrc = '/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf';
+  public downloadFileName = 'sample-document.pdf';
+  public diagnosticLogs = false;
+
+  // Control visibility using individual properties (traditional approach)
   public showOpenFile = true;
   public showDownload = true;
   public showPrint = true;
@@ -19,97 +24,33 @@ export class FeaturesComponent implements OnInit {
   public showViewBookmark = true;
   public showAnnotations = false;
 
-  // Auto action settings (stored separately for demo purposes)
-  public autoActionSettings = {
-    downloadOnLoad: false,
-    printOnLoad: false,
-    showLastPageOnLoad: false
-  };
-
-  // Actual viewer properties (initially set to false for auto-actions)
+  // Auto-actions (execute when PDF loads)
   public downloadOnLoad = false;
   public printOnLoad = false;
   public showLastPageOnLoad = false;
 
-  // Component reload control
-  public showPdfViewer = true;
-
-  // In-memory state management for mode values
-  private savedModeValues: { [key: string]: any } = {};
-
-  // Mode settings (now using two-way binding)
+  // Two-way binding properties
+  public zoom = 'auto';
   public cursor = 'select';
   public scroll = 'vertical';
   public spread = 'none';
-  public namedDest = '';
   public pageMode = 'none';
-  private _zoom = 'auto';
   public rotation = 0;
 
-  // Zoom property with transformation for SampleApp dropdown compatibility
-  public get zoom(): any {
-    return this._zoom;
-  }
+  // Navigation
+  public page = 1;
+  public namedDest = '';
 
-  public set zoom(value: any) {
-    // Transform library zoom values to SampleApp dropdown values
-    const transformedValue = this.transformZoomForDropdown(value);
-    this._zoom = transformedValue;
-    console.log(`🧪 TestFeatures: Zoom transformed from ${value} to ${transformedValue}`);
-  }
-
-  /**
-   * Transform zoom values from the library to match SampleApp dropdown options
-   */
-  private transformZoomForDropdown(libraryValue: any): any {
-    // Handle null/undefined
-    if (libraryValue == null) {
-      return 'auto';
-    }
-
-    // Convert to string for processing
-    const valueStr = String(libraryValue);
-
-    // Handle special zoom modes (pass through as-is)
-    if (['auto', 'page-actual', 'page-fit', 'page-width'].includes(valueStr)) {
-      return valueStr;
-    }
-
-    // Handle percentage strings like '125%', '150%', etc.
-    if (valueStr.includes('%')) {
-      const percentage = parseFloat(valueStr.replace('%', ''));
-      if (!isNaN(percentage)) {
-        return percentage / 100; // Convert '125%' to 1.25
-      }
-    }
-
-    // Handle decimal strings like '1.25', '1.5', etc.
-    const numericValue = parseFloat(valueStr);
-    if (!isNaN(numericValue)) {
-      return numericValue;
-    }
-
-    // Default fallback
-    return 'auto';
-  }
-
-  // Custom values
-  public downloadFileName = 'test-document.pdf';
+  // Configuration options
   public locale = 'en-US';
   public useOnlyCssZoom = false;
 
   // Error handling
   public errorOverride = false;
   public errorAppend = true;
-  public errorMessage = 'Custom error message';
-  
-  // Debug settings
-  public diagnosticLogs = true;
+  public errorMessage = 'Custom error message for demonstration';
 
-  // Note: These are the same properties used for both initial configuration and two-way binding
-  // No need for separate "viewer*" properties - just use the natural property names
-
-  // Event counters
+  // Event tracking for demonstration
   public eventCounts = {
     documentLoad: 0,
     pageChange: 0,
@@ -119,327 +60,150 @@ export class FeaturesComponent implements OnInit {
     afterPrint: 0
   };
 
-  // Current values
+  // Current state display
   public currentPage = 1;
   public currentScale = 1;
   public currentRotation = 0;
   public totalPages = 0;
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor() { }
 
   ngOnInit() {
-    console.log('🧪 TestFeatures: Component initialized');
-    
-    // Properties are already initialized with their default values
-    console.log('🧪 TestFeatures: Using existing properties for two-way binding');
+    console.log('🎬 Features Demo: Component initialized');
   }
 
-  // Event handlers
+  // Event handlers - clean and simple
   public onDocumentLoad() {
     this.eventCounts.documentLoad++;
-    // Get total pages from the viewer
-    if (this.testPdfViewer && this.testPdfViewer.PDFViewerApplication) {
-      this.totalPages = this.testPdfViewer.PDFViewerApplication.pagesCount || 0;
+    if (this.pdfViewer?.PDFViewerApplication) {
+      this.totalPages = this.pdfViewer.PDFViewerApplication.pagesCount || 0;
     }
-    console.log('🧪 TestFeatures: Document loaded!', this.eventCounts.documentLoad, 'Total pages:', this.totalPages);
+    console.log('🎬 Features Demo: Document loaded, total pages:', this.totalPages);
   }
 
   public onPageChange(pageNumber: number) {
     this.eventCounts.pageChange++;
     this.currentPage = pageNumber;
-    console.log('🧪 TestFeatures: Page changed to:', pageNumber, 'Count:', this.eventCounts.pageChange);
+    console.log('🎬 Features Demo: Page changed to:', pageNumber);
   }
 
   public onScaleChange(scale: ChangedScale) {
     this.eventCounts.scaleChange++;
     this.currentScale = scale;
-    console.log('🧪 TestFeatures: Scale changed to:', scale, 'Count:', this.eventCounts.scaleChange);
+    console.log('🎬 Features Demo: Scale changed to:', scale);
   }
 
   public onRotationChange(rotation: ChangedRotation) {
     this.eventCounts.rotationChange++;
     this.currentRotation = rotation.rotation;
-    console.log('🧪 TestFeatures: Rotation changed to:', rotation.rotation, 'Count:', this.eventCounts.rotationChange);
+    console.log('🎬 Features Demo: Rotation changed to:', rotation.rotation);
   }
 
   public onBeforePrint() {
     this.eventCounts.beforePrint++;
-    console.log('🧪 TestFeatures: Before print!', this.eventCounts.beforePrint);
+    console.log('🎬 Features Demo: Before print event');
   }
 
   public onAfterPrint() {
     this.eventCounts.afterPrint++;
-    console.log('🧪 TestFeatures: After print!', this.eventCounts.afterPrint);
+    console.log('🎬 Features Demo: After print event');
   }
 
-  // Action buttons
-  public reloadViewer() {
-    console.log('🧪 TestFeatures: Reloading viewer with on-load actions');
-    
-    // Apply on-load action settings to actual viewer properties
-    this.applyAutoActionSettings();
-    
-    // Save current mode values before reloading
-    this.saveCurrentModeValues();
-    
-    // Full component reload using Angular's lifecycle management
-    this.performComponentReload();
-  }
-
-  /**
-   * Performs a clean component reload without timeouts
-   */
-  private performComponentReload(): void {
-    console.log('🧪 TestFeatures: Performing full component reload');
-    
-    // Destroy the component
-    this.showPdfViewer = false;
-    this.cdr.detectChanges();
-    
-    // Recreate the component in the next change detection cycle
-    this.cdr.markForCheck();
-    
-    // Use Promise.resolve() to ensure proper lifecycle management
-    Promise.resolve().then(() => {
-      this.showPdfViewer = true;
-      this.cdr.detectChanges();
-      console.log('🧪 TestFeatures: Component recreated - auto-actions will be processed on initialization');
-    });
-  }
-
-  // Apply on-load action settings to actual viewer properties
-  private applyAutoActionSettings() {
-    console.log('🧪 TestFeatures: Applying on-load action settings:', this.autoActionSettings);
-    
-    // Apply on-load action settings to actual viewer properties
-    this.downloadOnLoad = this.autoActionSettings.downloadOnLoad;
-    this.printOnLoad = this.autoActionSettings.printOnLoad;
-    this.showLastPageOnLoad = this.autoActionSettings.showLastPageOnLoad;
-    
-    console.log('🧪 TestFeatures: On-load actions applied - Download:', this.downloadOnLoad, 'Print:', this.printOnLoad, 'LastPage:', this.showLastPageOnLoad);
-  }
-
-  // Clear on-load action settings (for demo purposes)
-  public clearAutoActionSettings() {
-    console.log('🧪 TestFeatures: Clearing on-load action settings');
-    this.autoActionSettings = {
-      downloadOnLoad: false,
-      printOnLoad: false,
-      showLastPageOnLoad: false
-    };
-    console.log('🧪 TestFeatures: On-load action settings cleared');
-  }
-
-  // Save current mode values to memory
-  private saveCurrentModeValues() {
-    const modeProperties = ['cursor', 'scroll', 'spread', 'zoom', 'locale', 'namedDest', 'pageMode'];
-    modeProperties.forEach(property => {
-      const value = (this as any)[property];
-      if (value !== null && value !== undefined && value !== '') {
-        this.savedModeValues[property] = value;
-        console.log(`🧪 TestFeatures: Saved ${property} = ${value} to memory`);
-      }
-    });
-    console.log('🧪 TestFeatures: Saved current mode values before reload');
-  }
-
-  public goToPage(page: number) {
-    if (this.testPdfViewer) {
-      console.log('🧪 TestFeatures: Navigating to page:', page);
-      this.testPdfViewer.page = page;
-      console.log('🧪 TestFeatures: Navigated to page:', page);
+  // Simple action methods using the library's public API
+  public async triggerDownload() {
+    try {
+      const result = await this.pdfViewer.triggerDownload();
+      console.log('🎬 Features Demo: Download triggered:', result);
+    } catch (error) {
+      console.error('🎬 Features Demo: Download failed:', error);
     }
   }
 
-  // Rotation action buttons
+  public async triggerPrint() {
+    try {
+      const result = await this.pdfViewer.triggerPrint();
+      console.log('🎬 Features Demo: Print triggered:', result);
+    } catch (error) {
+      console.error('🎬 Features Demo: Print failed:', error);
+    }
+  }
+
+  public async goToPage(pageNumber: number) {
+    try {
+      const result = await this.pdfViewer.goToPage(pageNumber);
+      console.log('🎬 Features Demo: Navigated to page:', pageNumber, result);
+    } catch (error) {
+      console.error('🎬 Features Demo: Navigation failed:', error);
+    }
+  }
+
   public async rotateClockwise() {
-    if (this.testPdfViewer) {
-      console.log('🧪 TestFeatures: Rotating clockwise');
-      try {
-        const result = await this.testPdfViewer.triggerRotation('cw');
-        console.log('🧪 TestFeatures: Rotated clockwise, result:', result);
-      } catch (error) {
-        console.error('🧪 TestFeatures: Failed to rotate clockwise:', error);
-      }
+    try {
+      const result = await this.pdfViewer.triggerRotation('cw');
+      console.log('🎬 Features Demo: Rotated clockwise:', result);
+    } catch (error) {
+      console.error('🎬 Features Demo: Rotation failed:', error);
     }
   }
 
   public async rotateCounterClockwise() {
-    if (this.testPdfViewer) {
-      console.log('🧪 TestFeatures: Rotating counter-clockwise');
-      try {
-        const result = await this.testPdfViewer.triggerRotation('ccw');
-        console.log('🧪 TestFeatures: Rotated counter-clockwise, result:', result);
-      } catch (error) {
-        console.error('🧪 TestFeatures: Failed to rotate counter-clockwise:', error);
-      }
+    try {
+      const result = await this.pdfViewer.triggerRotation('ccw');
+      console.log('🎬 Features Demo: Rotated counter-clockwise:', result);
+    } catch (error) {
+      console.error('🎬 Features Demo: Rotation failed:', error);
     }
   }
 
-  // Additional action methods
-  public async triggerDownloadAction() {
-    if (this.testPdfViewer) {
-      console.log('🧪 TestFeatures: Triggering download');
-      try {
-        const result = await this.testPdfViewer.triggerDownload();
-        console.log('🧪 TestFeatures: Download triggered, result:', result);
-      } catch (error) {
-        console.error('🧪 TestFeatures: Failed to trigger download:', error);
-      }
+  // Convenience setter demonstrations
+  public useTraditionalApproach = true;
+
+  public get controlVisibilityConfig() {
+    return {
+      download: this.showDownload,
+      print: this.showPrint,
+      find: this.showFind,
+      fullScreen: this.showFullScreen,
+      openFile: this.showOpenFile,
+      viewBookmark: this.showViewBookmark,
+      annotations: this.showAnnotations
+    };
+  }
+
+  public get autoActionsConfig() {
+    return {
+      downloadOnLoad: this.downloadOnLoad,
+      printOnLoad: this.printOnLoad,
+      showLastPageOnLoad: this.showLastPageOnLoad
+    };
+  }
+
+  public get viewerConfig() {
+    return {
+      diagnosticLogs: this.diagnosticLogs,
+      useOnlyCssZoom: this.useOnlyCssZoom,
+      locale: this.locale
+    };
+  }
+
+  public get errorConfig() {
+    return {
+      override: this.errorOverride,
+      append: this.errorAppend,
+      message: this.errorMessage
+    };
+  }
+
+  // Simple reload using library refresh method
+  public reloadViewer() {
+    if (this.pdfViewer) {
+      console.log('🎬 Features Demo: Reloading viewer');
+      this.pdfViewer.refresh();
     }
   }
 
-  public async triggerPrintAction() {
-    if (this.testPdfViewer) {
-      console.log('🧪 TestFeatures: Triggering print');
-      try {
-        const result = await this.testPdfViewer.triggerPrint();
-        console.log('🧪 TestFeatures: Print triggered, result:', result);
-      } catch (error) {
-        console.error('🧪 TestFeatures: Failed to trigger print:', error);
-      }
-    }
-  }
-
-  public async goToLastPageAction() {
-    if (this.testPdfViewer) {
-      console.log('🧪 TestFeatures: Going to last page');
-      try {
-        const result = await this.testPdfViewer.goToPage(this.totalPages);
-        console.log('🧪 TestFeatures: Went to last page, result:', result);
-      } catch (error) {
-        console.error('🧪 TestFeatures: Failed to go to last page:', error);
-      }
-    }
-  }
-
-  public async goToPageAction(page: number) {
-    if (this.testPdfViewer) {
-      console.log('🧪 TestFeatures: Navigating to page:', page);
-      try {
-        const result = await this.testPdfViewer.goToPage(page);
-        console.log('🧪 TestFeatures: Navigated to page:', page, 'result:', result);
-      } catch (error) {
-        console.error('🧪 TestFeatures: Failed to navigate to page:', page, error);
-      }
-    }
-  }
-
-  public async setZoomAction(zoom: string) {
-    if (this.testPdfViewer) {
-      console.log('🧪 TestFeatures: Setting zoom to:', zoom);
-      try {
-        const result = await this.testPdfViewer.setZoom(zoom);
-        console.log('🧪 TestFeatures: Zoom set to:', zoom, 'result:', result);
-      } catch (error) {
-        console.error('🧪 TestFeatures: Failed to set zoom:', zoom, error);
-      }
-    }
-  }
-
-  public async setCursorAction(cursor: string) {
-    if (this.testPdfViewer) {
-      console.log('🧪 TestFeatures: Setting cursor to:', cursor);
-      try {
-        const result = await this.testPdfViewer.setCursor(cursor);
-        console.log('🧪 TestFeatures: Cursor set to:', cursor, 'result:', result);
-      } catch (error) {
-        console.error('🧪 TestFeatures: Failed to set cursor:', cursor, error);
-      }
-    }
-  }
-
-  public async setScrollAction(scroll: string) {
-    if (this.testPdfViewer) {
-      console.log('🧪 TestFeatures: Setting scroll to:', scroll);
-      try {
-        const result = await this.testPdfViewer.setScroll(scroll);
-        console.log('🧪 TestFeatures: Scroll set to:', scroll, 'result:', result);
-      } catch (error) {
-        console.error('🧪 TestFeatures: Failed to set scroll:', scroll, error);
-      }
-    }
-  }
-
-  public async setSpreadAction(spread: string) {
-    if (this.testPdfViewer) {
-      console.log('🧪 TestFeatures: Setting spread to:', spread);
-      try {
-        const result = await this.testPdfViewer.setSpread(spread);
-        console.log('🧪 TestFeatures: Spread set to:', spread, 'result:', result);
-      } catch (error) {
-        console.error('🧪 TestFeatures: Failed to set spread:', spread, error);
-      }
-    }
-  }
-
-  public async goToNamedDestinationAction(destination: string) {
-    if (this.testPdfViewer) {
-      console.log('🧪 TestFeatures: Going to named destination:', destination);
-      try {
-        const result = await this.testPdfViewer.goToNamedDestination(destination);
-        console.log('🧪 TestFeatures: Navigated to destination:', destination, 'result:', result);
-      } catch (error) {
-        console.error('🧪 TestFeatures: Failed to navigate to destination:', destination, error);
-      }
-    }
-  }
-
-  public async setPageModeAction(mode: string) {
-    if (this.testPdfViewer) {
-      console.log('🧪 TestFeatures: Setting page mode to:', mode);
-      try {
-        const result = await this.testPdfViewer.setPageMode(mode);
-        console.log('🧪 TestFeatures: Page mode set to:', mode, 'result:', result);
-      } catch (error) {
-        console.error('🧪 TestFeatures: Failed to set page mode:', mode, error);
-      }
-    }
-  }
-
-  public async setLocaleAction(locale: string) {
-    if (this.testPdfViewer) {
-      console.log('🧪 TestFeatures: Setting locale to:', locale);
-      try {
-        const result = await this.testPdfViewer.setLocale(locale);
-        console.log('🧪 TestFeatures: Locale set to:', locale, 'result:', result);
-      } catch (error) {
-        console.error('🧪 TestFeatures: Failed to set locale:', locale, error);
-      }
-    }
-  }
-
-  // Simple mode change handler - let the library handle everything
-  public onModeChange(property: string, value: any) {
-    console.log(`🧪 TestFeatures: Mode ${property} changed to:`, value);
-    
-    // Update the property directly - no need for separate viewer properties
-    if (this.hasOwnProperty(property)) {
-      (this as any)[property] = value;
-      console.log(`🧪 TestFeatures: Updated ${property} = ${value}`);
-    }
-    
-    // Save the value to memory
-    this.savedModeValues[property] = value;
-    console.log(`🧪 TestFeatures: Saved ${property} = ${value} to memory`);
-  }
-
-  // Clear all saved values
-  public clearSavedValues() {
-    this.savedModeValues = {};
-    console.log('🧪 TestFeatures: Cleared all saved values from memory');
-  }
-
-  // Action queue status
-  public getActionQueueStatus() {
-    if (this.testPdfViewer && typeof this.testPdfViewer.getQueueStatus === 'function') {
-      return this.testPdfViewer.getQueueStatus();
-    }
-    return null;
-  }
-
+  // Reset event counters for demo purposes
   public resetEventCounts() {
-    console.log('🧪 TestFeatures: Resetting event counts');
     this.eventCounts = {
       documentLoad: 0,
       pageChange: 0,
@@ -448,32 +212,17 @@ export class FeaturesComponent implements OnInit {
       beforePrint: 0,
       afterPrint: 0
     };
-    console.log('🧪 TestFeatures: Event counts reset');
+    console.log('🎬 Features Demo: Event counts reset');
   }
 
+  // Test error handling
   public testError() {
-    // This will trigger an error to test error handling
-    console.log('🧪 TestFeatures: Testing error handling with invalid URL');
-    this.testPdfViewer.pdfSrc = 'invalid-url.pdf';
-    console.log('🧪 TestFeatures: Testing error handling with invalid URL');
+    console.log('🎬 Features Demo: Testing error handling');
+    this.pdfSrc = 'invalid-url.pdf';
   }
 
   public restoreValidPdf() {
-    console.log('🧪 TestFeatures: Restoring valid PDF');
-    this.testPdfViewer.pdfSrc = '/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf';
-    console.log('🧪 TestFeatures: Restored valid PDF');
+    console.log('🎬 Features Demo: Restoring valid PDF');
+    this.pdfSrc = '/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf';
   }
-
-  // Getter for current viewer state
-  public get viewerState() {
-    if (!this.testPdfViewer) return null;
-    
-    return {
-      page: this.testPdfViewer.page,
-      pdfSrc: this.testPdfViewer.pdfSrc,
-      totalPages: this.totalPages
-    };
-  }
-
-
 } 

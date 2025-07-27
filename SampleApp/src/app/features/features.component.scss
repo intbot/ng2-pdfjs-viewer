@@ -1,545 +1,198 @@
-.features-container {
+.features-demo {
   height: 100vh;
   display: flex;
   flex-direction: column;
-}
 
-.content {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 500px 1fr;
-  grid-template-rows: 1fr;
-  gap: 16px;
-  padding: 16px;
-  overflow: hidden;
-  min-height: 80vh;
-}
-
-.control-panel {
-  grid-column: 1;
-  grid-row: 1;
-  overflow-y: auto;
-  max-height: 80vh;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-}
-
-.control-panel-header {
-  padding: 16px 24px;
-  border-bottom: 1px solid #e0e0e0;
-  background: #f8f9fa;
-  border-radius: 8px 8px 0 0;
-  
-  h2 {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 500;
-    color: #333;
-  }
-}
-
-.control-tabs {
-  flex: 1;
-  overflow: hidden;
-  
-  ::ng-deep {
-    .mat-mdc-tab-group {
-      height: 100%;
+  .event-monitor {
+    flex-shrink: 0;
+    
+    .event-stats {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+      
+      .event-item {
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        font-size: 0.875rem;
+        
+        &.active {
+          background: rgba(76, 175, 80, 0.8);
+          color: white;
+        }
+      }
+      
+      .status-info {
+        margin-left: auto;
+        font-weight: 500;
+      }
     }
     
-    .mat-mdc-tab-body-wrapper {
-      height: 100%;
+    .spacer {
+      flex: 1;
+    }
+  }
+
+  .demo-content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 1rem;
+    padding: 1rem;
+    min-height: 0;
+
+    .config-panel {
       overflow-y: auto;
-    }
-    
-    .mat-mdc-tab-body-content {
-      height: 100%;
-    }
-    
-    .mat-mdc-tab-header {
-      border-bottom: 1px solid #e0e0e0;
-    }
-  }
-}
-
-.pdf-viewer-card {
-  grid-column: 2;
-  grid-row: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.pdf-container {
-  flex: 1;
-  min-height: 600px;
-  height: 75vh; // Increased to 75% of viewport height for better PDF viewing
-  
-  ng2-pdfjs-viewer {
-    height: 100%;
-    width: 100%;
-    min-height: 600px;
-  }
-}
-
-.tab-content {
-  padding: 24px;
-  height: 100%;
-  overflow-y: auto;
-}
-
-.tab-content.compact-modes {
-  padding: 12px 0;
-}
-
-.full-width {
-  width: 100%;
-  margin-bottom: 16px;
-}
-
-.compact-field {
-  width: 100%;
-  margin-bottom: 8px;
-}
-
-.modes-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.toggle-container {
-  grid-column: 1 / -1;
-  margin-top: 8px;
-}
-
-.state-management-section {
-  margin-top: 16px;
-  text-align: center;
-  
-  button {
-    width: 100%;
-  }
-}
-
-
-
-.toggle-group {
-  h4 {
-    margin-bottom: 16px;
-    color: #333;
-    font-size: 16px;
-    font-weight: 600;
-    padding: 8px 12px;
-    background: #f5f5f5;
-    border-left: 4px solid #1976d2;
-    border-radius: 4px;
-    margin-top: 0;
-  }
-  
-  mat-slide-toggle {
-    display: block;
-    margin-bottom: 12px;
-  }
-}
-
-.toggle-group.show-hide-controls {
-  h4 {
-    margin-top: -8px;
-  }
-}
-
-.toggle-group.auto-actions {
-  h4 {
-    margin-top: 24px;
-  }
-  
-  .help-text {
-    margin-bottom: 16px;
-    padding: 12px;
-    background: #fff3cd;
-    border: 1px solid #ffeaa7;
-    border-radius: 4px;
-    color: #856404;
-    font-size: 14px;
-    line-height: 1.4;
-  }
-  
-  .auto-action-status {
-    margin-top: 16px;
-    padding: 12px;
-    background: #e3f2fd;
-    border: 1px solid #bbdefb;
-    border-radius: 4px;
-    
-    p {
-      margin: 0 0 8px 0;
-      font-size: 14px;
       
-      strong {
-        color: #1976d2;
-      }
-      
-      em {
-        color: #666;
-        font-style: italic;
+      mat-card {
+        height: fit-content;
+        
+        .tab-content {
+          padding: 1rem 0;
+        }
       }
     }
-    
-    ul {
-      margin: 8px 0;
-      padding-left: 20px;
-      
-      li {
-        margin-bottom: 4px;
-        font-size: 13px;
-        color: #555;
+
+    .viewer-panel {
+      mat-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        
+        mat-card-content {
+          flex: 1;
+          display: flex;
+          
+          ng2-pdfjs-viewer {
+            width: 100%;
+            height: 100%;
+          }
+        }
       }
     }
   }
 }
 
-.toggle-group.error-handling {
-  h4 {
-    margin-top: 32px;
-  }
-}
-
-.section-header {
-  margin-top: 0;
-  margin-bottom: 16px;
-  color: #333;
-  font-size: 16px;
-  font-weight: 600;
-  padding: 8px 12px;
-  background: #f5f5f5;
-  border-left: 4px solid #1976d2;
-  border-radius: 4px;
-}
-
-.button-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 16px;
-  
-  button {
-    width: 100%;
-  }
-}
-
-.button-group.rotation-controls,
-.button-group.on-demand-actions {
-  h4 {
-    margin-bottom: 16px;
-    color: #333;
-    font-size: 16px;
-    font-weight: 600;
-    padding: 8px 12px;
-    background: #f5f5f5;
-    border-left: 4px solid #1976d2;
-    border-radius: 4px;
-    margin-top: 24px;
-  }
-  
-  button {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
-    
-    mat-icon {
-      margin-right: 8px;
-    }
-  }
-}
-
-.action-queue-status {
-  margin-top: 24px;
-  padding: 16px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #e9ecef;
-  
-  h4 {
-    margin-top: 0;
-    margin-bottom: 16px;
-    color: #333;
-    font-size: 16px;
-    font-weight: 600;
-    padding: 8px 12px;
-    background: #f5f5f5;
-    border-left: 4px solid #28a745;
-    border-radius: 4px;
-  }
-  
-  .status-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid #e9ecef;
-    
-    &:last-child {
-      border-bottom: none;
-    }
-    
-    span:first-child {
-      font-weight: 500;
-      color: #495057;
-    }
-    
-    span:last-child {
-      font-weight: bold;
-      color: #1976d2;
-      background: #e3f2fd;
-      padding: 2px 8px;
-      border-radius: 4px;
-      min-width: 30px;
-      text-align: center;
-    }
-  }
-}
-
-
-
-.spacer {
-  flex: 1 1 auto;
-}
-
-.event-monitor-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  }
-  
-.event-item-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-}
-  
-.event-label-toolbar {
-  color: rgba(255, 255, 255, 0.8);
-    font-weight: 500;
-  }
-  
-.event-count-toolbar {
-    color: white;
-    font-weight: bold;
-  min-width: 20px;
-  text-align: center;
-}
-
-// Event counter visual feedback
-.event-item-toolbar.active {
-  animation: eventBlink 0.6s ease-in-out;
-  background: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
-}
-
-@keyframes eventBlink {
-  0% {
-    background: rgba(255, 255, 255, 0.1);
-    transform: scale(1);
-  }
-  50% {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.05);
-  }
-  100% {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1);
-  }
-}
-
-// Event monitoring tab styles
-.event-counters-grid {
+// Configuration sections
+.toggle-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 0.5rem;
+  margin: 1rem 0;
 }
 
-.event-counter {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px;
-  background: #f8f9fa;
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+.config-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
   
-  &.active {
-    animation: eventCounterBlink 0.8s ease-in-out;
-    border-color: #28a745;
-    background: #d4edda;
-    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
-  }
-  
-  .event-icon {
-    font-size: 24px;
-    width: 40px;
-    height: 40px;
+  .toggle-container {
     display: flex;
     align-items: center;
-    justify-content: center;
-    background: #fff;
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 56px;
   }
+}
+
+.binding-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.current-values {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #f5f5f5;
+  border-radius: 4px;
   
-  .event-info {
-    flex: 1;
+  .value-display {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
     
-    .event-name {
-      font-weight: 600;
-      color: #495057;
-      margin-bottom: 4px;
-    }
-    
-    .event-count {
-      font-size: 24px;
-      font-weight: bold;
-      color: #1976d2;
+    span {
+      padding: 0.25rem 0.5rem;
+      background: white;
+      border-radius: 4px;
+      font-size: 0.875rem;
     }
   }
 }
 
-@keyframes eventCounterBlink {
-  0% {
-    transform: scale(1);
-    border-color: #e9ecef;
+// Actions
+.action-buttons, .management-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.error-config {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1rem 0;
+  
+  .full-width {
+    width: 100%;
   }
-  50% {
-    transform: scale(1.02);
-    border-color: #28a745;
+}
+
+// Convenience setters demo
+.convenience-demo {
+  .demo-info {
+    color: #666;
+    font-style: italic;
+    margin-bottom: 1rem;
   }
-  100% {
-    transform: scale(1);
-    border-color: #28a745;
+  
+  .code-example {
+    background: #f5f5f5;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    margin: 0.5rem 0;
+  }
+  
+  mat-expansion-panel {
+    margin: 0.5rem 0;
   }
 }
 
 // Responsive design
 @media (max-width: 1200px) {
-  .content {
-    grid-template-columns: 400px 1fr;
-  }
-}
-
-@media (max-width: 900px) {
-  .content {
+  .features-demo .demo-content {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
-  }
-  
-  .control-panel {
-    grid-column: 1;
-    grid-row: 1;
-  }
-  
-  .pdf-viewer-card {
-    grid-column: 1;
-    grid-row: 2;
+    
+    .config-panel {
+      max-height: 400px;
+    }
   }
 }
 
-// Two-way binding styles
-.two-way-binding-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.two-way-binding-info {
-  margin-bottom: 24px;
-  padding: 16px;
-  background: #e8f5e8;
-  border: 1px solid #c3e6c3;
-  border-radius: 8px;
-  
-  h4 {
-    margin-top: 0;
-    margin-bottom: 16px;
-    color: #2e7d32;
-    font-size: 16px;
-    font-weight: 600;
-  }
-}
-
-.binding-status-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 8px;
-}
-
-.status-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 8px;
-  background: #f1f8e9;
-  border: 1px solid #dcedc8;
-  border-radius: 4px;
-  
-  .status-label {
-    font-size: 12px;
-    color: #558b2f;
-    font-weight: 500;
-    margin-bottom: 4px;
+@media (max-width: 768px) {
+  .config-grid, .binding-grid {
+    grid-template-columns: 1fr;
   }
   
-  .status-value {
-    font-size: 14px;
-    font-weight: bold;
-    color: #2e7d32;
-    text-align: center;
-  }
-}
-
-.two-way-binding-actions {
-  h4 {
-    margin-bottom: 16px;
-    color: #333;
-    font-size: 16px;
-    font-weight: 600;
-    padding: 8px 12px;
-    background: #f5f5f5;
-    border-left: 4px solid #ff9800;
-    border-radius: 4px;
-    margin-top: 0;
-  }
-  
-  .button-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 8px;
-    margin-top: 16px;
+  .action-buttons, .management-buttons {
+    flex-direction: column;
     
     button {
       width: 100%;
     }
   }
-}
-
-.highlight-yellow {
-  background: #fff3cd;
-  border: 1px solid #ffeaa7;
-  border-radius: 8px;
-  padding: 12px;
-  margin: 8px 0;
-  color: #856404;
-  font-size: 14px;
-  line-height: 1.4;
+  
+  .event-stats {
+    font-size: 0.75rem;
+    
+    .event-item {
+      padding: 0.125rem 0.25rem;
+    }
+  }
 }
