@@ -33,8 +33,6 @@ See https://github.com/adobe-type-tools/cmap-resources
 
     <link rel="stylesheet" href="viewer.css">
 
-  <script src="viewer.mjs" type="module"></script>
-  <script src="postmessage-wrapper.js"></script>
   </head>
 
   <body tabindex="0">
@@ -734,5 +732,10 @@ See https://github.com/adobe-type-tools/cmap-resources
 
     </div> <!-- outerContainer -->
     <div id="printContainer"></div>
+    <script src="wasm/openjpeg_nowasm_fallback.js"></script>
+    <script src="viewer.mjs" type="module"></script>
+    <script src="modules/ButtonControlHelpers.js"></script>
+    <script src="modules/ValidationHelpers.js"></script>
+    <script src="postmessage-wrapper.js"></script>
   </body>
 </html>

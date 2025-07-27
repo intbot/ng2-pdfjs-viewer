@@ -1,454 +1,24 @@
 import { Component, Input, Output, OnInit, OnDestroy, ViewChild, EventEmitter, ElementRef, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
 
-// #region Interfaces and Types
-// PostMessage interface for control updates
-interface ControlMessage {
-  type: 'control-update';
-  action: string;
-  payload: any;
-  id?: string;
-  timestamp: number;
-}
-
-interface ControlResponse {
-  type: 'control-response';
-  id: string;
-  success: boolean;
-  action: string;
-  payload?: any;
-  error?: string;
-}
-
-// Two-way binding support interfaces
-interface PropertyChangeEvent {
-  property: string;
-  value: any;
-  source: 'user' | 'programmatic';
-  timestamp: number;
-}
-
-// Action Queue System Interfaces
-interface ViewerAction {
-  id: string;
-  action: string;
-  payload: any;
-  condition?: (viewer: any) => boolean;
-  resolver?: (result: ActionExecutionResult) => void; // Fixed type signature
-}
-
-interface ActionExecutionResult {
-  actionId: string;
-  success: boolean;
-  error?: string;
-  timestamp: number;
-}
-
-export type ChangedPage = number;
-export type ChangedScale = number;
-export interface ChangedRotation {
-  rotation: number;
-  page: number;
-}
-// #endregion
-
-// #region Utility Classes
-// Property transformation utilities
-class PropertyTransformers {
-  static transformZoom = {
-    toViewer: (zoom: string): string => {
-      if (!zoom) return 'auto';
-      return zoom;
-    },
-    fromViewer: (scale: number | string): string => {
-      if (typeof scale === 'string') {
-        return scale;
-      }
-      if (typeof scale === 'number') {
-        return `${Math.round(scale * 100)}%`;
-      }
-      return 'auto';
-    }
-  };
-
-  static transformRotation = {
-    toViewer: (rotation: number): number => {
-      return ((rotation % 360) + 360) % 360;
-    },
-    fromViewer: (rotation: number): number => {
-      return ((rotation % 360) + 360) % 360;
-    }
-  };
-
-  static transformCursor = {
-    toViewer: (cursor: string): string => {
-      const validCursors = ['select', 'hand', 'zoom'];
-      return validCursors.includes(cursor) ? cursor : 'select';
-    },
-    fromViewer: (cursor: string): string => {
-      return cursor || 'select';
-    }
-  };
-
-  static transformScroll = {
-    toViewer: (scroll: string): string => {
-      const validScrolls = ['vertical', 'horizontal', 'wrapped', 'page'];
-      return validScrolls.includes(scroll) ? scroll : 'vertical';
-    },
-    fromViewer: (scroll: string): string => {
-      return scroll || 'vertical';
-    }
-  };
-
-  static transformSpread = {
-    toViewer: (spread: string): string => {
-      const validSpreads = ['none', 'odd', 'even'];
-      return validSpreads.includes(spread) ? spread : 'none';
-    },
-    fromViewer: (spread: string): string => {
-      return spread || 'none';
-    }
-  };
-
-  static transformPageMode = {
-    toViewer: (pageMode: string): string => {
-      const validModes = ['none', 'thumbs', 'bookmarks', 'attachments'];
-      return validModes.includes(pageMode) ? pageMode : 'none';
-    },
-    fromViewer: (pageMode: string): string => {
-      return pageMode || 'none';
-    }
-  };
-}
-
-// Change origin tracking to prevent infinite loops
-class ChangeOriginTracker {
-  private userInitiatedChanges = new Set<string>();
-  private programmaticChanges = new Set<string>();
-
-  markUserInitiated(property: string): void {
-    this.userInitiatedChanges.add(property);
-    setTimeout(() => this.userInitiatedChanges.delete(property), 0);
-  }
-
-  markProgrammatic(property: string): void {
-    this.programmaticChanges.add(property);
-    setTimeout(() => this.programmaticChanges.delete(property), 0);
-  }
-
-  isUserInitiated(property: string): boolean {
-    return this.userInitiatedChanges.has(property);
-  }
-
-  isProgrammatic(property: string): boolean {
-    return this.programmaticChanges.has(property);
-  }
-}
-
-// Shared utility functions for common patterns
-class ComponentUtils {
-  // Common property setter pattern
-  static createPropertySetter<T>(
-    component: PdfJsViewerComponent,
-    propertyName: string,
-    backingField: string,
-    transformer: (value: T) => T,
-    applierMethod: (value: T) => void,
-    changeEmitter: EventEmitter<T>,
-    changeTracker: ChangeOriginTracker
-  ) {
-    return (value: T) => {
-      const normalizedValue = transformer(value);
-      if ((component as any)[backingField] !== normalizedValue) {
-        changeTracker.markProgrammatic(propertyName);
-        (component as any)[backingField] = normalizedValue;
-        applierMethod.call(component, normalizedValue);
-        changeEmitter.emit(normalizedValue);
-      }
-    };
-  }
-
-  // Common validation for property values
-  static validatePropertyValue(value: any, validValues: string[], defaultValue: string): string {
-    if (typeof value === 'string' && validValues.includes(value)) {
-      return value;
-    }
-    return defaultValue;
-  }
-
-  // Common PostMessage action mapping
-  static getActionForProperty(propertyName: string): string | null {
-    const actionMap: { [key: string]: string } = {
-      // Control visibility
-      'showOpenFile': 'show-openfile',
-      'showDownload': 'show-download',
-      'showPrint': 'show-print',
-      'showFullScreen': 'show-fullscreen',
-      'showFind': 'show-find',
-      'showViewBookmark': 'show-bookmark',
-      'showAnnotations': 'show-annotations',
-      
-      // Two-way binding properties
-      'zoom': 'set-zoom',
-      'cursor': 'set-cursor',
-      'scroll': 'set-scroll',
-      'spread': 'set-spread',
-      'pageMode': 'update-page-mode',
-      'rotation': 'set-rotation',
-      
-      // Navigation controls
-      'page': 'set-page',
-      'namedDest': 'go-to-named-dest',
-      
-      // Auto actions
-      'showLastPageOnLoad': 'go-to-last-page',
-      
-      // Error handling
-      'errorMessage': 'set-error-message',
-      'errorOverride': 'set-error-override',
-      'errorAppend': 'set-error-append',
-      
-      // Locale and CSS zoom
-      'locale': 'set-locale',
-      'useOnlyCssZoom': 'set-css-zoom',
-      
-      // Event configuration
-      'beforePrint': 'enable-before-print',
-      'afterPrint': 'enable-after-print',
-      'pagesLoaded': 'enable-pages-loaded',
-      'pageChange': 'enable-page-change'
-    };
-    return actionMap[propertyName] || null;
-  }
-
-  // Common event handler cleanup
-  static cleanupEventHandlers(component: PdfJsViewerComponent): void {
-    // Clean up webviewer loaded handler
-    if ((component as any)._webviewerLoadedHandler) {
-      document.removeEventListener("webviewerloaded", (component as any)._webviewerLoadedHandler);
-      (component as any)._webviewerLoadedHandler = null;
-    }
-    
-    // Clean up PDF.js event listeners
-    if ((component as any)._pdfEventHandlers && component.PDFViewerApplication?.eventBus) {
-      const eventBus = component.PDFViewerApplication.eventBus;
-      const handlers = (component as any)._pdfEventHandlers;
-      
-      Object.keys(handlers).forEach(eventName => {
-        eventBus.off(eventName, handlers[eventName]);
-      });
-      
-      (component as any)._pdfEventHandlers = null;
-    }
-  }
-}
-
-// Action Queue Manager
-class ActionQueueManager {
-  private immediateActions: ViewerAction[] = []; // Execute when PostMessage API is ready (readiness >= 3)
-  private viewerReadyActions: ViewerAction[] = []; // Execute when components are ready (readiness >= 4)
-  private documentLoadedActions: ViewerAction[] = []; // Execute after PDF loads (readiness >= 5)
-  private pendingActions: ViewerAction[] = [];   // On-demand actions
-  private executedActions: Map<string, ActionExecutionResult> = new Map();
-  public isDocumentLoaded = false;
-  private isPostMessageReady = false;
-  private postMessageReadiness = 0;
-  private diagnosticLogs = false;
-  private postMessageExecutor?: (action: string, payload: any) => Promise<any>;
-
-  constructor(diagnosticLogs = false) {
-    this.diagnosticLogs = diagnosticLogs;
-  }
-
-  setPostMessageReady(ready: boolean, readiness: number = 0): void {
-    this.isPostMessageReady = ready;
-    this.postMessageReadiness = readiness;
-    
-    if (this.diagnosticLogs) {
-      console.log(`🔍 ActionQueueManager: PostMessage ready: ${ready}, readiness: ${readiness}`);
-    }
-    
-    if (ready) {
-      this.executeQueuedActions();
-    }
-  }
-
-  // Unified queue management
-  queueAction(action: ViewerAction, queueType: 'immediate' | 'viewer-ready' | 'document-loaded' | 'on-demand'): Promise<ActionExecutionResult> | void {
-    if (this.diagnosticLogs) {
-      console.log(`🔍 ActionQueueManager: Queueing ${queueType} action: ${action.action} = ${action.payload}`);
-    }
-
-    switch (queueType) {
-      case 'immediate':
-        this.immediateActions.push(action);
-        // Actions execute only when setPostMessageReady triggers executeQueuedActions
-        break;
-      case 'viewer-ready':
-        this.viewerReadyActions.push(action);
-        // Actions execute only when readiness >= 4
-        break;
-      case 'document-loaded':
-        this.documentLoadedActions.push(action);
-        // Actions execute only when document is loaded
-        break;
-      case 'on-demand':
-        this.pendingActions.push(action);
-        return this.executeAction(action);
-    }
-  }
-
-  // Legacy methods for backward compatibility
-  queueImmediateAction(action: ViewerAction): void {
-    this.queueAction(action, 'immediate');
-  }
-
-  queueViewerReadyAction(action: ViewerAction): void {
-    this.queueAction(action, 'viewer-ready');
-  }
-
-  queueDocumentLoadedAction(action: ViewerAction): void {
-    this.queueAction(action, 'document-loaded');
-  }
-
-  queueOnDemandAction(action: ViewerAction): Promise<ActionExecutionResult> {
-    return this.queueAction(action, 'on-demand') as Promise<ActionExecutionResult>;
-  }
-
-  onDocumentLoaded(): void {
-    if (this.diagnosticLogs) {
-      console.log('🔍 ActionQueueManager: Document loaded, executing document loaded actions');
-    }
-    this.isDocumentLoaded = true;
-    this.executeActionsFromQueue(this.documentLoadedActions);
-  }
-
-  // Unified action execution
-  private executeQueuedActions(): void {
-    this.executeActionsFromQueue(this.immediateActions);
-    if (this.postMessageReadiness >= 4) {
-      this.executeActionsFromQueue(this.viewerReadyActions);
-    }
-    if (this.postMessageReadiness >= 5) {
-      this.isDocumentLoaded = true;
-      this.executeActionsFromQueue(this.documentLoadedActions);
-    }
-  }
-
-  private async executeActionsFromQueue(queue: ViewerAction[]): Promise<void> {
-    if (queue.length === 0) return;
-    
-    if (this.diagnosticLogs) {
-      console.log(`🔍 ActionQueueManager: Executing ${queue.length} actions from queue`);
-    }
-    
-    const actionsToExecute = [...queue];
-    queue.length = 0; // Clear the queue
-    
-    for (const action of actionsToExecute) {
-      try {
-        await this.executeAction(action);
-      } catch (error) {
-        if (this.diagnosticLogs) {
-          console.error(`🔍 ActionQueueManager: Error executing action ${action.action}:`, error);
-        }
-      }
-    }
-  }
-
-  public async executeAction(action: ViewerAction): Promise<ActionExecutionResult> {
-    const result: ActionExecutionResult = {
-      actionId: action.id,
-      success: false,
-      timestamp: Date.now()
-    };
-
-    try {
-      if (this.diagnosticLogs) {
-        console.log(`🔍 ActionQueueManager: Executing action: ${action.action} = ${action.payload}`);
-      }
-
-      if (action.condition && !action.condition(null)) {
-        result.error = 'Condition not met';
-        this.executedActions.set(action.id, result);
-        return result;
-      }
-
-      const success = await this.executeActionViaPostMessage(action);
-      result.success = success;
-      
-        if (this.diagnosticLogs) {
-        console.log(`🔍 ActionQueueManager: Action ${action.action} ${success ? 'succeeded' : 'failed'}`);
-      }
-
-      // If action has a resolver (from user interaction), call it
-      if (action.resolver) {
-        action.resolver(result);
-      }
-    } catch (error) {
-      result.error = error instanceof Error ? error.message : String(error);
-      if (this.diagnosticLogs) {
-        console.error(`🔍 ActionQueueManager: Error executing action ${action.action}:`, error);
-      }
-
-      // If action has a resolver (from user interaction), call it with error
-      if (action.resolver) {
-        action.resolver(result);
-      }
-    }
-
-    this.executedActions.set(action.id, result);
-    return result;
-  }
-
-  private async executeActionViaPostMessage(action: ViewerAction): Promise<boolean> {
-    if (!this.postMessageExecutor) {
-      throw new Error('PostMessage executor not set');
-    }
-    
-    await this.postMessageExecutor(action.action, action.payload);
-    return true;
-  }
-
-  setPostMessageExecutor(executor: (action: string, payload: any) => Promise<any>): void {
-    this.postMessageExecutor = executor;
-  }
-
-  getActionStatus(actionId: string): 'pending' | 'executing' | 'completed' | 'failed' | 'not-found' {
-    const result = this.executedActions.get(actionId);
-    if (!result) {
-      const inAnyQueue = this.immediateActions.some(a => a.id === actionId) ||
-                        this.viewerReadyActions.some(a => a.id === actionId) ||
-                        this.documentLoadedActions.some(a => a.id === actionId) ||
-                        this.pendingActions.some(a => a.id === actionId);
-      
-      return inAnyQueue ? 'pending' : 'not-found';
-    }
-    
-    return result.success ? 'completed' : 'failed';
-  }
-
-  clearQueues(): void {
-    this.immediateActions = [];
-    this.viewerReadyActions = [];
-    this.documentLoadedActions = [];
-    this.pendingActions = [];
-    this.executedActions.clear();
-    if (this.diagnosticLogs) {
-      console.log('🔍 ActionQueueManager: All queues cleared');
-    }
-  }
-
-  getQueueStatus(): { immediateActions: number; viewerReadyActions: number; documentLoadedActions: number; pendingActions: number; executedActions: number } {
-    return {
-      immediateActions: this.immediateActions.length,
-      viewerReadyActions: this.viewerReadyActions.length,
-      documentLoadedActions: this.documentLoadedActions.length,
-      pendingActions: this.pendingActions.length,
-      executedActions: this.executedActions.size
-    };
-  }
-}
-// #endregion
+// Import extracted modules
+import { 
+  ControlMessage, 
+  ControlResponse, 
+  PropertyChangeEvent,
+  ViewerAction,
+  ActionExecutionResult,
+  ChangedPage,
+  ChangedScale,
+  ChangedRotation,
+  ControlVisibilityConfig,
+  AutoActionConfig,
+  ErrorConfig,
+  ViewerConfig
+} from './interfaces/ViewerTypes';
+import { ActionQueueManager } from './managers/ActionQueueManager';
+import { PropertyTransformers } from './utils/PropertyTransformers';
+import { ComponentUtils } from './utils/ComponentUtils';
+import { ChangeOriginTracker } from './utils/ChangeOriginTracker';
 
 @Component({
   selector: 'ng2-pdfjs-viewer',
@@ -509,59 +79,92 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   @Input() public errorMessage: string;
   // #endregion
 
-  // #region Deprecated Properties
+  // #region Convenience Configuration Setters
+  @Input() public set controlVisibility(config: ControlVisibilityConfig) {
+    if (config.download !== undefined) this.showDownload = config.download;
+    if (config.print !== undefined) this.showPrint = config.print;
+    if (config.find !== undefined) this.showFind = config.find;
+    if (config.fullScreen !== undefined) this.showFullScreen = config.fullScreen;
+    if (config.openFile !== undefined) this.showOpenFile = config.openFile;
+    if (config.viewBookmark !== undefined) this.showViewBookmark = config.viewBookmark;
+    if (config.annotations !== undefined) this.showAnnotations = config.annotations;
+  }
+
+  @Input() public set autoActions(config: AutoActionConfig) {
+    if (config.downloadOnLoad !== undefined) this.downloadOnLoad = config.downloadOnLoad;
+    if (config.printOnLoad !== undefined) this.printOnLoad = config.printOnLoad;
+    if (config.showLastPageOnLoad !== undefined) this.showLastPageOnLoad = config.showLastPageOnLoad;
+    if (config.rotateCW !== undefined) this.rotateCW = config.rotateCW;
+    if (config.rotateCCW !== undefined) this.rotateCCW = config.rotateCCW;
+  }
+
+  @Input() public set errorHandling(config: ErrorConfig) {
+    if (config.override !== undefined) this.errorOverride = config.override;
+    if (config.append !== undefined) this.errorAppend = config.append;
+    if (config.message !== undefined) this.errorMessage = config.message;
+  }
+
+  @Input() public set viewerConfig(config: ViewerConfig) {
+    if (config.externalWindow !== undefined) this.externalWindow = config.externalWindow;
+    if (config.showSpinner !== undefined) this.showSpinner = config.showSpinner;
+    if (config.useOnlyCssZoom !== undefined) this.useOnlyCssZoom = config.useOnlyCssZoom;
+    if (config.diagnosticLogs !== undefined) this.diagnosticLogs = config.diagnosticLogs;
+    if (config.viewerFolder !== undefined) this.viewerFolder = config.viewerFolder;
+    if (config.locale !== undefined) this.locale = config.locale;
+  }
+  // #endregion
+
+  // #region Helper function for deprecated properties
+  private setDeprecatedProperty(oldName: string, newProperty: string, value: any): void {
+    console.warn(`⚠️ DEPRECATED: Property "${oldName}" is deprecated. Use "${newProperty}" instead.`);
+    (this as any)[newProperty] = value;
+  }
+  // #endregion
+
+  // #region Deprecated Properties (Simplified)
   /** @deprecated Use `downloadOnLoad` instead. This property will be removed in a future version. */
   @Input() public set startDownload(value: boolean) {
-    console.warn('⚠️ DEPRECATED: Property "startDownload" is deprecated. Use "downloadOnLoad" instead.');
-    this.downloadOnLoad = value;
+    this.setDeprecatedProperty('startDownload', 'downloadOnLoad', value);
   }
 
   /** @deprecated Use `printOnLoad` instead. This property will be removed in a future version. */
   @Input() public set startPrint(value: boolean) {
-    console.warn('⚠️ DEPRECATED: Property "startPrint" is deprecated. Use "printOnLoad" instead.');
-    this.printOnLoad = value;
+    this.setDeprecatedProperty('startPrint', 'printOnLoad', value);
   }
 
   /** @deprecated Use `showOpenFile` instead. This property will be removed in a future version. */
   @Input() public set openFile(value: boolean) {
-    console.warn('⚠️ DEPRECATED: Property "openFile" is deprecated. Use "showOpenFile" instead.');
-    this.showOpenFile = value;
+    this.setDeprecatedProperty('openFile', 'showOpenFile', value);
   }
 
   /** @deprecated Use `showDownload` instead. This property will be removed in a future version. */
   @Input() public set download(value: boolean) {
-    console.warn('⚠️ DEPRECATED: Property "download" is deprecated. Use "showDownload" instead.');
-    this.showDownload = value;
+    this.setDeprecatedProperty('download', 'showDownload', value);
   }
 
   /** @deprecated Use `showPrint` instead. This property will be removed in a future version. */
   @Input() public set print(value: boolean) {
-    console.warn('⚠️ DEPRECATED: Property "print" is deprecated. Use "showPrint" instead.');
-    this.showPrint = value;
+    this.setDeprecatedProperty('print', 'showPrint', value);
   }
 
   /** @deprecated Use `showFullScreen` instead. This property will be removed in a future version. */
   @Input() public set fullScreen(value: boolean) {
-    console.warn('⚠️ DEPRECATED: Property "fullScreen" is deprecated. Use "showFullScreen" instead.');
-    this.showFullScreen = value;
+    this.setDeprecatedProperty('fullScreen', 'showFullScreen', value);
   }
 
   /** @deprecated Use `showFind` instead. This property will be removed in a future version. */
   @Input() public set find(value: boolean) {
-    console.warn('⚠️ DEPRECATED: Property "find" is deprecated. Use "showFind" instead.');
-    this.showFind = value;
+    this.setDeprecatedProperty('find', 'showFind', value);
   }
 
   /** @deprecated Use `showViewBookmark` instead. This property will be removed in a future version. */
   @Input() public set viewBookmark(value: boolean) {
-    console.warn('⚠️ DEPRECATED: Property "viewBookmark" is deprecated. Use "showViewBookmark" instead.');
-    this.showViewBookmark = value;
+    this.setDeprecatedProperty('viewBookmark', 'showViewBookmark', value);
   }
 
   /** @deprecated Use `showLastPageOnLoad` instead. This property will be removed in a future version. */
   @Input() public set lastPage(value: boolean) {
-    console.warn('⚠️ DEPRECATED: Property "lastPage" is deprecated. Use "showLastPageOnLoad" instead.');
-    this.showLastPageOnLoad = value;
+    this.setDeprecatedProperty('lastPage', 'showLastPageOnLoad', value);
   }
   // #endregion
 
@@ -778,7 +381,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   // #region Lifecycle Methods
   ngOnInit(): void {   
          // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
-       console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-07-25T22-34-07-000Z');
+       console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-07-26T20-16-09-000Z');
     
     // Configure action queue manager with diagnostic logs
     this.actionQueueManager = new ActionQueueManager(this.diagnosticLogs);
@@ -1540,12 +1143,23 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   // #endregion
 
   // #region PDF Loading and URL Handling
-  private loadPdf() {
-    if (!this._src) {
-      return;
-    }
+  private loadPdf(): void {
+    if (!this.validatePdfSource()) return;
+    
+    this.setupExternalWindow();
+    const fileUrl = this.createFileUrl();
+    const viewerUrl = this.buildViewerUrl(fileUrl);
+    this.navigateToViewer(viewerUrl);
+  }
 
-    if (this.externalWindow && (typeof this.viewerTab === 'undefined' || this.viewerTab.closed)) {
+  private validatePdfSource(): boolean {
+    return !!this._src;
+  }
+
+  private setupExternalWindow(): void {
+    if (!this.externalWindow) return;
+    
+    if (typeof this.viewerTab === 'undefined' || this.viewerTab.closed) {
       this.viewerTab = window.open('', this.target, this.externalWindowOptions || '');
       if (this.viewerTab == null) {
         console.error("ng2-pdfjs-viewer: For 'externalWindow = true'. i.e opening in new tab to work, pop-ups should be enabled.");
@@ -1553,87 +1167,103 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       }
 
       if (this.showSpinner) {
-        this.viewerTab.document.write(`
-          <style>
-          .loader {
-            position: fixed;
-            left: 40%;
-            top: 40%;
-            border: 16px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 16px solid #3498db;
-            width: 120px;
-            height: 120px;
-            animation: spin 2s linear infinite;
-          }
-          @keyframes spin {
-            0% {
-              transform: rotate(0deg);
-            }
-            100% {
-              transform: rotate(360deg);
-            }
-          }
-          </style>
-          <div class="loader"></div>
-        `);
+        this.renderLoadingSpinner();
       }
     }
+  }
 
+  private renderLoadingSpinner(): void {
+    this.viewerTab.document.write(`
+      <style>
+      .loader {
+        position: fixed;
+        left: 40%;
+        top: 40%;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      </style>
+      <div class="loader"></div>
+    `);
+  }
+
+  private createFileUrl(): string {
     this.relaseUrl?.();
-    let fileUrl;
+    
     if (this._src instanceof Blob) {
       const url = URL.createObjectURL(this._src);
-      fileUrl = encodeURIComponent(url);
       this.relaseUrl = () => URL.revokeObjectURL(url);
+      return encodeURIComponent(url);
     } else if (this._src instanceof Uint8Array) {
       let blob = new Blob([this._src], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       this.relaseUrl = () => URL.revokeObjectURL(url);
-      fileUrl = encodeURIComponent(url);
+      return encodeURIComponent(url);
     } else {
-      fileUrl = this._src;
+      return this._src;
     }
+  }
 
-    let viewerUrl;
-    if (this.viewerFolder) {
-      viewerUrl = `${this.viewerFolder}/web/viewer.html`;
-    } else {
-      viewerUrl = `assets/pdfjs/web/viewer.html`;
-    }
-
-    // Add cache-busting timestamp only in development mode
-    const isDevelopment = window.location.hostname === 'localhost' || 
-                         window.location.hostname === '127.0.0.1' || 
-                         window.location.port === '4200' ||
-                         window.location.href.includes('localhost:4200');
+  private buildViewerUrl(fileUrl: string): string {
+    let viewerUrl = this.getBaseViewerUrl();
+    viewerUrl = this.addFileParameter(viewerUrl, fileUrl);
+    viewerUrl = this.addViewerIdParameter(viewerUrl);
+    viewerUrl = this.addCacheBustingIfNeeded(viewerUrl);
     
-    let cacheBuster: number | undefined;
-    if (isDevelopment) {
-      cacheBuster = Date.now();
-      viewerUrl += `?file=${fileUrl}&cb=${cacheBuster}`;
+    return viewerUrl;
+  }
+
+  private getBaseViewerUrl(): string {
+    return this.viewerFolder 
+      ? `${this.viewerFolder}/web/viewer.html`
+      : `assets/pdfjs/web/viewer.html`;
+  }
+
+  private addFileParameter(viewerUrl: string, fileUrl: string): string {
+    return `${viewerUrl}?file=${fileUrl}`;
+  }
+
+  private addViewerIdParameter(viewerUrl: string): string {
+    return typeof this.viewerId !== 'undefined' 
+      ? `${viewerUrl}&viewerId=${this.viewerId}`
+      : viewerUrl;
+  }
+
+  private addCacheBustingIfNeeded(viewerUrl: string): string {
+    if (this.isDevelopmentMode()) {
+      const cacheBuster = Date.now();
       if (this.diagnosticLogs) {
         console.log(`🔍 PdfJsViewer: Development mode detected, using cache-busting timestamp: ${cacheBuster}`);
       }
+      return `${viewerUrl}&_t=${cacheBuster}`;
     } else {
-      viewerUrl += `?file=${fileUrl}`;
       if (this.diagnosticLogs) {
         console.log(`🔍 PdfJsViewer: Production mode detected, no cache-busting applied`);
       }
+      return viewerUrl;
     }
+  }
 
-    if (typeof this.viewerId !== 'undefined') {
-      viewerUrl += `&viewerId=${this.viewerId}`;
-    }
-    
-    // Add additional cache-busting for the viewerId to ensure unique iframe URLs (development only)
-    if (isDevelopment && cacheBuster) {
-      viewerUrl += `&_t=${cacheBuster}`;
-    }
+  private isDevelopmentMode(): boolean {
+    return window.location.hostname === 'localhost' || 
+           window.location.hostname === '127.0.0.1' || 
+           window.location.port === '4200' ||
+           window.location.href.includes('localhost:4200');
+  }
 
-    // All other configurations are now handled via PostMessage system
-    // No need to add any other parameters to the URL
-
+  private navigateToViewer(viewerUrl: string): void {
     if (this.externalWindow) {
       this.viewerTab.location.href = viewerUrl;
     } else {
@@ -1641,39 +1271,43 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     }
     
     if (this.diagnosticLogs) {
-      console.debug(`PdfJsViewer: Minimal URL configuration:
-        pdfSrc = ${this.pdfSrc}
-        fileUrl = ${fileUrl}
-        externalWindow = ${this.externalWindow}
-        viewerFolder = ${this.viewerFolder}
-        viewerId = ${this.viewerId}
-        
-        All other configurations handled via PostMessage system:
-        showOpenFile = ${this.showOpenFile}
-        showDownload = ${this.showDownload}
-        showViewBookmark = ${this.showViewBookmark}
-        showPrint = ${this.showPrint}
-        showFullScreen = ${this.showFullScreen}
-        showFind = ${this.showFind}
-        cursor = ${this.cursor}
-        scroll = ${this.scroll}
-        spread = ${this.spread}
-        page = ${this.page}
-        zoom = ${this.zoom}
-        namedDest = ${this.namedDest}
-        pageMode = ${this.pageMode}
-        errorOverride = ${this.errorOverride}
-        errorAppend = ${this.errorAppend}
-        errorMessage = ${this.errorMessage}
-        locale = ${this.locale}
-        useOnlyCssZoom = ${this.useOnlyCssZoom}
-        
-        Auto-actions (handled by action queue):
-        downloadOnLoad = ${this.downloadOnLoad}
-        printOnLoad = ${this.printOnLoad}
-        showLastPageOnLoad = ${this.showLastPageOnLoad}
-      `);
-      }
+      this.logViewerConfiguration(viewerUrl);
+    }
+  }
+
+  private logViewerConfiguration(viewerUrl: string): void {
+    console.debug(`PdfJsViewer: Minimal URL configuration:
+      pdfSrc = ${this.pdfSrc}
+      externalWindow = ${this.externalWindow}
+      viewerFolder = ${this.viewerFolder}
+      viewerId = ${this.viewerId}
+      finalUrl = ${viewerUrl}
+      
+      All other configurations handled via PostMessage system:
+      showOpenFile = ${this.showOpenFile}
+      showDownload = ${this.showDownload}
+      showViewBookmark = ${this.showViewBookmark}
+      showPrint = ${this.showPrint}
+      showFullScreen = ${this.showFullScreen}
+      showFind = ${this.showFind}
+      cursor = ${this.cursor}
+      scroll = ${this.scroll}
+      spread = ${this.spread}
+      page = ${this.page}
+      zoom = ${this.zoom}
+      namedDest = ${this.namedDest}
+      pageMode = ${this.pageMode}
+      errorOverride = ${this.errorOverride}
+      errorAppend = ${this.errorAppend}
+      errorMessage = ${this.errorMessage}
+      locale = ${this.locale}
+      useOnlyCssZoom = ${this.useOnlyCssZoom}
+      
+      Auto-actions (handled by action queue):
+      downloadOnLoad = ${this.downloadOnLoad}
+      printOnLoad = ${this.printOnLoad}
+      showLastPageOnLoad = ${this.showLastPageOnLoad}
+    `);
   }
   // #endregion
 
