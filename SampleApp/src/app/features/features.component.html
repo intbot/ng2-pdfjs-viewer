@@ -116,6 +116,61 @@
 
               <mat-divider></mat-divider>
 
+              <!-- Theme & Visual Customization (Phase 1) -->
+              <h3>Theme & Visual Customization</h3>
+              
+              <!-- Theme Selection -->
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Theme</mat-label>
+                <mat-select [(ngModel)]="theme">
+                  <mat-option value="light">Light</mat-option>
+                  <mat-option value="dark">Dark</mat-option>
+                  <mat-option value="auto">Auto (System)</mat-option>
+                  </mat-select>
+              </mat-form-field>
+
+              <!-- Color Customization -->
+              <div class="color-grid">
+                <mat-form-field appearance="outline">
+                  <mat-label>Primary Color</mat-label>
+                  <input matInput type="color" [(ngModel)]="primaryColor" placeholder="#007acc">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Background Color</mat-label>
+                  <input matInput type="color" [(ngModel)]="backgroundColor" placeholder="Auto">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Page Background</mat-label>
+                  <input matInput type="color" [(ngModel)]="pageBackgroundColor" placeholder="White">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Toolbar Color</mat-label>
+                  <input matInput type="color" [(ngModel)]="toolbarColor" placeholder="Auto">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Text Color</mat-label>
+                  <input matInput type="color" [(ngModel)]="textColor" placeholder="Auto">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Border Radius</mat-label>
+                  <input matInput [(ngModel)]="borderRadius" placeholder="4px">
+                </mat-form-field>
+              </div>
+
+              <!-- Custom CSS -->
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Custom CSS</mat-label>
+                <textarea matInput rows="4" [(ngModel)]="customCSS" 
+                          placeholder="Add custom CSS styles here..."></textarea>
+              </mat-form-field>
+
+              <mat-divider></mat-divider>
+
                 <h3>Basic Configuration</h3>
                 <div class="config-grid">
                   <mat-form-field>
@@ -183,6 +238,14 @@
                     </mat-expansion-panel-header>
                     <pre class="code-example">{{errorConfig | json}}</pre>
                     <p>Usage: <code>[errorHandling]="errorConfig"</code></p>
+                  </mat-expansion-panel>
+
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>themeConfig</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <pre class="code-example">{{themeConfig | json}}</pre>
+                    <p>Usage: <code>[themeConfig]="themeConfig"</code></p>
                   </mat-expansion-panel>
               </div>
             </div>
@@ -361,6 +424,14 @@
             [errorAppend]="errorAppend"
             [errorMessage]="errorMessage"
             [diagnosticLogs]="diagnosticLogs"
+            [theme]="theme"
+            [primaryColor]="primaryColor"
+            [backgroundColor]="backgroundColor"
+            [pageBackgroundColor]="pageBackgroundColor"
+            [toolbarColor]="toolbarColor"
+            [textColor]="textColor"
+            [borderRadius]="borderRadius"
+            [customCSS]="customCSS"
             [(zoom)]="zoom"
             [(cursor)]="cursor"
             [(scroll)]="scroll"

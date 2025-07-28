@@ -9,6 +9,7 @@ export {
   AutoActionConfig,
   ErrorConfig,
   ViewerConfig,
+  ThemeConfig,
   // New event data interfaces
   DocumentError,
   PagesInfo,

@@ -14,6 +14,7 @@ import {
   AutoActionConfig,
   ErrorConfig,
   ViewerConfig,
+  ThemeConfig,
   DocumentError,
   PagesInfo,
   PresentationMode,
@@ -107,6 +108,17 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   @Input() public errorMessage: string;
   // #endregion
 
+  // #region Theme & Visual Customization Properties (Phase 1)
+  @Input() public theme: 'light' | 'dark' | 'auto' = 'light';
+  @Input() public primaryColor?: string;
+  @Input() public backgroundColor?: string;
+  @Input() public pageBackgroundColor?: string;
+  @Input() public toolbarColor?: string;
+  @Input() public textColor?: string;
+  @Input() public borderRadius?: string;
+  @Input() public customCSS?: string;
+  // #endregion
+
   // #region Convenience Configuration Setters
   @Input() public set controlVisibility(config: ControlVisibilityConfig) {
     if (config.download !== undefined) this.showDownload = config.download;
@@ -137,6 +149,17 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     if (config.useOnlyCssZoom !== undefined) this.useOnlyCssZoom = config.useOnlyCssZoom;
     if (config.diagnosticLogs !== undefined) this.diagnosticLogs = config.diagnosticLogs;
     if (config.locale !== undefined) this.locale = config.locale;
+  }
+
+  @Input() public set themeConfig(config: ThemeConfig) {
+    if (config.theme !== undefined) this.theme = config.theme;
+    if (config.primaryColor !== undefined) this.primaryColor = config.primaryColor;
+    if (config.backgroundColor !== undefined) this.backgroundColor = config.backgroundColor;
+    if (config.pageBackgroundColor !== undefined) this.pageBackgroundColor = config.pageBackgroundColor;
+    if (config.toolbarColor !== undefined) this.toolbarColor = config.toolbarColor;
+    if (config.textColor !== undefined) this.textColor = config.textColor;
+    if (config.borderRadius !== undefined) this.borderRadius = config.borderRadius;
+    if (config.customCSS !== undefined) this.customCSS = config.customCSS;
   }
   // #endregion
 
@@ -405,9 +428,14 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   // #endregion
 
   // #region Lifecycle Methods
-  ngOnInit(): void {   
-         // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
-       console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-07-27T24-30-04-000Z');
+    ngOnInit(): void {   
+        // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
+        console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-07-27T22-03-25-000Z');
+        
+        // Debug theme initialization
+        console.log('🎨 THEME DEBUG: ngOnInit - theme value:', this.theme);
+        console.log('🎨 THEME DEBUG: ngOnInit - primaryColor:', this.primaryColor);
+        console.log('🎨 THEME DEBUG: ngOnInit - backgroundColor:', this.backgroundColor);
     
     // Configure action queue manager with diagnostic logs
     this.actionQueueManager = new ActionQueueManager(this.diagnosticLogs);
@@ -998,6 +1026,10 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
   // #region Configuration and Action Queue Methods
   private queueAllConfigurations(): void {
+    console.log('🎨 THEME DEBUG: queueAllConfigurations called');
+    if (this.diagnosticLogs) {
+      console.log('🔍 PdfJsViewer: queueAllConfigurations called');
+    }
     if (this.diagnosticLogs) {
       console.log('🔍 PdfJsViewer: Queueing all initial configurations');
     }
@@ -1055,6 +1087,36 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     }
     if (this.errorAppend !== undefined) {
       this.queueConfiguration('errorAppend', this.errorAppend, 'set-error-append');
+    }
+
+    // Queue theme and visual customization configurations (Phase 1)
+    // Always queue theme to ensure initial styles are applied
+    console.log(`🎨 THEME DEBUG: this.theme = ${this.theme}, type = ${typeof this.theme}`);
+    console.log(`🎨 THEME DEBUG: Calling queueConfiguration for theme`);
+    this.queueConfiguration('theme', this.theme || 'light', 'set-theme');
+    if (this.diagnosticLogs) {
+      console.log(`🔍 PdfJsViewer: Queuing theme configuration: ${this.theme || 'light'}`);
+    }
+    if (this.primaryColor) {
+      this.queueConfiguration('primaryColor', this.primaryColor, 'set-primary-color');
+    }
+    if (this.backgroundColor) {
+      this.queueConfiguration('backgroundColor', this.backgroundColor, 'set-background-color');
+    }
+    if (this.pageBackgroundColor) {
+      this.queueConfiguration('pageBackgroundColor', this.pageBackgroundColor, 'set-page-background-color');
+    }
+    if (this.toolbarColor) {
+      this.queueConfiguration('toolbarColor', this.toolbarColor, 'set-toolbar-color');
+    }
+    if (this.textColor) {
+      this.queueConfiguration('textColor', this.textColor, 'set-text-color');
+    }
+    if (this.borderRadius) {
+      this.queueConfiguration('borderRadius', this.borderRadius, 'set-border-radius');
+    }
+    if (this.customCSS) {
+      this.queueConfiguration('customCSS', this.customCSS, 'set-custom-css');
     }
 
     // Queue locale and CSS zoom configurations (immediate actions)
@@ -1498,10 +1560,12 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
   private getRequiredReadinessLevel(action: string): number {
     // Define readiness requirements for all actions
+    const level1Actions = ['set-theme', 'set-primary-color', 'set-background-color', 'set-page-background-color', 'set-toolbar-color', 'set-text-color', 'set-border-radius', 'set-custom-css'];
     const level3Actions = ['show-download', 'show-print', 'show-fullscreen', 'show-find', 'show-bookmark', 'show-openfile', 'show-annotations', 'set-error-message', 'set-error-override', 'set-error-append', 'set-css-zoom'];
     const level4Actions = ['set-cursor', 'set-scroll', 'set-spread', 'set-zoom', 'update-page-mode', 'set-locale'];
     const level5Actions = ['set-page', 'set-rotation', 'go-to-last-page', 'go-to-named-dest', 'trigger-download', 'trigger-print', 'trigger-rotate-cw', 'trigger-rotate-ccw'];
 
+    if (level1Actions.includes(action)) return 1; // VIEWER_LOADED - DOM access only
     if (level3Actions.includes(action)) return 3; // EVENTBUS_READY
     if (level4Actions.includes(action)) return 4; // COMPONENTS_READY  
     if (level5Actions.includes(action)) return 5; // DOCUMENT_LOADED

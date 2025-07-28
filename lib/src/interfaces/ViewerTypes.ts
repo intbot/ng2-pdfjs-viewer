@@ -80,6 +80,18 @@ export interface ViewerConfig {
   locale?: string;
 }
 
+// Theme & Visual Customization Configuration (Phase 1)
+export interface ThemeConfig {
+  theme?: 'light' | 'dark' | 'auto';
+  primaryColor?: string;
+  backgroundColor?: string;
+  pageBackgroundColor?: string;
+  toolbarColor?: string;
+  textColor?: string;
+  borderRadius?: string;
+  customCSS?: string;
+}
+
 // New event data interfaces for enhanced PDF viewer functionality
 export interface DocumentError {
   message: string;
@@ -133,7 +145,7 @@ export interface DocumentOutline {
 
 export interface PageRenderInfo {
   pageNumber: number;
-  source: string;
+  source?: string;  // Optional - may contain non-cloneable objects
   timestamp?: number;
 }
 

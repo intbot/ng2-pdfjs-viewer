@@ -38,7 +38,17 @@ export class ComponentUtils {
       
       // Configuration
       'locale': 'set-locale',
-      'useOnlyCssZoom': 'set-css-zoom'
+      'useOnlyCssZoom': 'set-css-zoom',
+      
+      // Theme & Visual Customization (Phase 1)
+      'theme': 'set-theme',
+      'primaryColor': 'set-primary-color',
+      'backgroundColor': 'set-background-color',
+      'pageBackgroundColor': 'set-page-background-color',
+      'toolbarColor': 'set-toolbar-color',
+      'textColor': 'set-text-color',
+      'borderRadius': 'set-border-radius',
+      'customCSS': 'set-custom-css'
     };
     
     return propertyActionMap[propertyName] || null;

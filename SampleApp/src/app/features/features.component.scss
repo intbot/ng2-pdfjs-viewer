@@ -93,6 +93,18 @@
   margin: 1rem 0;
 }
 
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.full-width {
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
 .config-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));

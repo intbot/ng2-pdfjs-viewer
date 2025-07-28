@@ -16,7 +16,7 @@ export class FeaturesComponent implements OnInit {
   // Configuration properties - directly bound to the viewer
   public pdfSrc = '/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf';
   public downloadFileName = 'sample-document.pdf';
-  public diagnosticLogs = false;
+  public diagnosticLogs = true; // Temporarily enabled for debugging theme issues
 
   // Control visibility using individual properties (traditional approach)
   public showOpenFile = true;
@@ -55,6 +55,16 @@ export class FeaturesComponent implements OnInit {
   public errorOverride = false;
   public errorAppend = true;
   public errorMessage = 'Custom error message for demonstration';
+
+  // Theme & Visual Customization (Phase 1)
+  public theme: 'light' | 'dark' | 'auto' = 'light';
+  public primaryColor = '#007acc';
+  public backgroundColor = '';
+  public pageBackgroundColor = '';
+  public toolbarColor = '';
+  public textColor = '';
+  public borderRadius = '4px';
+  public customCSS = '';
 
   // Event tracking for demonstration
   public eventCounts = {
@@ -331,6 +341,19 @@ export class FeaturesComponent implements OnInit {
       override: this.errorOverride,
       append: this.errorAppend,
       message: this.errorMessage
+    };
+  }
+
+  public get themeConfig() {
+    return {
+      theme: this.theme,
+      primaryColor: this.primaryColor,
+      backgroundColor: this.backgroundColor,
+      pageBackgroundColor: this.pageBackgroundColor,
+      toolbarColor: this.toolbarColor,
+      textColor: this.textColor,
+      borderRadius: this.borderRadius,
+      customCSS: this.customCSS
     };
   }
 
