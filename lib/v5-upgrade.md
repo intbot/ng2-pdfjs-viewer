@@ -172,3 +172,41 @@
 - [PDF.js Documentation](https://github.com/mozilla/pdf.js/wiki)
 - [Angular Compatibility](https://angular.dev/overview)
 - [Project Repository](https://github.com/intbot/ng2-pdfjs-viewer) 
+
+---
+
+## Customization Roadmap (Phased, Upgrade-Safe)
+
+This section documents the upgrade-safe, event-driven customization plan we adopt on top of the v5 architecture. All custom code continues to live in `postmessage-wrapper.js` (single-file integration), and all Angular surface is exposed via inputs/outputs on `ng2-pdfjs-viewer`.
+
+### Phase A: Theme & Visual Customization (Complete)
+- Inputs: `theme: 'light'|'dark'|'auto'`, `primaryColor`, `backgroundColor`, `pageBackgroundColor`, `toolbarColor`, `textColor`, `borderRadius`, `customCSS`.
+- Implementation: CSS custom properties injected from wrapper; no PDF.js code changes. Event-driven only.
+- Status: ✅ Complete
+
+### Phase B: Loading & Spinner (Complete)
+- Inputs: `customSpinnerTpl`, `spinnerClass`, `spinnerHtml`; non-breaking default spinner.
+- Behavior: Loading overlay shows while viewer emits load events; controlled by event-driven state (`documentinit`/`pagesinit` → show, first `pagerendered`/`pagesloaded` → hide). No timeouts/polling.
+- Status: ✅ Complete
+
+### Phase C: Advanced Show/Hide Controls (Planned)
+- Goal: Add granular show/hide for toolbar/secondary toolbar/sidebar groups via CSS-driven toggles and readiness-based actions.
+- Approach: CSS selectors + wrapper actions (no DOM rewrites, no PDF.js edits).
+- Status: ⏳ Planned
+
+### Phase D: Layout & Responsive Customization (Planned)
+- Goal: Toolbar position, sidebar position, responsive breakpoints.
+- Approach: CSS-only repositioning and optional DOM-safe enhancements in wrapper.
+- Status: ⏳ Planned
+
+### Phase E: Advanced Customization & Accessibility (Planned)
+- Goal: Optional custom toolbar buttons, ARIA label mapping, framework-friendly variables.
+- Approach: Wrapper-level injection and ARIA improvements without touching PDF.js.
+- Status: ⏳ Planned
+
+### Principles for All Phases
+1. Single-file integration in `postmessage-wrapper.js`
+2. Pure event-driven—no polling, no retry loops, no timeouts (except intentional user idle timer)
+3. Readiness-based dispatch via universal action dispatcher
+4. Zero modifications to PDF.js core files
+5. Backward compatible Angular surface (inputs/outputs only)

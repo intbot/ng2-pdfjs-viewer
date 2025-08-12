@@ -167,9 +167,27 @@
                 <mat-label>Custom CSS</mat-label>
                 <textarea matInput rows="4" [(ngModel)]="customCSS" 
                           placeholder="Add custom CSS styles here..."></textarea>
-              </mat-form-field>
+                </mat-form-field>
 
               <mat-divider></mat-divider>
+
+              <!-- Loading & Spinner (Phase 2) -->
+              <h3>Loading & Spinner Customization</h3>
+              <div class="toggle-grid">
+                <mat-slide-toggle [(ngModel)]="showSpinner">Show Spinner</mat-slide-toggle>
+                <mat-slide-toggle [(ngModel)]="useCustomSpinnerTpl">Use Custom Template</mat-slide-toggle>
+                <mat-slide-toggle [(ngModel)]="useCustomSpinnerHtml">Use Custom HTML</mat-slide-toggle>
+              </div>
+
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Spinner CSS Class</mat-label>
+                <input matInput [(ngModel)]="spinnerCssClass" placeholder="demo-spinner-overlay">
+                </mat-form-field>
+
+              <mat-form-field class="full-width" appearance="outline" *ngIf="useCustomSpinnerHtml">
+                <mat-label>Custom Spinner HTML</mat-label>
+                <textarea matInput rows="4" [(ngModel)]="customSpinnerHtml"></textarea>
+                </mat-form-field>
 
                 <h3>Basic Configuration</h3>
                 <div class="config-grid">
@@ -194,10 +212,10 @@
                   </div>
                 <div class="toggle-container">
                     <mat-slide-toggle [(ngModel)]="diagnosticLogs">Diagnostic Logs</mat-slide-toggle>
-                  </div>
                 </div>
               </div>
-            </mat-tab>
+            </div>
+          </mat-tab>
 
             <!-- Convenience Setters Demo -->
             <mat-tab label="Convenience Setters">
@@ -316,7 +334,7 @@
                     <mat-option [value]="270">270°</mat-option>
                   </mat-select>
                 </mat-form-field>
-                </div>
+              </div>
 
                 <div class="current-values">
                   <h4>Current Values (Live Updates)</h4>
@@ -327,35 +345,35 @@
                     <span>Spread: <strong>{{spread}}</strong></span>
                     <span>Page Mode: <strong>{{pageMode}}</strong></span>
                     <span>Rotation: <strong>{{rotation}}°</strong></span>
-                  </div>
                 </div>
               </div>
-            </mat-tab>
+            </div>
+          </mat-tab>
 
             <!-- Actions Demo -->
             <mat-tab label="Actions">
-              <div class="tab-content">
+            <div class="tab-content">
                 <h3>On-Demand Actions</h3>
                 <div class="action-buttons">
                   <button mat-raised-button color="primary" (click)="triggerDownload()">
                     <mat-icon>download</mat-icon> Download
-                  </button>
+                </button>
                   <button mat-raised-button color="primary" (click)="triggerPrint()">
                     <mat-icon>print</mat-icon> Print
-                  </button>
+                </button>
                   <button mat-raised-button color="primary" (click)="goToPage(1)">
                     <mat-icon>first_page</mat-icon> Page 1
-                  </button>
+                </button>
                   <button mat-raised-button color="primary" (click)="goToPage(5)">
                     <mat-icon>last_page</mat-icon> Page 5
-                  </button>
+                </button>
                   <button mat-raised-button color="primary" (click)="rotateClockwise()">
                     <mat-icon>rotate_right</mat-icon> Rotate CW
-                  </button>
+                </button>
                   <button mat-raised-button color="primary" (click)="rotateCounterClockwise()">
                     <mat-icon>rotate_left</mat-icon> Rotate CCW
-                  </button>
-                </div>
+                </button>
+              </div>
 
                 <mat-divider></mat-divider>
 
@@ -366,20 +384,20 @@
                 </button>
                   <button mat-raised-button color="warn" (click)="testError()">
                     <mat-icon>error</mat-icon> Test Error
-                  </button>
+                </button>
                   <button mat-raised-button color="primary" (click)="restoreValidPdf()">
                     <mat-icon>restore</mat-icon> Restore Valid PDF
-                  </button>
-                </div>
+                </button>
+              </div>
 
                 <mat-divider></mat-divider>
 
                 <h3>Error Handling Demo</h3>
                 <div class="error-config">
                   <mat-form-field class="full-width">
-                    <mat-label>Custom Error Message</mat-label>
+                  <mat-label>Custom Error Message</mat-label>
                     <input matInput [(ngModel)]="errorMessage">
-                  </mat-form-field>
+                </mat-form-field>
                   <mat-slide-toggle [(ngModel)]="errorOverride">Override Default Error</mat-slide-toggle>
                   <mat-slide-toggle [(ngModel)]="errorAppend">Append to Default Error</mat-slide-toggle>
               </div>
@@ -405,6 +423,9 @@
             [pdfSrc]="pdfSrc"
             [downloadFileName]="downloadFileName"
             [showSpinner]="showSpinner"
+            [spinnerClass]="spinnerCssClass"
+            [spinnerHtml]="useCustomSpinnerHtml ? customSpinnerHtml : ''"
+            [customSpinnerTpl]="useCustomSpinnerTpl ? spinnerTemplate : null"
             [showOpenFile]="showOpenFile"
             [showDownload]="showDownload"
             [showPrint]="showPrint"
@@ -459,6 +480,16 @@
             (onBookmarkClick)="onBookmarkClick($event)"
             (onIdle)="onIdle()">
           </ng2-pdfjs-viewer>
+
+          <!-- Custom spinner template for Phase 2 demo -->
+          <ng-template #spinnerTemplate>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;color:#444">
+              <svg width="40" height="40" viewBox="0 0 50 50" style="animation:ng2-spin 1s linear infinite">
+                <circle cx="25" cy="25" r="20" fill="none" stroke="#3f51b5" stroke-width="4" stroke-linecap="round" stroke-dasharray="100" stroke-dashoffset="60"></circle>
+              </svg>
+              <div>Loading…</div>
+        </div>
+          </ng-template>
       </mat-card-content>
     </mat-card>
     </div>

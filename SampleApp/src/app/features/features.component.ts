@@ -66,6 +66,12 @@ export class FeaturesComponent implements OnInit {
   public borderRadius = '4px';
   public customCSS = '';
 
+  // Spinner demo (Phase 2)
+  public useCustomSpinnerTpl = false;
+  public useCustomSpinnerHtml = false;
+  public customSpinnerHtml = '<div style="display:flex;flex-direction:column;align-items:center;gap:8px;color:#444"><div style="width:36px;height:36px;border:4px dashed #3f51b5;border-radius:50%;animation:ng2-spin 1s linear infinite"></div><div>Preparing document…</div></div>';
+  public spinnerCssClass = 'demo-spinner-overlay';
+
   // Event tracking for demonstration
   public eventCounts = {
     documentLoad: 0,

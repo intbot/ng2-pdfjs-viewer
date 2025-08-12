@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, OnDestroy, ViewChild, EventEmitter, ElementRef, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
+import { Component, Input, Output, OnInit, OnDestroy, ViewChild, EventEmitter, ElementRef, OnChanges, SimpleChanges, AfterViewInit, TemplateRef } from '@angular/core';
 
 // Import extracted modules
 import { 
@@ -35,7 +35,20 @@ import { ChangeOriginTracker } from './utils/ChangeOriginTracker';
 @Component({
   selector: 'ng2-pdfjs-viewer',
   standalone: false,
-  template: `<iframe title="ng2-pdfjs-viewer" [hidden]="externalWindow || (!externalWindow && !pdfSrc)" #iframe width="100%" height="100%"></iframe>`
+  template: `
+  <div class="ng2-pdfjs-viewer-container" style="position:relative;width:100%;height:100%;">
+    <iframe title="ng2-pdfjs-viewer" [hidden]="externalWindow || (!externalWindow && !pdfSrc)" #iframe width="100%" height="100%"></iframe>
+
+    <div class="ng2-pdfjs-loading-overlay" *ngIf="showSpinner && isLoading && !externalWindow"
+         [ngClass]="spinnerClass"
+         style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.6);backdrop-filter:saturate(120%) blur(1px);">
+      <ng-container *ngIf="customSpinnerTpl; else defaultSpinner" [ngTemplateOutlet]="customSpinnerTpl"></ng-container>
+      <ng-template #defaultSpinner>
+        <div [innerHTML]="spinnerHtml || defaultSpinnerHtml" style="text-align:center;"></div>
+      </ng-template>
+    </div>
+  </div>
+  `
 })
 export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   // #region Component Properties
@@ -118,6 +131,25 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   @Input() public borderRadius?: string;
   @Input() public customCSS?: string;
   // #endregion
+
+  // #region Loading & Spinner Customization (Phase 2)
+  @Input() public customSpinnerTpl?: TemplateRef<any>;
+  @Input() public spinnerClass?: string;
+  @Input() public spinnerHtml?: string;
+  // #endregion
+
+  // Internal loading state for overlay control
+  public isLoading: boolean = true;
+  private hasFirstRender: boolean = false;
+  public readonly defaultSpinnerHtml: string = `
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;color:#444">
+      <div style="width:40px;height:40px;border:4px solid rgba(0,0,0,0.15);border-top-color:var(--ng2-primary-color, #3f51b5);border-radius:50%;animation:ng2-spin 1s linear infinite;"></div>
+      <div>Loading PDF…</div>
+    </div>
+    <style>
+      @keyframes ng2-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    </style>
+  `;
 
   // #region Convenience Configuration Setters
   @Input() public set controlVisibility(config: ControlVisibilityConfig) {
@@ -430,7 +462,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   // #region Lifecycle Methods
     ngOnInit(): void {   
         // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
-        console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-07-27T22-03-25-000Z');
+        console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-08-11T22-30-13-000Z');
         
         // Debug theme initialization
         console.log('🎨 THEME DEBUG: ngOnInit - theme value:', this.theme);
@@ -616,6 +648,12 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
     // Always log state change notifications for debugging
     console.log(`🔍 PdfJsViewer: [DEBUG] State change notification: ${property} = ${value} (source: ${source})`);
+
+    // Phase 2: Internal loading overlay control is system-driven and must be handled unconditionally
+    if (property === 'loading') {
+      this.isLoading = !!value;
+      return;
+    }
 
     // Only process user-initiated changes to avoid infinite loops
     if (source === 'user' && !this.changeOriginTracker.isProgrammatic(property)) {
