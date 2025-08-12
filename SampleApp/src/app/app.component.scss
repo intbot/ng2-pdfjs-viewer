@@ -12,3 +12,9 @@ button {
   margin-left: 10px;
   margin-right: 10px;
 }
+
+// Ensure the hidden external viewer (used only to open in new window) doesn't occupy space
+.external-viewer-host {
+  height: 0;
+  overflow: hidden;
+}

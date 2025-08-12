@@ -1,75 +1,18 @@
 <div class="features-demo">
   <!-- Event Monitor -->
   <mat-toolbar color="primary" class="event-monitor">
-    <div class="event-stats">
-      <span class="event-item" [class.active]="eventCounts.documentLoad > 0" [class.blinking]="blinkingEvents.documentLoad">
-        📄 Document Loads: {{eventCounts.documentLoad}}
-      </span>
-      <span class="event-item" [class.active]="eventCounts.pageChange > 0" [class.blinking]="blinkingEvents.pageChange">
-        📖 Page Changes: {{eventCounts.pageChange}}
-      </span>
-      <span class="event-item" [class.active]="eventCounts.scaleChange > 0" [class.blinking]="blinkingEvents.scaleChange">
-        🔍 Scale Changes: {{eventCounts.scaleChange}}
-      </span>
-      <span class="event-item" [class.active]="eventCounts.rotationChange > 0" [class.blinking]="blinkingEvents.rotationChange">
-        🔄 Rotation Changes: {{eventCounts.rotationChange}}
-      </span>
-      <span class="event-item" [class.active]="eventCounts.beforePrint > 0" [class.blinking]="blinkingEvents.beforePrint">
-        🖨️ Before Print Events: {{eventCounts.beforePrint}}
-      </span>
-      <span class="event-item" [class.active]="eventCounts.afterPrint > 0" [class.blinking]="blinkingEvents.afterPrint">
-        📄 After Print Events: {{eventCounts.afterPrint}}
-      </span>
-      
-      <!-- New High-Value Events (13 total) -->
-      <span class="event-item" [class.active]="eventCounts.documentError > 0" [class.blinking]="blinkingEvents.documentError">
-        ❌ Document Errors: {{eventCounts.documentError}}
-      </span>
-      <span class="event-item" [class.active]="eventCounts.documentInit > 0" [class.blinking]="blinkingEvents.documentInit">
-        🚀 Document Inits: {{eventCounts.documentInit}}
-      </span>
-      <span class="event-item" [class.active]="eventCounts.pagesInit > 0" [class.blinking]="blinkingEvents.pagesInit">
-        📚 Pages Inits: {{eventCounts.pagesInit}}
-      </span>
-      <span class="event-item" [class.active]="eventCounts.presentationModeChanged > 0" [class.blinking]="blinkingEvents.presentationModeChanged">
-        🎥 Presentation Mode: {{eventCounts.presentationModeChanged}}
-      </span>
-      <span class="event-item" [class.active]="eventCounts.openFile > 0" [class.blinking]="blinkingEvents.openFile">
-        📂 File Opens: {{eventCounts.openFile}}
-      </span>
-      <span class="event-item" [class.active]="eventCounts.find > 0" [class.blinking]="blinkingEvents.find">
-        🔍 Find Operations: {{eventCounts.find}}
-      </span>
-      <span class="event-item" [class.active]="eventCounts.updateFindMatchesCount > 0" [class.blinking]="blinkingEvents.updateFindMatchesCount">
-        🎯 Find Matches: {{eventCounts.updateFindMatchesCount}}
-      </span>
-      <span class="event-item" [class.active]="eventCounts.metadataLoaded > 0" [class.blinking]="blinkingEvents.metadataLoaded">
-        📋 Metadata Loads: {{eventCounts.metadataLoaded}}
-      </span>
-      <span class="event-item" [class.active]="eventCounts.outlineLoaded > 0" [class.blinking]="blinkingEvents.outlineLoaded">
-        📖 Outline Loads: {{eventCounts.outlineLoaded}}
-      </span>
-      <span class="event-item" [class.active]="eventCounts.pageRendered > 0" [class.blinking]="blinkingEvents.pageRendered">
-        🎨 Page Renders: {{eventCounts.pageRendered}}
-      </span>
-      <span class="event-item" [class.active]="eventCounts.annotationLayerRendered > 0" [class.blinking]="blinkingEvents.annotationLayerRendered">
-        📝 Annotation Layers: {{eventCounts.annotationLayerRendered}}
-      </span>
-      <span class="event-item" [class.active]="eventCounts.bookmarkClick > 0" [class.blinking]="blinkingEvents.bookmarkClick">
-        🔖 Bookmark Clicks: {{eventCounts.bookmarkClick}}
-      </span>
-      <span class="event-item" [class.active]="eventCounts.idle > 0" [class.blinking]="blinkingEvents.idle">
-        😴 Idle Events: {{eventCounts.idle}}
-      </span>
-      
-      <span class="status-info">
-        Page {{currentPage}}/{{totalPages}} | {{currentScale}} | {{currentRotation}}°
-      </span>
+    <div class="quick-stats">
+      <mat-chip-listbox class="stats-chips" aria-label="Event Stats">
+        <mat-chip-option [selected]="eventCounts.documentLoad>0" matTooltip="Total document loads">📄 {{eventCounts.documentLoad}}</mat-chip-option>
+        <mat-chip-option [selected]="eventCounts.pageRendered>0" matTooltip="Total page renders">🎨 {{eventCounts.pageRendered}}</mat-chip-option>
+        <mat-chip-option [selected]="eventCounts.find>0 || eventCounts.updateFindMatchesCount>0" matTooltip="Find ops / matches">🔍 {{eventCounts.find}} / {{eventCounts.updateFindMatchesCount}}</mat-chip-option>
+        <mat-chip-option [selected]="eventCounts.outlineLoaded>0" matTooltip="Outline loads">📖 {{eventCounts.outlineLoaded}}</mat-chip-option>
+        <mat-chip-option [selected]="eventCounts.documentError>0" matTooltip="Errors">❌ {{eventCounts.documentError}}</mat-chip-option>
+      </mat-chip-listbox>
     </div>
     <span class="spacer"></span>
-    <button mat-icon-button (click)="resetEventCounts()" matTooltip="Reset Counters">
-      <mat-icon>refresh</mat-icon>
-    </button>
+    <div class="status-info">Page {{currentPage}}/{{totalPages}} | {{currentScale}} | {{currentRotation}}°</div>
+    <button mat-icon-button (click)="resetEventCounts()" matTooltip="Reset counters"><mat-icon>refresh</mat-icon></button>
   </mat-toolbar>
 
   <div class="demo-content">
@@ -493,5 +436,34 @@
       </mat-card-content>
     </mat-card>
     </div>
+    
+    <!-- Event Feed Panel (Collapsible) -->
+    <mat-card class="feed-panel">
+      <mat-card-header>
+        <mat-card-title>Event Feed</mat-card-title>
+        <span class="spacer"></span>
+        <button mat-stroked-button color="primary" (click)="feedPaused = !feedPaused">{{feedPaused ? 'Resume' : 'Pause'}}</button>
+        <button mat-stroked-button (click)="eventFeed=[]" style="margin-left:.5rem">Clear</button>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="feed-controls">
+          <mat-chip-listbox aria-label="Feed Filters">
+            <mat-chip-option (click)="feedFilter.clear()">All</mat-chip-option>
+            <mat-chip-option (click)="feedFilter.has('documentLoad') ? feedFilter.delete('documentLoad') : feedFilter.add('documentLoad')">Document</mat-chip-option>
+            <mat-chip-option (click)="feedFilter.has('pageRendered') ? feedFilter.delete('pageRendered') : feedFilter.add('pageRendered')">Render</mat-chip-option>
+            <mat-chip-option (click)="feedFilter.has('find') ? feedFilter.delete('find') : feedFilter.add('find')">Find</mat-chip-option>
+            <mat-chip-option (click)="feedFilter.has('outlineLoaded') ? feedFilter.delete('outlineLoaded') : feedFilter.add('outlineLoaded')">Outline</mat-chip-option>
+            <mat-chip-option (click)="feedFilter.has('documentError') ? feedFilter.delete('documentError') : feedFilter.add('documentError')">Errors</mat-chip-option>
+          </mat-chip-listbox>
+        </div>
+        <div class="feed-list">
+          <div class="feed-item" *ngFor="let e of eventFeed">
+            <span class="feed-time">{{e.time}}</span>
+            <span class="feed-type">{{e.type}}</span>
+            <span class="feed-data" *ngIf="e.data as d">{{ d | json }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div> 

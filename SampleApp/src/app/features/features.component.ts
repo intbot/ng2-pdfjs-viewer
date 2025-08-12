@@ -72,6 +72,25 @@ export class FeaturesComponent implements OnInit {
   public customSpinnerHtml = '<div style="display:flex;flex-direction:column;align-items:center;gap:8px;color:#444"><div style="width:36px;height:36px;border:4px dashed #3f51b5;border-radius:50%;animation:ng2-spin 1s linear infinite"></div><div>Preparing document…</div></div>';
   public spinnerCssClass = 'demo-spinner-overlay';
 
+  // Status bar / layout helpers
+  public loading = false;
+  public sidenavOpened = false; // reserved for future sidenav step
+
+  // Event feed model
+  public eventFeed: Array<{ time: string; type: string; data?: any }> = [];
+  public feedPaused = false;
+  public feedFilter: Set<string> = new Set();
+
+  private pushEventToFeed(type: string, data?: any) {
+    if (this.feedPaused) return;
+    const now = new Date();
+    const time = now.toLocaleTimeString([], { hour12: false });
+    // basic filter: if filters set, only include selected types
+    if (this.feedFilter.size > 0 && !this.feedFilter.has(type)) return;
+    this.eventFeed.unshift({ time, type, data });
+    if (this.eventFeed.length > 200) this.eventFeed.pop();
+  }
+
   // Event tracking for demonstration
   public eventCounts = {
     documentLoad: 0,
@@ -140,6 +159,7 @@ export class FeaturesComponent implements OnInit {
       this.totalPages = this.pdfViewer.PDFViewerApplication.pagesCount || 0;
     }
     console.log('🎬 Features Demo: Document loaded, total pages:', this.totalPages);
+    this.pushEventToFeed('documentLoad');
   }
 
   public onPageChange(pageNumber: number) {
@@ -148,6 +168,7 @@ export class FeaturesComponent implements OnInit {
     this.currentPage = pageNumber;
     this.page = pageNumber; // Fix: Update the property bound to the viewer
     console.log('🎬 Features Demo: Page changed to:', pageNumber);
+    this.pushEventToFeed('pageChange', { pageNumber });
   }
 
   public onScaleChange(scale: ChangedScale) {
@@ -156,6 +177,7 @@ export class FeaturesComponent implements OnInit {
     this.currentScale = scale;
     this.zoom = scale.toString(); // Fix: ChangedScale is a number, convert to string for zoom property
     console.log('🎬 Features Demo: Scale changed to:', scale);
+    this.pushEventToFeed('scaleChange', { scale });
   }
 
   public onRotationChange(rotation: ChangedRotation) {
@@ -164,18 +186,21 @@ export class FeaturesComponent implements OnInit {
     this.currentRotation = rotation.rotation;
     this.rotation = rotation.rotation; // Fix: Update the property bound to the dropdown
     console.log('🎬 Features Demo: Rotation changed to:', rotation.rotation);
+    this.pushEventToFeed('rotationChange', rotation);
   }
 
   public onBeforePrint() {
     this.eventCounts.beforePrint++;
     this.triggerBlink('beforePrint');
     console.log('🎬 Features Demo: Before print event');
+    this.pushEventToFeed('beforePrint');
   }
 
   public onAfterPrint() {
     this.eventCounts.afterPrint++;
     this.triggerBlink('afterPrint');
     console.log('🎬 Features Demo: After print event');
+    this.pushEventToFeed('afterPrint');
   }
 
   // New High-Value Event Handlers (13 total)
@@ -183,78 +208,91 @@ export class FeaturesComponent implements OnInit {
     this.eventCounts.documentError++;
     this.triggerBlink('documentError');
     console.log('🎬 Features Demo: Document error:', error);
+    this.pushEventToFeed('documentError', error);
   }
 
   public onDocumentInit() {
     this.eventCounts.documentInit++;
     this.triggerBlink('documentInit');
     console.log('🎬 Features Demo: Document init event');
+    this.pushEventToFeed('documentInit');
   }
 
   public onPagesInit(pagesInfo: any) {
     this.eventCounts.pagesInit++;
     this.triggerBlink('pagesInit');
     console.log('🎬 Features Demo: Pages init event:', pagesInfo);
+    this.pushEventToFeed('pagesInit', pagesInfo);
   }
 
   public onPresentationModeChanged(mode: any) {
     this.eventCounts.presentationModeChanged++;
     this.triggerBlink('presentationModeChanged');
     console.log('🎬 Features Demo: Presentation mode changed:', mode);
+    this.pushEventToFeed('presentationModeChanged', mode);
   }
 
   public onOpenFile() {
     this.eventCounts.openFile++;
     this.triggerBlink('openFile');
     console.log('🎬 Features Demo: Open file event');
+    this.pushEventToFeed('openFile');
   }
 
   public onFind(findData: any) {
     this.eventCounts.find++;
     this.triggerBlink('find');
     console.log('🎬 Features Demo: Find operation:', findData);
+    this.pushEventToFeed('find', findData);
   }
 
   public onUpdateFindMatchesCount(matchData: any) {
     this.eventCounts.updateFindMatchesCount++;
     this.triggerBlink('updateFindMatchesCount');
     console.log('🎬 Features Demo: Find matches count updated:', matchData);
+    this.pushEventToFeed('updateFindMatchesCount', matchData);
   }
 
   public onMetadataLoaded(metadata: any) {
     this.eventCounts.metadataLoaded++;
     this.triggerBlink('metadataLoaded');
     console.log('🎬 Features Demo: Metadata loaded:', metadata);
+    this.pushEventToFeed('metadataLoaded', metadata);
   }
 
   public onOutlineLoaded(outline: any) {
     this.eventCounts.outlineLoaded++;
     this.triggerBlink('outlineLoaded');
     console.log('🎬 Features Demo: Outline loaded:', outline);
+    this.pushEventToFeed('outlineLoaded', outline);
   }
 
   public onPageRendered(pageInfo: any) {
     this.eventCounts.pageRendered++;
     this.triggerBlink('pageRendered');
     console.log('🎬 Features Demo: Page rendered:', pageInfo);
+    this.pushEventToFeed('pageRendered', pageInfo);
   }
 
   public onAnnotationLayerRendered(annotationInfo: any) {
     this.eventCounts.annotationLayerRendered++;
     this.triggerBlink('annotationLayerRendered');
     console.log('🎬 Features Demo: Annotation layer rendered:', annotationInfo);
+    this.pushEventToFeed('annotationLayerRendered', annotationInfo);
   }
 
   public onBookmarkClick(bookmarkData: any) {
     this.eventCounts.bookmarkClick++;
     this.triggerBlink('bookmarkClick');
     console.log('🎬 Features Demo: Bookmark clicked:', bookmarkData);
+    this.pushEventToFeed('bookmarkClick', bookmarkData);
   }
 
   public onIdle() {
     this.eventCounts.idle++;
     this.triggerBlink('idle');
     console.log('🎬 Features Demo: User idle event');
+    this.pushEventToFeed('idle');
   }
 
   // Trigger blinking animation for event counters

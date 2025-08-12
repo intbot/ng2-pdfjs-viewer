@@ -15,7 +15,9 @@
   </button>
 </mat-toolbar>
 
-<ng2-pdfjs-viewer #externalPdfViewer [externalWindow]="true" [showOpenFile]="false" [useOnlyCssZoom]=true target="_myWindow" [diagnosticLogs]="diagnosticLogs"></ng2-pdfjs-viewer>
+<div class="external-viewer-host">
+  <ng2-pdfjs-viewer #externalPdfViewer [externalWindow]="true" [showOpenFile]="false" [useOnlyCssZoom]="true" target="_myWindow" [diagnosticLogs]="diagnosticLogs"></ng2-pdfjs-viewer>
+</div>
 <div class="container mat-typography">
   <router-outlet></router-outlet>
 </div>
