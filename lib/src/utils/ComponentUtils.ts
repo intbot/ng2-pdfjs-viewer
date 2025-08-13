@@ -50,8 +50,19 @@ export class ComponentUtils {
       'borderRadius': 'set-border-radius',
       'customCSS': 'set-custom-css'
     };
+
+    // Phase C: Toolbar/Sidebar group visibility
+    const groupVisibilityMap: { [key: string]: string } = {
+      'showToolbarLeft': 'show-toolbar-left',
+      'showToolbarMiddle': 'show-toolbar-middle',
+      'showToolbarRight': 'show-toolbar-right',
+      'showSecondaryToolbarToggle': 'show-secondary-toolbar-toggle',
+      'showSidebar': 'show-sidebar',
+      'showSidebarLeft': 'show-sidebar-left',
+      'showSidebarRight': 'show-sidebar-right'
+    };
     
-    return propertyActionMap[propertyName] || null;
+    return propertyActionMap[propertyName] || groupVisibilityMap[propertyName] || null;
   }
 
   // Event handler cleanup utility

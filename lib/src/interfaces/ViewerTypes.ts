@@ -59,6 +59,17 @@ export interface ControlVisibilityConfig {
   annotations?: boolean;
 }
 
+// Phase C: Group visibility configuration for toolbar/sidebar
+export interface GroupVisibilityConfig {
+  toolbarLeft?: boolean;
+  toolbarMiddle?: boolean;
+  toolbarRight?: boolean;
+  secondaryToolbarToggle?: boolean;
+  sidebar?: boolean;
+  sidebarLeft?: boolean;
+  sidebarRight?: boolean;
+}
+
 export interface AutoActionConfig {
   downloadOnLoad?: boolean;
   printOnLoad?: boolean;

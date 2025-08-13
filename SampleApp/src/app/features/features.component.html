@@ -42,6 +42,17 @@
                   <mat-slide-toggle [(ngModel)]="showAnnotations">Annotations</mat-slide-toggle>
               </div>
 
+                <h3>Group Visibility (Phase C)</h3>
+                <div class="toggle-grid">
+                  <mat-slide-toggle [(ngModel)]="showToolbarLeft">Toolbar Left</mat-slide-toggle>
+                  <mat-slide-toggle [(ngModel)]="showToolbarMiddle">Toolbar Middle</mat-slide-toggle>
+                  <mat-slide-toggle [(ngModel)]="showToolbarRight">Toolbar Right</mat-slide-toggle>
+                  <mat-slide-toggle [(ngModel)]="showSecondaryToolbarToggle">Tools Menu Toggle</mat-slide-toggle>
+                  <mat-slide-toggle [(ngModel)]="showSidebar">Sidebar</mat-slide-toggle>
+                  <mat-slide-toggle [(ngModel)]="showSidebarLeft">Sidebar Left</mat-slide-toggle>
+                  <mat-slide-toggle [(ngModel)]="showSidebarRight">Sidebar Right</mat-slide-toggle>
+                </div>
+
               <mat-divider></mat-divider>
 
                 <h3>Auto Actions (execute on load)</h3>
@@ -376,6 +387,13 @@
             [showFind]="showFind"
             [showViewBookmark]="showViewBookmark"
             [showAnnotations]="showAnnotations"
+              [showToolbarLeft]="showToolbarLeft"
+              [showToolbarMiddle]="showToolbarMiddle"
+              [showToolbarRight]="showToolbarRight"
+              [showSecondaryToolbarToggle]="showSecondaryToolbarToggle"
+              [showSidebar]="showSidebar"
+              [showSidebarLeft]="showSidebarLeft"
+              [showSidebarRight]="showSidebarRight"
             [downloadOnLoad]="downloadOnLoad"
             [printOnLoad]="printOnLoad"
             [showLastPageOnLoad]="showLastPageOnLoad"

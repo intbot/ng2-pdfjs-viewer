@@ -11,6 +11,7 @@ import {
   ChangedScale,
   ChangedRotation,
   ControlVisibilityConfig,
+  GroupVisibilityConfig,
   AutoActionConfig,
   ErrorConfig,
   ViewerConfig,
@@ -138,6 +139,16 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   @Input() public spinnerHtml?: string;
   // #endregion
 
+  // #region Phase C: Toolbar/Sidebar Group Visibility
+  @Input() public showToolbarLeft: boolean = true;
+  @Input() public showToolbarMiddle: boolean = true;
+  @Input() public showToolbarRight: boolean = true;
+  @Input() public showSecondaryToolbarToggle: boolean = true;
+  @Input() public showSidebar: boolean = true;
+  @Input() public showSidebarLeft: boolean = true;
+  @Input() public showSidebarRight: boolean = true;
+  // #endregion
+
   // Internal loading state for overlay control
   public isLoading: boolean = true;
   private hasFirstRender: boolean = false;
@@ -192,6 +203,16 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     if (config.textColor !== undefined) this.textColor = config.textColor;
     if (config.borderRadius !== undefined) this.borderRadius = config.borderRadius;
     if (config.customCSS !== undefined) this.customCSS = config.customCSS;
+  }
+  
+  @Input() public set groupVisibility(config: GroupVisibilityConfig) {
+    if (config.toolbarLeft !== undefined) this.showToolbarLeft = config.toolbarLeft;
+    if (config.toolbarMiddle !== undefined) this.showToolbarMiddle = config.toolbarMiddle;
+    if (config.toolbarRight !== undefined) this.showToolbarRight = config.toolbarRight;
+    if (config.secondaryToolbarToggle !== undefined) this.showSecondaryToolbarToggle = config.secondaryToolbarToggle;
+    if (config.sidebar !== undefined) this.showSidebar = config.sidebar;
+    if (config.sidebarLeft !== undefined) this.showSidebarLeft = config.sidebarLeft;
+    if (config.sidebarRight !== undefined) this.showSidebarRight = config.sidebarRight;
   }
   // #endregion
 
@@ -462,7 +483,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   // #region Lifecycle Methods
     ngOnInit(): void {   
         // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
-        console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-08-11T22-30-13-000Z');
+        console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-08-12T14-21-46-000Z');
         
         // Debug theme initialization
         console.log('🎨 THEME DEBUG: ngOnInit - theme value:', this.theme);
@@ -1081,6 +1102,15 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     this.queueConfiguration('showViewBookmark', this.showViewBookmark, 'show-bookmark');
     this.queueConfiguration('showAnnotations', this.showAnnotations, 'show-annotations');
 
+    // Phase C: Toolbar/Sidebar group visibility
+    this.queueConfiguration('showToolbarLeft', this.showToolbarLeft, 'show-toolbar-left');
+    this.queueConfiguration('showToolbarMiddle', this.showToolbarMiddle, 'show-toolbar-middle');
+    this.queueConfiguration('showToolbarRight', this.showToolbarRight, 'show-toolbar-right');
+    this.queueConfiguration('showSecondaryToolbarToggle', this.showSecondaryToolbarToggle, 'show-secondary-toolbar-toggle');
+    this.queueConfiguration('showSidebar', this.showSidebar, 'show-sidebar');
+    this.queueConfiguration('showSidebarLeft', this.showSidebarLeft, 'show-sidebar-left');
+    this.queueConfiguration('showSidebarRight', this.showSidebarRight, 'show-sidebar-right');
+
     // Queue mode configurations (immediate actions)
     if (this.cursor) {
       this.queueConfiguration('cursor', this.cursor, 'set-cursor');
@@ -1599,7 +1629,10 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   private getRequiredReadinessLevel(action: string): number {
     // Define readiness requirements for all actions
     const level1Actions = ['set-theme', 'set-primary-color', 'set-background-color', 'set-page-background-color', 'set-toolbar-color', 'set-text-color', 'set-border-radius', 'set-custom-css'];
-    const level3Actions = ['show-download', 'show-print', 'show-fullscreen', 'show-find', 'show-bookmark', 'show-openfile', 'show-annotations', 'set-error-message', 'set-error-override', 'set-error-append', 'set-css-zoom'];
+    const level3Actions = ['show-download', 'show-print', 'show-fullscreen', 'show-find', 'show-bookmark', 'show-openfile', 'show-annotations', 'set-error-message', 'set-error-override', 'set-error-append', 'set-css-zoom',
+      // Phase C actions (DOM visibility toggles)
+      'show-toolbar-left','show-toolbar-middle','show-toolbar-right','show-secondary-toolbar-toggle','show-sidebar','show-sidebar-left','show-sidebar-right'
+    ];
     const level4Actions = ['set-cursor', 'set-scroll', 'set-spread', 'set-zoom', 'update-page-mode', 'set-locale'];
     const level5Actions = ['set-page', 'set-rotation', 'go-to-last-page', 'go-to-named-dest', 'trigger-download', 'trigger-print', 'trigger-rotate-cw', 'trigger-rotate-ccw'];
 

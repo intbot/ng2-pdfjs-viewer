@@ -27,6 +27,15 @@ export class FeaturesComponent implements OnInit {
   public showViewBookmark = true;
   public showAnnotations = false;
 
+  // Phase C: Group visibility (toolbar/sidebar)
+  public showToolbarLeft = true;
+  public showToolbarMiddle = true;
+  public showToolbarRight = true;
+  public showSecondaryToolbarToggle = true;
+  public showSidebar = true;
+  public showSidebarLeft = true;
+  public showSidebarRight = true;
+
   // Auto Actions
   public downloadOnLoad = false;
   public printOnLoad = false;

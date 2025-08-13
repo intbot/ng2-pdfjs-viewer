@@ -189,10 +189,10 @@ This section documents the upgrade-safe, event-driven customization plan we adop
 - Behavior: Loading overlay shows while viewer emits load events; controlled by event-driven state (`documentinit`/`pagesinit` → show, first `pagerendered`/`pagesloaded` → hide). No timeouts/polling.
 - Status: ✅ Complete
 
-### Phase C: Advanced Show/Hide Controls (Planned)
-- Goal: Add granular show/hide for toolbar/secondary toolbar/sidebar groups via CSS-driven toggles and readiness-based actions.
-- Approach: CSS selectors + wrapper actions (no DOM rewrites, no PDF.js edits).
-- Status: ⏳ Planned
+### Phase C: Advanced Show/Hide Controls (Complete)
+- Inputs: `showToolbarLeft`, `showToolbarMiddle`, `showToolbarRight`, `showSecondaryToolbarToggle`, `showSidebar`, `showSidebarLeft`, `showSidebarRight` plus convenience `groupVisibility` object.
+- Behavior: Readiness-based actions toggle DOM group containers using CSS-only display rules; no PDF.js edits.
+- Status: ✅ Complete
 
 ### Phase D: Layout & Responsive Customization (Planned)
 - Goal: Toolbar position, sidebar position, responsive breakpoints.

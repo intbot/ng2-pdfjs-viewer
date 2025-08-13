@@ -10,6 +10,7 @@ export {
   ErrorConfig,
   ViewerConfig,
   ThemeConfig,
+  GroupVisibilityConfig,
   // New event data interfaces
   DocumentError,
   PagesInfo,
