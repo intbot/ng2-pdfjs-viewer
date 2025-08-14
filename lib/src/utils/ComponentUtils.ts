@@ -61,8 +61,17 @@ export class ComponentUtils {
       'showSidebarLeft': 'show-sidebar-left',
       'showSidebarRight': 'show-sidebar-right'
     };
+
+    // Phase D: Layout & responsive customization
+    const layoutMap: { [key: string]: string } = {
+      'toolbarDensity': 'set-toolbar-density',
+      'sidebarWidth': 'set-sidebar-width',
+      'toolbarPosition': 'set-toolbar-position',
+      'sidebarPosition': 'set-sidebar-position',
+      'responsiveBreakpoint': 'set-responsive-breakpoint'
+    };
     
-    return propertyActionMap[propertyName] || groupVisibilityMap[propertyName] || null;
+    return propertyActionMap[propertyName] || groupVisibilityMap[propertyName] || layoutMap[propertyName] || null;
   }
 
   // Event handler cleanup utility

@@ -85,6 +85,13 @@ export class FeaturesComponent implements OnInit {
   public loading = false;
   public sidenavOpened = false; // reserved for future sidenav step
 
+  // Phase D: Layout customization (demo bindings)
+  public toolbarDensity: 'default' | 'compact' | 'comfortable' = 'default';
+  public sidebarWidth = '';
+  public toolbarPosition: 'top' | 'bottom' = 'top';
+  public sidebarPosition: 'left' | 'right' = 'left';
+  public responsiveBreakpoint = '';
+
   // Event feed model
   public eventFeed: Array<{ time: string; type: string; data?: any }> = [];
   public feedPaused = false;

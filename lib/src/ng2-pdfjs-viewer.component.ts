@@ -12,6 +12,10 @@ import {
   ChangedRotation,
   ControlVisibilityConfig,
   GroupVisibilityConfig,
+  LayoutConfig,
+  ToolbarDensity,
+  ToolbarPosition,
+  SidebarPosition,
   AutoActionConfig,
   ErrorConfig,
   ViewerConfig,
@@ -149,6 +153,14 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   @Input() public showSidebarRight: boolean = true;
   // #endregion
 
+  // #region Phase D: Layout & Responsive Customization
+  @Input() public toolbarDensity: ToolbarDensity = 'default';
+  @Input() public sidebarWidth?: string; // e.g., '280px'
+  @Input() public toolbarPosition: ToolbarPosition = 'top';
+  @Input() public sidebarPosition: SidebarPosition = 'left';
+  @Input() public responsiveBreakpoint?: string | number;
+  // #endregion
+
   // Internal loading state for overlay control
   public isLoading: boolean = true;
   private hasFirstRender: boolean = false;
@@ -213,6 +225,14 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     if (config.sidebar !== undefined) this.showSidebar = config.sidebar;
     if (config.sidebarLeft !== undefined) this.showSidebarLeft = config.sidebarLeft;
     if (config.sidebarRight !== undefined) this.showSidebarRight = config.sidebarRight;
+  }
+
+  @Input() public set layoutConfig(config: LayoutConfig) {
+    if (config.toolbarDensity !== undefined) this.toolbarDensity = config.toolbarDensity;
+    if (config.sidebarWidth !== undefined) this.sidebarWidth = config.sidebarWidth;
+    if (config.toolbarPosition !== undefined) this.toolbarPosition = config.toolbarPosition;
+    if (config.sidebarPosition !== undefined) this.sidebarPosition = config.sidebarPosition;
+    if (config.responsiveBreakpoint !== undefined) this.responsiveBreakpoint = config.responsiveBreakpoint;
   }
   // #endregion
 
@@ -483,7 +503,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   // #region Lifecycle Methods
     ngOnInit(): void {   
         // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
-        console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-08-12T14-21-46-000Z');
+        console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-08-12T22-16-25-000Z');
         
         // Debug theme initialization
         console.log('🎨 THEME DEBUG: ngOnInit - theme value:', this.theme);
@@ -1111,6 +1131,17 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     this.queueConfiguration('showSidebarLeft', this.showSidebarLeft, 'show-sidebar-left');
     this.queueConfiguration('showSidebarRight', this.showSidebarRight, 'show-sidebar-right');
 
+    // Phase D: Layout customization
+    this.queueConfiguration('toolbarDensity', this.toolbarDensity, 'set-toolbar-density');
+    if (this.sidebarWidth) {
+      this.queueConfiguration('sidebarWidth', this.sidebarWidth, 'set-sidebar-width');
+    }
+    this.queueConfiguration('toolbarPosition', this.toolbarPosition, 'set-toolbar-position');
+    this.queueConfiguration('sidebarPosition', this.sidebarPosition, 'set-sidebar-position');
+    if (this.responsiveBreakpoint !== undefined) {
+      this.queueConfiguration('responsiveBreakpoint', this.responsiveBreakpoint, 'set-responsive-breakpoint');
+    }
+
     // Queue mode configurations (immediate actions)
     if (this.cursor) {
       this.queueConfiguration('cursor', this.cursor, 'set-cursor');
@@ -1633,7 +1664,10 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       // Phase C actions (DOM visibility toggles)
       'show-toolbar-left','show-toolbar-middle','show-toolbar-right','show-secondary-toolbar-toggle','show-sidebar','show-sidebar-left','show-sidebar-right'
     ];
-    const level4Actions = ['set-cursor', 'set-scroll', 'set-spread', 'set-zoom', 'update-page-mode', 'set-locale'];
+    const level4Actions = ['set-cursor', 'set-scroll', 'set-spread', 'set-zoom', 'update-page-mode', 'set-locale',
+      // Phase D layout requires components ready to measure
+      'set-toolbar-density', 'set-sidebar-width', 'set-toolbar-position', 'set-sidebar-position', 'set-responsive-breakpoint'
+    ];
     const level5Actions = ['set-page', 'set-rotation', 'go-to-last-page', 'go-to-named-dest', 'trigger-download', 'trigger-print', 'trigger-rotate-cw', 'trigger-rotate-ccw'];
 
     if (level1Actions.includes(action)) return 1; // VIEWER_LOADED - DOM access only

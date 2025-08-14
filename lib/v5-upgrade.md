@@ -194,10 +194,10 @@ This section documents the upgrade-safe, event-driven customization plan we adop
 - Behavior: Readiness-based actions toggle DOM group containers using CSS-only display rules; no PDF.js edits.
 - Status: ✅ Complete
 
-### Phase D: Layout & Responsive Customization (Planned)
-- Goal: Toolbar position, sidebar position, responsive breakpoints.
-- Approach: CSS-only repositioning and optional DOM-safe enhancements in wrapper.
-- Status: ⏳ Planned
+### Phase D: Layout & Responsive Customization (Complete)
+- Inputs: `toolbarDensity`, `sidebarWidth`, `toolbarPosition: 'top'|'bottom'`, `sidebarPosition: 'left'|'right'`, `responsiveBreakpoint`.
+- Behavior: CSS-only classes and inline vars applied from wrapper; no PDF.js code edits.
+- Status: ✅ Complete
 
 ### Phase E: Advanced Customization & Accessibility (Planned)
 - Goal: Optional custom toolbar buttons, ARIA label mapping, framework-friendly variables.

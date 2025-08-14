@@ -70,6 +70,19 @@ export interface GroupVisibilityConfig {
   sidebarRight?: boolean;
 }
 
+// Phase D: Layout & Responsive customization
+export type ToolbarDensity = 'default' | 'compact' | 'comfortable';
+export type ToolbarPosition = 'top' | 'bottom';
+export type SidebarPosition = 'left' | 'right';
+
+export interface LayoutConfig {
+  toolbarDensity?: ToolbarDensity;
+  sidebarWidth?: string; // e.g., '280px'
+  toolbarPosition?: ToolbarPosition;
+  sidebarPosition?: SidebarPosition;
+  responsiveBreakpoint?: string | number; // px threshold
+}
+
 export interface AutoActionConfig {
   downloadOnLoad?: boolean;
   printOnLoad?: boolean;

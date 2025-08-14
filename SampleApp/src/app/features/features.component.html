@@ -40,8 +40,8 @@
                   <mat-slide-toggle [(ngModel)]="showFind">Find</mat-slide-toggle>
                   <mat-slide-toggle [(ngModel)]="showViewBookmark">Bookmarks</mat-slide-toggle>
                   <mat-slide-toggle [(ngModel)]="showAnnotations">Annotations</mat-slide-toggle>
-              </div>
-
+      </div>
+      
                 <h3>Group Visibility (Phase C)</h3>
                 <div class="toggle-grid">
                   <mat-slide-toggle [(ngModel)]="showToolbarLeft">Toolbar Left</mat-slide-toggle>
@@ -51,7 +51,7 @@
                   <mat-slide-toggle [(ngModel)]="showSidebar">Sidebar</mat-slide-toggle>
                   <mat-slide-toggle [(ngModel)]="showSidebarLeft">Sidebar Left</mat-slide-toggle>
                   <mat-slide-toggle [(ngModel)]="showSidebarRight">Sidebar Right</mat-slide-toggle>
-                </div>
+              </div>
 
               <mat-divider></mat-divider>
 
@@ -127,6 +127,40 @@
 
               <!-- Loading & Spinner (Phase 2) -->
               <h3>Loading & Spinner Customization</h3>
+              <!-- Layout & Responsive (Phase D) -->
+              <h3>Layout & Responsive</h3>
+              <div class="binding-grid">
+                <mat-form-field>
+                  <mat-label>Toolbar Density</mat-label>
+                  <mat-select [(ngModel)]="toolbarDensity">
+                    <mat-option value="default">Default</mat-option>
+                    <mat-option value="compact">Compact</mat-option>
+                    <mat-option value="comfortable">Comfortable</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Sidebar Width</mat-label>
+                  <input matInput placeholder="e.g., 280px" [(ngModel)]="sidebarWidth">
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Toolbar Position</mat-label>
+                  <mat-select [(ngModel)]="toolbarPosition">
+                    <mat-option value="top">Top</mat-option>
+                    <mat-option value="bottom">Bottom</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Sidebar Position</mat-label>
+                  <mat-select [(ngModel)]="sidebarPosition">
+                    <mat-option value="left">Left</mat-option>
+                    <mat-option value="right">Right</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Responsive Breakpoint</mat-label>
+                  <input matInput placeholder="e.g., 840px or 900" [(ngModel)]="responsiveBreakpoint">
+                </mat-form-field>
+              </div>
               <div class="toggle-grid">
                 <mat-slide-toggle [(ngModel)]="showSpinner">Show Spinner</mat-slide-toggle>
                 <mat-slide-toggle [(ngModel)]="useCustomSpinnerTpl">Use Custom Template</mat-slide-toggle>
@@ -414,6 +448,11 @@
             [textColor]="textColor"
             [borderRadius]="borderRadius"
             [customCSS]="customCSS"
+            [toolbarDensity]="toolbarDensity"
+            [sidebarWidth]="sidebarWidth"
+            [toolbarPosition]="toolbarPosition"
+            [sidebarPosition]="sidebarPosition"
+            [responsiveBreakpoint]="responsiveBreakpoint"
             [(zoom)]="zoom"
             [(cursor)]="cursor"
             [(scroll)]="scroll"

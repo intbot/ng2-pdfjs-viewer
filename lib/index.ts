@@ -11,6 +11,10 @@ export {
   ViewerConfig,
   ThemeConfig,
   GroupVisibilityConfig,
+  LayoutConfig,
+  ToolbarDensity,
+  ToolbarPosition,
+  SidebarPosition,
   // New event data interfaces
   DocumentError,
   PagesInfo,
