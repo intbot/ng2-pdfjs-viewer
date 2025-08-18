@@ -99,6 +99,11 @@
 - **Pure event-driven patterns** - no timeout-based hacks
 - **Readiness-based logic** - all actions respect readiness requirements
 
+### Rule 4: Testing & Issue Resolution
+- **Targeted fixes only** - when user reports specific issues during testing, only touch relevant code behind that specific functionality
+- **One issue at a time** - address each reported issue individually with minimal code changes
+- **Preserve working functionality** - never modify code unrelated to the specific issue being fixed
+
 ---
 
 ## Completed Phases
