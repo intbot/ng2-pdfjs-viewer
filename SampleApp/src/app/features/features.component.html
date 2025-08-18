@@ -64,7 +64,7 @@
                 
                 <div class="action-button-container">
                   <button mat-raised-button color="primary" (click)="testAutoActions()" matTooltip="Reload viewer to test auto actions">
-                    <mat-icon>refresh</mat-icon> Test Auto Actions
+                    <mat-icon>refresh</mat-icon> Reload Viewer
                   </button>
               </div>
 
@@ -408,6 +408,7 @@
           <!-- Using Traditional Individual Properties (cleaner for examples) -->
           <ng2-pdfjs-viewer 
             #pdfViewer
+            *ngFor="let _ of [viewerTrackingKey]; trackBy: trackByKey"
             [pdfSrc]="pdfSrc"
             [downloadFileName]="downloadFileName"
             [showSpinner]="showSpinner"

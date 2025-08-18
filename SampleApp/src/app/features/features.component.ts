@@ -419,9 +419,13 @@ export class FeaturesComponent implements OnInit {
 
   // Simple reload using library refresh method
   public reloadViewer() {
+    console.log('🎬 Features Demo: *** reloadViewer() method called ***');
     if (this.pdfViewer) {
-      console.log('🎬 Features Demo: Reloading viewer');
+      console.log('🎬 Features Demo: pdfViewer exists, calling refresh()');
       this.pdfViewer.refresh();
+      console.log('🎬 Features Demo: refresh() method called');
+    } else {
+      console.log('🎬 Features Demo: ERROR - pdfViewer is null/undefined');
     }
   }
 
@@ -474,37 +478,32 @@ export class FeaturesComponent implements OnInit {
     console.log('🎬 Features Demo: Event counts reset');
   }
 
-  // Test auto actions - reload viewer to trigger currently enabled auto actions
+  // Tracking key for component recreation - Angular best practice
+  public viewerTrackingKey = Date.now();
+
+  // TrackBy function for Angular *ngFor to force component recreation
+  public trackByKey = (index: number, item: any): any => item;
+
+  // Reload viewer to test auto actions - forces complete component destruction and recreation
   public testAutoActions() {
-    console.log('🎬 Features Demo: Testing auto actions - reloading viewer');
+    console.log('🎬 Features Demo: *** BUTTON CLICKED - testAutoActions called ***');
+    console.log('🎬 Features Demo: Reloading viewer to test auto actions');
     
     // Reset event counters to better show auto action effects
     this.resetEventCounts();
     
-    if (this.pdfViewer) {
-      // Store current PDF source
-      const currentSrc = this.pdfSrc;
-      
-      // Log current auto actions state before test
-      console.log('🎬 Features Demo: Current auto actions enabled:');
-      console.log('  - downloadOnLoad:', this.downloadOnLoad);
-      console.log('  - printOnLoad:', this.printOnLoad);
-      console.log('  - showLastPageOnLoad:', this.showLastPageOnLoad);
-      console.log('  - rotateCW:', this.rotateCW);
-      console.log('  - rotateCCW:', this.rotateCCW);
-      
-      // Clear the source first
-      this.pdfSrc = '';
-      console.log('🎬 Features Demo: PDF cleared, will reload in 300ms');
-      
-      // Use timeout to ensure proper clearing, then restore source to trigger auto actions
-      setTimeout(() => {
-        this.pdfSrc = currentSrc;
-        console.log('🎬 Features Demo: PDF source restored - auto actions should trigger now');
-      }, 300);
-    } else {
-      console.warn('🎬 Features Demo: PDF viewer not available for auto actions test');
-    }
+    // Log current auto actions state before reload
+    console.log('🎬 Features Demo: Current auto actions enabled:');
+    console.log('  - downloadOnLoad:', this.downloadOnLoad);
+    console.log('  - printOnLoad:', this.printOnLoad);
+    console.log('  - showLastPageOnLoad:', this.showLastPageOnLoad);
+    console.log('  - rotateCW:', this.rotateCW);
+    console.log('  - rotateCCW:', this.rotateCCW);
+    
+    // Force complete component recreation by changing the tracking key
+    const previousKey = this.viewerTrackingKey;
+    this.viewerTrackingKey = Date.now();
+    console.log(`🎬 Features Demo: Component tracking key changed from ${previousKey} to ${this.viewerTrackingKey} - component will be recreated`);
   }
 
   // Test error handling
