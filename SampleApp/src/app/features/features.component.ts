@@ -478,10 +478,9 @@ export class FeaturesComponent implements OnInit {
     console.log('🎬 Features Demo: Event counts reset');
   }
 
-  // Tracking key for component recreation - Angular best practice
+  // Auto-actions only execute on component creation, not property changes.
+  // Use trackBy key to force component recreation for testing.
   public viewerTrackingKey = Date.now();
-
-  // TrackBy function for Angular *ngFor to force component recreation
   public trackByKey = (index: number, item: any): any => item;
 
   // Reload viewer to test auto actions - forces complete component destruction and recreation

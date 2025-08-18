@@ -55,7 +55,9 @@
 
               <mat-divider></mat-divider>
 
+                <!-- Auto-actions execute on component creation, not property changes. -->
                 <h3>Auto Actions (execute on load)</h3>
+                <p class="mat-caption">Toggle switches and click "Reload Viewer" to test.</p>
                 <div class="toggle-grid">
                   <mat-slide-toggle [(ngModel)]="downloadOnLoad">Download on Load</mat-slide-toggle>
                   <mat-slide-toggle [(ngModel)]="printOnLoad">Print on Load</mat-slide-toggle>
@@ -63,7 +65,7 @@
                 </div>
                 
                 <div class="action-button-container">
-                  <button mat-raised-button color="primary" (click)="testAutoActions()" matTooltip="Reload viewer to test auto actions">
+                  <button mat-raised-button color="primary" (click)="testAutoActions()" matTooltip="Recreates the entire PDF viewer component to test auto-actions">
                     <mat-icon>refresh</mat-icon> Reload Viewer
                   </button>
               </div>
@@ -405,7 +407,7 @@
       </mat-card-header>
       
       <mat-card-content>
-          <!-- Using Traditional Individual Properties (cleaner for examples) -->
+          <!-- trackBy forces component recreation when key changes -->
           <ng2-pdfjs-viewer 
             #pdfViewer
             *ngFor="let _ of [viewerTrackingKey]; trackBy: trackByKey"
