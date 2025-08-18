@@ -501,9 +501,9 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   // #endregion
 
   // #region Lifecycle Methods
-    ngOnInit(): void {   
-        // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
-        console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-08-12T22-16-25-000Z');
+  ngOnInit(): void {   
+         // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
+        console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-08-17T23-02-43-000Z');
         
         // Debug theme initialization
         console.log('🎨 THEME DEBUG: ngOnInit - theme value:', this.theme);
@@ -839,7 +839,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       this.dispatchAction(action, value, 'property-change');
     } else {
       // Property is intentionally not mapped (handled via query parameters or direct API)
-      if (this.diagnosticLogs) {
+          if (this.diagnosticLogs) {
         console.log(`🔍 PdfJsViewer: Property ${propertyName} is handled via query parameters or direct API, skipping`);
       }
     }
@@ -881,11 +881,11 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
             console.log(`🔍 PdfJsViewer: Action ${propertyName} changed to ${change.currentValue} - using universal dispatcher`);
           }
           this.dispatchAction(action, change.currentValue, 'property-change');
-        } else {
-          if (this.diagnosticLogs) {
+    } else {
+      if (this.diagnosticLogs) {
             console.log(`🔍 PdfJsViewer: Property ${propertyName} has no action mapping - skipping`);
-          }
-        }
+      }
+    }
       } else {
         console.log(`🔍 PdfJsViewer: No change detected for ${propertyName}`);
       }
@@ -948,7 +948,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         // Use universal dispatcher for ALL actions - pure event-driven approach
         const action = this.mapPropertyToAction(propertyName);
         if (action) {
-          if (this.diagnosticLogs) {
+        if (this.diagnosticLogs) {
             console.log(`🔍 PdfJsViewer: Action ${propertyName} changed to ${change.currentValue} - using universal dispatcher`);
           }
           this.dispatchAction(action, change.currentValue, 'property-change');
@@ -1452,31 +1452,31 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   }
 
   private renderLoadingSpinner(): void {
-    this.viewerTab.document.write(`
-      <style>
-      .loader {
-        position: fixed;
-        left: 40%;
-        top: 40%;
-        border: 16px solid #f3f3f3;
-        border-radius: 50%;
-        border-top: 16px solid #3498db;
-        width: 120px;
-        height: 120px;
-        animation: spin 2s linear infinite;
-      }
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-      </style>
-      <div class="loader"></div>
-    `);
-  }
+        this.viewerTab.document.write(`
+          <style>
+          .loader {
+            position: fixed;
+            left: 40%;
+            top: 40%;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+          }
+          @keyframes spin {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+          </style>
+          <div class="loader"></div>
+        `);
+    }
 
   private createFileUrl(): string {
     this.relaseUrl?.();
@@ -1555,39 +1555,39 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   }
 
   private logViewerConfiguration(viewerUrl: string): void {
-    console.debug(`PdfJsViewer: Minimal URL configuration:
-      pdfSrc = ${this.pdfSrc}
-      externalWindow = ${this.externalWindow}
-      viewerFolder = ${this.viewerFolder}
-      viewerId = ${this.viewerId}
+      console.debug(`PdfJsViewer: Minimal URL configuration:
+        pdfSrc = ${this.pdfSrc}
+        externalWindow = ${this.externalWindow}
+        viewerFolder = ${this.viewerFolder}
+        viewerId = ${this.viewerId}
       finalUrl = ${viewerUrl}
-      
-      All other configurations handled via PostMessage system:
-      showOpenFile = ${this.showOpenFile}
-      showDownload = ${this.showDownload}
-      showViewBookmark = ${this.showViewBookmark}
-      showPrint = ${this.showPrint}
-      showFullScreen = ${this.showFullScreen}
-      showFind = ${this.showFind}
-      cursor = ${this.cursor}
-      scroll = ${this.scroll}
-      spread = ${this.spread}
-      page = ${this.page}
-      zoom = ${this.zoom}
-      namedDest = ${this.namedDest}
-      pageMode = ${this.pageMode}
-      errorOverride = ${this.errorOverride}
-      errorAppend = ${this.errorAppend}
-      errorMessage = ${this.errorMessage}
-      locale = ${this.locale}
-      useOnlyCssZoom = ${this.useOnlyCssZoom}
-      
-      Auto-actions (handled by action queue):
-      downloadOnLoad = ${this.downloadOnLoad}
-      printOnLoad = ${this.printOnLoad}
-      showLastPageOnLoad = ${this.showLastPageOnLoad}
-    `);
-  }
+        
+        All other configurations handled via PostMessage system:
+        showOpenFile = ${this.showOpenFile}
+        showDownload = ${this.showDownload}
+        showViewBookmark = ${this.showViewBookmark}
+        showPrint = ${this.showPrint}
+        showFullScreen = ${this.showFullScreen}
+        showFind = ${this.showFind}
+        cursor = ${this.cursor}
+        scroll = ${this.scroll}
+        spread = ${this.spread}
+        page = ${this.page}
+        zoom = ${this.zoom}
+        namedDest = ${this.namedDest}
+        pageMode = ${this.pageMode}
+        errorOverride = ${this.errorOverride}
+        errorAppend = ${this.errorAppend}
+        errorMessage = ${this.errorMessage}
+        locale = ${this.locale}
+        useOnlyCssZoom = ${this.useOnlyCssZoom}
+        
+        Auto-actions (handled by action queue):
+        downloadOnLoad = ${this.downloadOnLoad}
+        printOnLoad = ${this.printOnLoad}
+        showLastPageOnLoad = ${this.showLastPageOnLoad}
+      `);
+      }
   // #endregion
 
   // #region Two-Way Binding Helper Methods
@@ -1634,7 +1634,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     if (this.diagnosticLogs) {
       console.log(`🔍 Universal Dispatcher: Action ${action} requires readiness ${requiredReadiness}, current: ${this.postMessageReadiness}`);
     }
-
+    
     // Check if we have sufficient readiness to execute immediately
     if (this.hasRequiredReadiness(requiredReadiness)) {
       if (this.diagnosticLogs) {
