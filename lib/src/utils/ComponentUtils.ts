@@ -39,6 +39,7 @@ export class ComponentUtils {
       // Configuration
       'locale': 'set-locale',
       'useOnlyCssZoom': 'set-css-zoom',
+      'downloadFileName': 'set-download-filename',
       
       // Theme & Visual Customization (Phase 1)
       'theme': 'set-theme',

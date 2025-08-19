@@ -503,7 +503,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   // #region Lifecycle Methods
   ngOnInit(): void {   
          // 🟢 TEST LOG - Build verification (BUILD_ID: placeholder)
-        console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-08-17T23-02-43-000Z');
+        console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', '2025-08-18T22-00-15-000Z');
         
         // Debug theme initialization
         console.log('🎨 THEME DEBUG: ngOnInit - theme value:', this.theme);
