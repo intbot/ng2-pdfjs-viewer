@@ -192,6 +192,10 @@ if "!build_lib!"=="true" (
         pause
         exit /b 1
     )
+    if exist "node_modules\ng2-pdfjs-viewer\build-info.js" (
+        echo Copying build-info.js...
+        copy "node_modules\ng2-pdfjs-viewer\build-info.js" "src\assets\pdfjs\build-info.js" /y
+    )
     echo Step 5 completed successfully!
 
     REM Step 6: Stop any existing process on port 4200
@@ -279,6 +283,10 @@ if "!build_lib!"=="true" (
         echo Please check the xcopy output above for errors.
         pause
         exit /b 1
+    )
+    if exist "node_modules\ng2-pdfjs-viewer\build-info.js" (
+        echo Copying build-info.js...
+        copy "node_modules\ng2-pdfjs-viewer\build-info.js" "src\assets\pdfjs\build-info.js" /y
     )
     echo Step 2 completed successfully!
 
