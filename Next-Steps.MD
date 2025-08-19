@@ -1,8 +1,6 @@
 ## HIGH
-- Under Individual Properties -> Control visibility, "Full Screen" switch is not doing anything. Is it same as "Presentation Mode"?
-- Under Individual Properties -> Control visibility, "Find" switch is not doing anything
-- Under Individual Properties -> Control visibility, How to test "Bookmarks" and "annotations" switch
-- Under "Two-way binding", Rotation dropdown still does not work.
+Under Individual Properties -> Control visibility, How to test "Bookmarks" and "annotations" switch
+Under "Two-way binding", Rotation dropdown still does not work.
 
 
 ## LOW
