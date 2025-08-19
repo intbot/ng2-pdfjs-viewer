@@ -1,5 +1,5 @@
 ## HIGH
-Under Individual Properties -> Control visibility, How to test "Bookmarks" and "annotations" switch
+
 Under "Two-way binding", Rotation dropdown still does not work.
 
 
