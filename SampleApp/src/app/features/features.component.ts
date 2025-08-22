@@ -69,7 +69,7 @@ export class FeaturesComponent implements OnInit {
   public theme: 'light' | 'dark' | 'auto' = 'light';
   public primaryColor = '#007acc';
   public backgroundColor = '';
-  public pageBackgroundColor = '';
+  public pageBorderColor = '';
   public toolbarColor = '';
   public textColor = '';
   public borderRadius = '4px';
@@ -409,7 +409,7 @@ export class FeaturesComponent implements OnInit {
       theme: this.theme,
       primaryColor: this.primaryColor,
       backgroundColor: this.backgroundColor,
-      pageBackgroundColor: this.pageBackgroundColor,
+      pageBorderColor: this.pageBorderColor,
       toolbarColor: this.toolbarColor,
       textColor: this.textColor,
       borderRadius: this.borderRadius,

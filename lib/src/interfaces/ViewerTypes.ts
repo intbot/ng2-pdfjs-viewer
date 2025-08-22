@@ -109,7 +109,7 @@ export interface ThemeConfig {
   theme?: 'light' | 'dark' | 'auto';
   primaryColor?: string;
   backgroundColor?: string;
-  pageBackgroundColor?: string;
+  pageBorderColor?: string;
   toolbarColor?: string;
   textColor?: string;
   borderRadius?: string;

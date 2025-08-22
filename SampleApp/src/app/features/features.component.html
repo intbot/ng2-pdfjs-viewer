@@ -98,8 +98,8 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
-                  <mat-label>Page Background</mat-label>
-                  <input matInput type="color" [(ngModel)]="pageBackgroundColor" placeholder="White">
+                  <mat-label>Page Border Color</mat-label>
+                  <input matInput type="color" [(ngModel)]="pageBorderColor" placeholder="White">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
@@ -127,9 +127,7 @@
 
               <mat-divider></mat-divider>
 
-              <!-- Loading & Spinner (Phase 2) -->
-              <h3>Loading & Spinner Customization</h3>
-              <!-- Layout & Responsive (Phase D) -->
+              
               <h3>Layout & Responsive</h3>
               <div class="binding-grid">
                 <mat-form-field>
@@ -163,6 +161,7 @@
                   <input matInput placeholder="e.g., 840px or 900" [(ngModel)]="responsiveBreakpoint">
                 </mat-form-field>
               </div>
+              <h3>Loading & Spinner Customization</h3>
               <div class="toggle-grid">
                 <mat-slide-toggle [(ngModel)]="showSpinner">Show Spinner</mat-slide-toggle>
                 <mat-slide-toggle [(ngModel)]="useCustomSpinnerTpl">Use Custom Template</mat-slide-toggle>
@@ -446,7 +445,7 @@
             [theme]="theme"
             [primaryColor]="primaryColor"
             [backgroundColor]="backgroundColor"
-            [pageBackgroundColor]="pageBackgroundColor"
+            [pageBorderColor]="pageBorderColor"
             [toolbarColor]="toolbarColor"
             [textColor]="textColor"
             [borderRadius]="borderRadius"

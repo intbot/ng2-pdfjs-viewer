@@ -130,7 +130,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   @Input() public theme: 'light' | 'dark' | 'auto' = 'light';
   @Input() public primaryColor?: string;
   @Input() public backgroundColor?: string;
-  @Input() public pageBackgroundColor?: string;
+  @Input() public pageBorderColor?: string;
   @Input() public toolbarColor?: string;
   @Input() public textColor?: string;
   @Input() public borderRadius?: string;
@@ -210,7 +210,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     if (config.theme !== undefined) this.theme = config.theme;
     if (config.primaryColor !== undefined) this.primaryColor = config.primaryColor;
     if (config.backgroundColor !== undefined) this.backgroundColor = config.backgroundColor;
-    if (config.pageBackgroundColor !== undefined) this.pageBackgroundColor = config.pageBackgroundColor;
+    if (config.pageBorderColor !== undefined) this.pageBorderColor = config.pageBorderColor;
     if (config.toolbarColor !== undefined) this.toolbarColor = config.toolbarColor;
     if (config.textColor !== undefined) this.textColor = config.textColor;
     if (config.borderRadius !== undefined) this.borderRadius = config.borderRadius;
@@ -1202,8 +1202,8 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     if (this.backgroundColor) {
       this.queueConfiguration('backgroundColor', this.backgroundColor, 'set-background-color');
     }
-    if (this.pageBackgroundColor) {
-      this.queueConfiguration('pageBackgroundColor', this.pageBackgroundColor, 'set-page-background-color');
+    if (this.pageBorderColor) {
+      this.queueConfiguration('pageBorderColor', this.pageBorderColor, 'set-page-border-color');
     }
     if (this.toolbarColor) {
       this.queueConfiguration('toolbarColor', this.toolbarColor, 'set-toolbar-color');
@@ -1659,7 +1659,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
   private getRequiredReadinessLevel(action: string): number {
     // Define readiness requirements for all actions
-    const level1Actions = ['set-theme', 'set-primary-color', 'set-background-color', 'set-page-background-color', 'set-toolbar-color', 'set-text-color', 'set-border-radius', 'set-custom-css'];
+    const level1Actions = ['set-theme', 'set-primary-color', 'set-background-color', 'set-page-border-color', 'set-toolbar-color', 'set-text-color', 'set-border-radius', 'set-custom-css'];
     const level3Actions = ['show-download', 'show-print', 'show-fullscreen', 'show-find', 'show-bookmark', 'show-openfile', 'show-annotations', 'set-error-message', 'set-error-override', 'set-error-append', 'set-css-zoom',
       // Phase C actions (DOM visibility toggles)
       'show-toolbar-left','show-toolbar-middle','show-toolbar-right','show-secondary-toolbar-toggle','show-sidebar','show-sidebar-left','show-sidebar-right'

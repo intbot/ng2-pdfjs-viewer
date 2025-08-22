@@ -45,7 +45,7 @@ export class ComponentUtils {
       'theme': 'set-theme',
       'primaryColor': 'set-primary-color',
       'backgroundColor': 'set-background-color',
-      'pageBackgroundColor': 'set-page-background-color',
+      'pageBorderColor': 'set-page-border-color',
       'toolbarColor': 'set-toolbar-color',
       'textColor': 'set-text-color',
       'borderRadius': 'set-border-radius',
