@@ -51,6 +51,12 @@ import { ChangeOriginTracker } from './utils/ChangeOriginTracker';
       background: rgba(255, 255, 255, 0.6);
       backdrop-filter: saturate(120%) blur(1px);
     }
+    
+    /* Default spinner animation */
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   `],
   template: `
   <div class="ng2-pdfjs-viewer-container" style="position:relative;width:100%;height:100%;">
@@ -61,7 +67,10 @@ import { ChangeOriginTracker } from './utils/ChangeOriginTracker';
          style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.6);backdrop-filter:saturate(120%) blur(1px);">
       <ng-container *ngIf="customSpinnerTpl; else defaultSpinner" [ngTemplateOutlet]="customSpinnerTpl"></ng-container>
       <ng-template #defaultSpinner>
-        <div [innerHTML]="spinnerHtml || defaultSpinnerHtml" style="text-align:center;"></div>
+        <div style="text-align:center;">
+          <div style="display:inline-block;width:40px;height:40px;border:4px solid #f3f3f3;border-top:4px solid #2196F3;border-radius:50%;animation:spin 1s linear infinite;"></div>
+          <div style="margin-top:16px;color:#666;font-size:16px;">Loading PDF...</div>
+        </div>
       </ng-template>
     </div>
   </div>
@@ -152,7 +161,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   // #region Loading & Spinner Customization (Phase 2)
   @Input() public customSpinnerTpl?: TemplateRef<any>;
   @Input() public spinnerClass?: string;
-  @Input() public spinnerHtml?: string;
   // #endregion
 
   // #region Phase C: Toolbar/Sidebar Group Visibility
@@ -176,15 +184,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   // Internal loading state for overlay control
   public isLoading: boolean = true;
   private hasFirstRender: boolean = false;
-  public readonly defaultSpinnerHtml: string = `
-    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;color:#444">
-      <div style="width:40px;height:40px;border:4px solid rgba(0,0,0,0.15);border-top-color:var(--ng2-primary-color, #3f51b5);border-radius:50%;animation:ng2-spin 1s linear infinite;"></div>
-      <div>Loading PDF…</div>
-    </div>
-    <style>
-      @keyframes ng2-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    </style>
-  `;
+
 
   // #region Convenience Configuration Setters
   @Input() public set controlVisibility(config: ControlVisibilityConfig) {
@@ -501,7 +501,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       if (this.viewerTab) {
         pdfViewer = this.viewerTab.PDFViewerApplication;
       }
-    } else {
+      } else {
       if (this.iframe.nativeElement.contentWindow) {
         pdfViewer = this.iframe.nativeElement.contentWindow.PDFViewerApplication;
       }
@@ -509,105 +509,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     if(this.diagnosticLogs) console.debug("PdfJsViewer: Viewer ->", pdfViewer);
     return pdfViewer;
   }
-      // Inject spinner animation CSS globally to ensure it works with innerHTML
-    private injectSpinnerAnimations(): void {
-      // Check if already injected
-      if (document.getElementById('ng2-pdfjs-spinner-animations')) {
-        return;
-      }
-  
-      const style = document.createElement('style');
-      style.id = 'ng2-pdfjs-spinner-animations';
-      style.textContent = `
-        /* ng2-pdfjs-viewer spinner animations */
-        @keyframes ng2-spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        
-        @keyframes ng2-pulse {
-          0%, 80%, 100% { transform: scale(0); opacity: 1; }
-          40% { transform: scale(1); opacity: 1; }
-        }
-        
-        @keyframes ng2-bounce {
-          0%, 80%, 100% { transform: scale(0); }
-          40% { transform: scale(1); }
-        }
-        
-        @keyframes ng2-fade {
-          0%, 80%, 100% { opacity: 0; }
-          40% { opacity: 1; }
-        }
-        
-        @keyframes ng2-progress {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
-        }
-        
-        @keyframes ng2-float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-        
-        /* Animation classes for custom spinners */
-        .ng2-spinner-spin {
-          animation: ng2-spin 2s linear infinite !important;
-        }
-        
-        .ng2-spinner-pulse {
-          animation: ng2-pulse 1.4s infinite ease-in-out both !important;
-        }
-        
-        .ng2-spinner-pulse-1 {
-          animation: ng2-pulse 1.4s infinite ease-in-out both !important;
-          animation-delay: -0.16s !important;
-        }
-        
-        .ng2-spinner-pulse-2 {
-          animation: ng2-pulse 1.4s infinite ease-in-out both !important;
-          animation-delay: -0.32s !important;
-        }
-        
-        .ng2-spinner-bounce {
-          animation: ng2-bounce 1.4s infinite ease-in-out both !important;
-        }
-        
-        .ng2-spinner-bounce-1 {
-          animation: ng2-bounce 1.4s infinite ease-in-out both !important;
-          animation-delay: -0.16s !important;
-        }
-        
-        .ng2-spinner-bounce-2 {
-          animation: ng2-bounce 1.4s infinite ease-in-out both !important;
-          animation-delay: -0.32s !important;
-        }
-        
-        .ng2-spinner-fade {
-          animation: ng2-fade 1.5s infinite ease-in-out both !important;
-        }
-        
-        .ng2-spinner-fade-1 {
-          animation: ng2-fade 1.5s infinite ease-in-out both !important;
-          animation-delay: 0.3s !important;
-        }
-        
-        .ng2-spinner-fade-2 {
-          animation: ng2-fade 1.5s infinite ease-in-out both !important;
-          animation-delay: 0.6s !important;
-        }
-        
-        .ng2-spinner-progress {
-          animation: ng2-progress 2s ease-in-out infinite !important;
-        }
-        
-        .ng2-spinner-float {
-          animation: ng2-float 2s ease-in-out infinite !important;
-        }
-      `;
-      
-      document.head.appendChild(style);
-    }
+
     // #endregion
     // #endregion
 
@@ -620,11 +522,8 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         console.log('🎨 THEME DEBUG: ngOnInit - theme value:', this.theme);
                  console.log('🎨 THEME DEBUG: ngOnInit - primaryColor:', this.primaryColor);
          console.log('🎨 THEME DEBUG: ngOnInit - backgroundColor:', this.backgroundColor);
-         
-         // Inject spinner animations CSS globally
-         this.injectSpinnerAnimations();
-     
-     // Configure action queue manager with diagnostic logs
+    
+    // Configure action queue manager with diagnostic logs
     this.actionQueueManager = new ActionQueueManager(this.diagnosticLogs);
     
     // Connect action queue manager to PostMessage system

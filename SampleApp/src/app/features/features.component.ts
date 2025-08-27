@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { ChangedScale, ChangedRotation } from 'ng2-pdfjs-viewer';
 // Additional event data types will be available after library build:
 // DocumentError, PagesInfo, PresentationMode, FindOperation, FindMatchesCount,
@@ -12,6 +12,13 @@ import { ChangedScale, ChangedRotation } from 'ng2-pdfjs-viewer';
 })
 export class FeaturesComponent implements OnInit {
   @ViewChild('pdfViewer', { static: false }) public pdfViewer;
+
+  // Template references for different spinner styles
+  @ViewChild('defaultSpinnerTemplate', { static: true }) defaultSpinnerTemplate!: TemplateRef<any>;
+  @ViewChild('dotsSpinnerTemplate', { static: true }) dotsSpinnerTemplate!: TemplateRef<any>;
+  @ViewChild('bounceSpinnerTemplate', { static: true }) bounceSpinnerTemplate!: TemplateRef<any>;
+  @ViewChild('progressSpinnerTemplate', { static: true }) progressSpinnerTemplate!: TemplateRef<any>;
+  @ViewChild('corporateSpinnerTemplate', { static: true }) corporateSpinnerTemplate!: TemplateRef<any>;
 
   // Configuration properties - directly bound to the viewer
   public pdfSrc = '/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf';
@@ -77,8 +84,7 @@ export class FeaturesComponent implements OnInit {
 
   // Spinner demo (Phase 2)
   public useCustomSpinnerTpl = false;
-  public useCustomSpinnerHtml = false;
-  public customSpinnerHtml = '<div style="display:flex;flex-direction:column;align-items:center;gap:8px;color:#444"><div style="width:36px;height:36px;border:4px dashed #3f51b5;border-radius:50%;animation:ng2-spin 1s linear infinite"></div><div>Preparing document…</div></div>';
+  public selectedSpinnerTemplate = 'default'; // New: template selection
   public spinnerCssClass = 'demo-spinner-overlay';
 
   // Status bar / layout helpers
@@ -165,6 +171,17 @@ export class FeaturesComponent implements OnInit {
 
   ngOnInit() {
     console.log('🎬 Features Demo: Component initialized');
+  }
+
+  // Get the selected spinner template reference
+  getSelectedSpinnerTemplate(): TemplateRef<any> | null {
+    switch (this.selectedSpinnerTemplate) {
+      case 'dots': return this.dotsSpinnerTemplate;
+      case 'bounce': return this.bounceSpinnerTemplate;
+      case 'progress': return this.progressSpinnerTemplate;
+      case 'corporate': return this.corporateSpinnerTemplate;
+      default: return this.defaultSpinnerTemplate;
+    }
   }
 
   // Event handlers - clean and simple with blinking animation
@@ -514,9 +531,8 @@ export class FeaturesComponent implements OnInit {
     console.log('🎬 Features Demo: Current spinner settings:');
     console.log('  - showSpinner:', this.showSpinner);
     console.log('  - useCustomSpinnerTpl:', this.useCustomSpinnerTpl);
-    console.log('  - useCustomSpinnerHtml:', this.useCustomSpinnerHtml);
+    console.log('  - selectedSpinnerTemplate:', this.selectedSpinnerTemplate);
     console.log('  - spinnerCssClass:', this.spinnerCssClass);
-    console.log('  - customSpinnerHtml:', this.customSpinnerHtml);
     
     // Force complete component recreation by changing the tracking key
     const previousKey = this.viewerTrackingKey;

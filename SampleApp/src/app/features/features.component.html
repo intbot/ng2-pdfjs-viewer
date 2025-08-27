@@ -165,7 +165,6 @@
               <div class="toggle-grid">
                 <mat-slide-toggle [(ngModel)]="showSpinner">Show Spinner</mat-slide-toggle>
                 <mat-slide-toggle [(ngModel)]="useCustomSpinnerTpl">Use Custom Template</mat-slide-toggle>
-                <mat-slide-toggle [(ngModel)]="useCustomSpinnerHtml">Use Custom HTML</mat-slide-toggle>
               </div>
 
               <mat-form-field class="full-width" appearance="outline">
@@ -173,10 +172,17 @@
                 <input matInput [(ngModel)]="spinnerCssClass" placeholder="demo-spinner-overlay">
                 </mat-form-field>
 
-              <mat-form-field class="full-width" appearance="outline" *ngIf="useCustomSpinnerHtml">
-                <mat-label>Custom Spinner HTML</mat-label>
-                <textarea matInput rows="4" [(ngModel)]="customSpinnerHtml"></textarea>
-                </mat-form-field>
+              <mat-form-field class="full-width" appearance="outline" *ngIf="useCustomSpinnerTpl">
+                <mat-label>Template Style</mat-label>
+                <mat-select [(ngModel)]="selectedSpinnerTemplate">
+                  <mat-option value="default">Default Spinner</mat-option>
+                  <mat-option value="dots">Pulsing Dots</mat-option>
+                  <mat-option value="bounce">Bouncing Squares</mat-option>
+                  <mat-option value="progress">Progress Bar</mat-option>
+                  <mat-option value="corporate">Corporate Style</mat-option>
+                </mat-select>
+                <mat-hint>Choose a custom template style</mat-hint>
+              </mat-form-field>
 
                 <div class="action-button-container">
                   <button mat-raised-button color="primary" (click)="testLoadingSpinner()" matTooltip="Recreates the PDF viewer to test loading spinner customizations">
@@ -421,8 +427,7 @@
             [downloadFileName]="downloadFileName"
             [showSpinner]="showSpinner"
             [spinnerClass]="spinnerCssClass"
-            [spinnerHtml]="useCustomSpinnerHtml ? customSpinnerHtml : ''"
-            [customSpinnerTpl]="useCustomSpinnerTpl ? spinnerTemplate : null"
+            [customSpinnerTpl]="useCustomSpinnerTpl ? getSelectedSpinnerTemplate() : null"
             [showOpenFile]="showOpenFile"
             [showDownload]="showDownload"
             [showPrint]="showPrint"
@@ -490,13 +495,58 @@
             (onIdle)="onIdle()">
           </ng2-pdfjs-viewer>
 
-          <!-- Custom spinner template for Phase 2 demo -->
-          <ng-template #spinnerTemplate>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;color:#444">
-              <svg width="40" height="40" viewBox="0 0 50 50" class="ng2-spinner-spin">
-                <circle cx="25" cy="25" r="20" fill="none" stroke="#3f51b5" stroke-width="4" stroke-linecap="round" stroke-dasharray="100" stroke-dashoffset="60"></circle>
-              </svg>
-              <div>Loading with Angular Template…</div>
+          <!-- Multiple Custom Spinner Templates -->
+          
+          <!-- Default Spinner Template -->
+          <ng-template #defaultSpinnerTemplate>
+            <div style="text-align:center;color:#666">
+              <div style="display:inline-block;width:40px;height:40px;border:4px solid #f3f3f3;border-top:4px solid #2196F3;border-radius:50%;animation:spin 1s linear infinite;"></div>
+              <div style="margin-top:16px;font-size:16px;">Loading PDF...</div>
+            </div>
+          </ng-template>
+
+          <!-- Pulsing Dots Template -->
+          <ng-template #dotsSpinnerTemplate>
+            <div style="text-align:center;color:#666">
+              <div style="display:inline-flex;gap:8px;margin-bottom:20px;justify-content:center;">
+                <div style="width:12px;height:12px;background:#2196F3;border-radius:50%;animation:pulse 1.4s infinite ease-in-out both;"></div>
+                <div style="width:12px;height:12px;background:#4ECDC4;border-radius:50%;animation:pulse 1.4s infinite ease-in-out both;animation-delay:-0.16s;"></div>
+                <div style="width:12px;height:12px;background:#45B7D1;border-radius:50%;animation:pulse 1.4s infinite ease-in-out both;animation-delay:-0.32s;"></div>
+              </div>
+              <div style="font-size:16px;">Loading Document...</div>
+            </div>
+          </ng-template>
+
+          <!-- Bouncing Squares Template -->
+          <ng-template #bounceSpinnerTemplate>
+            <div style="text-align:center;color:#555">
+              <div style="display:inline-flex;gap:6px;margin-bottom:20px;justify-content:center;">
+                <div style="width:15px;height:15px;background:#FF6B6B;animation:bounce 1.4s infinite ease-in-out both;"></div>
+                <div style="width:15px;height:15px;background:#4ECDC4;animation:bounce 1.4s infinite ease-in-out both;animation-delay:-0.16s;"></div>
+                <div style="width:15px;height:15px;background:#45B7D1;animation:bounce 1.4s infinite ease-in-out both;animation-delay:-0.32s;"></div>
+              </div>
+              <div style="font-size:16px;">Processing PDF...</div>
+            </div>
+          </ng-template>
+
+          <!-- Progress Bar Template -->
+          <ng-template #progressSpinnerTemplate>
+            <div style="text-align:center;color:#333">
+              <div style="font-size:24px;margin-bottom:16px;">📖</div>
+              <div style="font-size:16px;margin-bottom:16px;">Loading PDF Document</div>
+              <div style="width:200px;height:4px;background:#e0e0e0;border-radius:2px;margin:0 auto;overflow:hidden;">
+                <div style="width:50px;height:100%;background:linear-gradient(90deg,#2196F3,#21CBF3);border-radius:2px;animation:progress 2s ease-in-out infinite;"></div>
+              </div>
+            </div>
+          </ng-template>
+
+          <!-- Corporate Style Template -->
+          <ng-template #corporateSpinnerTemplate>
+            <div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:40px;border-radius:16px;text-align:center;box-shadow:0 10px 40px rgba(102,126,234,0.3);">
+              <div style="width:60px;height:60px;border:3px solid rgba(255,255,255,0.3);border-top:3px solid white;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 24px;"></div>
+              <h3 style="margin:0 0 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-weight:600;">Your Company</h3>
+              <p style="margin:0;opacity:0.9;font-size:16px;">Loading PDF Document</p>
+              <div style="margin-top:16px;font-size:12px;opacity:0.7;">Please wait while we prepare your file</div>
             </div>
           </ng-template>
       </mat-card-content>
