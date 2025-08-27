@@ -505,6 +505,25 @@ export class FeaturesComponent implements OnInit {
     console.log(`🎬 Features Demo: Component tracking key changed from ${previousKey} to ${this.viewerTrackingKey} - component will be recreated`);
   }
 
+  // Reload viewer to test loading spinner - forces complete component destruction and recreation
+  public testLoadingSpinner() {
+    console.log('🎬 Features Demo: *** BUTTON CLICKED - testLoadingSpinner called ***');
+    console.log('🎬 Features Demo: Reloading viewer to test loading spinner');
+    
+    // Log current spinner settings before reload
+    console.log('🎬 Features Demo: Current spinner settings:');
+    console.log('  - showSpinner:', this.showSpinner);
+    console.log('  - useCustomSpinnerTpl:', this.useCustomSpinnerTpl);
+    console.log('  - useCustomSpinnerHtml:', this.useCustomSpinnerHtml);
+    console.log('  - spinnerCssClass:', this.spinnerCssClass);
+    console.log('  - customSpinnerHtml:', this.customSpinnerHtml);
+    
+    // Force complete component recreation by changing the tracking key
+    const previousKey = this.viewerTrackingKey;
+    this.viewerTrackingKey = Date.now();
+    console.log(`🎬 Features Demo: Component tracking key changed from ${previousKey} to ${this.viewerTrackingKey} - component will be recreated`);
+  }
+
   // Test error handling
   public testError() {
     console.log('🎬 Features Demo: Testing error handling');

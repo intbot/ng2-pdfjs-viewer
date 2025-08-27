@@ -178,6 +178,13 @@
                 <textarea matInput rows="4" [(ngModel)]="customSpinnerHtml"></textarea>
                 </mat-form-field>
 
+                <div class="action-button-container">
+                  <button mat-raised-button color="primary" (click)="testLoadingSpinner()" matTooltip="Recreates the PDF viewer to test loading spinner customizations">
+                    <mat-icon>refresh</mat-icon> Reload Viewer
+                  </button>
+                </div>
+                <mat-divider></mat-divider>
+
                 <h3>Basic Configuration</h3>
                 <div class="config-grid">
                   <mat-form-field>
@@ -486,11 +493,11 @@
           <!-- Custom spinner template for Phase 2 demo -->
           <ng-template #spinnerTemplate>
             <div style="display:flex;flex-direction:column;align-items:center;gap:10px;color:#444">
-              <svg width="40" height="40" viewBox="0 0 50 50" style="animation:ng2-spin 1s linear infinite">
+              <svg width="40" height="40" viewBox="0 0 50 50" class="ng2-spinner-spin">
                 <circle cx="25" cy="25" r="20" fill="none" stroke="#3f51b5" stroke-width="4" stroke-linecap="round" stroke-dasharray="100" stroke-dashoffset="60"></circle>
               </svg>
-              <div>Loading…</div>
-        </div>
+              <div>Loading with Angular Template…</div>
+            </div>
           </ng-template>
       </mat-card-content>
     </mat-card>
