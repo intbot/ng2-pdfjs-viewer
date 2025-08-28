@@ -218,7 +218,7 @@
 
             <!-- Convenience Setters Demo -->
             <mat-tab label="Convenience Setters">
-              <div class="tab-content">
+            <div class="tab-content">
                 <div class="convenience-demo">
                   <h3>Using Convenience Configuration Objects</h3>
                   <p class="demo-info">
@@ -278,7 +278,6 @@
                 <mat-select [(ngModel)]="cursor">
                     <mat-option value="select">Text Selection</mat-option>
                   <mat-option value="hand">Hand</mat-option>
-                  <mat-option value="zoom">Zoom</mat-option>
                 </mat-select>
               </mat-form-field>
 
@@ -346,12 +345,12 @@
                       <mat-chip [color]="lastZoomSource.includes('Angular') ? 'primary' : 'accent'" selected>
                         {{lastZoomSource}}
                       </mat-chip>
-                    </div>
+                  </div>
                     <div style="margin-top: 8px; font-size: 12px; color: #666;">
                       Use PDF viewer's zoom controls or mouse wheel to see this update automatically
-                    </div>
                   </div>
                 </div>
+              </div>
 
                 <div class="current-values">
                   <h4>Current Values (Live Updates)</h4>
