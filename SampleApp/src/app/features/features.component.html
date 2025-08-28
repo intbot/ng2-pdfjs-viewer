@@ -268,23 +268,10 @@
             </div>
           </mat-tab>
 
-            <!-- Two-Way Binding Demo -->
-          <mat-tab label="Two-Way Binding">
+            <!-- Separated Binding Demo -->
+          <mat-tab label="Property Binding">
             <div class="tab-content">
-                <h3>Live Two-Way Property Binding</h3>
                 <div class="binding-grid">
-                  <mat-form-field>
-                    <mat-label>Zoom</mat-label>
-                  <mat-select [(ngModel)]="zoom">
-                    <mat-option value="auto">Auto</mat-option>
-                    <mat-option value="page-fit">Page Fit</mat-option>
-                    <mat-option value="page-width">Page Width</mat-option>
-                      <mat-option value="page-actual">Actual Size</mat-option>
-                    <mat-option value="50%">50%</mat-option>
-                    <mat-option value="125%">125%</mat-option>
-                    <mat-option value="200%">200%</mat-option>
-                  </mat-select>
-                </mat-form-field>
 
                   <mat-form-field>
                     <mat-label>Cursor</mat-label>
@@ -335,10 +322,41 @@
                 </mat-form-field>
               </div>
 
+              <div class="zoom-demo-section">
+                <div class="zoom-status-display" style="background: #f5f5f5; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                  <span>Only for zoom, separated two-way binding to avoid infinite loops</span>
+                </div>
+                  <strong style="display: block; margin-bottom: 8px;">Angular → PDF viewer</strong>
+                  <div class="zoom-button-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px;">
+                    <button mat-raised-button (click)="setZoom('0.5')" [color]="currentZoom === '0.5' ? 'primary' : 'basic'">50%</button>
+                    <button mat-raised-button (click)="setZoom('0.75')" [color]="currentZoom === '0.75' ? 'primary' : 'basic'">75%</button>
+                    <button mat-raised-button (click)="setZoom('1.0')" [color]="currentZoom === '1.0' ? 'primary' : 'basic'">100%</button>
+                    <button mat-raised-button (click)="setZoom('1.25')" [color]="currentZoom === '1.25' ? 'primary' : 'basic'">125%</button>
+                    <button mat-raised-button (click)="setZoom('1.5')" [color]="currentZoom === '1.5' ? 'primary' : 'basic'">150%</button>
+                    <button mat-raised-button (click)="setZoom('2.0')" [color]="currentZoom === '2.0' ? 'primary' : 'basic'">200%</button>
+                    <button mat-raised-button (click)="setZoom('page-fit')" [color]="currentZoom === 'page-fit' ? 'primary' : 'basic'">Page Fit</button>
+                    <button mat-raised-button (click)="setZoom('page-width')" [color]="currentZoom === 'page-width' ? 'primary' : 'basic'">Page Width</button>
+                    <button mat-raised-button (click)="setZoom('auto')" [color]="currentZoom === 'auto' ? 'primary' : 'basic'">Auto</button>
+                    <button mat-raised-button (click)="setZoom('page-actual')" [color]="currentZoom === 'page-actual' ? 'primary' : 'basic'">Actual Size</button>
+                  </div>
+                  <strong style="display: block; margin-bottom: 8px;">PDF Viewer → Angular</strong>
+                  <div class="zoom-status-display" style="background: #f5f5f5; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                      <span><strong>Detected Zoom:</strong> {{detectedZoom}}</span>
+                      <mat-chip [color]="lastZoomSource.includes('Angular') ? 'primary' : 'accent'" selected>
+                        {{lastZoomSource}}
+                      </mat-chip>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 12px; color: #666;">
+                      Use PDF viewer's zoom controls or mouse wheel to see this update automatically
+                    </div>
+                  </div>
+                </div>
+
                 <div class="current-values">
                   <h4>Current Values (Live Updates)</h4>
                   <div class="value-display">
-                    <span>Zoom: <strong>{{zoom}}</strong></span>
+                    <span>Zoom: <strong>{{detectedZoom}}</strong> <small>(from PDF viewer)</small></span>
                     <span>Cursor: <strong>{{cursor}}</strong></span>
                     <span>Scroll: <strong>{{scroll}}</strong></span>
                     <span>Spread: <strong>{{spread}}</strong></span>
@@ -464,7 +482,7 @@
             [toolbarPosition]="toolbarPosition"
             [sidebarPosition]="sidebarPosition"
             [responsiveBreakpoint]="responsiveBreakpoint"
-            [(zoom)]="zoom"
+            [zoom]="currentZoom"
             [(cursor)]="cursor"
             [(scroll)]="scroll"
             [(spread)]="spread"

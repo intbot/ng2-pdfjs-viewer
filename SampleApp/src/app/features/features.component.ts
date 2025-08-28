@@ -51,7 +51,10 @@ export class FeaturesComponent implements OnInit {
   public rotateCCW = false;
 
   // Two-way binding properties
-  public zoom = 'auto';
+  // Separated zoom demo - no two-way binding
+  public currentZoom = 'auto';        // What we send TO the PDF viewer
+  public detectedZoom = 'auto';       // What we receive FROM the PDF viewer  
+  public lastZoomSource = 'initial';  // Track the source of zoom changes
   public cursor = 'select';
   public scroll = 'vertical';
   public spread = 'none';
@@ -171,6 +174,10 @@ export class FeaturesComponent implements OnInit {
 
   ngOnInit() {
     console.log('🎬 Features Demo: Component initialized');
+    
+    // Initialize detected zoom display
+    this.detectedZoom = this.formatZoomDisplay(1.0); // Default to 100%
+    this.lastZoomSource = 'initial';
   }
 
   // Get the selected spinner template reference
@@ -182,6 +189,21 @@ export class FeaturesComponent implements OnInit {
       case 'corporate': return this.corporateSpinnerTemplate;
       default: return this.defaultSpinnerTemplate;
     }
+  }
+
+  // Zoom demo methods (Angular → PDF direction)
+  setZoom(zoomValue: string) {
+    console.log('🎬 Features Demo: Setting zoom via Angular button to:', zoomValue);
+    this.currentZoom = zoomValue;
+    this.lastZoomSource = 'Angular button click';
+  }
+
+  // Format zoom value for display (PDF → Angular direction)  
+  formatZoomDisplay(scale: number | string): string {
+    if (typeof scale === 'number') {
+      return `${Math.round(scale * 100)}%`;
+    }
+    return scale?.toString() || 'auto';
   }
 
   // Event handlers - clean and simple with blinking animation
@@ -208,8 +230,12 @@ export class FeaturesComponent implements OnInit {
     this.eventCounts.scaleChange++;
     this.triggerBlink('scaleChange');
     this.currentScale = scale;
-    this.zoom = scale.toString(); // Fix: ChangedScale is a number, convert to string for zoom property
-    console.log('🎬 Features Demo: Scale changed to:', scale);
+    
+    // Update detected zoom display (PDF → Angular direction)
+    this.detectedZoom = this.formatZoomDisplay(scale);
+    this.lastZoomSource = 'PDF viewer user action';
+    
+    console.log('🎬 Features Demo: Scale changed to:', scale, 'Formatted:', this.detectedZoom);
     this.pushEventToFeed('scaleChange', { scale });
   }
 
