@@ -243,8 +243,9 @@ export class FeaturesComponent implements OnInit {
     this.eventCounts.rotationChange++;
     this.triggerBlink('rotationChange');
     this.currentRotation = rotation.rotation;
-    this.rotation = rotation.rotation; // Fix: Update the property bound to the dropdown
-    console.log('🎬 Features Demo: Rotation changed to:', rotation.rotation);
+    // Update the rotation property since we now use one-way binding
+    this.rotation = rotation.rotation;
+    console.log('🎬 Features Demo: Rotation changed via PDF viewer interaction:', rotation.rotation);
     this.pushEventToFeed('rotationChange', rotation);
   }
 

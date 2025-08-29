@@ -333,7 +333,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   
   // Two-way binding Output events
   @Output() zoomChange = new EventEmitter<string>();
-  @Output() rotationChange = new EventEmitter<number>();
+
   @Output() cursorChange = new EventEmitter<string>();
   @Output() scrollChange = new EventEmitter<string>();
   @Output() spreadChange = new EventEmitter<string>();
@@ -358,21 +358,20 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   }
 
   /**
-   * Two-way binding for document rotation
+   * One-way binding for document rotation
    * Supports: 0, 90, 180, 270 degrees
    */
   @Input()
-  get rotation(): number {
-    return this._rotation;
-  }
   set rotation(value: number) {
     const normalizedValue = PropertyTransformers.transformRotation.toViewer(value);
     if (this._rotation !== normalizedValue) {
-      this.changeOriginTracker.markProgrammatic('rotation');
       this._rotation = normalizedValue;
       this.applyRotationToViewer(this._rotation);
-      this.rotationChange.emit(this._rotation);
     }
+  }
+  
+  get rotation(): number {
+    return this._rotation;
   }
 
   /**
@@ -709,6 +708,8 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       return;
     }
 
+
+
     // Only process user-initiated changes to avoid infinite loops
     if (source === 'user' && !this.changeOriginTracker.isProgrammatic(property)) {
       this.changeOriginTracker.markUserInitiated(property);
@@ -753,7 +754,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         case 'rotation':
           if (this._rotation !== value) {
             this._rotation = PropertyTransformers.transformRotation.fromViewer(value);
-            this.rotationChange.emit(this._rotation);
           }
           break;
           
@@ -1062,7 +1062,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
           if (this._rotation !== normalizedRotation && !this.changeOriginTracker.isProgrammatic('rotation')) {
             this.changeOriginTracker.markUserInitiated('rotation');
             this._rotation = normalizedRotation;
-            this.rotationChange.emit(normalizedRotation);
           }
           
           this.onRotationChange.emit(newRotation);
