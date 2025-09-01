@@ -18,9 +18,6 @@ export class ActionQueueManager {
     this.isPostMessageReady = ready;
     this.postMessageReadiness = readiness;
     
-    if (this.diagnosticLogs) {
-      console.log(`🔍 ActionQueueManager: PostMessage ready: ${ready}, readiness: ${readiness}`);
-    }
     
     if (ready) {
       this.processQueuedActions();
@@ -30,17 +27,11 @@ export class ActionQueueManager {
   updateReadiness(readiness: number): void {
     if (this.postMessageReadiness !== readiness) {
       this.postMessageReadiness = readiness;
-      if (this.diagnosticLogs) {
-        console.log(`🔍 ActionQueueManager: Readiness updated to: ${readiness}`);
-      }
     }
   }
 
   // Simplified queue management - single queue with readiness levels
   queueAction(action: ViewerAction, readinessLevel: number): void {
-    if (this.diagnosticLogs) {
-      console.log(`🔍 ActionQueueManager: Queueing action: ${action.action} (requires readiness ${readinessLevel})`);
-    }
     
     this.actionQueue.push({ action, readinessLevel });
   }
@@ -63,9 +54,6 @@ export class ActionQueueManager {
   }
 
   onDocumentLoaded(): void {
-    if (this.diagnosticLogs) {
-      console.log('🔍 ActionQueueManager: Document loaded, processing queued actions');
-    }
     this.isDocumentLoaded = true;
     this.processQueuedActions();
   }
@@ -76,9 +64,6 @@ export class ActionQueueManager {
       const canExecute = this.postMessageReadiness >= item.readinessLevel && 
                         (item.readinessLevel < 5 || this.isDocumentLoaded);
       
-      if (this.diagnosticLogs && canExecute) {
-        console.log(`🔍 ActionQueueManager: Action ${item.action.action} now executable (readiness ${this.postMessageReadiness} >= ${item.readinessLevel})`);
-      }
       
       return canExecute;
     });
@@ -103,9 +88,6 @@ export class ActionQueueManager {
     };
 
     try {
-      if (this.diagnosticLogs) {
-        console.log(`🔍 ActionQueueManager: Executing action: ${action.action} = ${action.payload}`);
-      }
 
       if (action.condition && !action.condition(null)) {
         result.error = 'Condition not met';
@@ -116,9 +98,6 @@ export class ActionQueueManager {
       const success = await this.executeActionViaPostMessage(action);
       result.success = success;
       
-      if (this.diagnosticLogs) {
-        console.log(`🔍 ActionQueueManager: Action ${action.action} ${success ? 'succeeded' : 'failed'}`);
-      }
 
       // If action has a resolver (from user interaction), call it
       if (action.resolver) {
@@ -166,9 +145,6 @@ export class ActionQueueManager {
   clearQueues(): void {
     this.actionQueue = [];
     this.executedActions.clear();
-    if (this.diagnosticLogs) {
-      console.log('🔍 ActionQueueManager: Queue cleared');
-    }
   }
 
   getQueueStatus(): { queuedActions: number; executedActions: number } {

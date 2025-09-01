@@ -518,9 +518,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', (window as any).NG2_PDF_VIEWER_BUILD_ID || 'BUILD_ID_NOT_LOADED');
         
         // Debug theme initialization
-        console.log('🎨 THEME DEBUG: ngOnInit - theme value:', this.theme);
-                 console.log('🎨 THEME DEBUG: ngOnInit - primaryColor:', this.primaryColor);
-         console.log('🎨 THEME DEBUG: ngOnInit - backgroundColor:', this.backgroundColor);
+
     
     // Configure action queue manager with diagnostic logs
     this.actionQueueManager = new ActionQueueManager(this.diagnosticLogs);
@@ -542,38 +540,25 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
   ngAfterViewInit(): void {
     // Minimal initialization - rely on event-driven readiness notifications
-    if (this.diagnosticLogs) {
-      console.log('🔍 PdfJsViewer: ngAfterViewInit - view initialized');
-    }
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.diagnosticLogs) {
-    console.log('🔍 PdfJsViewer: ngOnChanges called with changes:', changes);
-    console.log('🔍 PdfJsViewer: PDFViewerApplication available:', !!this.PDFViewerApplication);
-    }
+
     
     if (this.PDFViewerApplication) {
-      if (this.diagnosticLogs) {
-      console.log('🔍 PdfJsViewer: PDFViewerApplication.initialized:', this.PDFViewerApplication.initialized);
-      }
+
       
       // Only apply changes if PostMessage API is ready and viewer is initialized
       if (this.isPostMessageReady && this.PDFViewerApplication.initialized) {
-        if (this.diagnosticLogs) {
-        console.log('🔍 PdfJsViewer: Applying changes immediately');
-        }
+
         this.applyChanges(changes);
       } else {
-        if (this.diagnosticLogs) {
-        console.log('🔍 PdfJsViewer: PostMessage API not ready or viewer not initialized, queuing changes');
-        }
+
         this.pendingChanges.push(changes);
       }
     } else {
-      if (this.diagnosticLogs) {
-      console.log('🔍 PdfJsViewer: PDFViewerApplication not available, queuing changes');
-      }
+
       this.pendingChanges.push(changes);
     }
   }
@@ -615,9 +600,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       // Send message to iframe
       if (this.iframe && this.iframe.nativeElement && this.iframe.nativeElement.contentWindow) {
         this.iframe.nativeElement.contentWindow.postMessage(message, '*');
-        if (this.diagnosticLogs) {
-        console.log('🔍 PdfJsViewer: Sent control message:', action, payload);
-        }
+
       } else {
         this.pendingMessages.delete(messageId);
         reject(new Error('Iframe not available'));
@@ -648,13 +631,9 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       
       // Handle PostMessage API ready notification
       if (event.data && event.data.type === 'postmessage-ready') {
-        if (this.diagnosticLogs) {
-        console.log('🔍 PdfJsViewer: PostMessage API ready notification received');
-        }
+
         this.isPostMessageReady = true;
-        if (this.diagnosticLogs) {
-          console.log(`🔍 PdfJsViewer: PostMessage readiness updated from ${this.postMessageReadiness} to ${event.data.readiness}`);
-        }
+
         this.postMessageReadiness = event.data.readiness || 0;
         
         // CRITICAL FIX: Process queued actions when readiness level increases
@@ -663,9 +642,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
           this.actionQueueManager.processQueuedActions();
         }
         
-        if (this.diagnosticLogs) {
-        console.log(`🔍 PdfJsViewer: PostMessage readiness level: ${this.postMessageReadiness}`);
-        }
+
         
         // Queue all initial configurations now that PostMessage API is ready (only once)
         if (!this.initialConfigQueued) {
@@ -695,12 +672,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   private handleStateChangeNotification(notification: any): void {
     const { property, value, source } = notification;
     
-    if (this.diagnosticLogs) {
-      console.log(`🔍 PdfJsViewer: State change notification received: ${property} = ${value} (source: ${source})`);
-    }
 
-    // Always log state change notifications for debugging
-    console.log(`🔍 PdfJsViewer: [DEBUG] State change notification: ${property} = ${value} (source: ${source})`);
 
     // Phase 2: Internal loading overlay control is system-driven and must be handled unconditionally
     if (property === 'loading') {
@@ -713,7 +685,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     // Only process user-initiated changes to avoid infinite loops
     if (source === 'user' && !this.changeOriginTracker.isProgrammatic(property)) {
       this.changeOriginTracker.markUserInitiated(property);
-      console.log(`🔍 PdfJsViewer: [DEBUG] Processing user-initiated change for ${property}`);
+
       
       switch (property) {
         case 'cursor':
@@ -770,9 +742,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   private handleEventNotification(notification: any): void {
     const { eventName, eventData } = notification;
     
-    if (this.diagnosticLogs) {
-      console.log(`🔍 PdfJsViewer: Event notification received: ${eventName}`, eventData);
-    }
+
 
     // Emit the appropriate event based on the event name
     switch (eventName) {
@@ -842,9 +812,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   }
 
   private updateViewerControl(propertyName: string, value: any): void {
-    if (this.diagnosticLogs) {
-    console.log(`🔍 PdfJsViewer: updateViewerControl called with propertyName: ${propertyName}, value:`, value);
-    }
+
     
     const action = this.mapPropertyToAction(propertyName);
     if (action) {
@@ -852,32 +820,20 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       this.dispatchAction(action, value, 'property-change');
     } else {
       // Property is intentionally not mapped (handled via query parameters or direct API)
-          if (this.diagnosticLogs) {
-        console.log(`🔍 PdfJsViewer: Property ${propertyName} is handled via query parameters or direct API, skipping`);
-      }
+    
     }
   }
 
   private applyChanges(changes: SimpleChanges): void {
-    if (this.diagnosticLogs) {
-    console.log('🔍 PdfJsViewer: applyChanges called with:', changes);
-    }
+
     Object.keys(changes).forEach(propertyName => {
       const change = changes[propertyName];
-      if (this.diagnosticLogs) {
-      console.log(`🔍 PdfJsViewer: Processing property ${propertyName}:`, {
-        currentValue: change.currentValue,
-        previousValue: change.previousValue,
-        isFirstChange: change.isFirstChange
-      });
-      }
+
       if (change.currentValue !== change.previousValue) {
         // Handle auto-actions - queue for document load, don't execute immediately
         const autoActions = ['downloadOnLoad', 'printOnLoad', 'showLastPageOnLoad', 'rotateCW', 'rotateCCW'];
         if (autoActions.includes(propertyName)) {
-          if (this.diagnosticLogs) {
-            console.log(`🔍 PdfJsViewer: Auto-action ${propertyName} changed to ${change.currentValue} - re-queueing configurations`);
-          }
+
           // Re-queue all configurations when auto-actions change
           this.initialConfigQueued = false;
           if (this.isPostMessageReady) {
@@ -890,65 +846,46 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         // Use universal dispatcher for ALL actions - pure event-driven approach
         const action = this.mapPropertyToAction(propertyName);
         if (action) {
-          if (this.diagnosticLogs) {
-            console.log(`🔍 PdfJsViewer: Action ${propertyName} changed to ${change.currentValue} - using universal dispatcher`);
-          }
           this.dispatchAction(action, change.currentValue, 'property-change');
-    } else {
-      if (this.diagnosticLogs) {
-            console.log(`🔍 PdfJsViewer: Property ${propertyName} has no action mapping - skipping`);
-      }
-    }
-      } else {
-        console.log(`🔍 PdfJsViewer: No change detected for ${propertyName}`);
+        }
       }
     });
   }
 
   private applyPendingChanges(): void {
-    console.log(`🔍 PdfJsViewer: applyPendingChanges called, pending changes count: ${this.pendingChanges.length}`);
+
     
     // Only apply pending changes if PostMessage API is ready
     if (!this.isPostMessageReady) {
-      console.log('🔍 PdfJsViewer: PostMessage API not ready, skipping pending changes');
+
       return;
     }
     
     if (this.pendingChanges.length > 0) {
-      console.log('🔍 PdfJsViewer: Processing pending changes for proper queuing');
+
       this.pendingChanges.forEach((changes, index) => {
-        console.log(`🔍 PdfJsViewer: Processing pending change ${index + 1}:`, changes);
+
         this.processChangesForQueuing(changes);
       });
       this.pendingChanges = [];
-      console.log('🔍 PdfJsViewer: Cleared pending changes');
+
     } else {
-      console.log('🔍 PdfJsViewer: No pending changes to apply');
+
     }
   }
 
   private processChangesForQueuing(changes: SimpleChanges): void {
-    if (this.diagnosticLogs) {
-      console.log('🔍 PdfJsViewer: processChangesForQueuing called with:', changes);
-    }
+
     
     Object.keys(changes).forEach(propertyName => {
       const change = changes[propertyName];
-      if (this.diagnosticLogs) {
-        console.log(`🔍 PdfJsViewer: Processing property ${propertyName} for queuing:`, {
-          currentValue: change.currentValue,
-          previousValue: change.previousValue,
-          isFirstChange: change.isFirstChange
-        });
-      }
+
       
       if (change.currentValue !== change.previousValue) {
         // Handle auto-actions - queue for document load, don't execute immediately
         const autoActions = ['downloadOnLoad', 'printOnLoad', 'showLastPageOnLoad', 'rotateCW', 'rotateCCW'];
         if (autoActions.includes(propertyName)) {
-          if (this.diagnosticLogs) {
-            console.log(`🔍 PdfJsViewer: Auto-action ${propertyName} changed to ${change.currentValue} - re-queueing configurations`);
-          }
+
           // Re-queue all configurations when auto-actions change
           this.initialConfigQueued = false;
           if (this.isPostMessageReady) {
@@ -961,17 +898,8 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         // Use universal dispatcher for ALL actions - pure event-driven approach
         const action = this.mapPropertyToAction(propertyName);
         if (action) {
-        if (this.diagnosticLogs) {
-            console.log(`🔍 PdfJsViewer: Action ${propertyName} changed to ${change.currentValue} - using universal dispatcher`);
-          }
           this.dispatchAction(action, change.currentValue, 'property-change');
-        } else {
-          if (this.diagnosticLogs) {
-            console.log(`🔍 PdfJsViewer: Property ${propertyName} has no action mapping - skipping`);
-          }
         }
-      } else {
-        console.log(`🔍 PdfJsViewer: No change detected for ${propertyName}`);
       }
     });
   }
@@ -1020,9 +948,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
           // Execute auto-print on pages loaded (ensures PDF is fully ready for printing)
           if (this.printOnLoad === true) {
-            if (this.diagnosticLogs) {
-              console.log('🔍 PdfJsViewer: Executing auto-print on pages loaded via universal dispatcher');
-            }
+
             this.dispatchAction('trigger-print', true, 'initial-load');
           }
         };
@@ -1102,9 +1028,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         eventBus.on("rotationchanging", rotationChangingHandler);
         eventBus.on("scalechanging", scaleChangingHandler);
         
-        if (this.diagnosticLogs) {
-          console.log('🔍 PdfJsViewer: PDF.js events successfully bound');
-        }
+
       });
     };
     
@@ -1117,13 +1041,9 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
   // #region Configuration and Action Queue Methods
   private queueAllConfigurations(): void {
-    console.log('🎨 THEME DEBUG: queueAllConfigurations called');
-    if (this.diagnosticLogs) {
-      console.log('🔍 PdfJsViewer: queueAllConfigurations called');
-    }
-    if (this.diagnosticLogs) {
-      console.log('🔍 PdfJsViewer: Queueing all initial configurations');
-    }
+
+
+
 
     // Queue control visibility configurations (immediate actions)
     this.queueConfiguration('showOpenFile', this.showOpenFile, 'show-openfile');
@@ -1202,12 +1122,9 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
     // Queue theme and visual customization configurations (Phase 1)
     // Always queue theme to ensure initial styles are applied
-    console.log(`🎨 THEME DEBUG: this.theme = ${this.theme}, type = ${typeof this.theme}`);
-    console.log(`🎨 THEME DEBUG: Calling queueConfiguration for theme`);
+
     this.queueConfiguration('theme', this.theme || 'light', 'set-theme');
-    if (this.diagnosticLogs) {
-      console.log(`🔍 PdfJsViewer: Queuing theme configuration: ${this.theme || 'light'}`);
-    }
+
     if (this.primaryColor) {
       this.queueConfiguration('primaryColor', this.primaryColor, 'set-primary-color');
     }
@@ -1302,16 +1219,12 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   private queueAutoActionsForDocumentLoad(): void {
     // Use universal dispatcher for auto-actions
     if (this.downloadOnLoad === true) {
-      if (this.diagnosticLogs) {
-        console.log('🔍 PdfJsViewer: Queueing auto-download via universal dispatcher');
-      }
+
       this.dispatchAction('trigger-download', true, 'initial-load');
     }
     
     if (this.showLastPageOnLoad === true) {
-      if (this.diagnosticLogs) {
-        console.log('🔍 PdfJsViewer: Queueing auto-last-page via universal dispatcher');  
-      }
+
       this.dispatchAction('go-to-last-page', true, 'initial-load');
     }
     
@@ -1319,18 +1232,14 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   }
 
   private queueConfiguration(propertyName: string, value: any, action: string): void {
-    if (this.diagnosticLogs) {
-      console.log(`🔍 PdfJsViewer: Queueing configuration ${propertyName} = ${value} via universal dispatcher`);
-    }
+
     
     // Use universal dispatcher for all configuration actions
     this.dispatchAction(action, value, 'initial-load');
   }
 
   public refresh(): void { // Needs to be invoked for external window or when needs to reload pdf
-    if (this.diagnosticLogs) {
-      console.log('🔍 PdfJsViewer: Refreshing viewer - clearing action queue and reloading PDF');
-    }
+
     
     // Clean up existing event listeners
     ComponentUtils.cleanupEventHandlers(this);
@@ -1535,14 +1444,10 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   private addCacheBustingIfNeeded(viewerUrl: string): string {
     if (this.isDevelopmentMode()) {
       const cacheBuster = Date.now();
-      if (this.diagnosticLogs) {
-        console.log(`🔍 PdfJsViewer: Development mode detected, using cache-busting timestamp: ${cacheBuster}`);
-      }
+
       return `${viewerUrl}&_t=${cacheBuster}`;
     } else {
-      if (this.diagnosticLogs) {
-        console.log(`🔍 PdfJsViewer: Production mode detected, no cache-busting applied`);
-      }
+
       return viewerUrl;
     }
   }
@@ -1643,20 +1548,14 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       payload: payload
     };
 
-    if (this.diagnosticLogs) {
-      console.log(`🔍 Universal Dispatcher: Action ${action} requires readiness ${requiredReadiness}, current: ${this.postMessageReadiness}`);
-    }
+
     
     // Check if we have sufficient readiness to execute immediately
     if (this.hasRequiredReadiness(requiredReadiness)) {
-      if (this.diagnosticLogs) {
-        console.log(`🔍 Universal Dispatcher: Executing ${action} immediately (readiness satisfied)`);
-      }
+
       return this.actionQueueManager.executeAction(actionObj);
     } else {
-      if (this.diagnosticLogs) {
-        console.log(`🔍 Universal Dispatcher: Queueing ${action} until readiness ${requiredReadiness}`);
-      }
+
       // Queue action to execute when readiness is achieved
       this.actionQueueManager.queueAction(actionObj, requiredReadiness);
       

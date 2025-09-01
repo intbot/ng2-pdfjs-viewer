@@ -173,7 +173,7 @@ export class FeaturesComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('🎬 Features Demo: Component initialized');
+
     
     // Initialize detected zoom display
     this.detectedZoom = this.formatZoomDisplay(1.0); // Default to 100%
@@ -193,7 +193,7 @@ export class FeaturesComponent implements OnInit {
 
   // Zoom demo methods (Angular → PDF direction)
   setZoom(zoomValue: string) {
-    console.log('🎬 Features Demo: Setting zoom via Angular button to:', zoomValue);
+
     this.currentZoom = zoomValue;
     this.lastZoomSource = 'Angular button click';
   }
@@ -213,7 +213,7 @@ export class FeaturesComponent implements OnInit {
     if (this.pdfViewer?.PDFViewerApplication) {
       this.totalPages = this.pdfViewer.PDFViewerApplication.pagesCount || 0;
     }
-    console.log('🎬 Features Demo: Document loaded, total pages:', this.totalPages);
+
     this.pushEventToFeed('documentLoad');
   }
 
@@ -222,7 +222,7 @@ export class FeaturesComponent implements OnInit {
     this.triggerBlink('pageChange');
     this.currentPage = pageNumber;
     this.page = pageNumber; // Fix: Update the property bound to the viewer
-    console.log('🎬 Features Demo: Page changed to:', pageNumber);
+
     this.pushEventToFeed('pageChange', { pageNumber });
   }
 
@@ -235,7 +235,7 @@ export class FeaturesComponent implements OnInit {
     this.detectedZoom = this.formatZoomDisplay(scale);
     this.lastZoomSource = 'PDF viewer user action';
     
-    console.log('🎬 Features Demo: Scale changed to:', scale, 'Formatted:', this.detectedZoom);
+
     this.pushEventToFeed('scaleChange', { scale });
   }
 
@@ -245,21 +245,21 @@ export class FeaturesComponent implements OnInit {
     this.currentRotation = rotation.rotation;
     // Update the rotation property since we now use one-way binding
     this.rotation = rotation.rotation;
-    console.log('🎬 Features Demo: Rotation changed via PDF viewer interaction:', rotation.rotation);
+
     this.pushEventToFeed('rotationChange', rotation);
   }
 
   public onBeforePrint() {
     this.eventCounts.beforePrint++;
     this.triggerBlink('beforePrint');
-    console.log('🎬 Features Demo: Before print event');
+
     this.pushEventToFeed('beforePrint');
   }
 
   public onAfterPrint() {
     this.eventCounts.afterPrint++;
     this.triggerBlink('afterPrint');
-    console.log('🎬 Features Demo: After print event');
+
     this.pushEventToFeed('afterPrint');
   }
 
@@ -274,84 +274,84 @@ export class FeaturesComponent implements OnInit {
   public onDocumentInit() {
     this.eventCounts.documentInit++;
     this.triggerBlink('documentInit');
-    console.log('🎬 Features Demo: Document init event');
+
     this.pushEventToFeed('documentInit');
   }
 
   public onPagesInit(pagesInfo: any) {
     this.eventCounts.pagesInit++;
     this.triggerBlink('pagesInit');
-    console.log('🎬 Features Demo: Pages init event:', pagesInfo);
+
     this.pushEventToFeed('pagesInit', pagesInfo);
   }
 
   public onPresentationModeChanged(mode: any) {
     this.eventCounts.presentationModeChanged++;
     this.triggerBlink('presentationModeChanged');
-    console.log('🎬 Features Demo: Presentation mode changed:', mode);
+
     this.pushEventToFeed('presentationModeChanged', mode);
   }
 
   public onOpenFile() {
     this.eventCounts.openFile++;
     this.triggerBlink('openFile');
-    console.log('🎬 Features Demo: Open file event');
+
     this.pushEventToFeed('openFile');
   }
 
   public onFind(findData: any) {
     this.eventCounts.find++;
     this.triggerBlink('find');
-    console.log('🎬 Features Demo: Find operation:', findData);
+
     this.pushEventToFeed('find', findData);
   }
 
   public onUpdateFindMatchesCount(matchData: any) {
     this.eventCounts.updateFindMatchesCount++;
     this.triggerBlink('updateFindMatchesCount');
-    console.log('🎬 Features Demo: Find matches count updated:', matchData);
+
     this.pushEventToFeed('updateFindMatchesCount', matchData);
   }
 
   public onMetadataLoaded(metadata: any) {
     this.eventCounts.metadataLoaded++;
     this.triggerBlink('metadataLoaded');
-    console.log('🎬 Features Demo: Metadata loaded:', metadata);
+
     this.pushEventToFeed('metadataLoaded', metadata);
   }
 
   public onOutlineLoaded(outline: any) {
     this.eventCounts.outlineLoaded++;
     this.triggerBlink('outlineLoaded');
-    console.log('🎬 Features Demo: Outline loaded:', outline);
+
     this.pushEventToFeed('outlineLoaded', outline);
   }
 
   public onPageRendered(pageInfo: any) {
     this.eventCounts.pageRendered++;
     this.triggerBlink('pageRendered');
-    console.log('🎬 Features Demo: Page rendered:', pageInfo);
+
     this.pushEventToFeed('pageRendered', pageInfo);
   }
 
   public onAnnotationLayerRendered(annotationInfo: any) {
     this.eventCounts.annotationLayerRendered++;
     this.triggerBlink('annotationLayerRendered');
-    console.log('🎬 Features Demo: Annotation layer rendered:', annotationInfo);
+
     this.pushEventToFeed('annotationLayerRendered', annotationInfo);
   }
 
   public onBookmarkClick(bookmarkData: any) {
     this.eventCounts.bookmarkClick++;
     this.triggerBlink('bookmarkClick');
-    console.log('🎬 Features Demo: Bookmark clicked:', bookmarkData);
+
     this.pushEventToFeed('bookmarkClick', bookmarkData);
   }
 
   public onIdle() {
     this.eventCounts.idle++;
     this.triggerBlink('idle');
-    console.log('🎬 Features Demo: User idle event');
+
     this.pushEventToFeed('idle');
   }
 
@@ -367,7 +367,7 @@ export class FeaturesComponent implements OnInit {
   public async triggerDownload() {
     try {
       const result = await this.pdfViewer.triggerDownload();
-      console.log('🎬 Features Demo: Download triggered:', result);
+
       } catch (error) {
       console.error('🎬 Features Demo: Download failed:', error);
     }
@@ -376,7 +376,7 @@ export class FeaturesComponent implements OnInit {
   public async triggerPrint() {
       try {
       const result = await this.pdfViewer.triggerPrint();
-      console.log('🎬 Features Demo: Print triggered:', result);
+
       } catch (error) {
       console.error('🎬 Features Demo: Print failed:', error);
     }
@@ -385,7 +385,7 @@ export class FeaturesComponent implements OnInit {
   public async goToPage(pageNumber: number) {
       try {
       const result = await this.pdfViewer.goToPage(pageNumber);
-      console.log('🎬 Features Demo: Navigated to page:', pageNumber, result);
+
       } catch (error) {
       console.error('🎬 Features Demo: Navigation failed:', error);
     }
@@ -394,7 +394,7 @@ export class FeaturesComponent implements OnInit {
   public async rotateClockwise() {
       try {
       const result = await this.pdfViewer.triggerRotation('cw');
-      console.log('🎬 Features Demo: Rotated clockwise:', result);
+
       } catch (error) {
       console.error('🎬 Features Demo: Rotation failed:', error);
     }
@@ -403,7 +403,7 @@ export class FeaturesComponent implements OnInit {
   public async rotateCounterClockwise() {
       try {
       const result = await this.pdfViewer.triggerRotation('ccw');
-      console.log('🎬 Features Demo: Rotated counter-clockwise:', result);
+
       } catch (error) {
       console.error('🎬 Features Demo: Rotation failed:', error);
       }
@@ -465,9 +465,7 @@ export class FeaturesComponent implements OnInit {
   public reloadViewer() {
     console.log('🎬 Features Demo: *** reloadViewer() method called ***');
     if (this.pdfViewer) {
-      console.log('🎬 Features Demo: pdfViewer exists, calling refresh()');
       this.pdfViewer.refresh();
-      console.log('🎬 Features Demo: refresh() method called');
     } else {
       console.log('🎬 Features Demo: ERROR - pdfViewer is null/undefined');
     }
@@ -519,7 +517,7 @@ export class FeaturesComponent implements OnInit {
       bookmarkClick: false,
       idle: false
     };
-    console.log('🎬 Features Demo: Event counts reset');
+
   }
 
   // Auto-actions only execute on component creation, not property changes.
@@ -529,19 +527,13 @@ export class FeaturesComponent implements OnInit {
 
   // Reload viewer to test auto actions - forces complete component destruction and recreation
   public testAutoActions() {
-    console.log('🎬 Features Demo: *** BUTTON CLICKED - testAutoActions called ***');
-    console.log('🎬 Features Demo: Reloading viewer to test auto actions');
+
+
     
     // Reset event counters to better show auto action effects
     this.resetEventCounts();
     
-    // Log current auto actions state before reload
-    console.log('🎬 Features Demo: Current auto actions enabled:');
-    console.log('  - downloadOnLoad:', this.downloadOnLoad);
-    console.log('  - printOnLoad:', this.printOnLoad);
-    console.log('  - showLastPageOnLoad:', this.showLastPageOnLoad);
-    console.log('  - rotateCW:', this.rotateCW);
-    console.log('  - rotateCCW:', this.rotateCCW);
+
     
     // Force complete component recreation by changing the tracking key
     const previousKey = this.viewerTrackingKey;
@@ -551,15 +543,8 @@ export class FeaturesComponent implements OnInit {
 
   // Reload viewer to test loading spinner - forces complete component destruction and recreation
   public testLoadingSpinner() {
-    console.log('🎬 Features Demo: *** BUTTON CLICKED - testLoadingSpinner called ***');
-    console.log('🎬 Features Demo: Reloading viewer to test loading spinner');
-    
-    // Log current spinner settings before reload
-    console.log('🎬 Features Demo: Current spinner settings:');
-    console.log('  - showSpinner:', this.showSpinner);
-    console.log('  - useCustomSpinnerTpl:', this.useCustomSpinnerTpl);
-    console.log('  - selectedSpinnerTemplate:', this.selectedSpinnerTemplate);
-    console.log('  - spinnerCssClass:', this.spinnerCssClass);
+
+
     
     // Force complete component recreation by changing the tracking key
     const previousKey = this.viewerTrackingKey;
@@ -569,12 +554,12 @@ export class FeaturesComponent implements OnInit {
 
   // Test error handling
   public testError() {
-    console.log('🎬 Features Demo: Testing error handling');
+
     this.pdfSrc = 'invalid-url.pdf';
   }
 
   public restoreValidPdf() {
-    console.log('🎬 Features Demo: Restoring valid PDF');
+
     this.pdfSrc = '/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf';
   }
 } 
