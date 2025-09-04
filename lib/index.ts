@@ -24,7 +24,7 @@ export {
   DocumentMetadata,
   DocumentOutline,
   PageRenderInfo,
-  // New high-value events (Phase 2)
+  // New high-value events
   AnnotationLayerRenderEvent,
   BookmarkClick
 } from './src/interfaces/ViewerTypes';

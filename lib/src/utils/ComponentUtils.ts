@@ -41,7 +41,7 @@ export class ComponentUtils {
       'useOnlyCssZoom': 'set-css-zoom',
       'downloadFileName': 'set-download-filename',
       
-      // Theme & Visual Customization (Phase 1)
+      // Theme & Visual Customization
       'theme': 'set-theme',
       'primaryColor': 'set-primary-color',
       'backgroundColor': 'set-background-color',
@@ -52,7 +52,7 @@ export class ComponentUtils {
       'customCSS': 'set-custom-css'
     };
 
-    // Phase C: Toolbar/Sidebar group visibility
+    // Toolbar/Sidebar group visibility
     const groupVisibilityMap: { [key: string]: string } = {
       'showToolbarLeft': 'show-toolbar-left',
       'showToolbarMiddle': 'show-toolbar-middle',
@@ -63,7 +63,7 @@ export class ComponentUtils {
       'showSidebarRight': 'show-sidebar-right'
     };
 
-    // Phase D: Layout & responsive customization
+    // Layout & responsive customization
     const layoutMap: { [key: string]: string } = {
       'toolbarDensity': 'set-toolbar-density',
       'sidebarWidth': 'set-sidebar-width',

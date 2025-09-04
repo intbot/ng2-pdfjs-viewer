@@ -59,7 +59,7 @@ export interface ControlVisibilityConfig {
   annotations?: boolean;
 }
 
-// Phase C: Group visibility configuration for toolbar/sidebar
+// Group visibility configuration for toolbar/sidebar
 export interface GroupVisibilityConfig {
   toolbarLeft?: boolean;
   toolbarMiddle?: boolean;
@@ -70,7 +70,7 @@ export interface GroupVisibilityConfig {
   sidebarRight?: boolean;
 }
 
-// Phase D: Layout & Responsive customization
+// Layout & Responsive customization
 export type ToolbarDensity = 'default' | 'compact' | 'comfortable';
 export type ToolbarPosition = 'top' | 'bottom';
 export type SidebarPosition = 'left' | 'right';
@@ -104,7 +104,7 @@ export interface ViewerConfig {
   locale?: string;
 }
 
-// Theme & Visual Customization Configuration (Phase 1)
+// Theme & Visual Customization Configuration
 export interface ThemeConfig {
   theme?: 'light' | 'dark' | 'auto';
   primaryColor?: string;
@@ -173,7 +173,7 @@ export interface PageRenderInfo {
   timestamp?: number;
 }
 
-// New high-value events (Phase 2)
+// New high-value events
 export interface AnnotationLayerRenderEvent {
   pageNumber: number;
   error?: Error;

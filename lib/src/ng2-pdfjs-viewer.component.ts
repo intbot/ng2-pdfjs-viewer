@@ -28,7 +28,7 @@ import {
   DocumentMetadata,
   DocumentOutline,
   PageRenderInfo,
-  // New high-value events (Phase 2)
+  // New high-value events
   AnnotationLayerRenderEvent,
   BookmarkClick
 } from './interfaces/ViewerTypes';
@@ -102,7 +102,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   @Output() onOutlineLoaded: EventEmitter<DocumentOutline> = new EventEmitter();
   @Output() onPageRendered: EventEmitter<PageRenderInfo> = new EventEmitter();
 
-  // New high-value events (Phase 2)
+  // New high-value events
   @Output() onAnnotationLayerRendered: EventEmitter<AnnotationLayerRenderEvent> = new EventEmitter();
   @Output() onBookmarkClick: EventEmitter<BookmarkClick> = new EventEmitter();
   @Output() onIdle: EventEmitter<void> = new EventEmitter();
@@ -147,7 +147,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   @Input() public errorMessage: string;
   // #endregion
 
-  // #region Theme & Visual Customization Properties (Phase 1)
+  // #region Theme & Visual Customization Properties
   @Input() public theme: 'light' | 'dark' | 'auto' = 'light';
   @Input() public primaryColor?: string;
   @Input() public backgroundColor?: string;
@@ -158,12 +158,12 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   @Input() public customCSS?: string;
   // #endregion
 
-  // #region Loading & Spinner Customization (Phase 2)
+  // #region Loading & Spinner Customization
   @Input() public customSpinnerTpl?: TemplateRef<any>;
   @Input() public spinnerClass?: string;
   // #endregion
 
-  // #region Phase C: Toolbar/Sidebar Group Visibility
+  // #region Toolbar/Sidebar Group Visibility
   @Input() public showToolbarLeft: boolean = true;
   @Input() public showToolbarMiddle: boolean = true;
   @Input() public showToolbarRight: boolean = true;
@@ -173,7 +173,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   @Input() public showSidebarRight: boolean = true;
   // #endregion
 
-  // #region Phase D: Layout & Responsive Customization
+  // #region Layout & Responsive Customization
   @Input() public toolbarDensity: ToolbarDensity = 'default';
   @Input() public sidebarWidth?: string; // e.g., '280px'
   @Input() public toolbarPosition: ToolbarPosition = 'top';
@@ -663,7 +663,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   private handleStateChangeNotification(notification: any): void {
     const { property, value, source } = notification;
     
-    // Phase 2: Internal loading overlay control is system-driven and must be handled unconditionally
+    // Internal loading overlay control is system-driven and must be handled unconditionally
     if (property === 'loading') {
       this.isLoading = !!value;
       return;
@@ -1054,7 +1054,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     this.queueConfiguration('showViewBookmark', this.showViewBookmark, 'show-bookmark');
     this.queueConfiguration('showAnnotations', this.showAnnotations, 'show-annotations');
 
-    // Phase C: Toolbar/Sidebar group visibility
+    // Toolbar/Sidebar group visibility
     this.queueConfiguration('showToolbarLeft', this.showToolbarLeft, 'show-toolbar-left');
     this.queueConfiguration('showToolbarMiddle', this.showToolbarMiddle, 'show-toolbar-middle');
     this.queueConfiguration('showToolbarRight', this.showToolbarRight, 'show-toolbar-right');
@@ -1063,7 +1063,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     this.queueConfiguration('showSidebarLeft', this.showSidebarLeft, 'show-sidebar-left');
     this.queueConfiguration('showSidebarRight', this.showSidebarRight, 'show-sidebar-right');
 
-    // Phase D: Layout customization
+    // Layout customization
     this.queueConfiguration('toolbarDensity', this.toolbarDensity, 'set-toolbar-density');
     if (this.sidebarWidth) {
       this.queueConfiguration('sidebarWidth', this.sidebarWidth, 'set-sidebar-width');
@@ -1120,7 +1120,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       this.queueConfiguration('errorAppend', this.errorAppend, 'set-error-append');
     }
 
-    // Queue theme and visual customization configurations (Phase 1)
+    // Queue theme and visual customization configurations
     // Always queue theme to ensure initial styles are applied
 
     this.queueConfiguration('theme', this.theme || 'light', 'set-theme');
@@ -1199,7 +1199,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       this.queueConfiguration('pageRendered', true, 'enable-page-rendered');
     }
     
-    // New high-value events (Phase 2)
+    // New high-value events
     if (this.onAnnotationLayerRendered) {
       this.queueConfiguration('annotationLayerRendered', true, 'enable-annotation-layer-rendered');
     }
@@ -1566,11 +1566,11 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     // Define readiness requirements for all actions
     const level1Actions = ['set-theme', 'set-primary-color', 'set-background-color', 'set-page-border-color', 'set-toolbar-color', 'set-text-color', 'set-border-radius', 'set-custom-css'];
     const level3Actions = ['show-download', 'show-print', 'show-fullscreen', 'show-find', 'show-bookmark', 'show-openfile', 'show-annotations', 'set-error-message', 'set-error-override', 'set-error-append', 'set-css-zoom',
-      // Phase C actions (DOM visibility toggles)
+      // DOM visibility toggles
       'show-toolbar-left','show-toolbar-middle','show-toolbar-right','show-secondary-toolbar-toggle','show-sidebar','show-sidebar-left','show-sidebar-right'
     ];
     const level4Actions = ['set-cursor', 'set-scroll', 'set-spread', 'set-zoom', 'update-page-mode',
-      // Phase D layout requires components ready to measure
+      // Layout actions require components ready to measure
       'set-toolbar-density', 'set-sidebar-width', 'set-toolbar-position', 'set-sidebar-position', 'set-responsive-breakpoint'
     ];
     const level5Actions = ['set-page', 'set-rotation', 'go-to-last-page', 'go-to-named-dest', 'trigger-download', 'trigger-print', 'trigger-rotate-cw', 'trigger-rotate-ccw'];

@@ -34,7 +34,7 @@ export class FeaturesComponent implements OnInit {
   public showViewBookmark = true;
   public showAnnotations = false;
 
-  // Phase C: Group visibility (toolbar/sidebar)
+  // Group visibility (toolbar/sidebar)
   public showToolbarLeft = true;
   public showToolbarMiddle = true;
   public showToolbarRight = true;
@@ -75,7 +75,7 @@ export class FeaturesComponent implements OnInit {
   public errorAppend = true;
   public errorMessage = 'Custom error message for demonstration';
 
-  // Theme & Visual Customization (Phase 1)
+  // Theme & Visual Customization
   public theme: 'light' | 'dark' | 'auto' = 'light';
   public primaryColor = '#007acc';
   public backgroundColor = '';
@@ -85,7 +85,7 @@ export class FeaturesComponent implements OnInit {
   public borderRadius = '4px';
   public customCSS = '';
 
-  // Spinner demo (Phase 2)
+  // Spinner demo
   public useCustomSpinnerTpl = false;
   public selectedSpinnerTemplate = 'default'; // New: template selection
   public spinnerCssClass = 'demo-spinner-overlay';
@@ -94,7 +94,7 @@ export class FeaturesComponent implements OnInit {
   public loading = false;
   public sidenavOpened = false; // reserved for future sidenav step
 
-  // Phase D: Layout customization (demo bindings)
+  // Layout customization (demo bindings)
   public toolbarDensity: 'default' | 'compact' | 'comfortable' = 'default';
   public sidebarWidth = '';
   public toolbarPosition: 'top' | 'bottom' = 'top';
