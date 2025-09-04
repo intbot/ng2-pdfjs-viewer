@@ -562,4 +562,62 @@ export class FeaturesComponent implements OnInit {
 
     this.pdfSrc = '/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf';
   }
+
+  // Toggle methods for Control Visibility buttons
+  public toggleShowOpenFile() {
+    this.showOpenFile = !this.showOpenFile;
+  }
+
+  public toggleShowDownload() {
+    this.showDownload = !this.showDownload;
+  }
+
+  public toggleShowPrint() {
+    this.showPrint = !this.showPrint;
+  }
+
+  public toggleShowFullScreen() {
+    this.showFullScreen = !this.showFullScreen;
+  }
+
+  public toggleShowFind() {
+    this.showFind = !this.showFind;
+  }
+
+  public toggleShowViewBookmark() {
+    this.showViewBookmark = !this.showViewBookmark;
+  }
+
+  public toggleShowAnnotations() {
+    this.showAnnotations = !this.showAnnotations;
+  }
+
+  // Toggle methods for Group Visibility buttons
+  public toggleShowToolbarLeft() {
+    this.showToolbarLeft = !this.showToolbarLeft;
+  }
+
+  public toggleShowToolbarMiddle() {
+    this.showToolbarMiddle = !this.showToolbarMiddle;
+  }
+
+  public toggleShowToolbarRight() {
+    this.showToolbarRight = !this.showToolbarRight;
+  }
+
+  public toggleShowSecondaryToolbarToggle() {
+    this.showSecondaryToolbarToggle = !this.showSecondaryToolbarToggle;
+  }
+
+  public toggleShowSidebar() {
+    this.showSidebar = !this.showSidebar;
+  }
+
+  public toggleShowSidebarLeft() {
+    this.showSidebarLeft = !this.showSidebarLeft;
+  }
+
+  public toggleShowSidebarRight() {
+    this.showSidebarRight = !this.showSidebarRight;
+  }
 } 

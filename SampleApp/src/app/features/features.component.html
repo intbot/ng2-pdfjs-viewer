@@ -32,26 +32,110 @@
             <mat-tab label="Individual Properties">
             <div class="tab-content">
                 <h3>Control Visibility</h3>
-                <div class="toggle-grid">
-                  <mat-slide-toggle [(ngModel)]="showOpenFile">Open File</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="showDownload">Download</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="showPrint">Print</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="showFullScreen">Full Screen</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="showFind">Find</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="showViewBookmark">Bookmarks</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="showAnnotations">Annotations</mat-slide-toggle>
-      </div>
+                <div class="action-buttons toggle-buttons">
+                  <button mat-icon-button 
+                          class="toggle-btn"
+                          [color]="showOpenFile ? 'primary' : ''" 
+                          (click)="toggleShowOpenFile()"
+                          matTooltip="Show Open File">
+                    <mat-icon>folder_open</mat-icon>
+                  </button>
+                  <button mat-icon-button 
+                          class="toggle-btn"
+                          [color]="showDownload ? 'primary' : ''" 
+                          (click)="toggleShowDownload()"
+                          matTooltip="Show Download">
+                    <mat-icon>download</mat-icon>
+                  </button>
+                  <button mat-icon-button 
+                          class="toggle-btn"
+                          [color]="showPrint ? 'primary' : ''" 
+                          (click)="toggleShowPrint()"
+                          matTooltip="Show Print">
+                    <mat-icon>print</mat-icon>
+                  </button>
+                  <button mat-icon-button 
+                          class="toggle-btn"
+                          [color]="showFullScreen ? 'primary' : ''" 
+                          (click)="toggleShowFullScreen()"
+                          matTooltip="Show Full Screen">
+                    <mat-icon>fullscreen</mat-icon>
+                  </button>
+                  <button mat-icon-button 
+                          class="toggle-btn"
+                          [color]="showFind ? 'primary' : ''" 
+                          (click)="toggleShowFind()"
+                          matTooltip="Show Find">
+                    <mat-icon>search</mat-icon>
+                  </button>
+                  <button mat-icon-button 
+                          class="toggle-btn"
+                          [color]="showViewBookmark ? 'primary' : ''" 
+                          (click)="toggleShowViewBookmark()"
+                          matTooltip="Show Bookmarks">
+                    <mat-icon>bookmark</mat-icon>
+                  </button>
+                  <button mat-icon-button 
+                          class="toggle-btn"
+                          [color]="showAnnotations ? 'primary' : ''" 
+                          (click)="toggleShowAnnotations()"
+                          matTooltip="Show Annotations">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </div>
       
                 <h3>Group Visibility</h3>
-                <div class="toggle-grid">
-                  <mat-slide-toggle [(ngModel)]="showToolbarLeft">Toolbar Left</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="showToolbarMiddle">Toolbar Middle</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="showToolbarRight">Toolbar Right</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="showSecondaryToolbarToggle">Tools Menu Toggle</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="showSidebar">Sidebar</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="showSidebarLeft">Sidebar Left</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="showSidebarRight">Sidebar Right</mat-slide-toggle>
-              </div>
+                <div class="action-buttons toggle-buttons">
+                  <button mat-icon-button 
+                          class="toggle-btn"
+                          [color]="showToolbarLeft ? 'primary' : ''" 
+                          (click)="toggleShowToolbarLeft()"
+                          matTooltip="Show Toolbar Left">
+                    <mat-icon>view_headline</mat-icon>
+                  </button>
+                  <button mat-icon-button 
+                          class="toggle-btn"
+                          [color]="showToolbarMiddle ? 'primary' : ''" 
+                          (click)="toggleShowToolbarMiddle()"
+                          matTooltip="Show Toolbar Middle">
+                    <mat-icon>view_module</mat-icon>
+                  </button>
+                  <button mat-icon-button 
+                          class="toggle-btn"
+                          [color]="showToolbarRight ? 'primary' : ''" 
+                          (click)="toggleShowToolbarRight()"
+                          matTooltip="Show Toolbar Right">
+                    <mat-icon>view_agenda</mat-icon>
+                  </button>
+                  <button mat-icon-button 
+                          class="toggle-btn"
+                          [color]="showSecondaryToolbarToggle ? 'primary' : ''" 
+                          (click)="toggleShowSecondaryToolbarToggle()"
+                          matTooltip="Show Tools Menu Toggle">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <button mat-icon-button 
+                          class="toggle-btn"
+                          [color]="showSidebar ? 'primary' : ''" 
+                          (click)="toggleShowSidebar()"
+                          matTooltip="Show Sidebar">
+                    <mat-icon>view_sidebar</mat-icon>
+                  </button>
+                  <button mat-icon-button 
+                          class="toggle-btn"
+                          [color]="showSidebarLeft ? 'primary' : ''" 
+                          (click)="toggleShowSidebarLeft()"
+                          matTooltip="Show Sidebar Left">
+                    <mat-icon>chevron_left</mat-icon>
+                  </button>
+                  <button mat-icon-button 
+                          class="toggle-btn"
+                          [color]="showSidebarRight ? 'primary' : ''" 
+                          (click)="toggleShowSidebarRight()"
+                          matTooltip="Show Sidebar Right">
+                    <mat-icon>chevron_right</mat-icon>
+                  </button>
+                </div>
 
               <mat-divider></mat-divider>
 
