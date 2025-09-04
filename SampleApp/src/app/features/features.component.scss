@@ -135,7 +135,7 @@
 .current-values {
   margin-top: 1rem;
   padding: 1rem;
-  background: #f5f5f5;
+    background: #f5f5f5;
     border-radius: 4px;
   
   .value-display {
@@ -271,7 +271,7 @@
 
 // New styles for enhanced features
 .action-button-container {
-  margin-top: 1rem;
+  margin: 1.5rem 0;
   display: flex;
   justify-content: center;
 }
@@ -280,7 +280,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin: 1rem 0;
 }
 
 // Blinking animation for event counters

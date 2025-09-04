@@ -152,9 +152,9 @@
                   <button mat-raised-button color="primary" (click)="testAutoActions()" matTooltip="Recreates the entire PDF viewer component to test auto-actions">
                     <mat-icon>refresh</mat-icon> Reload Viewer
                   </button>
-              </div>
+                </div>
 
-              <mat-divider></mat-divider>
+                <mat-divider></mat-divider>
 
               <!-- Theme & Visual Customization -->
               <h3>Theme & Visual Customization</h3>
@@ -265,7 +265,7 @@
                   <mat-option value="progress">Progress Bar</mat-option>
                   <mat-option value="corporate">Corporate Style</mat-option>
                 </mat-select>
-                <mat-hint>Choose a custom template style</mat-hint>
+                <mat-hint>Choose a custom template style and click "Reload Viewer" to test</mat-hint>
               </mat-form-field>
 
                 <div class="action-button-container">
@@ -290,12 +290,18 @@
                       <mat-option value="es-ES">Spanish</mat-option>
                   </mat-select>
                 </mat-form-field>
-                  <div class="toggle-container">
+                <p class="mat-caption">Change language and click "Reload Viewer" to test.</p>
+                  
                     <mat-slide-toggle [(ngModel)]="useOnlyCssZoom">CSS Zoom Only</mat-slide-toggle>
-                  </div>
-                <div class="toggle-container">
+                  
                     <mat-slide-toggle [(ngModel)]="diagnosticLogs">Diagnostic Logs</mat-slide-toggle>
-                </div>
+              </div>
+              
+              <!-- Reload button for testing locale changes -->
+              <div class="action-button-container">
+                <button mat-raised-button color="primary" (click)="testAutoActions()" matTooltip="Recreates the entire PDF viewer component to test locale changes">
+                  <mat-icon>refresh</mat-icon> Reload Viewer
+                </button>
               </div>
             </div>
           </mat-tab>
