@@ -514,11 +514,8 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
   // #region Lifecycle Methods
   ngOnInit(): void {   
-         // 🟢 TEST LOG - Build verification (BUILD_ID from separate file)
-        console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', (window as any).NG2_PDF_VIEWER_BUILD_ID || 'BUILD_ID_NOT_LOADED');
-        
-        // Debug theme initialization
-
+    // 🟢 TEST LOG - Build verification (BUILD_ID from separate file)
+    console.log('🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:', (window as any).NG2_PDF_VIEWER_BUILD_ID || 'BUILD_ID_NOT_LOADED');
     
     // Configure action queue manager with diagnostic logs
     this.actionQueueManager = new ActionQueueManager(this.diagnosticLogs);
@@ -541,14 +538,10 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   ngAfterViewInit(): void {
     // Minimal initialization - rely on event-driven readiness notifications
 
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-
+    }
     
+  ngOnChanges(changes: SimpleChanges): void {
     if (this.PDFViewerApplication) {
-
-      
       // Only apply changes if PostMessage API is ready and viewer is initialized
       if (this.isPostMessageReady && this.PDFViewerApplication.initialized) {
 
@@ -642,8 +635,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
           this.actionQueueManager.processQueuedActions();
         }
         
-
-        
         // Queue all initial configurations now that PostMessage API is ready (only once)
         if (!this.initialConfigQueued) {
           this.queueAllConfigurations();
@@ -672,8 +663,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   private handleStateChangeNotification(notification: any): void {
     const { property, value, source } = notification;
     
-
-
     // Phase 2: Internal loading overlay control is system-driven and must be handled unconditionally
     if (property === 'loading') {
       this.isLoading = !!value;
@@ -799,7 +788,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
         break;
         
       default:
-        if (this.diagnosticLogs) {
+    if (this.diagnosticLogs) {
           console.log(`🔍 PdfJsViewer: Unknown event notification: ${eventName}`);
         }
     }
@@ -1041,10 +1030,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
 
   // #region Configuration and Action Queue Methods
   private queueAllConfigurations(): void {
-
-
-
-
     // Queue control visibility configurations (immediate actions)
     this.queueConfiguration('showOpenFile', this.showOpenFile, 'show-openfile');
     this.queueConfiguration('showDownload', this.showDownload, 'show-download');
@@ -1542,20 +1527,16 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   // Universal Action Dispatcher - ALL actions go through readiness-based queuing
   private dispatchAction(action: string, payload: any, source: 'initial-load' | 'property-change' | 'user-interaction' = 'property-change'): Promise<ActionExecutionResult> {
     const requiredReadiness = this.getRequiredReadinessLevel(action);
-    const actionObj: ViewerAction = {
+      const actionObj: ViewerAction = {
       id: `${source}-${action}-${Date.now()}`,
-      action: action,
+        action: action,
       payload: payload
     };
-
-
     
     // Check if we have sufficient readiness to execute immediately
     if (this.hasRequiredReadiness(requiredReadiness)) {
-
       return this.actionQueueManager.executeAction(actionObj);
     } else {
-
       // Queue action to execute when readiness is achieved
       this.actionQueueManager.queueAction(actionObj, requiredReadiness);
       
