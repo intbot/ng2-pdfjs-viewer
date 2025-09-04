@@ -902,6 +902,21 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     // Store the event listener reference so we can remove it later
     const webviewerLoadedHandler = () => {
       if (this.diagnosticLogs) console.debug("PdfJsViewer: webviewerloaded event received");
+      
+      // Set locale immediately when PDF.js is loaded but before it initializes
+      // https://github.com/mozilla/pdf.js/issues/11829#issuecomment-617668679
+      if (this.locale && this.iframe?.nativeElement?.contentWindow) {
+        try {
+          const iframeWindow = this.iframe.nativeElement.contentWindow;
+          if (iframeWindow.PDFViewerApplicationOptions) {
+            iframeWindow.PDFViewerApplicationOptions.set('localeProperties', { lang: this.locale });
+            if (this.diagnosticLogs) console.debug(`PdfJsViewer: Locale set to ${this.locale} before initialization`);
+          }
+        } catch (error) {
+          if (this.diagnosticLogs) console.debug("PdfJsViewer: Could not set locale before initialization:", error);
+        }
+      }
+      
       if (!this.PDFViewerApplication) {
         if (this.diagnosticLogs) console.debug("PdfJsViewer: Viewer not yet (or no longer) available, events can not yet be bound.");
         return;
@@ -1132,10 +1147,8 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       this.queueConfiguration('customCSS', this.customCSS, 'set-custom-css');
     }
 
-    // Queue locale and CSS zoom configurations (immediate actions)
-    if (this.locale) {
-      this.queueConfiguration('locale', this.locale, 'set-locale');
-    }
+    // Queue CSS zoom configurations (immediate actions)
+    // Note: Locale is now set via URL parameter, not PostMessage
     if (this.useOnlyCssZoom !== undefined) {
       this.queueConfiguration('useOnlyCssZoom', this.useOnlyCssZoom, 'set-css-zoom');
     }
@@ -1556,7 +1569,7 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
       // Phase C actions (DOM visibility toggles)
       'show-toolbar-left','show-toolbar-middle','show-toolbar-right','show-secondary-toolbar-toggle','show-sidebar','show-sidebar-left','show-sidebar-right'
     ];
-    const level4Actions = ['set-cursor', 'set-scroll', 'set-spread', 'set-zoom', 'update-page-mode', 'set-locale',
+    const level4Actions = ['set-cursor', 'set-scroll', 'set-spread', 'set-zoom', 'update-page-mode',
       // Phase D layout requires components ready to measure
       'set-toolbar-density', 'set-sidebar-width', 'set-toolbar-position', 'set-sidebar-position', 'set-responsive-breakpoint'
     ];
