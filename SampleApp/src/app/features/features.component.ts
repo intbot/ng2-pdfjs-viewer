@@ -47,6 +47,23 @@ export class FeaturesComponent implements OnInit {
   public downloadOnLoad = false;
   public printOnLoad = false;
   public showLastPageOnLoad = false;
+
+  // Error display customization
+  public customErrorTpl: TemplateRef<any> | null = null;
+  public errorClass: string = '';
+  public errorTemplate: string = '';
+  public selectedErrorExample: string = '';
+
+  // Error display examples
+  public errorExamples = [
+    { value: '', label: 'Default Error' },
+    { value: 'basic', label: 'Basic Error with Company Branding' },
+    { value: 'corporate', label: 'Professional Corporate Style' },
+    { value: 'minimalist', label: 'Clean Minimalist Style' },
+    { value: 'gradient', label: 'Modern Gradient Style' },
+    { value: 'dark', label: 'Dark Theme Style' },
+    { value: 'interactive', label: 'Interactive Animated Style' }
+  ];
   public rotateCW = false;
   public rotateCCW = false;
 
@@ -271,6 +288,18 @@ export class FeaturesComponent implements OnInit {
     this.pushEventToFeed('documentError', error);
   }
 
+  // Error display example selection
+  public onErrorExampleChange(): void {
+    if (!this.selectedErrorExample) {
+      this.errorTemplate = '';
+      this.errorClass = '';
+      return;
+    }
+
+    this.errorTemplate = this.selectedErrorExample;
+    this.errorClass = this.selectedErrorExample + '-error-style';
+  }
+
   public onDocumentInit() {
     this.eventCounts.documentInit++;
     this.triggerBlink('documentInit');
@@ -461,15 +490,6 @@ export class FeaturesComponent implements OnInit {
     };
   }
 
-  // Simple reload using library refresh method
-  public reloadViewer() {
-    console.log('🎬 Features Demo: *** reloadViewer() method called ***');
-    if (this.pdfViewer) {
-      this.pdfViewer.refresh();
-    } else {
-      console.log('🎬 Features Demo: ERROR - pdfViewer is null/undefined');
-    }
-  }
 
   // Reset event counters for demo purposes
   public resetEventCounts() {
@@ -525,15 +545,10 @@ export class FeaturesComponent implements OnInit {
   public viewerTrackingKey = Date.now();
   public trackByKey = (index: number, item: any): any => item;
 
-  // Reload viewer to test auto actions - forces complete component destruction and recreation
-  public testAutoActions() {
-
-
-    
+  // Reload viewer - forces complete component destruction and recreation
+  public reloadViewer() {
     // Reset event counters to better show auto action effects
     this.resetEventCounts();
-    
-
     
     // Force complete component recreation by changing the tracking key
     const previousKey = this.viewerTrackingKey;
@@ -554,13 +569,14 @@ export class FeaturesComponent implements OnInit {
 
   // Test error handling
   public testError() {
-
     this.pdfSrc = 'invalid-url.pdf';
+    this.reloadViewer(); // Reload the component to apply the error
   }
 
   public restoreValidPdf() {
-
     this.pdfSrc = '/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf';
+    console.log('Restored valid PDF');
+    this.reloadViewer(); // Reload the component to apply the valid PDF
   }
 
   // Toggle methods for Control Visibility buttons
@@ -619,5 +635,26 @@ export class FeaturesComponent implements OnInit {
 
   public toggleShowSidebarRight() {
     this.showSidebarRight = !this.showSidebarRight;
+  }
+
+  // Error testing methods
+  public testInvalidUrlError() {
+    this.pdfSrc = 'https://invalid-url-that-does-not-exist.pdf';
+    console.log('Testing invalid URL error with custom message:', this.errorMessage);
+    this.reloadViewer(); // Reload the component to apply the error
+  }
+
+  public testCorruptedFileError() {
+    // Use a valid URL but with a file that's not a PDF
+    this.pdfSrc = 'https://httpbin.org/json';
+    console.log('Testing corrupted file error with custom message:', this.errorMessage);
+    this.reloadViewer(); // Reload the component to apply the error
+  }
+
+  public testPasswordProtectedError() {
+    // Use a password-protected PDF URL (this is a common test PDF)
+    this.pdfSrc = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+    console.log('Testing password protected error with custom message:', this.errorMessage);
+    this.reloadViewer(); // Reload the component to apply the error
   }
 } 

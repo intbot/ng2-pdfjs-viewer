@@ -135,7 +135,7 @@
                           matTooltip="Show Sidebar Right">
                     <mat-icon>chevron_right</mat-icon>
                   </button>
-                </div>
+              </div>
 
               <mat-divider></mat-divider>
 
@@ -149,7 +149,7 @@
                 </div>
                 
                 <div class="action-button-container">
-                  <button mat-raised-button color="primary" (click)="testAutoActions()" matTooltip="Recreates the entire PDF viewer component to test auto-actions">
+                  <button mat-raised-button color="primary" (click)="reloadViewer()" matTooltip="Recreates the entire PDF viewer component to test auto-actions">
                     <mat-icon>refresh</mat-icon> Reload Viewer
                   </button>
                 </div>
@@ -293,13 +293,13 @@
                 <p class="mat-caption">Change language and click "Reload Viewer" to test.</p>
                   
                     <mat-slide-toggle [(ngModel)]="useOnlyCssZoom">CSS Zoom Only</mat-slide-toggle>
-                  
+
                     <mat-slide-toggle [(ngModel)]="diagnosticLogs">Diagnostic Logs</mat-slide-toggle>
-              </div>
+                </div>
               
               <!-- Reload button for testing locale changes -->
               <div class="action-button-container">
-                <button mat-raised-button color="primary" (click)="testAutoActions()" matTooltip="Recreates the entire PDF viewer component to test locale changes">
+                <button mat-raised-button color="primary" (click)="reloadViewer()" matTooltip="Recreates the entire PDF viewer component to test locale changes">
                   <mat-icon>refresh</mat-icon> Reload Viewer
                 </button>
               </div>
@@ -506,6 +506,51 @@
                 </mat-form-field>
                   <mat-slide-toggle [(ngModel)]="errorOverride">Override Default Error</mat-slide-toggle>
                   <mat-slide-toggle [(ngModel)]="errorAppend">Append to Default Error</mat-slide-toggle>
+                  
+                  <h4>Error Display Examples</h4>
+                  <mat-form-field class="full-width">
+                    <mat-label>Choose Error Display Style</mat-label>
+                    <mat-select [(ngModel)]="selectedErrorExample" (selectionChange)="onErrorExampleChange()">
+                      <mat-option *ngFor="let example of errorExamples" [value]="example.value">
+                        {{example.label}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  
+                  <h4>Custom Error Display</h4>
+                  <mat-form-field class="full-width">
+                    <mat-label>Error CSS Class</mat-label>
+                    <input matInput [(ngModel)]="errorClass" placeholder="e.g., custom-error-style">
+                  </mat-form-field>
+                  
+                  <mat-form-field class="full-width">
+                    <mat-label>Error Template</mat-label>
+                    <input matInput [(ngModel)]="errorTemplate" placeholder="e.g., basic, corporate, minimalist">
+                    <mat-hint>Choose from: basic, corporate, minimalist, gradient, dark, interactive</mat-hint>
+                  </mat-form-field>
+              </div>
+              
+              <mat-divider></mat-divider>
+              
+              <h4>Test Error Scenarios</h4>
+              <p class="mat-caption">Click buttons below to test different error scenarios with your custom error message settings.</p>
+              
+              <div class="error-test-buttons">
+                <button mat-raised-button color="warn" (click)="testInvalidUrlError()" matTooltip="Load an invalid PDF URL to trigger network error">
+                  <mat-icon>link_off</mat-icon> Test Invalid URL Error
+                </button>
+                
+                <button mat-raised-button color="warn" (click)="testCorruptedFileError()" matTooltip="Load a corrupted file to trigger parsing error">
+                  <mat-icon>broken_image</mat-icon> Test Corrupted File Error
+                </button>
+                
+                <button mat-raised-button color="warn" (click)="testPasswordProtectedError()" matTooltip="Load a password-protected PDF without credentials">
+                  <mat-icon>lock</mat-icon> Test Password Protected Error
+                </button>
+                
+                <button mat-raised-button color="primary" (click)="restoreValidPdf()" matTooltip="Restore the original valid PDF">
+                  <mat-icon>restore</mat-icon> Restore Valid PDF
+                </button>
               </div>
             </div>
           </mat-tab>
@@ -557,6 +602,9 @@
             [errorOverride]="errorOverride"
             [errorAppend]="errorAppend"
             [errorMessage]="errorMessage"
+            [customErrorTpl]="customErrorTpl"
+            [errorClass]="errorClass"
+            [errorTemplate]="errorTemplate"
             [diagnosticLogs]="diagnosticLogs"
             [theme]="theme"
             [primaryColor]="primaryColor"
