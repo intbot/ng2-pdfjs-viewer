@@ -1,4 +1,6 @@
-# ng2-pdfjs-viewer
+# Angular PDF viewer powered by Mozilla's PDF.js
+
+The most reliable, feature-rich Angular PDF viewer component powered by Mozilla's PDF.js
 
 <div align="center">
 
@@ -14,38 +16,47 @@
 
 <div align="center">
 
-**Angular PDF Viewer Component - Display PDF files in Angular with PDF.js integration, custom themes, and advanced features**
-
 [**Live Demo**](https://ng2-pdfjs-viewer.azurewebsites.net) • [**Documentation**](#documentation) • [**Examples**](#examples) • [**API Reference**](#api-reference) • [**Migration Guide**](#migration-guide)
 
 </div>
 
 ---
 
-## 🚀 What's New in v20.4.0
+ng2-pdfjs-viewer is the most comprehensive and feature-rich Angular PDF viewer component available. This powerful library enables developers to seamlessly integrate PDF viewing capabilities into Angular applications with enterprise-grade features, custom theming, and mobile-first responsive design.
 
-### ✨ Major Features & Improvements
+Built on Mozilla's PDF.js v5.3.93, ng2-pdfjs-viewer provides advanced PDF rendering, document navigation, search functionality, and extensive customization options. Whether you need a simple embedded PDF viewer or a complex document management system, this component delivers the performance and flexibility required for modern Angular applications.
 
-- **🎯 PDF.js v5.3.93 Upgrade** - Latest PDF.js with enhanced performance, security, and rendering capabilities
-- **🎨 Advanced Theme System** - Complete visual customization with CSS custom properties and Material Design integration
-- **⚡ Universal Action Dispatcher** - Event-driven architecture with promise-based API for all actions
-- **🔄 Custom Loading Spinners** - Template-based loading indicators with built-in examples
-- **❌ Enhanced Error Handling** - Customizable error displays with template support and multiple built-in styles
-- **🌍 Improved Locale Support** - Better internationalization with automatic locale detection
-- **📱 Mobile-First Design** - Responsive layout with touch-friendly controls
-- **🔧 Developer Experience** - TypeScript strict mode, comprehensive API coverage, and better debugging
+### Why Choose ng2-pdfjs-viewer?
 
-### 🆕 New Features
+- **🚀 Always Up-to-Date** - Continuously updated with the latest PDF.js versions and Angular compatibility
+- **🏗️ Enterprise-Ready** - Built for production with comprehensive error handling and performance optimization
+- **🎨 Highly Customizable** - Extensive theming options, custom templates, and flexible configuration
+- **📱 Mobile Optimized** - Touch-friendly interface with responsive design for all screen sizes
+- **🔧 Developer Friendly** - Full TypeScript support, comprehensive documentation, and easy integration
+- **⚡ High Performance** - Event-driven architecture with efficient memory management and lazy loading
+- **🌍 Global Support** - Multi-language support with automatic locale detection and RTL compatibility
+- **🛡️ Production Tested** - Trusted by thousands of applications with millions of downloads
+
+### 🆕 Latest Features (v20.4.0)
 
 | Feature                       | Description                                                        | Status |
 | ----------------------------- | ------------------------------------------------------------------ | ------ |
-| **Theme Customization**       | CSS custom properties for colors, spacing, and styling             | ✅ New |
+| **Advanced Theme System**     | CSS custom properties for complete visual customization            | ✅ New |
 | **Template-Based UI**         | Custom loading spinners and error displays using Angular templates | ✅ New |
-| **Convenience Setters**       | Object-based configuration for cleaner code                        | ✅ New |
-| **Event-Driven Architecture** | Pure event-based system with no timeouts or polling                | ✅ New |
-| **Advanced Error Handling**   | Multiple error display styles with custom templates                | ✅ New |
-| **Responsive Design**         | Mobile-optimized with touch gestures                               | ✅ New |
-| **TypeScript Strict Mode**    | Full type safety and better IDE support                            | ✅ New |
+| **Convenience Configuration** | Object-based configuration for cleaner, more maintainable code     | ✅ New |
+| **Event-Driven Architecture** | Pure event-based system with universal action dispatcher           | ✅ New |
+| **Enhanced Error Handling**   | Multiple error display styles with custom templates                | ✅ New |
+| **Mobile-First Design**       | Responsive layout optimized for touch devices                      | ✅ New |
+| **TypeScript Strict Mode**    | Full type safety with comprehensive API coverage                   | ✅ New |
+
+### 🏆 Unique Advantages
+
+- **Universal Action Dispatcher** - Single pathway for all actions with readiness validation
+- **Template-Based Customization** - Use Angular templates for loading and error states
+- **Comprehensive Event System** - 24+ events covering all user interactions and state changes
+- **Advanced Configuration Objects** - Clean, object-based configuration for complex setups
+- **Production-Ready Architecture** - Event-driven design with no timeouts or polling
+- **Complete API Coverage** - 19+ methods with consistent Promise-based returns
 
 ---
 
@@ -98,17 +109,45 @@ export class AppModule {}
 </ng2-pdfjs-viewer>
 ```
 
+### 4. Configure Assets (Required)
+
+Add PDF.js assets to your `angular.json`:
+
+```json
+{
+  "projects": {
+    "your-app": {
+      "architect": {
+        "build": {
+          "options": {
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "node_modules/ng2-pdfjs-viewer/pdfjs",
+                "output": "/assets/pdfjs"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
+```
+
 ---
 
 ## ✨ Features
 
-### 🎯 Core Features
+**🎉 6+ Million Downloads & Counting!** - Trusted by developers worldwide for reliable PDF viewing in Angular applications.
 
-- **📄 PDF Rendering** - High-quality PDF rendering using Mozilla's PDF.js v5.3.93
-- **🔄 Multiple Display Modes** - Embedded viewer, new window, or external tab
-- **📱 Responsive Design** - Mobile-first approach with touch-friendly controls
-- **🌍 Internationalization** - Support for 50+ languages and locales
-- **⚡ Performance** - Optimized rendering with lazy loading and memory management
+### 🎯 Core PDF Viewing Features
+
+- **📄 High-Quality PDF Rendering** - Powered by Mozilla's PDF.js v5.3.93 for superior document display
+- **🔄 Multiple Display Modes** - Embedded viewer, new window, or external tab options
+- **📱 Mobile-First Responsive Design** - Touch-friendly controls optimized for all devices
+- **🌍 Complete Internationalization** - Support for 50+ languages with automatic locale detection
+- **⚡ Optimized Performance** - Lazy loading, memory management, and efficient rendering
 
 ### 🎨 Visual Customization
 
