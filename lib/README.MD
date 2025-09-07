@@ -1,64 +1,676 @@
-# ng2-pdfjs-viewer
+# Angular PDF viewer powered by Mozilla's PDF.js
 
-> **📚 For complete documentation, examples, and API reference, please visit the [main README](../README.md)**
+The most reliable, feature-rich Angular PDF viewer component powered by Mozilla's PDF.js
 
-This is the npm package for ng2-pdfjs-viewer - a feature-rich Angular PDF viewer component powered by Mozilla's PDF.js v5.3.93.
+<div align="center">
 
-## Quick Links
+[![NPM Version](https://img.shields.io/npm/v/ng2-pdfjs-viewer?logo=npm&color=blue)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+[![PDF.js Version](https://img.shields.io/badge/PDF.js%20v5.3.93-latest-green?logo=mozilla)](https://github.com/mozilla/pdf.js)
+[![Angular Support](https://img.shields.io/badge/Angular%2020+-supported-red?logo=angular)](https://angular.dev/overview)
+[![NPM Downloads](https://img.shields.io/npm/dm/ng2-pdfjs-viewer?label=downloads%2Fmonth&color=orange)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+[![Total Downloads](https://img.shields.io/badge/total%20downloads-7M+-brightgreen?logo=npm)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+[![Since 2018](https://img.shields.io/badge/since-2018-blue?logo=calendar)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![GitHub Stars](https://img.shields.io/github/stars/intbot/ng2-pdfjs-viewer?logo=github)](https://github.com/intbot/ng2-pdfjs-viewer)
+[![GitHub Issues](https://img.shields.io/github/issues/intbot/ng2-pdfjs-viewer?logo=github)](https://github.com/intbot/ng2-pdfjs-viewer/issues)
 
-- 📖 **[Complete Documentation](../README.md)** - Full API reference, examples, and guides
-- 🎯 **[Live Demo](https://ng2-pdfjs-viewer.azurewebsites.net)** - Interactive demo and examples
-- 🚀 **[Installation Guide](../README.md#installation)** - Get started in minutes
-- 🔄 **[Migration Guide](../README.md#migration-guide)** - Upgrade from previous versions
-- 📋 **[Changelog](../CHANGELOG.md)** - Version history and breaking changes
+</div>
 
-## What's New in v20.4.0
+<div align="center">
 
-- ✨ **PDF.js v5.3.93** - Latest version with enhanced performance and security
-- 🎨 **Advanced Theme System** - Complete visual customization with CSS custom properties
-- ⚡ **Universal Action Dispatcher** - Event-driven architecture with promise-based API
-- 🔄 **Custom Loading & Error Handling** - Template-based UI with multiple built-in styles
-- 📱 **Mobile-First Design** - Responsive layout with touch-friendly controls
-- 🔧 **Enhanced Developer Experience** - TypeScript strict mode and better debugging
+[**Live Demo**](https://ng2-pdfjs-viewer.azurewebsites.net) • [**Documentation**](#documentation) • [**Examples**](#examples) • [**API Reference**](#api-reference) • [**Migration Guide**](#migration-guide)
 
-## Installation
+</div>
+
+---
+
+ng2-pdfjs-viewer is the most comprehensive and feature-rich Angular PDF viewer component available. **Born in 2018 and still going strong**, this battle-tested library has been trusted by developers worldwide for over 6 years, powering thousands of applications with over 7 million downloads.
+
+This powerful library enables developers to seamlessly integrate PDF viewing capabilities into Angular applications with enterprise-grade features, custom theming, and mobile-first responsive design. Built on Mozilla's PDF.js v5.3.93, ng2-pdfjs-viewer provides advanced PDF rendering, document navigation, search functionality, and extensive customization options.
+
+Whether you need a simple embedded PDF viewer or a complex document management system, this component delivers the performance and flexibility required for modern Angular applications. **The most mature and reliable Angular PDF viewer solution** with continuous updates and long-term support.
+
+### Why Choose ng2-pdfjs-viewer?
+
+- **🚀 Always Up-to-Date** - Continuously updated with the latest PDF.js versions and Angular compatibility
+- **🏗️ Enterprise-Ready** - Built for production with comprehensive error handling and performance optimization
+- **🎨 Highly Customizable** - Extensive theming options, custom templates, and flexible configuration
+- **📱 Mobile Optimized** - Touch-friendly interface with responsive design for all screen sizes
+- **🔧 Developer Friendly** - Full TypeScript support, comprehensive documentation, and easy integration
+- **⚡ High Performance** - Event-driven architecture with efficient memory management and lazy loading
+- **🌍 Global Support** - Multi-language support with automatic locale detection and RTL compatibility
+- **🛡️ Production Tested** - Trusted by thousands of applications with millions of downloads
+- **📈 Proven Track Record** - 6+ years of continuous development and community support
+- **🔒 Security Focused** - Regular security updates and vulnerability patches
+
+### 🆕 Latest Features (v20.4.0)
+
+| Feature                       | Description                                                        | Status |
+| ----------------------------- | ------------------------------------------------------------------ | ------ |
+| **Advanced Theme System**     | CSS custom properties for complete visual customization            | ✅ New |
+| **Template-Based UI**         | Custom loading spinners and error displays using Angular templates | ✅ New |
+| **Convenience Configuration** | Object-based configuration for cleaner, more maintainable code     | ✅ New |
+| **Event-Driven Architecture** | Pure event-based system with universal action dispatcher           | ✅ New |
+| **Enhanced Error Handling**   | Multiple error display styles with custom templates                | ✅ New |
+| **Mobile-First Design**       | Responsive layout optimized for touch devices                      | ✅ New |
+| **TypeScript Strict Mode**    | Full type safety with comprehensive API coverage                   | ✅ New |
+
+### 🏆 Unique Advantages
+
+- **Universal Action Dispatcher** - Single pathway for all actions with readiness validation
+- **Template-Based Customization** - Use Angular templates for loading and error states
+- **Comprehensive Event System** - 24+ events covering all user interactions and state changes
+- **Advanced Configuration Objects** - Clean, object-based configuration for complex setups
+- **Production-Ready Architecture** - Event-driven design with no timeouts or polling
+- **Complete API Coverage** - 19+ methods with consistent Promise-based returns
+
+### 🎯 Perfect For
+
+- **Enterprise Applications** - Robust, scalable PDF viewing for business applications
+- **Document Management Systems** - Complete PDF handling with search and navigation
+- **E-Learning Platforms** - Interactive PDF viewing for educational content
+- **Financial Applications** - Secure PDF viewing for reports and statements
+- **Healthcare Systems** - Reliable PDF viewing for medical documents
+- **Government Portals** - Accessible PDF viewing for public services
+- **E-Commerce Platforms** - Product catalogs and documentation viewing
+- **Content Management Systems** - Integrated PDF viewing and management
+
+---
+
+## 📋 Table of Contents
+
+- [Quick Start](#quick-start)
+- [Features](#features)
+- [Installation](#installation)
+- [Basic Usage](#basic-usage)
+- [Advanced Configuration](#advanced-configuration)
+- [API Reference](#api-reference)
+- [Examples](#examples)
+- [Migration Guide](#migration-guide)
+- [Deprecated Features](#deprecated-features)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+
+## 🚀 Quick Start
+
+### 1. Install the Package
 
 ```bash
 npm install ng2-pdfjs-viewer --save
 ```
 
-## Quick Start
+### 2. Import the Module
 
 ```typescript
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
 import { PdfJsViewerModule } from "ng2-pdfjs-viewer";
 
 @NgModule({
-  imports: [PdfJsViewerModule],
-  // ...
+  imports: [BrowserModule, PdfJsViewerModule],
+  // ... rest of your module
 })
 export class AppModule {}
 ```
 
+### 3. Use in Your Component
+
 ```html
 <ng2-pdfjs-viewer
-  pdfSrc="assets/document.pdf"
-  [theme]="'light'"
+  pdfSrc="assets/sample.pdf"
   [showSpinner]="true"
+  [theme]="'light'"
 >
 </ng2-pdfjs-viewer>
 ```
 
-## Features
+### 4. Configure Assets (Required)
 
-- 🎯 **PDF.js v5.3.93** - Latest Mozilla PDF.js with enhanced performance
-- 🎨 **Theme Customization** - Light, dark, and auto themes with custom colors
-- 🔄 **Custom UI** - Template-based loading spinners and error displays
-- 📱 **Responsive Design** - Mobile-first approach with touch gestures
-- 🌍 **Internationalization** - Support for 50+ languages and locales
-- ⚡ **Event-Driven** - Promise-based API with comprehensive event handling
-- 🔧 **TypeScript** - Full type safety with strict mode support
+Add PDF.js assets to your `angular.json`:
 
-## Support
+```json
+{
+  "projects": {
+    "your-app": {
+      "architect": {
+        "build": {
+          "options": {
+"assets": [
+              {
+                "glob": "**/*",
+                "input": "node_modules/ng2-pdfjs-viewer/pdfjs",
+                "output": "/assets/pdfjs"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+---
+
+## ✨ Features
+
+**🎉 7+ Million Downloads & Counting!** - Trusted by developers worldwide for reliable PDF viewing in Angular applications since 2018.
+
+### 🎯 Core PDF Viewing Features
+
+- **📄 High-Quality PDF Rendering** - Powered by Mozilla's PDF.js v5.3.93 for superior document display
+- **🔄 Multiple Display Modes** - Embedded viewer, new window, or external tab options
+- **📱 Mobile-First Responsive Design** - Touch-friendly controls optimized for all devices
+- **🌍 Complete Internationalization** - Support for 50+ languages with automatic locale detection
+- **⚡ Optimized Performance** - Lazy loading, memory management, and efficient rendering
+
+### 🎨 Visual Customization
+
+- **🎨 Theme System** - Light, dark, and auto themes with custom color schemes
+- **🎭 Custom Styling** - CSS custom properties for complete visual control
+- **🔄 Loading States** - Custom loading spinners with template support
+- **❌ Error Handling** - Multiple error display styles with custom templates
+- **📐 Layout Control** - Toolbar density, sidebar width, and positioning options
+
+### 🔧 Developer Features
+
+- **📝 TypeScript Support** - Full type safety with strict mode
+- **🔌 Event System** - Comprehensive event handling for all user interactions
+- **⚙️ Configuration Objects** - Convenience setters for cleaner code
+- **🛠️ API Methods** - Promise-based methods for programmatic control
+- **🐛 Debugging** - Built-in diagnostic logging and error tracking
+
+### 📊 Advanced Features
+
+- **🔍 Search & Navigation** - Full-text search with highlighting
+- **📖 Bookmarks & Attachments** - Document structure navigation
+- **🖨️ Print & Download** - Built-in print and download functionality
+- **🔄 Rotation & Zoom** - Document manipulation with smooth animations
+- **📱 Touch Gestures** - Mobile-optimized touch interactions
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+
+- Angular 20.0+ (supports Angular 2.0+)
+- Node.js 18.0+
+- TypeScript 5.0+
+
+### Install Package
+
+```bash
+# Using npm
+npm install ng2-pdfjs-viewer --save
+
+# Using yarn
+yarn add ng2-pdfjs-viewer
+
+# Using pnpm
+pnpm add ng2-pdfjs-viewer
+```
+
+### Configure Assets
+
+Add PDF.js assets to your `angular.json`:
+
+```json
+{
+  "projects": {
+    "your-app": {
+      "architect": {
+        "build": {
+          "options": {
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "node_modules/ng2-pdfjs-viewer/pdfjs",
+                "output": "/assets/pdfjs"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+---
+
+## 🎯 Basic Usage
+
+### Simple PDF Viewer
+
+```html
+<ng2-pdfjs-viewer pdfSrc="assets/document.pdf" [showSpinner]="true">
+</ng2-pdfjs-viewer>
+```
+
+### Advanced Configuration
+
+```html
+<ng2-pdfjs-viewer
+  pdfSrc="assets/document.pdf"
+  [theme]="'dark'"
+  [primaryColor]="'#007acc'"
+  [showSpinner]="true"
+  [customSpinnerTpl]="customSpinner"
+  [customErrorTpl]="customError"
+  (onDocumentLoad)="onDocumentLoaded($event)"
+  (onPageChange)="onPageChanged($event)"
+>
+</ng2-pdfjs-viewer>
+```
+
+### Programmatic Control
+
+```typescript
+import { Component, ViewChild } from "@angular/core";
+import { PdfJsViewerComponent } from "ng2-pdfjs-viewer";
+
+@Component({
+  template: `
+    <ng2-pdfjs-viewer #pdfViewer pdfSrc="document.pdf"></ng2-pdfjs-viewer>
+    <button (click)="goToPage(5)">Go to Page 5</button>
+  `,
+})
+export class MyComponent {
+  @ViewChild("pdfViewer") pdfViewer!: PdfJsViewerComponent;
+
+  async goToPage(page: number) {
+    await this.pdfViewer.goToPage(page);
+  }
+}
+```
+
+---
+
+## ⚙️ Advanced Configuration
+
+### Theme Customization
+
+```typescript
+// Component
+export class MyComponent {
+  themeConfig = {
+    theme: "light",
+    primaryColor: "#007acc",
+    backgroundColor: "#ffffff",
+    toolbarColor: "#f5f5f5",
+    textColor: "#333333",
+    borderRadius: "8px",
+  };
+}
+```
+
+```html
+<!-- Template -->
+<ng2-pdfjs-viewer [themeConfig]="themeConfig" [customCSS]="customStyles">
+</ng2-pdfjs-viewer>
+```
+
+### Custom Loading Spinner
+
+```html
+<ng-template #customSpinner>
+  <div class="custom-spinner">
+    <div class="spinner"></div>
+    <p>Loading PDF...</p>
+  </div>
+</ng-template>
+
+<ng2-pdfjs-viewer
+  [customSpinnerTpl]="customSpinner"
+  [spinnerClass]="'my-spinner'"
+>
+</ng2-pdfjs-viewer>
+```
+
+### Custom Error Display
+
+```html
+<ng-template #customError>
+  <div class="error-container">
+    <mat-icon>error</mat-icon>
+    <h3>Failed to Load PDF</h3>
+    <p>Please check your internet connection and try again.</p>
+    <button mat-button (click)="retry()">Retry</button>
+  </div>
+</ng-template>
+
+<ng2-pdfjs-viewer [customErrorTpl]="customError" [errorClass]="'my-error'">
+</ng2-pdfjs-viewer>
+```
+
+---
+
+## 📚 API Reference
+
+### Input Properties
+
+| Property                     | Type                                      | Default      | Description                           |
+| ---------------------------- | ----------------------------------------- | ------------ | ------------------------------------- |
+| `pdfSrc`                     | `string \| Blob \| Uint8Array`            | -            | PDF source (URL, Blob, or byte array) |
+| `viewerId`                   | `string`                                  | auto         | Unique viewer identifier              |
+| `viewerFolder`               | `string`                                  | `'assets'`   | Path to PDF.js assets                 |
+| `externalWindow`             | `boolean`                                 | `false`      | Open in new window                    |
+| `externalWindowOptions`      | `string`                                  | -            | External window options               |
+| `target`                     | `string`                                  | `'_blank'`   | Target for external window            |
+| `theme`                      | `'light' \| 'dark' \| 'auto'`             | `'light'`    | Theme selection                       |
+| `primaryColor`               | `string`                                  | `'#007acc'`  | Primary color for UI elements         |
+| `backgroundColor`            | `string`                                  | `'#ffffff'`  | Background color                      |
+| `pageBorderColor`            | `string`                                  | -            | Page border color                     |
+| `toolbarColor`               | `string`                                  | -            | Toolbar background color              |
+| `textColor`                  | `string`                                  | -            | Text color                            |
+| `borderRadius`               | `string`                                  | -            | Border radius                         |
+| `customCSS`                  | `string`                                  | -            | Custom CSS styles                     |
+| `showSpinner`                | `boolean`                                 | `true`       | Show loading spinner                  |
+| `customSpinnerTpl`           | `TemplateRef`                             | -            | Custom spinner template               |
+| `spinnerClass`               | `string`                                  | -            | Custom spinner CSS class              |
+| `customErrorTpl`             | `TemplateRef`                             | -            | Custom error template                 |
+| `errorClass`                 | `string`                                  | -            | Custom error CSS class                |
+| `errorOverride`              | `boolean`                                 | `false`      | Override default error handling       |
+| `errorAppend`                | `boolean`                                 | `true`       | Append to default error messages      |
+| `errorMessage`               | `string`                                  | -            | Custom error message                  |
+| `locale`                     | `string`                                  | `'en-US'`    | UI language                           |
+| `useOnlyCssZoom`             | `boolean`                                 | `false`      | Use CSS-based zoom for mobile         |
+| `diagnosticLogs`             | `boolean`                                 | `false`      | Enable diagnostic logging             |
+| `zoom`                       | `string`                                  | `'auto'`     | Initial zoom level (two-way binding)  |
+| `page`                       | `number`                                  | `1`          | Initial page number                   |
+| `namedDest`                  | `string`                                  | -            | Named destination to navigate to      |
+| `cursor`                     | `string`                                  | `'select'`   | Cursor type (two-way binding)         |
+| `scroll`                     | `string`                                  | `'vertical'` | Scroll mode (two-way binding)         |
+| `spread`                     | `string`                                  | `'none'`     | Spread mode (two-way binding)         |
+| `pageMode`                   | `string`                                  | `'none'`     | Page mode (two-way binding)           |
+| `rotation`                   | `number`                                  | `0`          | Document rotation (two-way binding)   |
+| `showOpenFile`               | `boolean`                                 | `true`       | Show open file button                 |
+| `showDownload`               | `boolean`                                 | `true`       | Show download button                  |
+| `showPrint`                  | `boolean`                                 | `true`       | Show print button                     |
+| `showFind`                   | `boolean`                                 | `true`       | Show search button                    |
+| `showFullScreen`             | `boolean`                                 | `true`       | Show fullscreen button                |
+| `showViewBookmark`           | `boolean`                                 | `true`       | Show bookmark button                  |
+| `showAnnotations`            | `boolean`                                 | `false`      | Show annotations                      |
+| `showToolbarLeft`            | `boolean`                                 | `true`       | Show left toolbar section             |
+| `showToolbarMiddle`          | `boolean`                                 | `true`       | Show middle toolbar section           |
+| `showToolbarRight`           | `boolean`                                 | `true`       | Show right toolbar section            |
+| `showSecondaryToolbarToggle` | `boolean`                                 | `true`       | Show secondary toolbar toggle         |
+| `showSidebar`                | `boolean`                                 | `true`       | Show sidebar                          |
+| `showSidebarLeft`            | `boolean`                                 | `true`       | Show left sidebar                     |
+| `showSidebarRight`           | `boolean`                                 | `true`       | Show right sidebar                    |
+| `toolbarDensity`             | `'compact' \| 'default' \| 'comfortable'` | `'default'`  | Toolbar density                       |
+| `sidebarWidth`               | `string`                                  | -            | Sidebar width (e.g., '280px')         |
+| `toolbarPosition`            | `'top' \| 'bottom'`                       | `'top'`      | Toolbar position                      |
+| `sidebarPosition`            | `'left' \| 'right'`                       | `'left'`     | Sidebar position                      |
+| `responsiveBreakpoint`       | `string \| number`                        | -            | Responsive breakpoint                 |
+| `downloadOnLoad`             | `boolean`                                 | `false`      | Auto-download on load                 |
+| `printOnLoad`                | `boolean`                                 | `false`      | Auto-print on load                    |
+| `rotateCW`                   | `boolean`                                 | `false`      | Rotate clockwise on load              |
+| `rotateCCW`                  | `boolean`                                 | `false`      | Rotate counter-clockwise on load      |
+| `showLastPageOnLoad`         | `boolean`                                 | `false`      | Go to last page on load               |
+| `downloadFileName`           | `string`                                  | -            | Custom download filename              |
+| `controlVisibility`          | `ControlVisibilityConfig`                 | -            | Control visibility configuration      |
+| `autoActions`                | `AutoActionConfig`                        | -            | Auto actions configuration            |
+| `errorHandling`              | `ErrorConfig`                             | -            | Error handling configuration          |
+| `viewerConfig`               | `ViewerConfig`                            | -            | Viewer configuration                  |
+| `themeConfig`                | `ThemeConfig`                             | -            | Theme configuration                   |
+| `groupVisibility`            | `GroupVisibilityConfig`                   | -            | Group visibility configuration        |
+| `layoutConfig`               | `LayoutConfig`                            | -            | Layout configuration                  |
+
+### Output Events
+
+| Event                       | Type                                       | Description                                    |
+| --------------------------- | ------------------------------------------ | ---------------------------------------------- |
+| `onDocumentLoad`            | `EventEmitter<void>`                       | Fired when document loads                      |
+| `onDocumentInit`            | `EventEmitter<void>`                       | Fired when document initializes                |
+| `onDocumentError`           | `EventEmitter<DocumentError>`              | Fired when document fails to load              |
+| `onPageChange`              | `EventEmitter<ChangedPage>`                | Fired when page changes                        |
+| `onPagesInit`               | `EventEmitter<PagesInfo>`                  | Fired when pages are initialized               |
+| `onPageRendered`            | `EventEmitter<PageRenderInfo>`             | Fired when a page is rendered                  |
+| `onScaleChange`             | `EventEmitter<ChangedScale>`               | Fired when zoom/scale changes                  |
+| `onRotationChange`          | `EventEmitter<ChangedRotation>`            | Fired when rotation changes                    |
+| `onPresentationModeChanged` | `EventEmitter<PresentationMode>`           | Fired when presentation mode changes           |
+| `onOpenFile`                | `EventEmitter<void>`                       | Fired when open file is clicked                |
+| `onFind`                    | `EventEmitter<FindOperation>`              | Fired when search is performed                 |
+| `onUpdateFindMatchesCount`  | `EventEmitter<FindMatchesCount>`           | Fired when search matches are updated          |
+| `onMetadataLoaded`          | `EventEmitter<DocumentMetadata>`           | Fired when document metadata loads             |
+| `onOutlineLoaded`           | `EventEmitter<DocumentOutline>`            | Fired when document outline loads              |
+| `onAnnotationLayerRendered` | `EventEmitter<AnnotationLayerRenderEvent>` | Fired when annotation layer renders            |
+| `onBookmarkClick`           | `EventEmitter<BookmarkClick>`              | Fired when bookmark is clicked                 |
+| `onIdle`                    | `EventEmitter<void>`                       | Fired when viewer becomes idle                 |
+| `onBeforePrint`             | `EventEmitter<void>`                       | Fired before printing                          |
+| `onAfterPrint`              | `EventEmitter<void>`                       | Fired after printing                           |
+| `zoomChange`                | `EventEmitter<string>`                     | Fired when zoom changes (two-way binding)      |
+| `cursorChange`              | `EventEmitter<string>`                     | Fired when cursor changes (two-way binding)    |
+| `scrollChange`              | `EventEmitter<string>`                     | Fired when scroll changes (two-way binding)    |
+| `spreadChange`              | `EventEmitter<string>`                     | Fired when spread changes (two-way binding)    |
+| `pageModeChange`            | `EventEmitter<string>`                     | Fired when page mode changes (two-way binding) |
+
+### Methods
+
+| Method                                                   | Parameters                                                  | Returns                                              | Description                       |
+| -------------------------------------------------------- | ----------------------------------------------------------- | ---------------------------------------------------- | --------------------------------- |
+| `refresh()`                                              | -                                                           | `void`                                               | Refresh viewer                    |
+| `goToPage(page: number)`                                 | `page: number`                                              | `Promise<ActionExecutionResult>`                     | Navigate to specific page         |
+| `setPage(page: number)`                                  | `page: number`                                              | `Promise<ActionExecutionResult>`                     | Set current page                  |
+| `setZoom(zoom: string)`                                  | `zoom: string`                                              | `Promise<ActionExecutionResult>`                     | Set zoom level                    |
+| `setCursor(cursor: string)`                              | `cursor: 'select' \| 'hand' \| 'zoom'`                      | `Promise<ActionExecutionResult>`                     | Set cursor type                   |
+| `setScroll(scroll: string)`                              | `scroll: 'vertical' \| 'horizontal' \| 'wrapped' \| 'page'` | `Promise<ActionExecutionResult>`                     | Set scroll mode                   |
+| `setSpread(spread: string)`                              | `spread: 'none' \| 'odd' \| 'even'`                         | `Promise<ActionExecutionResult>`                     | Set spread mode                   |
+| `setPageMode(mode: string)`                              | `mode: 'none' \| 'thumbs' \| 'bookmarks' \| 'attachments'`  | `Promise<ActionExecutionResult>`                     | Set page mode                     |
+| `triggerDownload()`                                      | -                                                           | `Promise<ActionExecutionResult>`                     | Trigger download                  |
+| `triggerPrint()`                                         | -                                                           | `Promise<ActionExecutionResult>`                     | Trigger print                     |
+| `triggerRotation(direction: string)`                     | `direction: 'cw' \| 'ccw'`                                  | `Promise<ActionExecutionResult>`                     | Rotate document                   |
+| `goToLastPage()`                                         | -                                                           | `Promise<ActionExecutionResult>`                     | Navigate to last page             |
+| `sendViewerControlMessage(action: string, payload: any)` | `action: string, payload: any`                              | `Promise<any>`                                       | Send custom control message       |
+| `getActionStatus(actionId: string)`                      | `actionId: string`                                          | `Promise<ActionExecutionResult \| null>`             | Get action status                 |
+| `getQueueStatus()`                                       | -                                                           | `{ queuedActions: number; executedActions: number }` | Get queue status                  |
+| `clearActionQueue()`                                     | -                                                           | `void`                                               | Clear action queue                |
+| `reloadViewer()`                                         | -                                                           | `void`                                               | Reload viewer (alias for refresh) |
+| `goBack()`                                               | -                                                           | `void`                                               | Go back in browser history        |
+| `closeViewer()`                                          | -                                                           | `void`                                               | Close viewer window               |
+| `getErrorTemplateData()`                                 | -                                                           | `any`                                                | Get error template data           |
+
+---
+
+## 🎨 Examples
+
+### 1. Basic PDF Viewer
+
+```html
+<ng2-pdfjs-viewer pdfSrc="assets/sample.pdf" [showSpinner]="true">
+</ng2-pdfjs-viewer>
+```
+
+### 2. Themed PDF Viewer
+
+```html
+<ng2-pdfjs-viewer
+  pdfSrc="assets/sample.pdf"
+  [theme]="'dark'"
+  [primaryColor]="'#ff6b6b'"
+  [backgroundColor]="'#2c3e50'"
+>
+</ng2-pdfjs-viewer>
+```
+
+### 3. Custom Loading & Error
+
+```html
+<ng-template #loadingTemplate>
+  <div class="loading">
+    <mat-spinner></mat-spinner>
+    <p>Loading your document...</p>
+</div>
+</ng-template>
+
+<ng-template #errorTemplate>
+  <div class="error">
+    <mat-icon>error_outline</mat-icon>
+    <h3>Oops! Something went wrong</h3>
+    <p>We couldn't load your PDF. Please try again.</p>
+    <button mat-button (click)="retry()">Retry</button>
+</div>
+</ng-template>
+
+<ng2-pdfjs-viewer
+  pdfSrc="assets/sample.pdf"
+  [customSpinnerTpl]="loadingTemplate"
+  [customErrorTpl]="errorTemplate"
+>
+  </ng2-pdfjs-viewer>
+```
+
+### 4. Programmatic Control
+
+```typescript
+export class PdfController {
+  @ViewChild("pdfViewer") pdfViewer!: PdfJsViewerComponent;
+
+  async loadDocument(url: string) {
+    this.pdfViewer.pdfSrc = url;
+    await this.pdfViewer.refresh();
+  }
+
+  async goToPage(page: number) {
+    await this.pdfViewer.goToPage(page);
+  }
+
+  async setZoom(zoom: string) {
+    await this.pdfViewer.setZoom(zoom);
+  }
+}
+```
+
+---
+
+## 🔄 Migration Guide
+
+### From v19.x to v20.4.0
+
+#### Breaking Changes
+
+1. **PDF.js Upgrade**: Updated to v5.3.93 - some APIs may have changed
+2. **Theme System**: New theme properties replace old styling options
+3. **Error Handling**: Template-based error system replaces HTML strings
+
+#### Migration Steps
+
+1. **Update Dependencies**
+
+   ```bash
+   npm install ng2-pdfjs-viewer@latest
+   ```
+
+2. **Update Theme Configuration**
+
+   ```typescript
+   // Old way
+   [customCSS] =
+     // New way
+     "'body { background: red; }'"[theme] =
+     "'light'"[primaryColor] =
+     "'#ff0000'"[backgroundColor] =
+       "'#ffffff'";
+   ```
+
+3. **Update Error Handling**
+
+   ```html
+   <!-- Old way -->
+   [errorHtml]="'
+   <div>Custom error</div>
+   '"
+
+   <!-- New way -->
+   <ng-template #errorTemplate>
+     <div>Custom error</div>
+   </ng-template>
+   <ng2-pdfjs-viewer [customErrorTpl]="errorTemplate"></ng2-pdfjs-viewer>
+   ```
+
+---
+
+## ⚠️ Deprecated Features
+
+The following features are deprecated and will be removed in future versions:
+
+### Deprecated Properties
+
+| Deprecated        | Replacement          | Description                                   |
+| ----------------- | -------------------- | --------------------------------------------- |
+| `[startDownload]` | `[downloadOnLoad]`   | Download document automatically when it opens |
+| `[startPrint]`    | `[printOnLoad]`      | Print document automatically when it opens    |
+| `[errorHtml]`     | `[customErrorTpl]`   | Custom error HTML (use template instead)      |
+| `[errorTemplate]` | `[customErrorTpl]`   | Custom error template (renamed)               |
+| `[spinnerHtml]`   | `[customSpinnerTpl]` | Custom spinner HTML (use template instead)    |
+
+### Deprecated Methods
+
+| Deprecated         | Replacement              | Description                                    |
+| ------------------ | ------------------------ | ---------------------------------------------- |
+| `setErrorHtml()`   | Use `[customErrorTpl]`   | Set custom error HTML (use template instead)   |
+| `setSpinnerHtml()` | Use `[customSpinnerTpl]` | Set custom spinner HTML (use template instead) |
+
+### Migration Help
+
+```typescript
+// Deprecated
+this.pdfViewer.setErrorHtml("<div>Error</div>");
+
+// New way
+// Use [customErrorTpl] with ng-template
+```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+### Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/intbot/ng2-pdfjs-viewer.git
+
+# Install dependencies
+npm install
+
+# Run the sample app
+npm run start
+
+# Build the library
+npm run build
+```
+
+### Reporting Issues
+
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/intbot/ng2-pdfjs-viewer/issues)
+- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/intbot/ng2-pdfjs-viewer/discussions)
+- 📚 **Documentation**: [GitHub Wiki](https://github.com/intbot/ng2-pdfjs-viewer/wiki)
+
+---
+
+## 📄 License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- **Mozilla PDF.js Team** - For the amazing PDF.js library
+- **Angular Team** - For the excellent framework
+- **Community Contributors** - For bug reports, feature requests, and contributions
+- **7+ Million Users** - For trusting us with your PDF viewing needs
+
+---
+
+## 📞 Support
 
 - 📖 **Documentation**: [GitHub Wiki](https://github.com/intbot/ng2-pdfjs-viewer/wiki)
 - 💬 **Community**: [GitHub Discussions](https://github.com/intbot/ng2-pdfjs-viewer/discussions)
@@ -67,411 +679,12 @@ export class AppModule {}
 
 ---
 
-**🎉 6+ Million Downloads & Counting!**
+<div align="center">
 
-_This project is maintained by the community. We welcome contributions and pull requests!_
+**Made with ❤️ by the ng2-pdfjs-viewer team**
 
-## What's new?
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/intbot/ng2-pdfjs-viewer)
+[![NPM](https://img.shields.io/badge/NPM-Package-red?logo=npm)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+[![Angular](https://img.shields.io/badge/Angular-Component-green?logo=angular)](https://angular.dev/overview)
 
-1. **Updated to current version of PDF.js viewer** - Fixes a lot of rendering issues, improves eventing.
-2. **New Events** - Added support for additional event bus activities (page rotation, document scale changes).
-3. **Build Process Improvements** - Made it easier to modify this library and maintain changes with the examples.
-
-## Tutorials, Demos & Examples
-
-**Hosted Demo app showing unique use cases**: https://ng2-pdfjs-viewer.azurewebsites.net  
-**Minimalistic angular sample app**: https://github.com/intbot/ng2-pdfjs-viewer/tree/master/SampleApp
-
-## Features
-
-Some of below features are unique to this component, which is unavailable in native viewer or other implementations.  
-✔️ **Open pdf in new window** 🌐 - Opens pdf viewer in new window. Also, you may set all allowable external window options.  
-✔️ **Direct access to underlying viewer** 👨‍💻👩‍💻- Exposed PDFViewerApplication and PDFViewerApplicationOptions objects opens a whole world of customizable PDFJS and ViewerJS properties and methods, allowing to change them programmatically; thus producing a unique viewer experience.  
-✔️ **Embed pdf** 🗎 - Embeds viewer and pdf inside your web page/component.  
-✔️ **Blob and byte arrays** 🔟 - Have pdf as a byte array? Still works.  
-✔️ **Events** ⚡ - Handle events such as document loaded, page change, page rotation, scale change, before/after print etc. Please make sure to provide `viewerId` for events to work properly.  
-✔️ **Print preview** 🖨️ - You can set the pdf to open in a new tab or another browser window and provide an immediate print preview, A use case will be a 'Print' button opening pdf in new window with print dialog.  
-✔️ **Defaults** - There are a ton of built in functionality Mozilla's viewer supports; such as print, download, bookmark, fullscreen, open file, zoom, search, pan, spread, navigate, attachments etc which is also available as-is in this viewer. Not mentioning them individually.  
-✔️ **Auto download** 💾 - This option allows you to download the pdf file to user device automatically without manually invoking the download.  
-✔️ **Auto print** 🖨️ - Automatically trigger print dialog when the document loads.  
-✔️ **Auto rotate** 🔄 - Rotate the document _clockwise_ or _anti-clockwise_ 90° (+/- 90°) just before displaying. Useful if the document is misaligned.  
-✔️ **Auto mode controls** 🎛️ - Automatically set cursor, scroll, and spread modes when the document loads.  
-✔️ **Auto navigation** 🧭 - Automatically navigate to specific pages, zoom levels, named destinations, and page modes when the document loads.  
-✔️ **Auto configuration** ⚙️ - Automatically set locale and other configuration options when the document loads.  
-✔️ **Language** 🌍 - Set the language of your choice to the viewer controls.  
-✔️ **Custom error** ❌ - Hate the defaults pdfjs errors, use this feature to override or append to it.  
-✔️ **Side bar** 📎 - Open and show the sidebar with relevant information. E.g. Show attachments.  
-✔️ **Smart device friendly zoom** 📱 - A better zooming experience on small devices.  
-✔️ **Progress spinner** ⏳ - An optional spinner which displays before document renders.  
-✔️ **Show/Hide controls** 👻 - Do not want users to see specific controls (E.g. download button). Use relevant features to remove controls from viewer.  
-✔️ **Navigate** ⏩ - Navigate the document using page number, section, or even directly jump to last page if you are expecting a signature from user.  
-✔️ **Zoom** 🔍 - Several zoom methods, auto, percentage (E.g. 150%), page-with/height, fit page etc. with ability to set offset.  
-✔️ **Cursor** 👆 - Love the age old hand cursor 👆 on your pdf? You got it.  
-✔️ **Change file name** - You may set the file name of download to a different one, if user chooses to download.  
-✔️ **Scroll** 📜 - Changes the scroll to your choice. Even wrapped scrolling is supported.  
-✔️ **Spread** - Allows you to change spread to odd or even.
-
-### Open in a new tab/ external window
-
-![angular pdfjs viewer in new window](./SampleImages/ng2pdfjsviewerExternal.JPG)
-
-### Embed pdf into any angular component/page
-
-![angular pdfjs viewer embedded](./SampleImages/ng2pdfjsviewerEmbedded.JPG)
-
-## Installation
-
-## Step 1: Install `ng2-pdfjs-viewer`
-
-```bash
-$ npm install ng2-pdfjs-viewer --save
-```
-
-And then configure it in your Angular `AppModule`:
-
-```typescript
-import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
-import { AppComponent } from "./app.component";
-
-import { PdfJsViewerModule } from "ng2-pdfjs-viewer"; // <-- Import PdfJsViewerModule module
-
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    PdfJsViewerModule, // <-- Add to declarations
-  ],
-  providers: [],
-  bootstrap: [AppComponent],
-})
-export class AppModule {}
-```
-
-## Step 2: Copy task for pdfjs
-
-For several advanced options to work, you need a copy of pdfjs from this npm package.
-Edit your project's `angular.json` file and use `ng build` as described here https://angular.io/guide/workspace-config#assets-configuration
-
-```json
-"assets": [
-  { "glob": "**/*", "input": "node_modules/ng2-pdfjs-viewer/pdfjs", "output": "/assets/pdfjs" },
-]
-```
-
-_Please note, you must manually Copy `node_modules\ng2-pdfjs-viewer\pdfjs` to your `public` or `asset` folder or use any copy script as part of your build process. Another method could be to use `TransferWebpackPlugin` if you are using webpack(https://github.com/dkokorev90/transfer-webpack-plugin)._  
-`TransferWebpackPlugin` Sample code
-
-```typescript
-var TransferWebpackPlugin = require('transfer-webpack-plugin');
-...
-plugins: [
-  new TransferWebpackPlugin([
-    { from: 'node_modules\ng2-pdfjs-viewer\pdfjs', to: path.join(__dirname, 'assets') }
-  ])
-]
-```
-
-_Please note if you decide to put `pdfjs` folder anywhere else other than the `assets` folder, make sure you also set `[viewerFolder]` property to help locate the folder._
-
-### Options
-
-| Attribute                     | Description                                                                                                                                                                                                                                        | Type         | Default Value                                            |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | -------------------------------------------------------- |
-| `[pdfSrc]`                    | Fully qualified path to pdf file. (For remote pdf urls over http/https, CORS should be enabled)                                                                                                                                                    | `string`     |                                                          |
-| `PDFViewerApplication`        | This public property exposes underlying PDFViewerApplication object. Make sure to access it after document is loaded. Opens up the whole world of underlying PDFJS properties and methods. Use it to customize the viewer and document experience. | `object`     |                                                          |
-| `PDFViewerApplicationOptions` | This public property exposes underlying PDFViewerApplicationOptions object. Make sure to access it after document is loaded. Opens up the whole world of underlying PDFJS options. Use it to customize the viewer and document experience.         | `object`     |                                                          |
-| `[viewerFolder]`              | Set path to _pdfjs's_ `web` and `build` folders.                                                                                                                                                                                                   | `string`     | `assets` folder path                                     |
-| `[externalWindow]`            | Open in new tab. Set to `true` to open document in a new tab                                                                                                                                                                                       | `boolean`    | `false`                                                  |
-| `externalWindowOptions`       | External window options. For allowed comma separated values, refer to https://developer.mozilla.org/en-US/docs/Web/API/Window/open                                                                                                                 | `string`     |                                                          |
-| `(onDocumentLoad)`            | Event to be invoked once document is fully loaded(Must provide `viewerId`). Also returns number of pages in the `$event` parameter. E.g. `(onDocumentLoad)="testPagesLoaded($event)""`                                                             | `Function`   |                                                          |
-| `(onPageChange)`              | Event to be invoked when user scrolls through pages(Must provide `viewerId`). Also returns current page number user is at in the `$event` parameter. E.g. `(onPageChange)="testPageChange($event)""`                                               | `Function`   |                                                          |
-| `(onBeforePrint)`             | Event to be invoked before document gets printed(Must provide `viewerId`). E.g. `(onBeforePrint)="testBeforePrint()"`                                                                                                                              | `Function`   |                                                          |
-| `(onAfterPrint)`              | Event to be invoked after document gets printed(Must provide `viewerId`). E.g. `(onAfterPrint)="testAfterPrint()"`                                                                                                                                 | `Function`   |                                                          |
-| `downloadFileName`            | Sets/Changes the name of document to be downloaded. If the file name does not ends in `.pdf`, the component will automatically add it for you.                                                                                                     | `string`     | Actual name of the document                              |
-| `[page]`                      | Show specific page. E.g _page=3_. You may also get/set the page number from your component using '.' notation explicitly, after document is loaded. E.g. `myPdfViewer.page = 3;`                                                                   | `number`     | `1`                                                      |
-| `[namedDest]`                 | Go to a named destination. E.g. To go to section _5.1_ use like namedDest=5.1. Do not mix this option with _`page`_ option                                                                                                                         | `string`     |                                                          |
-| `[(zoom)]`                    | Two-way binding for zoom level. Applicable values are `auto`, `page-width`, `page-height`, `page-fit`, `200`_(As a zoom percentage)_, `left offset`_(As in "auto,18,827")_, `top offset`_(As in "auto,18,127")_                                    | `string`     | `auto`                                                   |
-| `[showPrint]`                 | Show/hide print button. Set `false` to hide                                                                                                                                                                                                        | `boolean`    | `true`                                                   |
-| `[showDownload]`              | Show/hide download button. Set `false` to hide                                                                                                                                                                                                     | boolean      | `true`                                                   |
-| `[showFind]`                  | Show/hide search button. Set `false` to hide                                                                                                                                                                                                       | boolean      | `true`                                                   |
-| `[downloadOnLoad]`            | Download document automatically when it opens.                                                                                                                                                                                                     | `boolean`    | `false`                                                  |
-| `[printOnLoad]`               | Print document automatically when it opens.                                                                                                                                                                                                        | `boolean`    | `false`                                                  |
-| `[showLastPageOnLoad]`        | Go to last page automatically when document opens.                                                                                                                                                                                                 | `boolean`    | `false`                                                  |
-| `[rotateCW]`                  | Rotate document clockwise 90° initially                                                                                                                                                                                                            | `boolean`    | `false`                                                  |
-| `[rotateCCW]`                 | Rotate document counter-clockwise 90° initially                                                                                                                                                                                                    | `boolean`    | `false`                                                  |
-| `[(cursor)]`                  | Two-way binding for cursor type. Available options are _`select`_, _`hand`_, _`zoom`_. Case is irrelevant.                                                                                                                                         | _`select`_   |                                                          |
-| `[(scroll)]`                  | Two-way binding for scroll mode. Available options are _`vertical`_, _`horizontal`_, _`wrapped`_, _`page`_. Case is irrelevant.                                                                                                                    | _`vertical`_ |                                                          |
-| `[(spread)]`                  | Two-way binding for spread mode. Available options are _`none`_, _`odd`_, _`even`_. Case is irrelevant.                                                                                                                                            | _`none`_     |                                                          |
-| `[(pageMode)]`                | Two-way binding for page mode (sidebar). Available options are _`none`_, _`thumbs`_, _`bookmarks`_, _`attachments`_.                                                                                                                               | _`none`_     |                                                          |
-| `[(rotation)]`                | Two-way binding for document rotation. Value in degrees (0, 90, 180, 270).                                                                                                                                                                         | _`0`_        |                                                          |
-| `[showFullScreen]`            | Show/hide presentation(full screen) button. Set `false` to hide                                                                                                                                                                                    | `boolean`    | `true`                                                   |
-| `[showOpenFile]`              | Show/hide open file button. Set `false` to hide                                                                                                                                                                                                    | boolean      | `true`                                                   |
-| `[showViewBookmark]`          | Show/hide bookmark button. Set `false` to hide                                                                                                                                                                                                     | boolean      | `true`                                                   |
-| `[showSpinner]`               | Show a simple css based spinner/progress before the document loads                                                                                                                                                                                 | boolean      | `true`                                                   |
-| `[locale]`                    | Set locale(language) of toolbar/buttons and other viewer elements. E.g. 'de-AT', 'en-GB' etc                                                                                                                                                       | string       | browser's default language if present, otherwise `en-US` |
-| `[useOnlyCssZoom]`            | Instructs the viewer to use css based zoom. This will produce better zoom effect on mobile devices and tablets.                                                                                                                                    | boolean      | `false`                                                  |
-| `errorMessage`                | Custom error message                                                                                                                                                                                                                               | string       |                                                          |
-| `[errorAppend]`               | Appends custom error message to the end of other pdfjs error messages                                                                                                                                                                              | `true`       |
-| `[errorOverride]`             | Overrides all pdfjs error messages and shows only user's custom error message                                                                                                                                                                      | boolean      | `false`                                                  |
-| `[diagnosticLogs]`            | Turns on all diagnostic logs to the console                                                                                                                                                                                                        | boolean      | `true`                                                   |
-
-**_Please note, copy step is mandatory to enjoy all of the different options listed above. You may also avoid this step and could directly use https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website if you wish to just use the default viewer_**
-
-## Deprecated Properties
-
-The following properties are deprecated and will be removed in a future version. Please use the new property names instead.
-
-| Deprecated Property | New Property           | Description                                          |
-| ------------------- | ---------------------- | ---------------------------------------------------- |
-| `[startDownload]`   | `[downloadOnLoad]`     | Download document automatically when it opens        |
-| `[startPrint]`      | `[printOnLoad]`        | Print document automatically when it opens           |
-| `[cursor]`          | `[(cursor)]`           | Type of cursor (select/hand/zoom)                    |
-| `[scroll]`          | `[(scroll)]`           | Sets scroll mode (vertical/horizontal/wrapped/page)  |
-| `[spread]`          | `[(spread)]`           | Sets spread mode (none/odd/even)                     |
-| `[zoom]`            | `[(zoom)]`             | Set zoom level of document                           |
-| `[nameddest]`       | `[namedDest]`          | Go to a named destination                            |
-| `[pagemode]`        | `[(pageMode)]`         | State of sidebar (none/thumbs/bookmarks/attachments) |
-| `[locale]`          | `[locale]`             | Set locale of toolbar/buttons                        |
-| `[useOnlyCssZoom]`  | `[useOnlyCssZoom]`     | Use CSS-based zoom for mobile devices                |
-| `[rotatecw]`        | `[rotateCW]`           | Rotate document clockwise 90° initially              |
-| `[rotateccw]`       | `[rotateCCW]`          | Rotate document counter-clockwise 90° initially      |
-| `[openFile]`        | `[showOpenFile]`       | Show/hide open file button                           |
-| `[download]`        | `[showDownload]`       | Show/hide download button                            |
-| `[print]`           | `[showPrint]`          | Show/hide print button                               |
-| `[fullScreen]`      | `[showFullScreen]`     | Show/hide full screen button                         |
-| `[find]`            | `[showFind]`           | Show/hide search button                              |
-| `[viewBookmark]`    | `[showViewBookmark]`   | Show/hide bookmark button                            |
-| `[lastPage]`        | `[showLastPageOnLoad]` | Go to last page automatically when document opens    |
-
-**Note**: When using deprecated properties, a console warning will be displayed to remind you to update to the new property names.
-
-**Important Notes:**
-
-- **Locale changes**: Locale changes require a viewer refresh to take effect, as they affect the entire viewer interface
-- **Page Mode (Bookmarks/Attachments)**: These options will only show content if the PDF document contains bookmarks or attachments
-- **Scroll Mode**: The "Page" scroll mode provides page-by-page scrolling instead of continuous scrolling
-
-## On-Demand Methods
-
-In addition to setting properties, you can also execute actions on-demand using the following methods:
-
-| Method                              | Description                             | Parameters                                                  | Returns                          |
-| ----------------------------------- | --------------------------------------- | ----------------------------------------------------------- | -------------------------------- |
-| `setCursor(cursor)`                 | Set cursor mode on-demand               | `cursor: 'select' \| 'hand' \| 'zoom'`                      | `Promise<ActionExecutionResult>` |
-| `setScroll(scroll)`                 | Set scroll mode on-demand               | `scroll: 'vertical' \| 'horizontal' \| 'wrapped' \| 'page'` | `Promise<ActionExecutionResult>` |
-| `setSpread(spread)`                 | Set spread mode on-demand               | `spread: 'none' \| 'odd' \| 'even'`                         | `Promise<ActionExecutionResult>` |
-| `setZoom(zoom)`                     | Set zoom level on-demand                | `zoom: string`                                              | `Promise<ActionExecutionResult>` |
-| `goToPage(page)`                    | Navigate to specific page on-demand     | `page: number`                                              | `Promise<ActionExecutionResult>` |
-| `goToNamedDestination(destination)` | Navigate to named destination on-demand | `destination: string`                                       | `Promise<ActionExecutionResult>` |
-| `setPageMode(mode)`                 | Set page mode on-demand                 | `mode: 'none' \| 'thumbs' \| 'bookmarks' \| 'attachments'`  | `Promise<ActionExecutionResult>` |
-| `setLocale(locale)`                 | Set locale on-demand                    | `locale: string`                                            | `Promise<ActionExecutionResult>` |
-| `triggerDownload()`                 | Trigger download on-demand              | None                                                        | `Promise<ActionExecutionResult>` |
-| `triggerPrint()`                    | Trigger print on-demand                 | None                                                        | `Promise<ActionExecutionResult>` |
-| `triggerRotation(direction)`        | Rotate document on-demand               | `direction: 'cw' \| 'ccw'`                                  | `Promise<ActionExecutionResult>` |
-
-**Example:**
-
-```typescript
-// Set cursor to hand mode on-demand
-await pdfViewer.setCursor("hand");
-
-// Set scroll to horizontal mode on-demand
-await pdfViewer.setScroll("horizontal");
-
-// Set spread to odd mode on-demand
-await pdfViewer.setSpread("odd");
-```
-
-## Usage
-
-_For your convenience a sample app using angular is available under this repository, if you would like to see it in action (Folder SampleApp). It shows many ways to configure this component for different needs._
-
-Once your PdfJsViewerComponent is imported you can use it in your Angular application like this:
-
-```xml
-<!-- You can now use your library component in app.component.html -->
-<h1>
-  {{title}}
-</h1>
-<ng2-pdfjs-viewer pdfSrc="your pdf file path"></ng2-pdfjs-viewer>
-```
-
-Here is a use case to download and open the pdf as byte array and open in new tab/window:
-Please note, pdfSrc can be a Blob or Uint8Array as well
-For [externalWindow]="true" to work, pop-ups needs to be enabled at browser level
-
-```xml
-<!-- your.component.html -->
-<button (click)="openPdf();">Open Pdf</button>
-
-<div style="width: 800px; height: 400px">
-  <ng2-pdfjs-viewer
-    #pdfViewerOnDemand
-    [externalWindow]="true"
-    [downloadFileName]="'mytestfile.pdf'"
-    [showOpenFile]="false"
-    [showViewBookmark]="false"
-    [showDownload]="false"></ng2-pdfjs-viewer>
 </div>
-<div>
-<div style="width: 800px; height: 400px">
-  <ng2-pdfjs-viewer #pdfViewerAutoLoad></ng2-pdfjs-viewer>
-</div>
-<div style="height: 600px">
-  <ng2-pdfjs-viewer pdfSrc="gre_research_validity_data.pdf" viewerId="MyUniqueID" (onBeforePrint)="testBeforePrint()" (onAfterPrint)="testAfterPrint()" (onDocumentLoad)="testPagesLoaded($event)" (onPageChange)="testPageChange($event)">
-  </ng2-pdfjs-viewer>
-</div>
-```
-
-```typescript
-<!-- your.component.ts-->
-import { Component, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-...
-
-export class MyComponent implements OnInit {
-  @ViewChild('pdfViewerOnDemand') pdfViewerOnDemand;
-  @ViewChild('pdfViewerAutoLoad') pdfViewerAutoLoad;
-  ...
-
-  constructor(private http: HttpClient) {
-      let url = "api/document/getmypdf"; // Or your url
-      this.downloadFile(url).subscribe(
-          (res) => {
-              this.pdfViewerAutoLoad.pdfSrc = res; // pdfSrc can be Blob or Uint8Array
-              this.pdfViewerAutoLoad.refresh(); // Ask pdf viewer to load/refresh pdf
-          }
-      );
-  }
-
-  private downloadFile(url: string): any {
-        return this.http.get(url, { responseType: 'blob' })
-            .pipe(
-                map((result: any) => {
-                    return result;
-                })
-            );
-    }
-
-  public openPdf() {
-    let url = "url to fetch pdf as byte array"; // E.g. http://localhost:3000/api/GetMyPdf
-    // url can be local url or remote http request to an api/pdf file.
-    // E.g: let url = "assets/pdf-sample.pdf";
-    // E.g: https://github.com/intbot/ng2-pdfjs-viewer/tree/master/sampledoc/pdf-sample.pdf
-    // E.g: http://localhost:3000/api/GetMyPdf
-    // Please note, for remote urls to work, CORS should be enabled at the server. Read: https://enable-cors.org/server.html
-
-    this.downloadFile(url).subscribe(
-    (res) => {
-        this.pdfViewerOnDemand.pdfSrc = res; // pdfSrc can be Blob or Uint8Array
-        this.pdfViewerOnDemand.refresh(); // Ask pdf viewer to load/reresh pdf
-      }
-    );
-  }
-```
-
-# Additional Information
-
-Given below are examples of writing server apis(In aspnetcore c#) which returns pdfs as byte array. You can choose any server side technology as long as pdf is returned as byte array
-
-Use case 1. As a RDLC local report viewer
-
-```c#
-[HttpGet]
-[Route("MyReport")]
-public IActionResult GetReport()
-{
-   // var reportObjectList1
-   // var reportObjectList2
-   var reportViewer = new ReportViewer {ProcessingMode = ProcessingMode.Local};
-   reportViewer.LocalReport.ReportPath = "Reports/MyReport.rdlc";
-
-   reportViewer.LocalReport.DataSources.Add(new ReportDataSource("NameOfDataSource1", reportObjectList1));
-   reportViewer.LocalReport.DataSources.Add(new ReportDataSource("NameOfDataSource2", reportObjectList1));
-
-   Warning[] warnings;
-   string[] streamids;
-   string mimeType;
-   string encoding;
-   string extension;
-
-   var bytes = reportViewer.LocalReport.Render("application/pdf", null, out mimeType, out encoding, out extension, out streamids, out warnings);
-   return File(bytes, "application/pdf")
-}
-```
-
-Use case 2. Return a physical pdf from server
-
-```c#
-[HttpGet]
-[Route("GetMyPdf")]
-public IActionResult GetMyPdf()
-{
-   var stream = await {{__get_stream_here__}}
-   return File(stream, "application/pdf")); // FileStreamResult
-
-  // OR
-  // var bytes = await {{__get_bytes_here__}}
-  // return File(bytes, "application/pdf")
-}
-
-OR
-
-[HttpGet]
-[Route("GetMyPdf")]
-public IActionResult GetMyPdf()
-{
-    var pdfPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/assets/pdfjs/web/gre_research_validity_data.pdf");
-    byte[] bytes = System.IO.File.ReadAllBytes(pdfPath);
-    return File(bytes, "application/pdf");
-}
-```
-
-## E-Signature Support
-
-Original issue -> PDF.JS is not able to load the signature in the pdf if that is done via the any **E-Signature** tool.
-
-Resolution of the issue -> To support this feature need to comment/remove the below code from pdf.worker.js file and file path i.e. lib\pdfjs\build\pdf.worker.js
-
-**Original issue code**
-
-```javascript
-if (data.fieldType === "Sig") {
-  data.fieldValue = null;
-
-  _this3.setFlags(_util.AnnotationFlag.HIDDEN);
-}
-```
-
-**Resoultion code**
-
-```javascript
-if (data.fieldType === "Sig") {
-  data.fieldValue = null;
-
-  _this3.setFlags(_util.AnnotationFlag.HIDDEN); //remove or comment this line
-}
-```
-
-## Stack Overflow Support
-
-Have a question? Ask questions and find answers on Stack overflow.
-
-[Stack Overflow](https://stackoverflow.com/questions/tagged/ng2-pdfjs-viewer)
-
-## Looking for old AngularJS? - The below library is quite useful
-
-AngularJS [angular-pdfjs-viewer](https://github.com/legalthings/angular-pdfjs-viewer)
-
-## License
-
-\*\*Apache V2 License - https://www.apache.org/licenses/LICENSE-2.0
-
-## More reading
-
-https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website
-https://github.com/mozilla/pdf.js/wiki/Third-party-viewer-usage
-https://github.com/mozilla/pdf.js/wiki/Viewer-options

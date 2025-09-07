@@ -8,6 +8,8 @@ The most reliable, feature-rich Angular PDF viewer component powered by Mozilla'
 [![PDF.js Version](https://img.shields.io/badge/PDF.js%20v5.3.93-latest-green?logo=mozilla)](https://github.com/mozilla/pdf.js)
 [![Angular Support](https://img.shields.io/badge/Angular%2020+-supported-red?logo=angular)](https://angular.dev/overview)
 [![NPM Downloads](https://img.shields.io/npm/dm/ng2-pdfjs-viewer?label=downloads%2Fmonth&color=orange)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+[![Total Downloads](https://img.shields.io/badge/total%20downloads-7M+-brightgreen?logo=npm)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+[![Since 2018](https://img.shields.io/badge/since-2018-blue?logo=calendar)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![GitHub Stars](https://img.shields.io/github/stars/intbot/ng2-pdfjs-viewer?logo=github)](https://github.com/intbot/ng2-pdfjs-viewer)
 [![GitHub Issues](https://img.shields.io/github/issues/intbot/ng2-pdfjs-viewer?logo=github)](https://github.com/intbot/ng2-pdfjs-viewer/issues)
@@ -22,9 +24,11 @@ The most reliable, feature-rich Angular PDF viewer component powered by Mozilla'
 
 ---
 
-ng2-pdfjs-viewer is the most comprehensive and feature-rich Angular PDF viewer component available. This powerful library enables developers to seamlessly integrate PDF viewing capabilities into Angular applications with enterprise-grade features, custom theming, and mobile-first responsive design.
+ng2-pdfjs-viewer is the most comprehensive and feature-rich Angular PDF viewer component available. **Born in 2018** and still going strong with over **7+ million downloads**, this battle-tested library has been trusted by developers worldwide for **over 8 years**, powering thousands of applications.
 
-Built on Mozilla's PDF.js v5.3.93, ng2-pdfjs-viewer provides advanced PDF rendering, document navigation, search functionality, and extensive customization options. Whether you need a simple embedded PDF viewer or a complex document management system, this component delivers the performance and flexibility required for modern Angular applications.
+This powerful library enables developers to seamlessly integrate PDF viewing capabilities into Angular applications with enterprise-grade features, custom theming, and mobile-first responsive design. Built on Mozilla's PDF.js v5.3.93, ng2-pdfjs-viewer provides advanced PDF rendering, document navigation, search functionality, and extensive customization options.
+
+Whether you need a simple embedded PDF viewer or a complex document management system, this component delivers the performance and flexibility required for modern Angular applications. **The most mature and reliable Angular PDF viewer solution** with continuous updates and long-term support.
 
 ### Why Choose ng2-pdfjs-viewer?
 
@@ -36,6 +40,8 @@ Built on Mozilla's PDF.js v5.3.93, ng2-pdfjs-viewer provides advanced PDF render
 - **⚡ High Performance** - Event-driven architecture with efficient memory management and lazy loading
 - **🌍 Global Support** - Multi-language support with automatic locale detection and RTL compatibility
 - **🛡️ Production Tested** - Trusted by thousands of applications with millions of downloads
+- **📈 Proven Track Record** - 8+ years of continuous development and community support
+- **🔒 Security Focused** - Regular security updates and vulnerability patches
 
 ### 🆕 Latest Features (v20.4.0)
 
@@ -57,6 +63,17 @@ Built on Mozilla's PDF.js v5.3.93, ng2-pdfjs-viewer provides advanced PDF render
 - **Advanced Configuration Objects** - Clean, object-based configuration for complex setups
 - **Production-Ready Architecture** - Event-driven design with no timeouts or polling
 - **Complete API Coverage** - 19+ methods with consistent Promise-based returns
+
+### 🎯 Perfect For
+
+- **Enterprise Applications** - Robust, scalable PDF viewing for business applications
+- **Document Management Systems** - Complete PDF handling with search and navigation
+- **E-Learning Platforms** - Interactive PDF viewing for educational content
+- **Financial Applications** - Secure PDF viewing for reports and statements
+- **Healthcare Systems** - Reliable PDF viewing for medical documents
+- **Government Portals** - Accessible PDF viewing for public services
+- **E-Commerce Platforms** - Product catalogs and documentation viewing
+- **Content Management Systems** - Integrated PDF viewing and management
 
 ---
 
@@ -139,7 +156,7 @@ Add PDF.js assets to your `angular.json`:
 
 ## ✨ Features
 
-**🎉 6+ Million Downloads & Counting!** - Trusted by developers worldwide for reliable PDF viewing in Angular applications.
+**🎉 7+ Million Downloads & Counting!** - Trusted by developers worldwide for reliable PDF viewing in Angular applications since 2018.
 
 ### 🎯 Core PDF Viewing Features
 
@@ -649,7 +666,7 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 - **Mozilla PDF.js Team** - For the amazing PDF.js library
 - **Angular Team** - For the excellent framework
 - **Community Contributors** - For bug reports, feature requests, and contributions
-- **6+ Million Users** - For trusting us with your PDF viewing needs
+- **7+ Million Users** - For trusting us with your PDF viewing needs
 
 ---
 
