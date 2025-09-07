@@ -88,198 +88,23 @@ import { ChangeOriginTracker } from './utils/ChangeOriginTracker';
             <div class="ng2-pdfjs-error-overlay" *ngIf="errorOverride && hasError && !externalWindow"
              [ngClass]="errorClass"
              style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.9);backdrop-filter:saturate(120%) blur(1px);">
-          <ng-container *ngIf="customErrorTpl; else checkErrorTemplate" [ngTemplateOutlet]="customErrorTpl" [ngTemplateOutletContext]="getErrorTemplateData()"></ng-container>
-          <ng-template #checkErrorTemplate>
-            <ng-container *ngIf="errorTemplate; else defaultError" [ngTemplateOutlet]="getErrorTemplate()"></ng-container>
-            <ng-template #defaultError>
-              <div style="text-align:center;max-width:400px;padding:20px;">
-                <div style="font-size:48px;color:#f44336;margin-bottom:16px;">⚠️</div>
-                <div style="color:#333;font-size:18px;font-weight:500;margin-bottom:8px;">Error Loading PDF</div>
-                <div style="color:#666;font-size:14px;line-height:1.4;">{{currentErrorMessage}}</div>
-              </div>
-            </ng-template>
+          <ng-container *ngIf="customErrorTpl; else defaultError" [ngTemplateOutlet]="customErrorTpl" [ngTemplateOutletContext]="getErrorTemplateData()"></ng-container>
+          <ng-template #defaultError>
+            <div style="text-align:center;max-width:400px;padding:20px;">
+              <div style="font-size:48px;color:#f44336;margin-bottom:16px;">⚠️</div>
+              <div style="color:#333;font-size:18px;font-weight:500;margin-bottom:8px;">Error Loading PDF</div>
+              <div style="color:#666;font-size:14px;line-height:1.4;">{{currentErrorMessage}}</div>
+            </div>
           </ng-template>
         </div>
   </div>
 
-  <!-- Error Templates -->
-  <ng-template #basicErrorTpl>
-    <div class="error-container">
-      <div class="error-icon-wrapper">
-        <div class="error-icon">📄</div>
-        <div class="error-icon-bg"></div>
-      </div>
-      <h2 class="error-title">Unable to Load Document</h2>
-      <p class="error-message">{{currentErrorMessage}}</p>
-      <div class="error-actions">
-        <button class="btn-primary" (click)="reloadViewer()">
-          <span class="btn-icon">🔄</span>
-          <span class="btn-text">Try Again</span>
-        </button>
-        <button class="btn-secondary" (click)="goBack()">
-          <span class="btn-icon">←</span>
-          <span class="btn-text">Go Back</span>
-        </button>
-      </div>
-    </div>
-  </ng-template>
-
-  <ng-template #corporateErrorTpl>
-    <div class="corporate-error">
-      <div class="corporate-header">
-        <div class="company-logo-placeholder">
-          <div class="logo-icon">🏢</div>
-        </div>
-        <div class="header-content">
-          <h1 class="corporate-title">Document Error</h1>
-          <p class="header-subtitle">PDF Viewer</p>
-        </div>
-      </div>
-      <div class="corporate-content">
-        <div class="error-icon-corporate">
-          <div class="icon-wrapper">
-            <div class="icon-bg"></div>
-            <div class="icon-symbol">📄</div>
-          </div>
-        </div>
-        <h2 class="error-subtitle">Unable to Load Document</h2>
-        <p class="error-description">{{currentErrorMessage}}</p>
-        <div class="corporate-actions">
-          <button class="corporate-btn primary" (click)="reloadViewer()">
-            <span class="btn-icon">🔄</span>
-            <span class="btn-text">Retry Loading</span>
-          </button>
-          <button class="corporate-btn secondary" (click)="closeViewer()">
-            <span class="btn-icon">✕</span>
-            <span class="btn-text">Close</span>
-          </button>
-        </div>
-      </div>
-      <div class="corporate-footer">
-        <p class="support-text">Need help? Contact support at <a href="mailto:support&#64;company.com">support&#64;company.com</a></p>
-      </div>
-    </div>
-  </ng-template>
-
-  <ng-template #minimalistErrorTpl>
-    <div class="minimal-error">
-      <div class="minimal-icon-wrapper">
-        <div class="minimal-icon">📄</div>
-        <div class="icon-ring"></div>
-      </div>
-      <h3 class="minimal-title">Document Error</h3>
-      <p class="minimal-message">{{currentErrorMessage}}</p>
-      <button class="minimal-btn" (click)="reloadViewer()">
-        <span class="btn-icon">🔄</span>
-        <span class="btn-text">Try Again</span>
-      </button>
-    </div>
-  </ng-template>
-
-  <ng-template #gradientErrorTpl>
-    <div class="gradient-error">
-      <div class="gradient-content">
-        <div class="gradient-icon-wrapper">
-          <div class="gradient-icon">📄</div>
-          <div class="icon-glow"></div>
-        </div>
-        <h2 class="gradient-title">Document Loading Failed</h2>
-        <p class="gradient-message">{{currentErrorMessage}}</p>
-        <div class="gradient-actions">
-          <button class="gradient-btn primary" (click)="reloadViewer()">
-            <span class="btn-icon">🔄</span>
-            <span class="btn-text">Try Again</span>
-            <span class="btn-arrow">→</span>
-          </button>
-          <button class="gradient-btn secondary" (click)="goBack()">
-            <span class="btn-icon">←</span>
-            <span class="btn-text">Go Back</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </ng-template>
-
-  <ng-template #darkErrorTpl>
-    <div class="dark-error">
-      <div class="dark-header">
-        <div class="dark-logo-wrapper">
-          <div class="dark-logo">🌙</div>
-          <div class="logo-glow"></div>
-        </div>
-        <div class="header-info">
-          <h1 class="dark-title">Document Error</h1>
-          <p class="header-subtitle">PDF Viewer</p>
-        </div>
-      </div>
-      <div class="dark-content">
-        <div class="dark-icon-wrapper">
-          <div class="dark-icon">📄</div>
-          <div class="icon-pulse"></div>
-        </div>
-        <h2 class="dark-subtitle">Failed to Load Document</h2>
-        <p class="dark-message">{{currentErrorMessage}}</p>
-        <div class="dark-actions">
-          <button class="dark-btn primary" (click)="reloadViewer()">
-            <span class="btn-icon">🔄</span>
-            <span class="btn-text">Retry</span>
-          </button>
-          <button class="dark-btn secondary" (click)="goBack()">
-            <span class="btn-icon">←</span>
-            <span class="btn-text">Back</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </ng-template>
-
-  <ng-template #interactiveErrorTpl>
-    <div class="interactive-error">
-      <div class="interactive-content">
-        <div class="animated-icon-wrapper">
-          <div class="animated-icon">📄</div>
-          <div class="icon-ripple"></div>
-          <div class="icon-particles"></div>
-        </div>
-        <h2 class="interactive-title">Document Loading Error</h2>
-        <p class="interactive-message">{{currentErrorMessage}}</p>
-        <div class="interactive-actions">
-          <button class="interactive-btn primary" (click)="reloadViewer()">
-            <span class="btn-content">
-              <span class="btn-icon">🔄</span>
-              <span class="btn-text">Retry</span>
-            </span>
-            <div class="btn-shine"></div>
-          </button>
-          <button class="interactive-btn secondary" (click)="goBack()">
-            <span class="btn-content">
-              <span class="btn-icon">←</span>
-              <span class="btn-text">Go Back</span>
-            </span>
-          </button>
-        </div>
-        <div class="error-details">
-          <details>
-            <summary>Technical Details</summary>
-            <p class="tech-details">{{currentErrorMessage}}</p>
-          </details>
-        </div>
-      </div>
-    </div>
-  </ng-template>
   `
 })
 export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   // #region Component Properties
   @ViewChild('iframe', { static: true }) iframe: ElementRef;
   
-  // Error template references
-  @ViewChild('basicErrorTpl') public basicErrorTpl?: TemplateRef<any>;
-  @ViewChild('corporateErrorTpl') public corporateErrorTpl?: TemplateRef<any>;
-  @ViewChild('minimalistErrorTpl') public minimalistErrorTpl?: TemplateRef<any>;
-  @ViewChild('gradientErrorTpl') public gradientErrorTpl?: TemplateRef<any>;
-  @ViewChild('darkErrorTpl') public darkErrorTpl?: TemplateRef<any>;
-  @ViewChild('interactiveErrorTpl') public interactiveErrorTpl?: TemplateRef<any>;
   static lastID = 0;
   @Input() public viewerId = `ng2-pdfjs-viewer-ID${++PdfJsViewerComponent.lastID}`;
   
@@ -367,7 +192,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
   // #region Error Display Customization
   @Input() public customErrorTpl?: TemplateRef<any>;
   @Input() public errorClass?: string;
-  @Input() public errorTemplate?: string; // Template name instead of HTML
   // #endregion
 
   // #region Toolbar/Sidebar Group Visibility
@@ -406,19 +230,6 @@ export class PdfJsViewerComponent implements OnInit, OnDestroy, OnChanges, After
     };
   }
 
-  public getErrorTemplate(): TemplateRef<any> | null {
-    if (!this.errorTemplate) return null;
-    
-    switch (this.errorTemplate) {
-      case 'basic': return this.basicErrorTpl;
-      case 'corporate': return this.corporateErrorTpl;
-      case 'minimalist': return this.minimalistErrorTpl;
-      case 'gradient': return this.gradientErrorTpl;
-      case 'dark': return this.darkErrorTpl;
-      case 'interactive': return this.interactiveErrorTpl;
-      default: return null;
-    }
-  }
 
   // Error template button actions
   public reloadViewer(): void {

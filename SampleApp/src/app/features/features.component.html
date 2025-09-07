@@ -523,11 +523,6 @@
                     <input matInput [(ngModel)]="errorClass" placeholder="e.g., custom-error-style">
                   </mat-form-field>
                   
-                  <mat-form-field class="full-width">
-                    <mat-label>Error Template</mat-label>
-                    <input matInput [(ngModel)]="errorTemplate" placeholder="e.g., basic, corporate, minimalist">
-                    <mat-hint>Choose from: basic, corporate, minimalist, gradient, dark, interactive</mat-hint>
-                  </mat-form-field>
               </div>
               
               <mat-divider></mat-divider>
@@ -599,12 +594,11 @@
             [namedDest]="namedDest"
             [locale]="locale"
             [useOnlyCssZoom]="useOnlyCssZoom"
-            [errorOverride]="errorOverride"
-            [errorAppend]="errorAppend"
-            [errorMessage]="errorMessage"
-            [customErrorTpl]="customErrorTpl"
-            [errorClass]="errorClass"
-            [errorTemplate]="errorTemplate"
+           [errorOverride]="errorOverride"
+           [errorAppend]="errorAppend"
+           [errorMessage]="errorMessage"
+           [customErrorTpl]="customErrorTpl"
+           [errorClass]="errorClass"
             [diagnosticLogs]="diagnosticLogs"
             [theme]="theme"
             [primaryColor]="primaryColor"
@@ -734,4 +728,170 @@
       </mat-card-content>
     </mat-card>
   </div>
+
+  <!-- Error Templates -->
+  <ng-template #basicErrorTpl let-errorData="errorData">
+    <div class="error-container">
+      <div class="error-icon-wrapper">
+        <div class="error-icon">📄</div>
+        <div class="error-icon-bg"></div>
+      </div>
+      <h2 class="error-title">Unable to Load Document</h2>
+      <p class="error-message">{{errorData.errorMessage}}</p>
+      <div class="error-actions">
+        <button class="btn-primary" (click)="reloadViewer()">
+          <span class="btn-icon">🔄</span>
+          <span class="btn-text">Try Again</span>
+        </button>
+        <button class="btn-secondary" (click)="goBack()">
+          <span class="btn-icon">←</span>
+          <span class="btn-text">Go Back</span>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #corporateErrorTpl let-errorData="errorData">
+    <div class="corporate-error">
+      <div class="corporate-header">
+        <div class="company-logo-placeholder">
+          <div class="logo-icon">🏢</div>
+        </div>
+        <div class="header-content">
+          <h1 class="corporate-title">Document Error</h1>
+          <p class="header-subtitle">PDF Viewer</p>
+        </div>
+      </div>
+      <div class="corporate-content">
+        <div class="error-icon-corporate">
+          <div class="icon-wrapper">
+            <div class="icon-bg"></div>
+            <div class="icon-symbol">📄</div>
+          </div>
+        </div>
+        <h2 class="error-subtitle">Unable to Load Document</h2>
+        <p class="error-description">{{errorData.errorMessage}}</p>
+        <div class="corporate-actions">
+          <button class="corporate-btn primary" (click)="reloadViewer()">
+            <span class="btn-icon">🔄</span>
+            <span class="btn-text">Retry Loading</span>
+          </button>
+          <button class="corporate-btn secondary" (click)="closeViewer()">
+            <span class="btn-icon">✕</span>
+            <span class="btn-text">Close</span>
+          </button>
+        </div>
+      </div>
+      <div class="corporate-footer">
+        <p class="support-text">Need help? Contact support at <a href="mailto:support&#64;company.com">support&#64;company.com</a></p>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #minimalistErrorTpl let-errorData="errorData">
+    <div class="minimal-error">
+      <div class="minimal-icon-wrapper">
+        <div class="minimal-icon">📄</div>
+        <div class="icon-ring"></div>
+      </div>
+      <h3 class="minimal-title">Document Error</h3>
+      <p class="minimal-message">{{errorData.errorMessage}}</p>
+      <button class="minimal-btn" (click)="reloadViewer()">
+        <span class="btn-icon">🔄</span>
+        <span class="btn-text">Try Again</span>
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #gradientErrorTpl let-errorData="errorData">
+    <div class="gradient-error">
+      <div class="gradient-content">
+        <div class="gradient-icon-wrapper">
+          <div class="gradient-icon">📄</div>
+          <div class="icon-glow"></div>
+        </div>
+        <h2 class="gradient-title">Document Loading Failed</h2>
+        <p class="gradient-message">{{errorData.errorMessage}}</p>
+        <div class="gradient-actions">
+          <button class="gradient-btn primary" (click)="reloadViewer()">
+            <span class="btn-icon">🔄</span>
+            <span class="btn-text">Try Again</span>
+            <span class="btn-arrow">→</span>
+          </button>
+          <button class="gradient-btn secondary" (click)="goBack()">
+            <span class="btn-icon">←</span>
+            <span class="btn-text">Go Back</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #darkErrorTpl let-errorData="errorData">
+    <div class="dark-error">
+      <div class="dark-header">
+        <div class="dark-logo-wrapper">
+          <div class="dark-logo">🌙</div>
+          <div class="logo-glow"></div>
+        </div>
+        <div class="header-info">
+          <h1 class="dark-title">Document Error</h1>
+          <p class="header-subtitle">PDF Viewer</p>
+        </div>
+      </div>
+      <div class="dark-content">
+        <div class="dark-icon-wrapper">
+          <div class="dark-icon">📄</div>
+          <div class="icon-pulse"></div>
+        </div>
+        <h2 class="dark-subtitle">Failed to Load Document</h2>
+        <p class="dark-message">{{errorData.errorMessage}}</p>
+        <div class="dark-actions">
+          <button class="dark-btn primary" (click)="reloadViewer()">
+            <span class="btn-icon">🔄</span>
+            <span class="btn-text">Retry</span>
+          </button>
+          <button class="dark-btn secondary" (click)="goBack()">
+            <span class="btn-icon">←</span>
+            <span class="btn-text">Back</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #interactiveErrorTpl let-errorData="errorData">
+    <div class="interactive-error">
+      <div class="interactive-content">
+        <div class="animated-icon-wrapper">
+          <div class="animated-icon">📄</div>
+          <div class="icon-ripple"></div>
+          <div class="icon-particles"></div>
+        </div>
+        <h2 class="interactive-title">Document Loading Error</h2>
+        <p class="interactive-message">{{errorData.errorMessage}}</p>
+        <div class="interactive-actions">
+          <button class="interactive-btn primary" (click)="reloadViewer()">
+            <span class="btn-content">
+              <span class="btn-icon">🔄</span>
+              <span class="btn-text">Retry</span>
+            </span>
+            <div class="btn-shine"></div>
+          </button>
+          <button class="interactive-btn secondary" (click)="goBack()">
+            <span class="btn-content">
+              <span class="btn-icon">←</span>
+              <span class="btn-text">Go Back</span>
+            </span>
+          </button>
+        </div>
+        <div class="error-details">
+          <details>
+            <summary>Technical Details</summary>
+            <p class="tech-details">{{errorData.errorMessage}}</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </ng-template>
 </div> 

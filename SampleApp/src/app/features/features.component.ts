@@ -19,6 +19,14 @@ export class FeaturesComponent implements OnInit {
   @ViewChild('bounceSpinnerTemplate', { static: true }) bounceSpinnerTemplate!: TemplateRef<any>;
   @ViewChild('progressSpinnerTemplate', { static: true }) progressSpinnerTemplate!: TemplateRef<any>;
   @ViewChild('corporateSpinnerTemplate', { static: true }) corporateSpinnerTemplate!: TemplateRef<any>;
+  
+  // Error template references
+  @ViewChild('basicErrorTpl', { static: true }) basicErrorTpl!: TemplateRef<any>;
+  @ViewChild('corporateErrorTpl', { static: true }) corporateErrorTpl!: TemplateRef<any>;
+  @ViewChild('minimalistErrorTpl', { static: true }) minimalistErrorTpl!: TemplateRef<any>;
+  @ViewChild('gradientErrorTpl', { static: true }) gradientErrorTpl!: TemplateRef<any>;
+  @ViewChild('darkErrorTpl', { static: true }) darkErrorTpl!: TemplateRef<any>;
+  @ViewChild('interactiveErrorTpl', { static: true }) interactiveErrorTpl!: TemplateRef<any>;
 
   // Configuration properties - directly bound to the viewer
   public pdfSrc = '/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf';
@@ -51,7 +59,6 @@ export class FeaturesComponent implements OnInit {
   // Error display customization
   public customErrorTpl: TemplateRef<any> | null = null;
   public errorClass: string = '';
-  public errorTemplate: string = '';
   public selectedErrorExample: string = '';
 
   // Error display examples
@@ -291,13 +298,39 @@ export class FeaturesComponent implements OnInit {
   // Error display example selection
   public onErrorExampleChange(): void {
     if (!this.selectedErrorExample) {
-      this.errorTemplate = '';
       this.errorClass = '';
+      this.customErrorTpl = null;
       return;
     }
-
-    this.errorTemplate = this.selectedErrorExample;
+    
     this.errorClass = this.selectedErrorExample + '-error-style';
+    // Set the appropriate template based on selection
+    this.setErrorTemplate(this.selectedErrorExample);
+  }
+
+  private setErrorTemplate(templateName: string): void {
+    switch (templateName) {
+      case 'basic':
+        this.customErrorTpl = this.basicErrorTpl;
+        break;
+      case 'corporate':
+        this.customErrorTpl = this.corporateErrorTpl;
+        break;
+      case 'minimalist':
+        this.customErrorTpl = this.minimalistErrorTpl;
+        break;
+      case 'gradient':
+        this.customErrorTpl = this.gradientErrorTpl;
+        break;
+      case 'dark':
+        this.customErrorTpl = this.darkErrorTpl;
+        break;
+      case 'interactive':
+        this.customErrorTpl = this.interactiveErrorTpl;
+        break;
+      default:
+        this.customErrorTpl = null;
+    }
   }
 
   public onDocumentInit() {
@@ -554,6 +587,18 @@ export class FeaturesComponent implements OnInit {
     const previousKey = this.viewerTrackingKey;
     this.viewerTrackingKey = Date.now();
     console.log(`🎬 Features Demo: Component tracking key changed from ${previousKey} to ${this.viewerTrackingKey} - component will be recreated`);
+  }
+
+  public goBack(): void {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.close();
+    }
+  }
+
+  public closeViewer(): void {
+    window.close();
   }
 
   // Reload viewer to test loading spinner - forces complete component destruction and recreation
