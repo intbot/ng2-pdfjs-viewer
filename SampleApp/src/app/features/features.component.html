@@ -3,16 +3,48 @@
   <mat-toolbar color="primary" class="event-monitor">
     <div class="quick-stats">
       <mat-chip-listbox class="stats-chips" aria-label="Event Stats">
-        <mat-chip-option [selected]="eventCounts.documentLoad>0" matTooltip="Total document loads">📄 {{eventCounts.documentLoad}}</mat-chip-option>
-        <mat-chip-option [selected]="eventCounts.pageRendered>0" matTooltip="Total page renders">🎨 {{eventCounts.pageRendered}}</mat-chip-option>
-        <mat-chip-option [selected]="eventCounts.find>0 || eventCounts.updateFindMatchesCount>0" matTooltip="Find ops / matches">🔍 {{eventCounts.find}} / {{eventCounts.updateFindMatchesCount}}</mat-chip-option>
-        <mat-chip-option [selected]="eventCounts.outlineLoaded>0" matTooltip="Outline loads">📖 {{eventCounts.outlineLoaded}}</mat-chip-option>
-        <mat-chip-option [selected]="eventCounts.documentError>0" matTooltip="Errors">❌ {{eventCounts.documentError}}</mat-chip-option>
+        <mat-chip-option
+          [selected]="eventCounts.documentLoad > 0"
+          matTooltip="Total document loads"
+          >📄 {{ eventCounts.documentLoad }}</mat-chip-option
+        >
+        <mat-chip-option
+          [selected]="eventCounts.pageRendered > 0"
+          matTooltip="Total page renders"
+          >🎨 {{ eventCounts.pageRendered }}</mat-chip-option
+        >
+        <mat-chip-option
+          [selected]="
+            eventCounts.find > 0 || eventCounts.updateFindMatchesCount > 0
+          "
+          matTooltip="Find ops / matches"
+          >🔍 {{ eventCounts.find }} /
+          {{ eventCounts.updateFindMatchesCount }}</mat-chip-option
+        >
+        <mat-chip-option
+          [selected]="eventCounts.outlineLoaded > 0"
+          matTooltip="Outline loads"
+          >📖 {{ eventCounts.outlineLoaded }}</mat-chip-option
+        >
+        <mat-chip-option
+          [selected]="eventCounts.documentError > 0"
+          matTooltip="Errors"
+          >❌ {{ eventCounts.documentError }}</mat-chip-option
+        >
       </mat-chip-listbox>
     </div>
     <span class="spacer"></span>
-    <div class="status-info">Page {{currentPage}}/{{totalPages}} | {{currentScale}} | {{currentRotation}}°</div>
-    <button mat-icon-button (click)="resetEventCounts()" matTooltip="Reset counters"><mat-icon>refresh</mat-icon></button>
+    <div class="status-info">
+      Page {{ currentPage }}/{{ totalPages }} | {{ currentScale }} |
+      {{ currentRotation }}°
+    </div>
+    <button
+      mat-icon-button
+      (click)="resetEventCounts()"
+      matTooltip="Reset counters"
+    >
+      <mat-icon>refresh</mat-icon>
+    </button>
   </mat-toolbar>
 
   <div class="demo-content">
@@ -25,251 +57,352 @@
             Configure the PDF viewer using different approaches
           </mat-card-subtitle>
         </mat-card-header>
-      
+
         <mat-card-content>
           <mat-tab-group>
             <!-- Traditional Individual Properties -->
             <mat-tab label="Individual Properties">
-            <div class="tab-content">
+              <div class="tab-content">
                 <h3>Control Visibility</h3>
                 <div class="action-buttons toggle-buttons">
-                  <button mat-icon-button 
-                          class="toggle-btn"
-                          [color]="showOpenFile ? 'primary' : ''" 
-                          (click)="toggleShowOpenFile()"
-                          matTooltip="Show Open File">
+                  <button
+                    mat-icon-button
+                    class="toggle-btn"
+                    [color]="showOpenFile ? 'primary' : ''"
+                    (click)="toggleShowOpenFile()"
+                    matTooltip="Show Open File"
+                  >
                     <mat-icon>folder_open</mat-icon>
                   </button>
-                  <button mat-icon-button 
-                          class="toggle-btn"
-                          [color]="showDownload ? 'primary' : ''" 
-                          (click)="toggleShowDownload()"
-                          matTooltip="Show Download">
+                  <button
+                    mat-icon-button
+                    class="toggle-btn"
+                    [color]="showDownload ? 'primary' : ''"
+                    (click)="toggleShowDownload()"
+                    matTooltip="Show Download"
+                  >
                     <mat-icon>download</mat-icon>
                   </button>
-                  <button mat-icon-button 
-                          class="toggle-btn"
-                          [color]="showPrint ? 'primary' : ''" 
-                          (click)="toggleShowPrint()"
-                          matTooltip="Show Print">
+                  <button
+                    mat-icon-button
+                    class="toggle-btn"
+                    [color]="showPrint ? 'primary' : ''"
+                    (click)="toggleShowPrint()"
+                    matTooltip="Show Print"
+                  >
                     <mat-icon>print</mat-icon>
                   </button>
-                  <button mat-icon-button 
-                          class="toggle-btn"
-                          [color]="showFullScreen ? 'primary' : ''" 
-                          (click)="toggleShowFullScreen()"
-                          matTooltip="Show Full Screen">
+                  <button
+                    mat-icon-button
+                    class="toggle-btn"
+                    [color]="showFullScreen ? 'primary' : ''"
+                    (click)="toggleShowFullScreen()"
+                    matTooltip="Show Full Screen"
+                  >
                     <mat-icon>fullscreen</mat-icon>
                   </button>
-                  <button mat-icon-button 
-                          class="toggle-btn"
-                          [color]="showFind ? 'primary' : ''" 
-                          (click)="toggleShowFind()"
-                          matTooltip="Show Find">
+                  <button
+                    mat-icon-button
+                    class="toggle-btn"
+                    [color]="showFind ? 'primary' : ''"
+                    (click)="toggleShowFind()"
+                    matTooltip="Show Find"
+                  >
                     <mat-icon>search</mat-icon>
                   </button>
-                  <button mat-icon-button 
-                          class="toggle-btn"
-                          [color]="showViewBookmark ? 'primary' : ''" 
-                          (click)="toggleShowViewBookmark()"
-                          matTooltip="Show Bookmarks">
+                  <button
+                    mat-icon-button
+                    class="toggle-btn"
+                    [color]="showViewBookmark ? 'primary' : ''"
+                    (click)="toggleShowViewBookmark()"
+                    matTooltip="Show Bookmarks"
+                  >
                     <mat-icon>bookmark</mat-icon>
                   </button>
-                  <button mat-icon-button 
-                          class="toggle-btn"
-                          [color]="showAnnotations ? 'primary' : ''" 
-                          (click)="toggleShowAnnotations()"
-                          matTooltip="Show Annotations">
+                  <button
+                    mat-icon-button
+                    class="toggle-btn"
+                    [color]="showAnnotations ? 'primary' : ''"
+                    (click)="toggleShowAnnotations()"
+                    matTooltip="Show Annotations"
+                  >
                     <mat-icon>edit</mat-icon>
                   </button>
                 </div>
-      
+
                 <h3>Group Visibility</h3>
                 <div class="action-buttons toggle-buttons">
-                  <button mat-icon-button 
-                          class="toggle-btn"
-                          [color]="showToolbarLeft ? 'primary' : ''" 
-                          (click)="toggleShowToolbarLeft()"
-                          matTooltip="Show Toolbar Left">
+                  <button
+                    mat-icon-button
+                    class="toggle-btn"
+                    [color]="showToolbarLeft ? 'primary' : ''"
+                    (click)="toggleShowToolbarLeft()"
+                    matTooltip="Show Toolbar Left"
+                  >
                     <mat-icon>view_headline</mat-icon>
                   </button>
-                  <button mat-icon-button 
-                          class="toggle-btn"
-                          [color]="showToolbarMiddle ? 'primary' : ''" 
-                          (click)="toggleShowToolbarMiddle()"
-                          matTooltip="Show Toolbar Middle">
+                  <button
+                    mat-icon-button
+                    class="toggle-btn"
+                    [color]="showToolbarMiddle ? 'primary' : ''"
+                    (click)="toggleShowToolbarMiddle()"
+                    matTooltip="Show Toolbar Middle"
+                  >
                     <mat-icon>view_module</mat-icon>
                   </button>
-                  <button mat-icon-button 
-                          class="toggle-btn"
-                          [color]="showToolbarRight ? 'primary' : ''" 
-                          (click)="toggleShowToolbarRight()"
-                          matTooltip="Show Toolbar Right">
+                  <button
+                    mat-icon-button
+                    class="toggle-btn"
+                    [color]="showToolbarRight ? 'primary' : ''"
+                    (click)="toggleShowToolbarRight()"
+                    matTooltip="Show Toolbar Right"
+                  >
                     <mat-icon>view_agenda</mat-icon>
                   </button>
-                  <button mat-icon-button 
-                          class="toggle-btn"
-                          [color]="showSecondaryToolbarToggle ? 'primary' : ''" 
-                          (click)="toggleShowSecondaryToolbarToggle()"
-                          matTooltip="Show Tools Menu Toggle">
+                  <button
+                    mat-icon-button
+                    class="toggle-btn"
+                    [color]="showSecondaryToolbarToggle ? 'primary' : ''"
+                    (click)="toggleShowSecondaryToolbarToggle()"
+                    matTooltip="Show Tools Menu Toggle"
+                  >
                     <mat-icon>more_vert</mat-icon>
                   </button>
-                  <button mat-icon-button 
-                          class="toggle-btn"
-                          [color]="showSidebar ? 'primary' : ''" 
-                          (click)="toggleShowSidebar()"
-                          matTooltip="Show Sidebar">
+                  <button
+                    mat-icon-button
+                    class="toggle-btn"
+                    [color]="showSidebar ? 'primary' : ''"
+                    (click)="toggleShowSidebar()"
+                    matTooltip="Show Sidebar"
+                  >
                     <mat-icon>view_sidebar</mat-icon>
                   </button>
-                  <button mat-icon-button 
-                          class="toggle-btn"
-                          [color]="showSidebarLeft ? 'primary' : ''" 
-                          (click)="toggleShowSidebarLeft()"
-                          matTooltip="Show Sidebar Left">
+                  <button
+                    mat-icon-button
+                    class="toggle-btn"
+                    [color]="showSidebarLeft ? 'primary' : ''"
+                    (click)="toggleShowSidebarLeft()"
+                    matTooltip="Show Sidebar Left"
+                  >
                     <mat-icon>chevron_left</mat-icon>
                   </button>
-                  <button mat-icon-button 
-                          class="toggle-btn"
-                          [color]="showSidebarRight ? 'primary' : ''" 
-                          (click)="toggleShowSidebarRight()"
-                          matTooltip="Show Sidebar Right">
+                  <button
+                    mat-icon-button
+                    class="toggle-btn"
+                    [color]="showSidebarRight ? 'primary' : ''"
+                    (click)="toggleShowSidebarRight()"
+                    matTooltip="Show Sidebar Right"
+                  >
                     <mat-icon>chevron_right</mat-icon>
                   </button>
-              </div>
+                </div>
 
-              <mat-divider></mat-divider>
+                <mat-divider></mat-divider>
 
                 <!-- Auto-actions execute on component creation, not property changes. -->
                 <h3>Auto Actions (execute on load)</h3>
-                <p class="mat-caption">Toggle switches and click "Reload Viewer" to test.</p>
+                <p class="mat-caption">
+                  Toggle switches and click "Reload Viewer" to test.
+                </p>
                 <div class="toggle-grid">
-                  <mat-slide-toggle [(ngModel)]="downloadOnLoad">Download on Load</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="printOnLoad">Print on Load</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="showLastPageOnLoad">Show Last Page</mat-slide-toggle>
+                  <mat-slide-toggle [(ngModel)]="downloadOnLoad"
+                    >Download on Load</mat-slide-toggle
+                  >
+                  <mat-slide-toggle [(ngModel)]="printOnLoad"
+                    >Print on Load</mat-slide-toggle
+                  >
+                  <mat-slide-toggle [(ngModel)]="showLastPageOnLoad"
+                    >Show Last Page</mat-slide-toggle
+                  >
                 </div>
-                
+
                 <div class="action-button-container">
-                  <button mat-raised-button color="primary" (click)="reloadViewer()" matTooltip="Recreates the entire PDF viewer component to test auto-actions">
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="reloadViewer()"
+                    matTooltip="Recreates the entire PDF viewer component to test auto-actions"
+                  >
                     <mat-icon>refresh</mat-icon> Reload Viewer
                   </button>
                 </div>
 
                 <mat-divider></mat-divider>
 
-              <!-- Theme & Visual Customization -->
-              <h3>Theme & Visual Customization</h3>
-              
-              <!-- Theme Selection -->
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Theme</mat-label>
-                <mat-select [(ngModel)]="theme">
-                  <mat-option value="light">Light</mat-option>
-                  <mat-option value="dark">Dark</mat-option>
-                  <mat-option value="auto">Auto (System)</mat-option>
-                  </mat-select>
-              </mat-form-field>
+                <!-- Theme & Visual Customization -->
+                <h3>Theme & Visual Customization</h3>
 
-              <!-- Color Customization -->
-              <div class="color-grid">
-                <mat-form-field appearance="outline">
-                  <mat-label>Primary Color</mat-label>
-                  <input matInput type="color" [(ngModel)]="primaryColor" placeholder="#007acc">
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                  <mat-label>Background Color</mat-label>
-                  <input matInput type="color" [(ngModel)]="backgroundColor" placeholder="Auto">
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                  <mat-label>Page Border Color</mat-label>
-                  <input matInput type="color" [(ngModel)]="pageBorderColor" placeholder="White">
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                  <mat-label>Toolbar Color</mat-label>
-                  <input matInput type="color" [(ngModel)]="toolbarColor" placeholder="Auto">
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                  <mat-label>Text Color</mat-label>
-                  <input matInput type="color" [(ngModel)]="textColor" placeholder="Auto">
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                  <mat-label>Border Radius</mat-label>
-                  <input matInput [(ngModel)]="borderRadius" placeholder="4px">
-                </mat-form-field>
-              </div>
-
-              <!-- Custom CSS -->
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Custom CSS</mat-label>
-                <textarea matInput rows="4" [(ngModel)]="customCSS" 
-                          placeholder="Add custom CSS styles here..."></textarea>
-                </mat-form-field>
-
-              <mat-divider></mat-divider>
-
-              
-              <h3>Layout & Responsive</h3>
-              <div class="binding-grid">
-                <mat-form-field>
-                  <mat-label>Toolbar Density</mat-label>
-                  <mat-select [(ngModel)]="toolbarDensity">
-                    <mat-option value="default">Default</mat-option>
-                    <mat-option value="compact">Compact</mat-option>
-                    <mat-option value="comfortable">Comfortable</mat-option>
+                <!-- Theme Selection -->
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Theme</mat-label>
+                  <mat-select [(ngModel)]="theme">
+                    <mat-option value="light">Light</mat-option>
+                    <mat-option value="dark">Dark</mat-option>
+                    <mat-option value="auto">Auto (System)</mat-option>
                   </mat-select>
                 </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Sidebar Width</mat-label>
-                  <input matInput placeholder="e.g., 280px" [(ngModel)]="sidebarWidth">
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Toolbar Position</mat-label>
-                  <mat-select [(ngModel)]="toolbarPosition">
-                    <mat-option value="top">Top</mat-option>
-                    <mat-option value="bottom">Bottom</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Sidebar Position</mat-label>
-                  <mat-select [(ngModel)]="sidebarPosition">
-                    <mat-option value="left">Left</mat-option>
-                    <mat-option value="right">Right</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Responsive Breakpoint</mat-label>
-                  <input matInput placeholder="e.g., 840px or 900" [(ngModel)]="responsiveBreakpoint">
-                </mat-form-field>
-              </div>
-              <h3>Loading & Spinner Customization</h3>
-              <div class="toggle-grid">
-                <mat-slide-toggle [(ngModel)]="showSpinner">Show Spinner</mat-slide-toggle>
-                <mat-slide-toggle [(ngModel)]="useCustomSpinnerTpl">Use Custom Template</mat-slide-toggle>
-              </div>
 
-              <mat-form-field class="full-width" appearance="outline">
-                <mat-label>Spinner CSS Class</mat-label>
-                <input matInput [(ngModel)]="spinnerCssClass" placeholder="demo-spinner-overlay">
+                <!-- Color Customization -->
+                <div class="color-grid">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Primary Color</mat-label>
+                    <input
+                      matInput
+                      type="color"
+                      [(ngModel)]="primaryColor"
+                      placeholder="#007acc"
+                    />
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Background Color</mat-label>
+                    <input
+                      matInput
+                      type="color"
+                      [(ngModel)]="backgroundColor"
+                      placeholder="Auto"
+                    />
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Page Border Color</mat-label>
+                    <input
+                      matInput
+                      type="color"
+                      [(ngModel)]="pageBorderColor"
+                      placeholder="White"
+                    />
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Toolbar Color</mat-label>
+                    <input
+                      matInput
+                      type="color"
+                      [(ngModel)]="toolbarColor"
+                      placeholder="Auto"
+                    />
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Text Color</mat-label>
+                    <input
+                      matInput
+                      type="color"
+                      [(ngModel)]="textColor"
+                      placeholder="Auto"
+                    />
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Border Radius</mat-label>
+                    <input
+                      matInput
+                      [(ngModel)]="borderRadius"
+                      placeholder="4px"
+                    />
+                  </mat-form-field>
+                </div>
+
+                <!-- Custom CSS -->
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Custom CSS</mat-label>
+                  <textarea
+                    matInput
+                    rows="4"
+                    [(ngModel)]="customCSS"
+                    placeholder="Add custom CSS styles here..."
+                  ></textarea>
                 </mat-form-field>
 
-              <mat-form-field class="full-width" appearance="outline" *ngIf="useCustomSpinnerTpl">
-                <mat-label>Template Style</mat-label>
-                <mat-select [(ngModel)]="selectedSpinnerTemplate">
-                  <mat-option value="default">Default Spinner</mat-option>
-                  <mat-option value="dots">Pulsing Dots</mat-option>
-                  <mat-option value="bounce">Bouncing Squares</mat-option>
-                  <mat-option value="progress">Progress Bar</mat-option>
-                  <mat-option value="corporate">Corporate Style</mat-option>
-                </mat-select>
-                <mat-hint>Choose a custom template style and click "Reload Viewer" to test</mat-hint>
-              </mat-form-field>
+                <mat-divider></mat-divider>
+
+                <h3>Layout & Responsive</h3>
+                <div class="binding-grid">
+                  <mat-form-field>
+                    <mat-label>Toolbar Density</mat-label>
+                    <mat-select [(ngModel)]="toolbarDensity">
+                      <mat-option value="default">Default</mat-option>
+                      <mat-option value="compact">Compact</mat-option>
+                      <mat-option value="comfortable">Comfortable</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>Sidebar Width</mat-label>
+                    <input
+                      matInput
+                      placeholder="e.g., 280px"
+                      [(ngModel)]="sidebarWidth"
+                    />
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>Toolbar Position</mat-label>
+                    <mat-select [(ngModel)]="toolbarPosition">
+                      <mat-option value="top">Top</mat-option>
+                      <mat-option value="bottom">Bottom</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>Sidebar Position</mat-label>
+                    <mat-select [(ngModel)]="sidebarPosition">
+                      <mat-option value="left">Left</mat-option>
+                      <mat-option value="right">Right</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>Responsive Breakpoint</mat-label>
+                    <input
+                      matInput
+                      placeholder="e.g., 840px or 900"
+                      [(ngModel)]="responsiveBreakpoint"
+                    />
+                  </mat-form-field>
+                </div>
+                <h3>Loading & Spinner Customization</h3>
+                <div class="toggle-grid">
+                  <mat-slide-toggle [(ngModel)]="showSpinner"
+                    >Show Spinner</mat-slide-toggle
+                  >
+                  <mat-slide-toggle [(ngModel)]="useCustomSpinnerTpl"
+                    >Use Custom Template</mat-slide-toggle
+                  >
+                </div>
+
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Spinner CSS Class</mat-label>
+                  <input
+                    matInput
+                    [(ngModel)]="spinnerCssClass"
+                    placeholder="demo-spinner-overlay"
+                  />
+                </mat-form-field>
+
+                <mat-form-field
+                  class="full-width"
+                  appearance="outline"
+                  *ngIf="useCustomSpinnerTpl"
+                >
+                  <mat-label>Template Style</mat-label>
+                  <mat-select [(ngModel)]="selectedSpinnerTemplate">
+                    <mat-option value="default">Default Spinner</mat-option>
+                    <mat-option value="dots">Pulsing Dots</mat-option>
+                    <mat-option value="bounce">Bouncing Squares</mat-option>
+                    <mat-option value="progress">Progress Bar</mat-option>
+                    <mat-option value="corporate">Corporate Style</mat-option>
+                  </mat-select>
+                  <mat-hint
+                    >Choose a custom template style and click "Reload Viewer" to
+                    test</mat-hint
+                  >
+                </mat-form-field>
 
                 <div class="action-button-container">
-                  <button mat-raised-button color="primary" (click)="testLoadingSpinner()" matTooltip="Recreates the PDF viewer to test loading spinner customizations">
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="testLoadingSpinner()"
+                    matTooltip="Recreates the PDF viewer to test loading spinner customizations"
+                  >
                     <mat-icon>refresh</mat-icon> Reload Viewer
                   </button>
                 </div>
@@ -279,55 +412,438 @@
                 <div class="config-grid">
                   <mat-form-field>
                     <mat-label>Download File Name</mat-label>
-                    <input matInput [(ngModel)]="downloadFileName">
-                </mat-form-field>
+                    <input matInput [(ngModel)]="downloadFileName" />
+                  </mat-form-field>
                   <mat-form-field>
-                  <mat-label>Locale</mat-label>
+                    <mat-label>Locale</mat-label>
                     <mat-select [(ngModel)]="locale">
                       <mat-option value="en-US">English</mat-option>
                       <mat-option value="de-AT">German</mat-option>
                       <mat-option value="fr-FR">French</mat-option>
                       <mat-option value="es-ES">Spanish</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <p class="mat-caption">Change language and click "Reload Viewer" to test.</p>
-                  
-                    <mat-slide-toggle [(ngModel)]="useOnlyCssZoom">CSS Zoom Only</mat-slide-toggle>
+                    </mat-select>
+                  </mat-form-field>
+                  <p class="mat-caption">
+                    Change language and click "Reload Viewer" to test.
+                  </p>
 
-                    <mat-slide-toggle [(ngModel)]="diagnosticLogs">Diagnostic Logs</mat-slide-toggle>
+                  <mat-slide-toggle [(ngModel)]="useOnlyCssZoom"
+                    >CSS Zoom Only</mat-slide-toggle
+                  >
+
+                  <mat-slide-toggle [(ngModel)]="diagnosticLogs"
+                    >Diagnostic Logs</mat-slide-toggle
+                  >
                 </div>
-              
-              <!-- Reload button for testing locale changes -->
-              <div class="action-button-container">
-                <button mat-raised-button color="primary" (click)="reloadViewer()" matTooltip="Recreates the entire PDF viewer component to test locale changes">
-                  <mat-icon>refresh</mat-icon> Reload Viewer
-                </button>
+
+                <!-- Reload button for testing locale changes -->
+                <div class="action-button-container">
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="reloadViewer()"
+                    matTooltip="Recreates the entire PDF viewer component to test locale changes"
+                  >
+                    <mat-icon>refresh</mat-icon> Reload Viewer
+                  </button>
+                </div>
               </div>
-            </div>
-          </mat-tab>
+            </mat-tab>
+
+
+            <!-- Separated Binding Demo -->
+            <mat-tab label="Property Binding">
+              <div class="tab-content">
+                <div class="binding-grid">
+                  <mat-form-field>
+                    <mat-label>Cursor</mat-label>
+                    <mat-select [(ngModel)]="cursor">
+                      <mat-option value="select">Text Selection</mat-option>
+                      <mat-option value="hand">Hand</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field>
+                    <mat-label>Scroll</mat-label>
+                    <mat-select [(ngModel)]="scroll">
+                      <mat-option value="vertical">Vertical</mat-option>
+                      <mat-option value="horizontal">Horizontal</mat-option>
+                      <mat-option value="wrapped">Wrapped</mat-option>
+                      <mat-option value="page">Page</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field>
+                    <mat-label>Spread</mat-label>
+                    <mat-select [(ngModel)]="spread">
+                      <mat-option value="none">None</mat-option>
+                      <mat-option value="odd">Odd</mat-option>
+                      <mat-option value="even">Even</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field>
+                    <mat-label>Page Mode</mat-label>
+                    <mat-select [(ngModel)]="pageMode">
+                      <mat-option value="none">None</mat-option>
+                      <mat-option value="thumbs">Thumbnails</mat-option>
+                      <mat-option value="bookmarks">Bookmarks</mat-option>
+                      <mat-option value="attachments">Attachments</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field>
+                    <mat-label>Rotation</mat-label>
+                    <mat-select [(ngModel)]="rotation">
+                      <mat-option [value]="0">0°</mat-option>
+                      <mat-option [value]="90">90°</mat-option>
+                      <mat-option [value]="180">180°</mat-option>
+                      <mat-option [value]="270">270°</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div class="zoom-demo-section">
+                  <div
+                    class="zoom-status-display"
+                    style="
+                      background: #f5f5f5;
+                      padding: 16px;
+                      border-radius: 8px;
+                      margin-bottom: 16px;
+                    "
+                  >
+                    <span
+                      >Only for zoom, separated two-way binding to avoid
+                      infinite loops</span
+                    >
+                  </div>
+                  <strong style="display: block; margin-bottom: 8px"
+                    >Angular → PDF viewer</strong
+                  >
+                  <div
+                    class="zoom-button-grid"
+                    style="
+                      display: grid;
+                      grid-template-columns: repeat(4, 1fr);
+                      gap: 8px;
+                      margin-bottom: 16px;
+                    "
+                  >
+                    <button
+                      mat-raised-button
+                      (click)="setZoom('0.5')"
+                      [color]="currentZoom === '0.5' ? 'primary' : 'basic'"
+                    >
+                      50%
+                    </button>
+                    <button
+                      mat-raised-button
+                      (click)="setZoom('0.75')"
+                      [color]="currentZoom === '0.75' ? 'primary' : 'basic'"
+                    >
+                      75%
+                    </button>
+                    <button
+                      mat-raised-button
+                      (click)="setZoom('1.0')"
+                      [color]="currentZoom === '1.0' ? 'primary' : 'basic'"
+                    >
+                      100%
+                    </button>
+                    <button
+                      mat-raised-button
+                      (click)="setZoom('1.25')"
+                      [color]="currentZoom === '1.25' ? 'primary' : 'basic'"
+                    >
+                      125%
+                    </button>
+                    <button
+                      mat-raised-button
+                      (click)="setZoom('1.5')"
+                      [color]="currentZoom === '1.5' ? 'primary' : 'basic'"
+                    >
+                      150%
+                    </button>
+                    <button
+                      mat-raised-button
+                      (click)="setZoom('2.0')"
+                      [color]="currentZoom === '2.0' ? 'primary' : 'basic'"
+                    >
+                      200%
+                    </button>
+                    <button
+                      mat-raised-button
+                      (click)="setZoom('page-fit')"
+                      [color]="currentZoom === 'page-fit' ? 'primary' : 'basic'"
+                    >
+                      Page Fit
+                    </button>
+                    <button
+                      mat-raised-button
+                      (click)="setZoom('page-width')"
+                      [color]="
+                        currentZoom === 'page-width' ? 'primary' : 'basic'
+                      "
+                    >
+                      Page Width
+                    </button>
+                    <button
+                      mat-raised-button
+                      (click)="setZoom('auto')"
+                      [color]="currentZoom === 'auto' ? 'primary' : 'basic'"
+                    >
+                      Auto
+                    </button>
+                    <button
+                      mat-raised-button
+                      (click)="setZoom('page-actual')"
+                      [color]="
+                        currentZoom === 'page-actual' ? 'primary' : 'basic'
+                      "
+                    >
+                      Actual Size
+                    </button>
+                  </div>
+                  <strong style="display: block; margin-bottom: 8px"
+                    >PDF Viewer → Angular</strong
+                  >
+                  <div
+                    class="zoom-status-display"
+                    style="
+                      background: #f5f5f5;
+                      padding: 16px;
+                      border-radius: 8px;
+                      margin-bottom: 16px;
+                    "
+                  >
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                      "
+                    >
+                      <span
+                        ><strong>Detected Zoom:</strong>
+                        {{ detectedZoom }}</span
+                      >
+                      <mat-chip
+                        [color]="
+                          lastZoomSource.includes('Angular')
+                            ? 'primary'
+                            : 'accent'
+                        "
+                        selected
+                      >
+                        {{ lastZoomSource }}
+                      </mat-chip>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 12px; color: #666">
+                      Use PDF viewer's zoom controls or mouse wheel to see this
+                      update automatically
+                    </div>
+                  </div>
+                </div>
+
+                <div class="current-values">
+                  <h4>Current Values (Live Updates)</h4>
+                  <div class="value-display">
+                    <span
+                      >Zoom: <strong>{{ detectedZoom }}</strong>
+                      <small>(from PDF viewer)</small></span
+                    >
+                    <span
+                      >Cursor: <strong>{{ cursor }}</strong></span
+                    >
+                    <span
+                      >Scroll: <strong>{{ scroll }}</strong></span
+                    >
+                    <span
+                      >Spread: <strong>{{ spread }}</strong></span
+                    >
+                    <span
+                      >Page Mode: <strong>{{ pageMode }}</strong></span
+                    >
+                    <span
+                      >Rotation: <strong>{{ rotation }}°</strong></span
+                    >
+                  </div>
+                </div>
+              </div>
+            </mat-tab>
+
+            <!-- Actions Demo -->
+            <mat-tab label="Actions">
+              <div class="tab-content">
+                <h3>On-Demand Actions</h3>
+                <div class="action-buttons">
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="triggerDownload()"
+                  >
+                    <mat-icon>download</mat-icon> Download
+                  </button>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="triggerPrint()"
+                  >
+                    <mat-icon>print</mat-icon> Print
+                  </button>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="goToPage(1)"
+                  >
+                    <mat-icon>first_page</mat-icon> Page 1
+                  </button>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="goToPage(5)"
+                  >
+                    <mat-icon>last_page</mat-icon> Page 5
+                  </button>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="rotateClockwise()"
+                  >
+                    <mat-icon>rotate_right</mat-icon> Rotate CW
+                  </button>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="rotateCounterClockwise()"
+                  >
+                    <mat-icon>rotate_left</mat-icon> Rotate CCW
+                  </button>
+                </div>
+
+                <mat-divider></mat-divider>
+
+                <h3>Error Handling Demo</h3>
+                <div class="error-config">
+                  <mat-form-field class="full-width">
+                    <mat-label>Custom Error Message</mat-label>
+                    <input matInput [(ngModel)]="errorMessage" />
+                  </mat-form-field>
+                  <mat-slide-toggle [(ngModel)]="errorOverride"
+                    >Override Default Error</mat-slide-toggle
+                  >
+                  <mat-slide-toggle [(ngModel)]="errorAppend"
+                    >Append to Default Error</mat-slide-toggle
+                  >
+
+                  <h4>Error Display Examples</h4>
+                  <mat-form-field class="full-width">
+                    <mat-label>Choose Error Display Style</mat-label>
+                    <mat-select
+                      [(ngModel)]="selectedErrorExample"
+                      (selectionChange)="onErrorExampleChange()"
+                    >
+                      <mat-option
+                        *ngFor="let example of errorExamples"
+                        [value]="example.value"
+                      >
+                        {{ example.label }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <h4>Custom Error Display</h4>
+                  <mat-form-field class="full-width">
+                    <mat-label>Error CSS Class</mat-label>
+                    <input
+                      matInput
+                      [(ngModel)]="errorClass"
+                      placeholder="e.g., custom-error-style"
+                    />
+                  </mat-form-field>
+                </div>
+
+                <mat-divider></mat-divider>
+
+                <h4>Test Error Scenarios</h4>
+                <p class="mat-caption">
+                  Click buttons below to test different error scenarios with
+                  your custom error message settings.
+                </p>
+
+                <div class="error-test-buttons">
+                  <button
+                    mat-raised-button
+                    color="warn"
+                    (click)="testInvalidUrlError()"
+                    matTooltip="Load an invalid PDF URL to trigger network error"
+                  >
+                    <mat-icon>link_off</mat-icon> Test Invalid URL Error
+                  </button>
+
+                  <button
+                    mat-raised-button
+                    color="warn"
+                    (click)="testCorruptedFileError()"
+                    matTooltip="Load a corrupted file to trigger parsing error"
+                  >
+                    <mat-icon>broken_image</mat-icon> Test Corrupted File Error
+                  </button>
+
+                  <button
+                    mat-raised-button
+                    color="warn"
+                    (click)="testPasswordProtectedError()"
+                    matTooltip="Load a password-protected PDF without credentials"
+                  >
+                    <mat-icon>lock</mat-icon> Test Password Protected Error
+                  </button>
+
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="restoreValidPdf()"
+                    matTooltip="Restore the original valid PDF"
+                  >
+                    <mat-icon>restore</mat-icon> Restore Valid PDF
+                  </button>
+                </div>
+              </div>
+            </mat-tab>
 
             <!-- Convenience Setters Demo -->
             <mat-tab label="Convenience Setters">
-            <div class="tab-content">
+              <div class="tab-content">
                 <div class="convenience-demo">
                   <h3>Using Convenience Configuration Objects</h3>
                   <p class="demo-info">
-                    The library supports convenience setters for cleaner configuration:
+                    The library supports convenience setters for cleaner
+                    configuration:
                   </p>
-                  
+
                   <mat-expansion-panel>
                     <mat-expansion-panel-header>
-                      <mat-panel-title>controlVisibility Config</mat-panel-title>
+                      <mat-panel-title
+                        >controlVisibility Config</mat-panel-title
+                      >
                     </mat-expansion-panel-header>
-                    <pre class="code-example">{{controlVisibilityConfig | json}}</pre>
-                    <p>Usage: <code>[controlVisibility]="controlVisibilityConfig"</code></p>
+                    <pre class="code-example">{{
+                      controlVisibilityConfig | json
+                    }}</pre>
+                    <p>
+                      Usage:
+                      <code>[controlVisibility]="controlVisibilityConfig"</code>
+                    </p>
                   </mat-expansion-panel>
 
                   <mat-expansion-panel>
                     <mat-expansion-panel-header>
                       <mat-panel-title>autoActions Config</mat-panel-title>
                     </mat-expansion-panel-header>
-                    <pre class="code-example">{{autoActionsConfig | json}}</pre>
+                    <pre class="code-example">{{
+                      autoActionsConfig | json
+                    }}</pre>
                     <p>Usage: <code>[autoActions]="autoActionsConfig"</code></p>
                   </mat-expansion-panel>
 
@@ -335,7 +851,7 @@
                     <mat-expansion-panel-header>
                       <mat-panel-title>viewerConfig</mat-panel-title>
                     </mat-expansion-panel-header>
-                    <pre class="code-example">{{viewerConfig | json}}</pre>
+                    <pre class="code-example">{{ viewerConfig | json }}</pre>
                     <p>Usage: <code>[viewerConfig]="viewerConfig"</code></p>
                   </mat-expansion-panel>
 
@@ -343,7 +859,7 @@
                     <mat-expansion-panel-header>
                       <mat-panel-title>errorHandling Config</mat-panel-title>
                     </mat-expansion-panel-header>
-                    <pre class="code-example">{{errorConfig | json}}</pre>
+                    <pre class="code-example">{{ errorConfig | json }}</pre>
                     <p>Usage: <code>[errorHandling]="errorConfig"</code></p>
                   </mat-expansion-panel>
 
@@ -351,190 +867,13 @@
                     <mat-expansion-panel-header>
                       <mat-panel-title>themeConfig</mat-panel-title>
                     </mat-expansion-panel-header>
-                    <pre class="code-example">{{themeConfig | json}}</pre>
+                    <pre class="code-example">{{ themeConfig | json }}</pre>
                     <p>Usage: <code>[themeConfig]="themeConfig"</code></p>
                   </mat-expansion-panel>
-              </div>
-            </div>
-          </mat-tab>
-
-            <!-- Separated Binding Demo -->
-          <mat-tab label="Property Binding">
-            <div class="tab-content">
-                <div class="binding-grid">
-
-                  <mat-form-field>
-                    <mat-label>Cursor</mat-label>
-                <mat-select [(ngModel)]="cursor">
-                    <mat-option value="select">Text Selection</mat-option>
-                  <mat-option value="hand">Hand</mat-option>
-                </mat-select>
-              </mat-form-field>
-
-                  <mat-form-field>
-                    <mat-label>Scroll</mat-label>
-                <mat-select [(ngModel)]="scroll">
-                  <mat-option value="vertical">Vertical</mat-option>
-                  <mat-option value="horizontal">Horizontal</mat-option>
-                  <mat-option value="wrapped">Wrapped</mat-option>
-                    <mat-option value="page">Page</mat-option>
-                </mat-select>
-              </mat-form-field>
-
-                  <mat-form-field>
-                    <mat-label>Spread</mat-label>
-                <mat-select [(ngModel)]="spread">
-                  <mat-option value="none">None</mat-option>
-                  <mat-option value="odd">Odd</mat-option>
-                  <mat-option value="even">Even</mat-option>
-                </mat-select>
-              </mat-form-field>
-
-                  <mat-form-field>
-                    <mat-label>Page Mode</mat-label>
-                  <mat-select [(ngModel)]="pageMode">
-                  <mat-option value="none">None</mat-option>
-                  <mat-option value="thumbs">Thumbnails</mat-option>
-                  <mat-option value="bookmarks">Bookmarks</mat-option>
-                  <mat-option value="attachments">Attachments</mat-option>
-                </mat-select>
-              </mat-form-field>
-
-                  <mat-form-field>
-                    <mat-label>Rotation</mat-label>
-                  <mat-select [(ngModel)]="rotation">
-                    <mat-option [value]="0">0°</mat-option>
-                    <mat-option [value]="90">90°</mat-option>
-                    <mat-option [value]="180">180°</mat-option>
-                    <mat-option [value]="270">270°</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-
-              <div class="zoom-demo-section">
-                <div class="zoom-status-display" style="background: #f5f5f5; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
-                  <span>Only for zoom, separated two-way binding to avoid infinite loops</span>
-                </div>
-                  <strong style="display: block; margin-bottom: 8px;">Angular → PDF viewer</strong>
-                  <div class="zoom-button-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px;">
-                    <button mat-raised-button (click)="setZoom('0.5')" [color]="currentZoom === '0.5' ? 'primary' : 'basic'">50%</button>
-                    <button mat-raised-button (click)="setZoom('0.75')" [color]="currentZoom === '0.75' ? 'primary' : 'basic'">75%</button>
-                    <button mat-raised-button (click)="setZoom('1.0')" [color]="currentZoom === '1.0' ? 'primary' : 'basic'">100%</button>
-                    <button mat-raised-button (click)="setZoom('1.25')" [color]="currentZoom === '1.25' ? 'primary' : 'basic'">125%</button>
-                    <button mat-raised-button (click)="setZoom('1.5')" [color]="currentZoom === '1.5' ? 'primary' : 'basic'">150%</button>
-                    <button mat-raised-button (click)="setZoom('2.0')" [color]="currentZoom === '2.0' ? 'primary' : 'basic'">200%</button>
-                    <button mat-raised-button (click)="setZoom('page-fit')" [color]="currentZoom === 'page-fit' ? 'primary' : 'basic'">Page Fit</button>
-                    <button mat-raised-button (click)="setZoom('page-width')" [color]="currentZoom === 'page-width' ? 'primary' : 'basic'">Page Width</button>
-                    <button mat-raised-button (click)="setZoom('auto')" [color]="currentZoom === 'auto' ? 'primary' : 'basic'">Auto</button>
-                    <button mat-raised-button (click)="setZoom('page-actual')" [color]="currentZoom === 'page-actual' ? 'primary' : 'basic'">Actual Size</button>
-                  </div>
-                  <strong style="display: block; margin-bottom: 8px;">PDF Viewer → Angular</strong>
-                  <div class="zoom-status-display" style="background: #f5f5f5; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                      <span><strong>Detected Zoom:</strong> {{detectedZoom}}</span>
-                      <mat-chip [color]="lastZoomSource.includes('Angular') ? 'primary' : 'accent'" selected>
-                        {{lastZoomSource}}
-                      </mat-chip>
-                  </div>
-                    <div style="margin-top: 8px; font-size: 12px; color: #666;">
-                      Use PDF viewer's zoom controls or mouse wheel to see this update automatically
-                  </div>
                 </div>
               </div>
-
-                <div class="current-values">
-                  <h4>Current Values (Live Updates)</h4>
-                  <div class="value-display">
-                    <span>Zoom: <strong>{{detectedZoom}}</strong> <small>(from PDF viewer)</small></span>
-                    <span>Cursor: <strong>{{cursor}}</strong></span>
-                    <span>Scroll: <strong>{{scroll}}</strong></span>
-                    <span>Spread: <strong>{{spread}}</strong></span>
-                    <span>Page Mode: <strong>{{pageMode}}</strong></span>
-                    <span>Rotation: <strong>{{rotation}}°</strong></span>
-                </div>
-              </div>
-            </div>
-          </mat-tab>
-
-            <!-- Actions Demo -->
-            <mat-tab label="Actions">
-            <div class="tab-content">
-                <h3>On-Demand Actions</h3>
-                <div class="action-buttons">
-                  <button mat-raised-button color="primary" (click)="triggerDownload()">
-                    <mat-icon>download</mat-icon> Download
-                </button>
-                  <button mat-raised-button color="primary" (click)="triggerPrint()">
-                    <mat-icon>print</mat-icon> Print
-                </button>
-                  <button mat-raised-button color="primary" (click)="goToPage(1)">
-                    <mat-icon>first_page</mat-icon> Page 1
-                </button>
-                  <button mat-raised-button color="primary" (click)="goToPage(5)">
-                    <mat-icon>last_page</mat-icon> Page 5
-                </button>
-                  <button mat-raised-button color="primary" (click)="rotateClockwise()">
-                    <mat-icon>rotate_right</mat-icon> Rotate CW
-                </button>
-                  <button mat-raised-button color="primary" (click)="rotateCounterClockwise()">
-                    <mat-icon>rotate_left</mat-icon> Rotate CCW
-                </button>
-              </div>
-
-                <mat-divider></mat-divider>
-
-                <h3>Error Handling Demo</h3>
-                <div class="error-config">
-                  <mat-form-field class="full-width">
-                  <mat-label>Custom Error Message</mat-label>
-                    <input matInput [(ngModel)]="errorMessage">
-                </mat-form-field>
-                  <mat-slide-toggle [(ngModel)]="errorOverride">Override Default Error</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="errorAppend">Append to Default Error</mat-slide-toggle>
-                  
-                  <h4>Error Display Examples</h4>
-                  <mat-form-field class="full-width">
-                    <mat-label>Choose Error Display Style</mat-label>
-                    <mat-select [(ngModel)]="selectedErrorExample" (selectionChange)="onErrorExampleChange()">
-                      <mat-option *ngFor="let example of errorExamples" [value]="example.value">
-                        {{example.label}}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  
-                  <h4>Custom Error Display</h4>
-                  <mat-form-field class="full-width">
-                    <mat-label>Error CSS Class</mat-label>
-                    <input matInput [(ngModel)]="errorClass" placeholder="e.g., custom-error-style">
-                  </mat-form-field>
-                  
-              </div>
-              
-              <mat-divider></mat-divider>
-              
-              <h4>Test Error Scenarios</h4>
-              <p class="mat-caption">Click buttons below to test different error scenarios with your custom error message settings.</p>
-              
-              <div class="error-test-buttons">
-                <button mat-raised-button color="warn" (click)="testInvalidUrlError()" matTooltip="Load an invalid PDF URL to trigger network error">
-                  <mat-icon>link_off</mat-icon> Test Invalid URL Error
-                </button>
-                
-                <button mat-raised-button color="warn" (click)="testCorruptedFileError()" matTooltip="Load a corrupted file to trigger parsing error">
-                  <mat-icon>broken_image</mat-icon> Test Corrupted File Error
-                </button>
-                
-                <button mat-raised-button color="warn" (click)="testPasswordProtectedError()" matTooltip="Load a password-protected PDF without credentials">
-                  <mat-icon>lock</mat-icon> Test Password Protected Error
-                </button>
-                
-                <button mat-raised-button color="primary" (click)="restoreValidPdf()" matTooltip="Restore the original valid PDF">
-                  <mat-icon>restore</mat-icon> Restore Valid PDF
-                </button>
-              </div>
-            </div>
-          </mat-tab>
-        </mat-tab-group>
+            </mat-tab>
+          </mat-tab-group>
         </mat-card-content>
       </mat-card>
     </div>
@@ -542,21 +881,25 @@
     <!-- PDF Viewer -->
     <div class="viewer-panel">
       <mat-card>
-      <mat-card-header>
+        <mat-card-header>
           <mat-card-title>ng2-pdfjs-viewer</mat-card-title>
-          <mat-card-subtitle>Live Demo with Current Configuration</mat-card-subtitle>
-      </mat-card-header>
-      
-      <mat-card-content>
+          <mat-card-subtitle
+            >Live Demo with Current Configuration</mat-card-subtitle
+          >
+        </mat-card-header>
+
+        <mat-card-content>
           <!-- trackBy forces component recreation when key changes -->
-          <ng2-pdfjs-viewer 
+          <ng2-pdfjs-viewer
             #pdfViewer
             *ngFor="let _ of [viewerTrackingKey]; trackBy: trackByKey"
             [pdfSrc]="pdfSrc"
             [downloadFileName]="downloadFileName"
             [showSpinner]="showSpinner"
             [spinnerClass]="spinnerCssClass"
-            [customSpinnerTpl]="useCustomSpinnerTpl ? getSelectedSpinnerTemplate() : null"
+            [customSpinnerTpl]="
+              useCustomSpinnerTpl ? getSelectedSpinnerTemplate() : null
+            "
             [showOpenFile]="showOpenFile"
             [showDownload]="showDownload"
             [showPrint]="showPrint"
@@ -564,13 +907,13 @@
             [showFind]="showFind"
             [showViewBookmark]="showViewBookmark"
             [showAnnotations]="showAnnotations"
-              [showToolbarLeft]="showToolbarLeft"
-              [showToolbarMiddle]="showToolbarMiddle"
-              [showToolbarRight]="showToolbarRight"
-              [showSecondaryToolbarToggle]="showSecondaryToolbarToggle"
-              [showSidebar]="showSidebar"
-              [showSidebarLeft]="showSidebarLeft"
-              [showSidebarRight]="showSidebarRight"
+            [showToolbarLeft]="showToolbarLeft"
+            [showToolbarMiddle]="showToolbarMiddle"
+            [showToolbarRight]="showToolbarRight"
+            [showSecondaryToolbarToggle]="showSecondaryToolbarToggle"
+            [showSidebar]="showSidebar"
+            [showSidebarLeft]="showSidebarLeft"
+            [showSidebarRight]="showSidebarRight"
             [downloadOnLoad]="downloadOnLoad"
             [printOnLoad]="printOnLoad"
             [showLastPageOnLoad]="showLastPageOnLoad"
@@ -579,11 +922,11 @@
             [namedDest]="namedDest"
             [locale]="locale"
             [useOnlyCssZoom]="useOnlyCssZoom"
-           [errorOverride]="errorOverride"
-           [errorAppend]="errorAppend"
-           [errorMessage]="errorMessage"
-           [customErrorTpl]="customErrorTpl"
-           [errorClass]="errorClass"
+            [errorOverride]="errorOverride"
+            [errorAppend]="errorAppend"
+            [errorMessage]="errorMessage"
+            [customErrorTpl]="customErrorTpl"
+            [errorClass]="errorClass"
             [diagnosticLogs]="diagnosticLogs"
             [theme]="theme"
             [primaryColor]="primaryColor"
@@ -623,90 +966,265 @@
             (onPageRendered)="onPageRendered($event)"
             (onAnnotationLayerRendered)="onAnnotationLayerRendered($event)"
             (onBookmarkClick)="onBookmarkClick($event)"
-            (onIdle)="onIdle()">
+            (onIdle)="onIdle()"
+          >
           </ng2-pdfjs-viewer>
 
           <!-- Multiple Custom Spinner Templates -->
-          
+
           <!-- Default Spinner Template -->
           <ng-template #defaultSpinnerTemplate>
-            <div style="text-align:center;color:#666">
-              <div style="display:inline-block;width:40px;height:40px;border:4px solid #f3f3f3;border-top:4px solid #2196F3;border-radius:50%;animation:spin 1s linear infinite;"></div>
-              <div style="margin-top:16px;font-size:16px;">Loading PDF...</div>
+            <div style="text-align: center; color: #666">
+              <div
+                style="
+                  display: inline-block;
+                  width: 40px;
+                  height: 40px;
+                  border: 4px solid #f3f3f3;
+                  border-top: 4px solid #2196f3;
+                  border-radius: 50%;
+                  animation: spin 1s linear infinite;
+                "
+              ></div>
+              <div style="margin-top: 16px; font-size: 16px">
+                Loading PDF...
+              </div>
             </div>
           </ng-template>
 
           <!-- Pulsing Dots Template -->
           <ng-template #dotsSpinnerTemplate>
-            <div style="text-align:center;color:#666">
-              <div style="display:inline-flex;gap:8px;margin-bottom:20px;justify-content:center;">
-                <div style="width:12px;height:12px;background:#2196F3;border-radius:50%;animation:pulse 1.4s infinite ease-in-out both;"></div>
-                <div style="width:12px;height:12px;background:#4ECDC4;border-radius:50%;animation:pulse 1.4s infinite ease-in-out both;animation-delay:-0.16s;"></div>
-                <div style="width:12px;height:12px;background:#45B7D1;border-radius:50%;animation:pulse 1.4s infinite ease-in-out both;animation-delay:-0.32s;"></div>
+            <div style="text-align: center; color: #666">
+              <div
+                style="
+                  display: inline-flex;
+                  gap: 8px;
+                  margin-bottom: 20px;
+                  justify-content: center;
+                "
+              >
+                <div
+                  style="
+                    width: 12px;
+                    height: 12px;
+                    background: #2196f3;
+                    border-radius: 50%;
+                    animation: pulse 1.4s infinite ease-in-out both;
+                  "
+                ></div>
+                <div
+                  style="
+                    width: 12px;
+                    height: 12px;
+                    background: #4ecdc4;
+                    border-radius: 50%;
+                    animation: pulse 1.4s infinite ease-in-out both;
+                    animation-delay: -0.16s;
+                  "
+                ></div>
+                <div
+                  style="
+                    width: 12px;
+                    height: 12px;
+                    background: #45b7d1;
+                    border-radius: 50%;
+                    animation: pulse 1.4s infinite ease-in-out both;
+                    animation-delay: -0.32s;
+                  "
+                ></div>
               </div>
-              <div style="font-size:16px;">Loading Document...</div>
+              <div style="font-size: 16px">Loading Document...</div>
             </div>
           </ng-template>
 
           <!-- Bouncing Squares Template -->
           <ng-template #bounceSpinnerTemplate>
-            <div style="text-align:center;color:#555">
-              <div style="display:inline-flex;gap:6px;margin-bottom:20px;justify-content:center;">
-                <div style="width:15px;height:15px;background:#FF6B6B;animation:bounce 1.4s infinite ease-in-out both;"></div>
-                <div style="width:15px;height:15px;background:#4ECDC4;animation:bounce 1.4s infinite ease-in-out both;animation-delay:-0.16s;"></div>
-                <div style="width:15px;height:15px;background:#45B7D1;animation:bounce 1.4s infinite ease-in-out both;animation-delay:-0.32s;"></div>
+            <div style="text-align: center; color: #555">
+              <div
+                style="
+                  display: inline-flex;
+                  gap: 6px;
+                  margin-bottom: 20px;
+                  justify-content: center;
+                "
+              >
+                <div
+                  style="
+                    width: 15px;
+                    height: 15px;
+                    background: #ff6b6b;
+                    animation: bounce 1.4s infinite ease-in-out both;
+                  "
+                ></div>
+                <div
+                  style="
+                    width: 15px;
+                    height: 15px;
+                    background: #4ecdc4;
+                    animation: bounce 1.4s infinite ease-in-out both;
+                    animation-delay: -0.16s;
+                  "
+                ></div>
+                <div
+                  style="
+                    width: 15px;
+                    height: 15px;
+                    background: #45b7d1;
+                    animation: bounce 1.4s infinite ease-in-out both;
+                    animation-delay: -0.32s;
+                  "
+                ></div>
               </div>
-              <div style="font-size:16px;">Processing PDF...</div>
+              <div style="font-size: 16px">Processing PDF...</div>
             </div>
           </ng-template>
 
           <!-- Progress Bar Template -->
           <ng-template #progressSpinnerTemplate>
-            <div style="text-align:center;color:#333">
-              <div style="font-size:24px;margin-bottom:16px;">📖</div>
-              <div style="font-size:16px;margin-bottom:16px;">Loading PDF Document</div>
-              <div style="width:200px;height:4px;background:#e0e0e0;border-radius:2px;margin:0 auto;overflow:hidden;">
-                <div style="width:50px;height:100%;background:linear-gradient(90deg,#2196F3,#21CBF3);border-radius:2px;animation:progress 2s ease-in-out infinite;"></div>
+            <div style="text-align: center; color: #333">
+              <div style="font-size: 24px; margin-bottom: 16px">📖</div>
+              <div style="font-size: 16px; margin-bottom: 16px">
+                Loading PDF Document
+              </div>
+              <div
+                style="
+                  width: 200px;
+                  height: 4px;
+                  background: #e0e0e0;
+                  border-radius: 2px;
+                  margin: 0 auto;
+                  overflow: hidden;
+                "
+              >
+                <div
+                  style="
+                    width: 50px;
+                    height: 100%;
+                    background: linear-gradient(90deg, #2196f3, #21cbf3);
+                    border-radius: 2px;
+                    animation: progress 2s ease-in-out infinite;
+                  "
+                ></div>
               </div>
             </div>
           </ng-template>
 
           <!-- Corporate Style Template -->
           <ng-template #corporateSpinnerTemplate>
-            <div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:40px;border-radius:16px;text-align:center;box-shadow:0 10px 40px rgba(102,126,234,0.3);">
-              <div style="width:60px;height:60px;border:3px solid rgba(255,255,255,0.3);border-top:3px solid white;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 24px;"></div>
-              <h3 style="margin:0 0 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-weight:600;">Your Company</h3>
-              <p style="margin:0;opacity:0.9;font-size:16px;">Loading PDF Document</p>
-              <div style="margin-top:16px;font-size:12px;opacity:0.7;">Please wait while we prepare your file</div>
+            <div
+              style="
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 40px;
+                border-radius: 16px;
+                text-align: center;
+                box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+              "
+            >
+              <div
+                style="
+                  width: 60px;
+                  height: 60px;
+                  border: 3px solid rgba(255, 255, 255, 0.3);
+                  border-top: 3px solid white;
+                  border-radius: 50%;
+                  animation: spin 1s linear infinite;
+                  margin: 0 auto 24px;
+                "
+              ></div>
+              <h3
+                style="
+                  margin: 0 0 8px;
+                  font-family:
+                    -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;,
+                    Roboto, sans-serif;
+                  font-weight: 600;
+                "
+              >
+                Your Company
+              </h3>
+              <p style="margin: 0; opacity: 0.9; font-size: 16px">
+                Loading PDF Document
+              </p>
+              <div style="margin-top: 16px; font-size: 12px; opacity: 0.7">
+                Please wait while we prepare your file
+              </div>
             </div>
           </ng-template>
-      </mat-card-content>
-    </mat-card>
+        </mat-card-content>
+      </mat-card>
     </div>
-    
+
     <!-- Event Feed Panel (Collapsible) -->
     <mat-card class="feed-panel">
       <mat-card-header>
         <mat-card-title>Event Feed</mat-card-title>
         <span class="spacer"></span>
-        <button mat-stroked-button color="primary" (click)="feedPaused = !feedPaused">{{feedPaused ? 'Resume' : 'Pause'}}</button>
-        <button mat-stroked-button (click)="eventFeed=[]" style="margin-left:.5rem">Clear</button>
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="feedPaused = !feedPaused"
+        >
+          {{ feedPaused ? "Resume" : "Pause" }}
+        </button>
+        <button
+          mat-stroked-button
+          (click)="eventFeed = []"
+          style="margin-left: 0.5rem"
+        >
+          Clear
+        </button>
       </mat-card-header>
       <mat-card-content>
         <div class="feed-controls">
           <mat-chip-listbox aria-label="Feed Filters">
             <mat-chip-option (click)="feedFilter.clear()">All</mat-chip-option>
-            <mat-chip-option (click)="feedFilter.has('documentLoad') ? feedFilter.delete('documentLoad') : feedFilter.add('documentLoad')">Document</mat-chip-option>
-            <mat-chip-option (click)="feedFilter.has('pageRendered') ? feedFilter.delete('pageRendered') : feedFilter.add('pageRendered')">Render</mat-chip-option>
-            <mat-chip-option (click)="feedFilter.has('find') ? feedFilter.delete('find') : feedFilter.add('find')">Find</mat-chip-option>
-            <mat-chip-option (click)="feedFilter.has('outlineLoaded') ? feedFilter.delete('outlineLoaded') : feedFilter.add('outlineLoaded')">Outline</mat-chip-option>
-            <mat-chip-option (click)="feedFilter.has('documentError') ? feedFilter.delete('documentError') : feedFilter.add('documentError')">Errors</mat-chip-option>
+            <mat-chip-option
+              (click)="
+                feedFilter.has('documentLoad')
+                  ? feedFilter.delete('documentLoad')
+                  : feedFilter.add('documentLoad')
+              "
+              >Document</mat-chip-option
+            >
+            <mat-chip-option
+              (click)="
+                feedFilter.has('pageRendered')
+                  ? feedFilter.delete('pageRendered')
+                  : feedFilter.add('pageRendered')
+              "
+              >Render</mat-chip-option
+            >
+            <mat-chip-option
+              (click)="
+                feedFilter.has('find')
+                  ? feedFilter.delete('find')
+                  : feedFilter.add('find')
+              "
+              >Find</mat-chip-option
+            >
+            <mat-chip-option
+              (click)="
+                feedFilter.has('outlineLoaded')
+                  ? feedFilter.delete('outlineLoaded')
+                  : feedFilter.add('outlineLoaded')
+              "
+              >Outline</mat-chip-option
+            >
+            <mat-chip-option
+              (click)="
+                feedFilter.has('documentError')
+                  ? feedFilter.delete('documentError')
+                  : feedFilter.add('documentError')
+              "
+              >Errors</mat-chip-option
+            >
           </mat-chip-listbox>
         </div>
         <div class="feed-list">
           <div class="feed-item" *ngFor="let e of eventFeed">
-            <span class="feed-time">{{e.time}}</span>
-            <span class="feed-type">{{e.type}}</span>
+            <span class="feed-time">{{ e.time }}</span>
+            <span class="feed-type">{{ e.type }}</span>
             <span class="feed-data" *ngIf="e.data as d">{{ d | json }}</span>
           </div>
         </div>
@@ -722,7 +1240,7 @@
         <div class="error-icon-bg"></div>
       </div>
       <h2 class="error-title">Unable to Load Document</h2>
-      <p class="error-message">{{errorData.errorMessage}}</p>
+      <p class="error-message">{{ errorData.errorMessage }}</p>
       <div class="error-actions">
         <button class="btn-primary" (click)="reloadViewer()">
           <span class="btn-icon">🔄</span>
@@ -755,7 +1273,7 @@
           </div>
         </div>
         <h2 class="error-subtitle">Unable to Load Document</h2>
-        <p class="error-description">{{errorData.errorMessage}}</p>
+        <p class="error-description">{{ errorData.errorMessage }}</p>
         <div class="corporate-actions">
           <button class="corporate-btn primary" (click)="reloadViewer()">
             <span class="btn-icon">🔄</span>
@@ -768,7 +1286,10 @@
         </div>
       </div>
       <div class="corporate-footer">
-        <p class="support-text">Need help? Contact support at <a href="mailto:support&#64;company.com">support&#64;company.com</a></p>
+        <p class="support-text">
+          Need help? Contact support at
+          <a href="mailto:support&#64;company.com">support&#64;company.com</a>
+        </p>
       </div>
     </div>
   </ng-template>
@@ -780,7 +1301,7 @@
         <div class="icon-ring"></div>
       </div>
       <h3 class="minimal-title">Document Error</h3>
-      <p class="minimal-message">{{errorData.errorMessage}}</p>
+      <p class="minimal-message">{{ errorData.errorMessage }}</p>
       <button class="minimal-btn" (click)="reloadViewer()">
         <span class="btn-icon">🔄</span>
         <span class="btn-text">Try Again</span>
@@ -796,7 +1317,7 @@
           <div class="icon-glow"></div>
         </div>
         <h2 class="gradient-title">Document Loading Failed</h2>
-        <p class="gradient-message">{{errorData.errorMessage}}</p>
+        <p class="gradient-message">{{ errorData.errorMessage }}</p>
         <div class="gradient-actions">
           <button class="gradient-btn primary" (click)="reloadViewer()">
             <span class="btn-icon">🔄</span>
@@ -830,7 +1351,7 @@
           <div class="icon-pulse"></div>
         </div>
         <h2 class="dark-subtitle">Failed to Load Document</h2>
-        <p class="dark-message">{{errorData.errorMessage}}</p>
+        <p class="dark-message">{{ errorData.errorMessage }}</p>
         <div class="dark-actions">
           <button class="dark-btn primary" (click)="reloadViewer()">
             <span class="btn-icon">🔄</span>
@@ -854,7 +1375,7 @@
           <div class="icon-particles"></div>
         </div>
         <h2 class="interactive-title">Document Loading Error</h2>
-        <p class="interactive-message">{{errorData.errorMessage}}</p>
+        <p class="interactive-message">{{ errorData.errorMessage }}</p>
         <div class="interactive-actions">
           <button class="interactive-btn primary" (click)="reloadViewer()">
             <span class="btn-content">
@@ -873,10 +1394,10 @@
         <div class="error-details">
           <details>
             <summary>Technical Details</summary>
-            <p class="tech-details">{{errorData.errorMessage}}</p>
+            <p class="tech-details">{{ errorData.errorMessage }}</p>
           </details>
         </div>
       </div>
     </div>
   </ng-template>
-</div> 
+</div>

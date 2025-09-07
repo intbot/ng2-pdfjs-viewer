@@ -3,6 +3,7 @@
 This document provides examples of how to use the Custom CSS feature to customize the appearance of the PDF viewer beyond the built-in theme options.
 
 ## Table of Contents
+
 - [Getting Started](#getting-started)
 - [Simple Examples](#simple-examples)
 - [Intermediate Examples](#intermediate-examples)
@@ -15,12 +16,14 @@ This document provides examples of how to use the Custom CSS feature to customiz
 ## Getting Started
 
 ### How to Use Custom CSS
+
 1. Open your ng2-pdfjs-viewer application
 2. Navigate to **Individual Properties** → **Theme & Visual Customization** → **Custom CSS**
 3. Enter your CSS code in the text area
 4. Changes apply immediately
 
 ### Important Notes
+
 - Always use `!important` to override PDF.js default styles
 - Test changes incrementally
 - Use browser DevTools (F12) to inspect elements and test CSS
@@ -30,6 +33,7 @@ This document provides examples of how to use the Custom CSS feature to customiz
 ## Simple Examples
 
 ### 1. Change PDF Page Border
+
 ```css
 .page {
   border: 3px solid #ff6b6b !important;
@@ -38,6 +42,7 @@ This document provides examples of how to use the Custom CSS feature to customiz
 ```
 
 ### 2. Basic Toolbar Styling
+
 ```css
 #toolbarContainer {
   background-color: #3498db !important;
@@ -46,6 +51,7 @@ This document provides examples of how to use the Custom CSS feature to customiz
 ```
 
 ### 3. Highlight Toolbar Buttons
+
 ```css
 .toolbarButton {
   background-color: #e74c3c !important;
@@ -55,13 +61,15 @@ This document provides examples of how to use the Custom CSS feature to customiz
 ```
 
 ### 4. Simple Page Shadow
+
 ```css
 .page {
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
 }
 ```
 
 ### 5. Basic Sidebar Styling
+
 ```css
 #sidebarContainer {
   background-color: #2c3e50 !important;
@@ -74,6 +82,7 @@ This document provides examples of how to use the Custom CSS feature to customiz
 ## Intermediate Examples
 
 ### 6. Gradient Toolbar
+
 ```css
 #toolbarContainer {
   background: linear-gradient(45deg, #ff6b6b, #4ecdc4) !important;
@@ -88,6 +97,7 @@ This document provides examples of how to use the Custom CSS feature to customiz
 ```
 
 ### 7. Enhanced Button Hover Effects
+
 ```css
 .toolbarButton {
   background-color: #3498db !important;
@@ -100,11 +110,12 @@ This document provides examples of how to use the Custom CSS feature to customiz
 .toolbarButton:hover {
   background-color: #2980b9 !important;
   transform: scale(1.05) !important;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
 }
 ```
 
 ### 8. Custom Input Field Styling
+
 ```css
 .toolbarField {
   background: #3498db !important;
@@ -121,6 +132,7 @@ This document provides examples of how to use the Custom CSS feature to customiz
 ```
 
 ### 9. Animated Page Hover
+
 ```css
 .page {
   transition: all 0.3s ease !important;
@@ -129,11 +141,12 @@ This document provides examples of how to use the Custom CSS feature to customiz
 
 .page:hover {
   transform: scale(1.02) !important;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.3) !important;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3) !important;
 }
 ```
 
 ### 10. Styled Secondary Toolbar
+
 ```css
 #secondaryToolbar {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
@@ -152,6 +165,7 @@ This document provides examples of how to use the Custom CSS feature to customiz
 ## Advanced Examples
 
 ### 11. Complete Dark Theme Override
+
 ```css
 /* Main container */
 #viewerContainer {
@@ -188,6 +202,7 @@ This document provides examples of how to use the Custom CSS feature to customiz
 ```
 
 ### 12. Custom Scrollbar
+
 ```css
 /* Webkit scrollbar styling */
 #viewerContainer::-webkit-scrollbar {
@@ -210,6 +225,7 @@ This document provides examples of how to use the Custom CSS feature to customiz
 ```
 
 ### 13. Animated Loading Overlay
+
 ```css
 /* Hide default spinner */
 .ng2-pdf-spinner {
@@ -224,7 +240,7 @@ This document provides examples of how to use the Custom CSS feature to customiz
   left: 0 !important;
   width: 100% !important;
   height: 100% !important;
-  background: rgba(0,0,0,0.8) !important;
+  background: rgba(0, 0, 0, 0.8) !important;
   z-index: 1000 !important;
   display: flex !important;
   align-items: center !important;
@@ -244,13 +260,23 @@ This document provides examples of how to use the Custom CSS feature to customiz
 }
 
 @keyframes pulse {
-  0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.1); }
-  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 ```
 
 ### 14. Glassmorphism Effect
+
 ```css
 #toolbarContainer {
   background: rgba(255, 255, 255, 0.1) !important;
@@ -275,6 +301,7 @@ This document provides examples of how to use the Custom CSS feature to customiz
 ```
 
 ### 15. Neon Glow Theme
+
 ```css
 /* Dark background */
 #viewerContainer {
@@ -318,33 +345,38 @@ This document provides examples of how to use the Custom CSS feature to customiz
 ## Common Selectors
 
 ### Main Containers
+
 - `#viewerContainer` - Main PDF viewing area
 - `#outerContainer` - Outermost container
 - `#mainContainer` - Main content container
 
 ### Toolbar Elements
+
 - `#toolbarContainer` - Main toolbar
 - `#toolbarViewer` - Toolbar viewer section
 - `#toolbarViewerLeft` - Left toolbar section
-- `#toolbarViewerMiddle` - Middle toolbar section  
+- `#toolbarViewerMiddle` - Middle toolbar section
 - `#toolbarViewerRight` - Right toolbar section
 - `.toolbarButton` - All toolbar buttons
 - `.toolbarField` - Input fields in toolbar
 - `#secondaryToolbar` - Secondary (right-click) toolbar
 
 ### PDF Content
+
 - `.page` - Individual PDF pages
 - `.pdfViewer` - PDF viewer container
 - `.textLayer` - Text selection layer
 - `.annotationLayer` - Annotation layer
 
 ### Sidebar Elements
+
 - `#sidebarContainer` - Sidebar container
 - `#sidebarContent` - Sidebar content area
 - `#thumbnailView` - Thumbnail view
 - `#outlineView` - Outline/bookmarks view
 
 ### Specific Buttons (Examples)
+
 - `#zoomIn` - Zoom in button
 - `#zoomOut` - Zoom out button
 - `#pageNumber` - Page number input
@@ -356,39 +388,50 @@ This document provides examples of how to use the Custom CSS feature to customiz
 ## Tips and Best Practices
 
 ### 1. Always Use `!important`
+
 PDF.js has high CSS specificity, so you need `!important` to override:
+
 ```css
 .toolbarButton {
   background: red !important; /* ✅ Works */
-  background: red;            /* ❌ Might not work */
+  background: red; /* ❌ Might not work */
 }
 ```
 
 ### 2. Target Specific Elements
+
 Use specific selectors to avoid breaking functionality:
+
 ```css
 /* ✅ Good - specific */
-#toolbarContainer .toolbarButton { }
+#toolbarContainer .toolbarButton {
+}
 
 /* ❌ Bad - too broad */
-button { }
+button {
+}
 ```
 
 ### 3. Test Incrementally
+
 Start with simple changes and build up:
+
 ```css
 /* Start with this */
-.page { border: 2px solid red !important; }
+.page {
+  border: 2px solid red !important;
+}
 
 /* Then add more */
-.page { 
+.page {
   border: 2px solid red !important;
   border-radius: 8px !important;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
 }
 ```
 
 ### 4. Use Browser DevTools
+
 1. Press `F12` to open DevTools
 2. Go to **Elements** tab
 3. Inspect PDF viewer elements
@@ -396,7 +439,9 @@ Start with simple changes and build up:
 5. Test CSS live before adding to Custom CSS
 
 ### 5. Consider Performance
+
 Avoid expensive CSS operations on frequently changing elements:
+
 ```css
 /* ❌ Expensive - avoid on scroll elements */
 .page {
@@ -411,7 +456,9 @@ Avoid expensive CSS operations on frequently changing elements:
 ```
 
 ### 6. Responsive Design
+
 Consider different screen sizes:
+
 ```css
 /* Desktop styles */
 .toolbarButton {
@@ -428,7 +475,9 @@ Consider different screen sizes:
 ```
 
 ### 7. Animation Best Practices
+
 Use CSS animations sparingly and make them smooth:
+
 ```css
 .toolbarButton {
   transition: all 0.2s ease !important; /* Keep transitions short */
@@ -446,17 +495,20 @@ Use CSS animations sparingly and make them smooth:
 ## Troubleshooting
 
 ### CSS Not Applying?
+
 1. Check for typos in selectors
 2. Add `!important` to your rules
 3. Use more specific selectors
 4. Check browser console for CSS errors
 
 ### Styles Overridden?
+
 1. Increase CSS specificity
 2. Use `!important`
 3. Check if other custom CSS conflicts
 
 ### Performance Issues?
+
 1. Avoid complex filters and effects
 2. Limit animations
 3. Use simple selectors
@@ -464,4 +516,4 @@ Use CSS animations sparingly and make them smooth:
 
 ---
 
-*This documentation covers the most common and useful Custom CSS examples for ng2-pdfjs-viewer. Experiment with these examples and combine them to create your unique PDF viewer appearance!*
+_This documentation covers the most common and useful Custom CSS examples for ng2-pdfjs-viewer. Experiment with these examples and combine them to create your unique PDF viewer appearance!_

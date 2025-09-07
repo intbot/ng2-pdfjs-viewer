@@ -1,17 +1,16 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from "@angular/core";
 
 @Component({
-  selector: 'app-inline',
+  selector: "app-inline",
   standalone: false,
-  templateUrl: './inline.component.html',
-  styleUrls: ['./inline.component.scss']
+  templateUrl: "./inline.component.html",
+  styleUrls: ["./inline.component.scss"],
 })
 export class InlineComponent implements AfterViewInit {
-  @ViewChild('inlinePdfViewer', { static: true }) public inlinePdfViewer;
+  @ViewChild("inlinePdfViewer", { static: true }) public inlinePdfViewer;
   isPdfLoaded = false;
 
-  constructor() { }
+  constructor() {}
 
   ngAfterViewInit() {}
-
 }

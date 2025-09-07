@@ -1,7 +1,7 @@
 // #region Interfaces and Types
 // PostMessage interface for control updates
 export interface ControlMessage {
-  type: 'control-update';
+  type: "control-update";
   action: string;
   payload: any;
   id?: string;
@@ -9,7 +9,7 @@ export interface ControlMessage {
 }
 
 export interface ControlResponse {
-  type: 'control-response';
+  type: "control-response";
   id: string;
   success: boolean;
   action: string;
@@ -21,7 +21,7 @@ export interface ControlResponse {
 export interface PropertyChangeEvent {
   property: string;
   value: any;
-  source: 'user' | 'programmatic';
+  source: "user" | "programmatic";
   timestamp: number;
 }
 
@@ -71,9 +71,9 @@ export interface GroupVisibilityConfig {
 }
 
 // Layout & Responsive customization
-export type ToolbarDensity = 'default' | 'compact' | 'comfortable';
-export type ToolbarPosition = 'top' | 'bottom';
-export type SidebarPosition = 'left' | 'right';
+export type ToolbarDensity = "default" | "compact" | "comfortable";
+export type ToolbarPosition = "top" | "bottom";
+export type SidebarPosition = "left" | "right";
 
 export interface LayoutConfig {
   toolbarDensity?: ToolbarDensity;
@@ -106,7 +106,7 @@ export interface ViewerConfig {
 
 // Theme & Visual Customization Configuration
 export interface ThemeConfig {
-  theme?: 'light' | 'dark' | 'auto';
+  theme?: "light" | "dark" | "auto";
   primaryColor?: string;
   backgroundColor?: string;
   pageBorderColor?: string;
@@ -153,7 +153,7 @@ export interface DocumentMetadata {
   keywords?: string;
   creator?: string;
   producer?: string;
-  creationDate?: string; 
+  creationDate?: string;
   modificationDate?: string;
   pdfFormatVersion?: string;
   isLinearized?: boolean;
@@ -169,7 +169,7 @@ export interface DocumentOutline {
 
 export interface PageRenderInfo {
   pageNumber: number;
-  source?: string;  // Optional - may contain non-cloneable objects
+  source?: string; // Optional - may contain non-cloneable objects
   timestamp?: number;
 }
 
@@ -188,4 +188,4 @@ export interface BookmarkClick {
   pageNumber?: number;
   isCurrentItem: boolean;
 }
-// #endregion 
+// #endregion

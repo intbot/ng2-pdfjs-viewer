@@ -5,9 +5,7 @@
     "downlevelIteration": true,
     "module": "esnext",
     "paths": {
-      "core-js/es7/reflect": [
-        "node_modules/core-js/proposals/reflect-metadata"
-      ]
+      "core-js/es7/reflect": ["node_modules/core-js/proposals/reflect-metadata"]
     },
     "outDir": "./dist",
     "sourceMap": true,
@@ -16,13 +14,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "ES2022",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2017", "dom"],
     "useDefineForClassFields": false
   }
 }

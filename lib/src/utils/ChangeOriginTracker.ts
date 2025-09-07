@@ -20,4 +20,4 @@ export class ChangeOriginTracker {
   isProgrammatic(property: string): boolean {
     return this.programmaticChanges.has(property);
   }
-} 
+}

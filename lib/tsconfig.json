@@ -4,15 +4,10 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "rootDir": "./src",
-    "lib": [
-      "ES2022",
-      "dom"
-    ],
+    "lib": ["ES2022", "dom"],
     "sourceMap": true,
     "skipLibCheck": true,
     "target": "ES2022",
-    "types": [
-      "node"
-    ]
+    "types": ["node"]
   }
 }

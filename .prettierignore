@@ -1,0 +1,13 @@
+# Exclude PDF.js folders from formatting
+lib/pdfjs/**
+SampleApp/src/assets/**
+
+# Exclude build outputs
+dist/**
+lib/dist/**
+node_modules/**
+*.min.js
+*.min.css
+
+# Exclude cache folders
+SampleApp/.angular/**

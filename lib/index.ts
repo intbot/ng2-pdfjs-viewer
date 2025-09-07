@@ -1,9 +1,9 @@
-export * from './src/ng2-pdfjs-viewer.module';
-export * from './src/ng2-pdfjs-viewer.component';
+export * from "./src/ng2-pdfjs-viewer.module";
+export * from "./src/ng2-pdfjs-viewer.component";
 
 // Export types that are needed by consumer applications
-export { 
-  ChangedScale, 
+export {
+  ChangedScale,
   ChangedRotation,
   ControlVisibilityConfig,
   AutoActionConfig,
@@ -26,5 +26,5 @@ export {
   PageRenderInfo,
   // New high-value events
   AnnotationLayerRenderEvent,
-  BookmarkClick
-} from './src/interfaces/ViewerTypes';
+  BookmarkClick,
+} from "./src/interfaces/ViewerTypes";

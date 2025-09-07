@@ -1,16 +1,28 @@
 <mat-grid-list cols="5" rowHeight="80vh">
-  <mat-grid-tile
-    [colspan]="3"
-    [rowspan]="1">
-    <ng2-pdfjs-viewer class="fill" viewerId="MyID2" #viewer pdfSrc="compressed.tracemonkey-pldi-09.pdf"
-      [locale]="'de-AT'" (onDocumentLoad)="pdfLoaded()" [(zoom)]="zoom"
-      [(cursor)]="cursor" downloadFileName="research.pdf" [(scroll)]="scroll" [(spread)]="spread" [showPrint]="false"
-    [errorOverride]="true" errorMessage="My error Message"></ng2-pdfjs-viewer>
+  <mat-grid-tile [colspan]="3" [rowspan]="1">
+    <ng2-pdfjs-viewer
+      class="fill"
+      viewerId="MyID2"
+      #viewer
+      pdfSrc="compressed.tracemonkey-pldi-09.pdf"
+      [locale]="'de-AT'"
+      (onDocumentLoad)="pdfLoaded()"
+      [(zoom)]="zoom"
+      [(cursor)]="cursor"
+      downloadFileName="research.pdf"
+      [(scroll)]="scroll"
+      [(spread)]="spread"
+      [showPrint]="false"
+      [errorOverride]="true"
+      errorMessage="My error Message"
+    ></ng2-pdfjs-viewer>
   </mat-grid-tile>
   @if (isPdfLoaded) {
-    <mat-grid-tile style="background-color: lightblue; flex: 1; flex-direction: column"
+    <mat-grid-tile
+      style="background-color: lightblue; flex: 1; flex-direction: column"
       [colspan]="2"
-      [rowspan]="1">
+      [rowspan]="1"
+    >
       <table class="w-100">
         <thead>
           <tr>
@@ -21,40 +33,43 @@
         <tbody>
           <tr>
             <td data-column="Attribute">Page</td>
-            <td data-column="Value">{{viewer.page}}</td>
+            <td data-column="Value">{{ viewer.page }}</td>
           </tr>
           <tr>
             <td data-column="Attribute">Source</td>
-            <td data-column="Value">{{viewer.pdfSrc}}</td>
+            <td data-column="Value">{{ viewer.pdfSrc }}</td>
           </tr>
           <tr>
             <td data-column="Attribute">Print</td>
-            <td data-column="Value">{{viewer.showPrint}}</td>
+            <td data-column="Value">{{ viewer.showPrint }}</td>
           </tr>
           <tr>
             <td data-column="Attribute">Download</td>
-            <td data-column="Value">{{viewer.showDownload}}</td>
+            <td data-column="Value">{{ viewer.showDownload }}</td>
           </tr>
           <tr>
             <td data-column="Attribute">Find</td>
-            <td data-column="Value">{{viewer.showFind}}</td>
+            <td data-column="Value">{{ viewer.showFind }}</td>
           </tr>
           <tr>
             <td data-column="Attribute">Cursor</td>
-            <td data-column="Value">{{viewer.cursor}}</td>
+            <td data-column="Value">{{ viewer.cursor }}</td>
           </tr>
           <tr>
             <td data-column="Attribute">Locale</td>
-            <td data-column="Value">{{viewer.locale}}</td>
+            <td data-column="Value">{{ viewer.locale }}</td>
           </tr>
           <tr>
             <td data-column="Attribute">Zoom</td>
-            <td data-column="Value">{{viewer.zoom}}</td>
+            <td data-column="Value">{{ viewer.zoom }}</td>
           </tr>
         </tbody>
       </table>
       <p class="mat-caption">
-        For more attributes visit <a href="https://github.com/vishnu-dev/ng2-pdfjs-viewer#options">GitHub | ng2-pdf-viewer</a>
+        For more attributes visit
+        <a href="https://github.com/vishnu-dev/ng2-pdfjs-viewer#options"
+          >GitHub | ng2-pdf-viewer</a
+        >
       </p>
     </mat-grid-tile>
   }

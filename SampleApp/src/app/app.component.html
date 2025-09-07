@@ -1,24 +1,66 @@
 <mat-toolbar color="primary">
-  <button mat-button routerLink="/" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="mat-accent">
+  <button
+    mat-button
+    routerLink="/"
+    [routerLinkActiveOptions]="{ exact: true }"
+    routerLinkActive="mat-accent"
+  >
     ng2-pdfjs-viewer
   </button>
   <div class="spacer"></div>
-  <button mat-raised-button routerLink="big" color="primary" routerLinkActive="mat-accent">
+  <button
+    mat-raised-button
+    routerLink="big"
+    color="primary"
+    routerLinkActive="mat-accent"
+  >
     Big viewer
   </button>
-  <button mat-raised-button routerLink="inline" color="primary" routerLinkActive="mat-accent">Inline PDF</button>
-  <button mat-raised-button (click)="openPdf()" color="primary" routerLinkActive="mat-accent">Open in new tab</button>
-  <button mat-raised-button routerLink="dynamic" color="primary" routerLinkActive="mat-accent">Dynamic PDF</button>
+  <button
+    mat-raised-button
+    routerLink="inline"
+    color="primary"
+    routerLinkActive="mat-accent"
+  >
+    Inline PDF
+  </button>
+  <button
+    mat-raised-button
+    (click)="openPdf()"
+    color="primary"
+    routerLinkActive="mat-accent"
+  >
+    Open in new tab
+  </button>
+  <button
+    mat-raised-button
+    routerLink="dynamic"
+    color="primary"
+    routerLinkActive="mat-accent"
+  >
+    Dynamic PDF
+  </button>
   <div class="spacer"></div>
-  <button mat-raised-button (click)="toggleDiagnosticLogs()" [color]="diagnosticLogs ? 'accent' : 'primary'" routerLinkActive="mat-accent">
-    {{ diagnosticLogs ? 'Disable' : 'Enable' }} Debug Logs
+  <button
+    mat-raised-button
+    (click)="toggleDiagnosticLogs()"
+    [color]="diagnosticLogs ? 'accent' : 'primary'"
+    routerLinkActive="mat-accent"
+  >
+    {{ diagnosticLogs ? "Disable" : "Enable" }} Debug Logs
   </button>
 </mat-toolbar>
 
 <div class="external-viewer-host">
-  <ng2-pdfjs-viewer #externalPdfViewer [externalWindow]="true" [showOpenFile]="false" [useOnlyCssZoom]="true" target="_myWindow" [diagnosticLogs]="diagnosticLogs"></ng2-pdfjs-viewer>
+  <ng2-pdfjs-viewer
+    #externalPdfViewer
+    [externalWindow]="true"
+    [showOpenFile]="false"
+    [useOnlyCssZoom]="true"
+    target="_myWindow"
+    [diagnosticLogs]="diagnosticLogs"
+  ></ng2-pdfjs-viewer>
 </div>
 <div class="container mat-typography">
   <router-outlet></router-outlet>
 </div>
-
