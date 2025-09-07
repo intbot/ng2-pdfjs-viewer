@@ -1,24 +1,75 @@
-# Angular PDF viewer with Mozilla's PDF.js Viewer
+# ng2-pdfjs-viewer
 
-<div align="center">
+> **📚 For complete documentation, examples, and API reference, please visit the [main README](../README.md)**
 
-[![NPM Version](https://img.shields.io/npm/v/ng2-pdfjs-viewer?logo=npm)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
-[![PDFJS Version](https://img.shields.io/badge/PDF.js%20Version-4.0.x-blue?logo=mozilla)](https://github.com/mozilla/pdf.js)
-[![Static Badge](https://img.shields.io/badge/Angular%20Version-19-green?logo=angular)](https://angular.dev/overview)
+This is the npm package for ng2-pdfjs-viewer - a feature-rich Angular PDF viewer component powered by Mozilla's PDF.js v5.3.93.
 
-</div>
-<div align="center">
+## Quick Links
 
-[![NPM Downloads](https://img.shields.io/npm/dy/ng2-pdfjs-viewer)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
-[![NPM Downloads](https://img.shields.io/npm/dm/ng2-pdfjs-viewer?label=last%20month)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+- 📖 **[Complete Documentation](../README.md)** - Full API reference, examples, and guides
+- 🎯 **[Live Demo](https://ng2-pdfjs-viewer.azurewebsites.net)** - Interactive demo and examples
+- 🚀 **[Installation Guide](../README.md#installation)** - Get started in minutes
+- 🔄 **[Migration Guide](../README.md#migration-guide)** - Upgrade from previous versions
+- 📋 **[Changelog](../CHANGELOG.md)** - Version history and breaking changes
 
-</div>
+## What's New in v20.4.0
 
-**_🎉 Thanks a ton to the community - After 8+ years and consistant support, we are standing tall at 6 million downloads now!!!_**
+- ✨ **PDF.js v5.3.93** - Latest version with enhanced performance and security
+- 🎨 **Advanced Theme System** - Complete visual customization with CSS custom properties
+- ⚡ **Universal Action Dispatcher** - Event-driven architecture with promise-based API
+- 🔄 **Custom Loading & Error Handling** - Template-based UI with multiple built-in styles
+- 📱 **Mobile-First Design** - Responsive layout with touch-friendly controls
+- 🔧 **Enhanced Developer Experience** - TypeScript strict mode and better debugging
 
-**_This project is currently maintained by a single developer on his spare time. Inviting contributors and pull requests to pick-up momentum, and handle the expansive userbase and feature requests._**
+## Installation
 
-This is a super simple angular component for displaying PDFs inline(embedded) OR in a new tab along with a feature rich viewer. It is based on Mozilla's PDF.js viewer v4.0 and supports angular version from 2.0. Extremely lightweight, easiest to integrate and use, most reliable, this library has only one dependancy (@angular/core).
+```bash
+npm install ng2-pdfjs-viewer --save
+```
+
+## Quick Start
+
+```typescript
+import { PdfJsViewerModule } from "ng2-pdfjs-viewer";
+
+@NgModule({
+  imports: [PdfJsViewerModule],
+  // ...
+})
+export class AppModule {}
+```
+
+```html
+<ng2-pdfjs-viewer
+  pdfSrc="assets/document.pdf"
+  [theme]="'light'"
+  [showSpinner]="true"
+>
+</ng2-pdfjs-viewer>
+```
+
+## Features
+
+- 🎯 **PDF.js v5.3.93** - Latest Mozilla PDF.js with enhanced performance
+- 🎨 **Theme Customization** - Light, dark, and auto themes with custom colors
+- 🔄 **Custom UI** - Template-based loading spinners and error displays
+- 📱 **Responsive Design** - Mobile-first approach with touch gestures
+- 🌍 **Internationalization** - Support for 50+ languages and locales
+- ⚡ **Event-Driven** - Promise-based API with comprehensive event handling
+- 🔧 **TypeScript** - Full type safety with strict mode support
+
+## Support
+
+- 📖 **Documentation**: [GitHub Wiki](https://github.com/intbot/ng2-pdfjs-viewer/wiki)
+- 💬 **Community**: [GitHub Discussions](https://github.com/intbot/ng2-pdfjs-viewer/discussions)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/intbot/ng2-pdfjs-viewer/issues)
+- 📧 **Email**: codehippie1@gmail.com
+
+---
+
+**🎉 6+ Million Downloads & Counting!**
+
+_This project is maintained by the community. We welcome contributions and pull requests!_
 
 ## What's new?
 
@@ -29,7 +80,7 @@ This is a super simple angular component for displaying PDFs inline(embedded) OR
 ## Tutorials, Demos & Examples
 
 **Hosted Demo app showing unique use cases**: https://ng2-pdfjs-viewer.azurewebsites.net  
-**Minimalistic angular sample app**: https://github.com/intbot/ng2-pdfjs-viewer/tree/master/SampleApp  
+**Minimalistic angular sample app**: https://github.com/intbot/ng2-pdfjs-viewer/tree/master/SampleApp
 
 ## Features
 
@@ -125,45 +176,45 @@ _Please note if you decide to put `pdfjs` folder anywhere else other than the `a
 
 ### Options
 
-| Attribute                     | Description                                                                                                                                                                                                                                        | Type             | Default Value                                            |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | -------------------------------------------------------- |
-| `[pdfSrc]`                    | Fully qualified path to pdf file. (For remote pdf urls over http/https, CORS should be enabled)                                                                                                                                                    | `string`         |                                                          |
-| `PDFViewerApplication`        | This public property exposes underlying PDFViewerApplication object. Make sure to access it after document is loaded. Opens up the whole world of underlying PDFJS properties and methods. Use it to customize the viewer and document experience. | `object`         |                                                          |
-| `PDFViewerApplicationOptions` | This public property exposes underlying PDFViewerApplicationOptions object. Make sure to access it after document is loaded. Opens up the whole world of underlying PDFJS options. Use it to customize the viewer and document experience.         | `object`         |                                                          |
-| `[viewerFolder]`              | Set path to _pdfjs's_ `web` and `build` folders.                                                                                                                                                                                                   | `string`         | `assets` folder path                                     |
-| `[externalWindow]`            | Open in new tab. Set to `true` to open document in a new tab                                                                                                                                                                                       | `boolean`        | `false`                                                  |
-| `externalWindowOptions`       | External window options. For allowed comma separated values, refer to https://developer.mozilla.org/en-US/docs/Web/API/Window/open                                                                                                                 | `string`         |                                                          |
-| `(onDocumentLoad)`            | Event to be invoked once document is fully loaded(Must provide `viewerId`). Also returns number of pages in the `$event` parameter. E.g. `(onDocumentLoad)="testPagesLoaded($event)""`                                                             | `Function`       |                                                          |
-| `(onPageChange)`              | Event to be invoked when user scrolls through pages(Must provide `viewerId`). Also returns current page number user is at in the `$event` parameter. E.g. `(onPageChange)="testPageChange($event)""`                                               | `Function`       |                                                          |
-| `(onBeforePrint)`             | Event to be invoked before document gets printed(Must provide `viewerId`). E.g. `(onBeforePrint)="testBeforePrint()"`                                                                                                                              | `Function`       |                                                          |
-| `(onAfterPrint)`              | Event to be invoked after document gets printed(Must provide `viewerId`). E.g. `(onAfterPrint)="testAfterPrint()"`                                                                                                                                 | `Function`       |                                                          |
-| `downloadFileName`            | Sets/Changes the name of document to be downloaded. If the file name does not ends in `.pdf`, the component will automatically add it for you.                                                                                                     | `string`         | Actual name of the document                              |
-| `[page]`                      | Show specific page. E.g _page=3_. You may also get/set the page number from your component using '.' notation explicitly, after document is loaded. E.g. `myPdfViewer.page = 3;`                                                                   | `number`         | `1`                                                      |
-| `[namedDest]`                 | Go to a named destination. E.g. To go to section _5.1_ use like namedDest=5.1. Do not mix this option with _`page`_ option                                                                                                                          | `string`         |                                                          |
-| `[(zoom)]`                    | Two-way binding for zoom level. Applicable values are `auto`, `page-width`, `page-height`, `page-fit`, `200`_(As a zoom percentage)_, `left offset`_(As in "auto,18,827")_, `top offset`_(As in "auto,18,127")_                                        | `string`         | `auto`                                                   |
-| `[showPrint]`                 | Show/hide print button. Set `false` to hide                                                                                                                                                                                                        | `boolean`        | `true`                                                   |
-| `[showDownload]`              | Show/hide download button. Set `false` to hide                                                                                                                                                                                                     | boolean          | `true`                                                   |
-| `[showFind]`                  | Show/hide search button. Set `false` to hide                                                                                                                                                                                                       | boolean          | `true`                                                   |
-| `[downloadOnLoad]`            | Download document automatically when it opens.                                                                                                                                                                                                     | `boolean`        | `false`                                                 |
-| `[printOnLoad]`               | Print document automatically when it opens.                                                                                                                                                                                                        | `boolean`        | `false`                                                 |
-| `[showLastPageOnLoad]`        | Go to last page automatically when document opens.                                                                                                                                                                                                 | `boolean`        | `false`                                                 |
-| `[rotateCW]`                  | Rotate document clockwise 90° initially                                                                                                                                                                                                             | `boolean`        | `false`                                                 |
-| `[rotateCCW]`                 | Rotate document counter-clockwise 90° initially                                                                                                                                                                                                    | `boolean`        | `false`                                                 |
-| `[(cursor)]`                  | Two-way binding for cursor type. Available options are _`select`_, _`hand`_, _`zoom`_. Case is irrelevant.                                                                                                                                               | _`select`_   |                                                          |
-| `[(scroll)]`                  | Two-way binding for scroll mode. Available options are _`vertical`_, _`horizontal`_, _`wrapped`_, _`page`_. Case is irrelevant.                                                                                                                           | _`vertical`_ |                                                          |
-| `[(spread)]`                  | Two-way binding for spread mode. Available options are _`none`_, _`odd`_, _`even`_. Case is irrelevant.                                                                                                                                         | _`none`_     |                                                          |
-| `[(pageMode)]`                | Two-way binding for page mode (sidebar). Available options are _`none`_, _`thumbs`_, _`bookmarks`_, _`attachments`_.                                                                                                                                     | _`none`_         |                                                          |
-| `[(rotation)]`                | Two-way binding for document rotation. Value in degrees (0, 90, 180, 270).                                                                                                                                     | _`0`_         |                                                          |
-| `[showFullScreen]`            | Show/hide presentation(full screen) button. Set `false` to hide                                                                                                                                                                                    | `boolean`        | `true`                                                   |
-| `[showOpenFile]`              | Show/hide open file button. Set `false` to hide                                                                                                                                                                                                    | boolean          | `true`                                                   |
-| `[showViewBookmark]`          | Show/hide bookmark button. Set `false` to hide                                                                                                                                                                                                     | boolean          | `true`                                                   |
-| `[showSpinner]`               | Show a simple css based spinner/progress before the document loads                                                                                                                                                                                 | boolean          | `true`                                                   |
-| `[locale]`                    | Set locale(language) of toolbar/buttons and other viewer elements. E.g. 'de-AT', 'en-GB' etc                                                                                                                                                       | string           | browser's default language if present, otherwise `en-US` |
-| `[useOnlyCssZoom]`            | Instructs the viewer to use css based zoom. This will produce better zoom effect on mobile devices and tablets.                                                                                                                                    | boolean          | `false`                                                  |
-| `errorMessage`                | Custom error message                                                                                                                                                                                                                               | string           |                                                          |
-| `[errorAppend]`               | Appends custom error message to the end of other pdfjs error messages                                                                                                                                                                              | `true`           |
-| `[errorOverride]`             | Overrides all pdfjs error messages and shows only user's custom error message                                                                                                                                                                      | boolean          | `false`                                                  |
-| `[diagnosticLogs]`            | Turns on all diagnostic logs to the console                                                                                                                                                                                                        | boolean          | `true`                                                   |
+| Attribute                     | Description                                                                                                                                                                                                                                        | Type         | Default Value                                            |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | -------------------------------------------------------- |
+| `[pdfSrc]`                    | Fully qualified path to pdf file. (For remote pdf urls over http/https, CORS should be enabled)                                                                                                                                                    | `string`     |                                                          |
+| `PDFViewerApplication`        | This public property exposes underlying PDFViewerApplication object. Make sure to access it after document is loaded. Opens up the whole world of underlying PDFJS properties and methods. Use it to customize the viewer and document experience. | `object`     |                                                          |
+| `PDFViewerApplicationOptions` | This public property exposes underlying PDFViewerApplicationOptions object. Make sure to access it after document is loaded. Opens up the whole world of underlying PDFJS options. Use it to customize the viewer and document experience.         | `object`     |                                                          |
+| `[viewerFolder]`              | Set path to _pdfjs's_ `web` and `build` folders.                                                                                                                                                                                                   | `string`     | `assets` folder path                                     |
+| `[externalWindow]`            | Open in new tab. Set to `true` to open document in a new tab                                                                                                                                                                                       | `boolean`    | `false`                                                  |
+| `externalWindowOptions`       | External window options. For allowed comma separated values, refer to https://developer.mozilla.org/en-US/docs/Web/API/Window/open                                                                                                                 | `string`     |                                                          |
+| `(onDocumentLoad)`            | Event to be invoked once document is fully loaded(Must provide `viewerId`). Also returns number of pages in the `$event` parameter. E.g. `(onDocumentLoad)="testPagesLoaded($event)""`                                                             | `Function`   |                                                          |
+| `(onPageChange)`              | Event to be invoked when user scrolls through pages(Must provide `viewerId`). Also returns current page number user is at in the `$event` parameter. E.g. `(onPageChange)="testPageChange($event)""`                                               | `Function`   |                                                          |
+| `(onBeforePrint)`             | Event to be invoked before document gets printed(Must provide `viewerId`). E.g. `(onBeforePrint)="testBeforePrint()"`                                                                                                                              | `Function`   |                                                          |
+| `(onAfterPrint)`              | Event to be invoked after document gets printed(Must provide `viewerId`). E.g. `(onAfterPrint)="testAfterPrint()"`                                                                                                                                 | `Function`   |                                                          |
+| `downloadFileName`            | Sets/Changes the name of document to be downloaded. If the file name does not ends in `.pdf`, the component will automatically add it for you.                                                                                                     | `string`     | Actual name of the document                              |
+| `[page]`                      | Show specific page. E.g _page=3_. You may also get/set the page number from your component using '.' notation explicitly, after document is loaded. E.g. `myPdfViewer.page = 3;`                                                                   | `number`     | `1`                                                      |
+| `[namedDest]`                 | Go to a named destination. E.g. To go to section _5.1_ use like namedDest=5.1. Do not mix this option with _`page`_ option                                                                                                                         | `string`     |                                                          |
+| `[(zoom)]`                    | Two-way binding for zoom level. Applicable values are `auto`, `page-width`, `page-height`, `page-fit`, `200`_(As a zoom percentage)_, `left offset`_(As in "auto,18,827")_, `top offset`_(As in "auto,18,127")_                                    | `string`     | `auto`                                                   |
+| `[showPrint]`                 | Show/hide print button. Set `false` to hide                                                                                                                                                                                                        | `boolean`    | `true`                                                   |
+| `[showDownload]`              | Show/hide download button. Set `false` to hide                                                                                                                                                                                                     | boolean      | `true`                                                   |
+| `[showFind]`                  | Show/hide search button. Set `false` to hide                                                                                                                                                                                                       | boolean      | `true`                                                   |
+| `[downloadOnLoad]`            | Download document automatically when it opens.                                                                                                                                                                                                     | `boolean`    | `false`                                                  |
+| `[printOnLoad]`               | Print document automatically when it opens.                                                                                                                                                                                                        | `boolean`    | `false`                                                  |
+| `[showLastPageOnLoad]`        | Go to last page automatically when document opens.                                                                                                                                                                                                 | `boolean`    | `false`                                                  |
+| `[rotateCW]`                  | Rotate document clockwise 90° initially                                                                                                                                                                                                            | `boolean`    | `false`                                                  |
+| `[rotateCCW]`                 | Rotate document counter-clockwise 90° initially                                                                                                                                                                                                    | `boolean`    | `false`                                                  |
+| `[(cursor)]`                  | Two-way binding for cursor type. Available options are _`select`_, _`hand`_, _`zoom`_. Case is irrelevant.                                                                                                                                         | _`select`_   |                                                          |
+| `[(scroll)]`                  | Two-way binding for scroll mode. Available options are _`vertical`_, _`horizontal`_, _`wrapped`_, _`page`_. Case is irrelevant.                                                                                                                    | _`vertical`_ |                                                          |
+| `[(spread)]`                  | Two-way binding for spread mode. Available options are _`none`_, _`odd`_, _`even`_. Case is irrelevant.                                                                                                                                            | _`none`_     |                                                          |
+| `[(pageMode)]`                | Two-way binding for page mode (sidebar). Available options are _`none`_, _`thumbs`_, _`bookmarks`_, _`attachments`_.                                                                                                                               | _`none`_     |                                                          |
+| `[(rotation)]`                | Two-way binding for document rotation. Value in degrees (0, 90, 180, 270).                                                                                                                                                                         | _`0`_        |                                                          |
+| `[showFullScreen]`            | Show/hide presentation(full screen) button. Set `false` to hide                                                                                                                                                                                    | `boolean`    | `true`                                                   |
+| `[showOpenFile]`              | Show/hide open file button. Set `false` to hide                                                                                                                                                                                                    | boolean      | `true`                                                   |
+| `[showViewBookmark]`          | Show/hide bookmark button. Set `false` to hide                                                                                                                                                                                                     | boolean      | `true`                                                   |
+| `[showSpinner]`               | Show a simple css based spinner/progress before the document loads                                                                                                                                                                                 | boolean      | `true`                                                   |
+| `[locale]`                    | Set locale(language) of toolbar/buttons and other viewer elements. E.g. 'de-AT', 'en-GB' etc                                                                                                                                                       | string       | browser's default language if present, otherwise `en-US` |
+| `[useOnlyCssZoom]`            | Instructs the viewer to use css based zoom. This will produce better zoom effect on mobile devices and tablets.                                                                                                                                    | boolean      | `false`                                                  |
+| `errorMessage`                | Custom error message                                                                                                                                                                                                                               | string       |                                                          |
+| `[errorAppend]`               | Appends custom error message to the end of other pdfjs error messages                                                                                                                                                                              | `true`       |
+| `[errorOverride]`             | Overrides all pdfjs error messages and shows only user's custom error message                                                                                                                                                                      | boolean      | `false`                                                  |
+| `[diagnosticLogs]`            | Turns on all diagnostic logs to the console                                                                                                                                                                                                        | boolean      | `true`                                                   |
 
 **_Please note, copy step is mandatory to enjoy all of the different options listed above. You may also avoid this step and could directly use https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website if you wish to just use the default viewer_**
 
@@ -171,31 +222,32 @@ _Please note if you decide to put `pdfjs` folder anywhere else other than the `a
 
 The following properties are deprecated and will be removed in a future version. Please use the new property names instead.
 
-| Deprecated Property | New Property | Description |
-|-------------------|--------------|-------------|
-| `[startDownload]` | `[downloadOnLoad]` | Download document automatically when it opens |
-| `[startPrint]` | `[printOnLoad]` | Print document automatically when it opens |
-| `[cursor]` | `[(cursor)]` | Type of cursor (select/hand/zoom) |
-| `[scroll]` | `[(scroll)]` | Sets scroll mode (vertical/horizontal/wrapped/page) |
-| `[spread]` | `[(spread)]` | Sets spread mode (none/odd/even) |
-| `[zoom]` | `[(zoom)]` | Set zoom level of document |
-| `[nameddest]` | `[namedDest]` | Go to a named destination |
-| `[pagemode]` | `[(pageMode)]` | State of sidebar (none/thumbs/bookmarks/attachments) |
-| `[locale]` | `[locale]` | Set locale of toolbar/buttons |
-| `[useOnlyCssZoom]` | `[useOnlyCssZoom]` | Use CSS-based zoom for mobile devices |
-| `[rotatecw]` | `[rotateCW]` | Rotate document clockwise 90° initially |
-| `[rotateccw]` | `[rotateCCW]` | Rotate document counter-clockwise 90° initially |
-| `[openFile]` | `[showOpenFile]` | Show/hide open file button |
-| `[download]` | `[showDownload]` | Show/hide download button |
-| `[print]` | `[showPrint]` | Show/hide print button |
-| `[fullScreen]` | `[showFullScreen]` | Show/hide full screen button |
-| `[find]` | `[showFind]` | Show/hide search button |
-| `[viewBookmark]` | `[showViewBookmark]` | Show/hide bookmark button |
-| `[lastPage]` | `[showLastPageOnLoad]` | Go to last page automatically when document opens |
+| Deprecated Property | New Property           | Description                                          |
+| ------------------- | ---------------------- | ---------------------------------------------------- |
+| `[startDownload]`   | `[downloadOnLoad]`     | Download document automatically when it opens        |
+| `[startPrint]`      | `[printOnLoad]`        | Print document automatically when it opens           |
+| `[cursor]`          | `[(cursor)]`           | Type of cursor (select/hand/zoom)                    |
+| `[scroll]`          | `[(scroll)]`           | Sets scroll mode (vertical/horizontal/wrapped/page)  |
+| `[spread]`          | `[(spread)]`           | Sets spread mode (none/odd/even)                     |
+| `[zoom]`            | `[(zoom)]`             | Set zoom level of document                           |
+| `[nameddest]`       | `[namedDest]`          | Go to a named destination                            |
+| `[pagemode]`        | `[(pageMode)]`         | State of sidebar (none/thumbs/bookmarks/attachments) |
+| `[locale]`          | `[locale]`             | Set locale of toolbar/buttons                        |
+| `[useOnlyCssZoom]`  | `[useOnlyCssZoom]`     | Use CSS-based zoom for mobile devices                |
+| `[rotatecw]`        | `[rotateCW]`           | Rotate document clockwise 90° initially              |
+| `[rotateccw]`       | `[rotateCCW]`          | Rotate document counter-clockwise 90° initially      |
+| `[openFile]`        | `[showOpenFile]`       | Show/hide open file button                           |
+| `[download]`        | `[showDownload]`       | Show/hide download button                            |
+| `[print]`           | `[showPrint]`          | Show/hide print button                               |
+| `[fullScreen]`      | `[showFullScreen]`     | Show/hide full screen button                         |
+| `[find]`            | `[showFind]`           | Show/hide search button                              |
+| `[viewBookmark]`    | `[showViewBookmark]`   | Show/hide bookmark button                            |
+| `[lastPage]`        | `[showLastPageOnLoad]` | Go to last page automatically when document opens    |
 
 **Note**: When using deprecated properties, a console warning will be displayed to remind you to update to the new property names.
 
 **Important Notes:**
+
 - **Locale changes**: Locale changes require a viewer refresh to take effect, as they affect the entire viewer interface
 - **Page Mode (Bookmarks/Attachments)**: These options will only show content if the PDF document contains bookmarks or attachments
 - **Scroll Mode**: The "Page" scroll mode provides page-by-page scrolling instead of continuous scrolling
@@ -204,30 +256,31 @@ The following properties are deprecated and will be removed in a future version.
 
 In addition to setting properties, you can also execute actions on-demand using the following methods:
 
-| Method | Description | Parameters | Returns |
-|--------|-------------|------------|---------|
-| `setCursor(cursor)` | Set cursor mode on-demand | `cursor: 'select' \| 'hand' \| 'zoom'` | `Promise<ActionExecutionResult>` |
-| `setScroll(scroll)` | Set scroll mode on-demand | `scroll: 'vertical' \| 'horizontal' \| 'wrapped' \| 'page'` | `Promise<ActionExecutionResult>` |
-| `setSpread(spread)` | Set spread mode on-demand | `spread: 'none' \| 'odd' \| 'even'` | `Promise<ActionExecutionResult>` |
-| `setZoom(zoom)` | Set zoom level on-demand | `zoom: string` | `Promise<ActionExecutionResult>` |
-| `goToPage(page)` | Navigate to specific page on-demand | `page: number` | `Promise<ActionExecutionResult>` |
-| `goToNamedDestination(destination)` | Navigate to named destination on-demand | `destination: string` | `Promise<ActionExecutionResult>` |
-| `setPageMode(mode)` | Set page mode on-demand | `mode: 'none' \| 'thumbs' \| 'bookmarks' \| 'attachments'` | `Promise<ActionExecutionResult>` |
-| `setLocale(locale)` | Set locale on-demand | `locale: string` | `Promise<ActionExecutionResult>` |
-| `triggerDownload()` | Trigger download on-demand | None | `Promise<ActionExecutionResult>` |
-| `triggerPrint()` | Trigger print on-demand | None | `Promise<ActionExecutionResult>` |
-| `triggerRotation(direction)` | Rotate document on-demand | `direction: 'cw' \| 'ccw'` | `Promise<ActionExecutionResult>` |
+| Method                              | Description                             | Parameters                                                  | Returns                          |
+| ----------------------------------- | --------------------------------------- | ----------------------------------------------------------- | -------------------------------- |
+| `setCursor(cursor)`                 | Set cursor mode on-demand               | `cursor: 'select' \| 'hand' \| 'zoom'`                      | `Promise<ActionExecutionResult>` |
+| `setScroll(scroll)`                 | Set scroll mode on-demand               | `scroll: 'vertical' \| 'horizontal' \| 'wrapped' \| 'page'` | `Promise<ActionExecutionResult>` |
+| `setSpread(spread)`                 | Set spread mode on-demand               | `spread: 'none' \| 'odd' \| 'even'`                         | `Promise<ActionExecutionResult>` |
+| `setZoom(zoom)`                     | Set zoom level on-demand                | `zoom: string`                                              | `Promise<ActionExecutionResult>` |
+| `goToPage(page)`                    | Navigate to specific page on-demand     | `page: number`                                              | `Promise<ActionExecutionResult>` |
+| `goToNamedDestination(destination)` | Navigate to named destination on-demand | `destination: string`                                       | `Promise<ActionExecutionResult>` |
+| `setPageMode(mode)`                 | Set page mode on-demand                 | `mode: 'none' \| 'thumbs' \| 'bookmarks' \| 'attachments'`  | `Promise<ActionExecutionResult>` |
+| `setLocale(locale)`                 | Set locale on-demand                    | `locale: string`                                            | `Promise<ActionExecutionResult>` |
+| `triggerDownload()`                 | Trigger download on-demand              | None                                                        | `Promise<ActionExecutionResult>` |
+| `triggerPrint()`                    | Trigger print on-demand                 | None                                                        | `Promise<ActionExecutionResult>` |
+| `triggerRotation(direction)`        | Rotate document on-demand               | `direction: 'cw' \| 'ccw'`                                  | `Promise<ActionExecutionResult>` |
 
 **Example:**
+
 ```typescript
 // Set cursor to hand mode on-demand
-await pdfViewer.setCursor('hand');
+await pdfViewer.setCursor("hand");
 
 // Set scroll to horizontal mode on-demand
-await pdfViewer.setScroll('horizontal');
+await pdfViewer.setScroll("horizontal");
 
 // Set spread to odd mode on-demand
-await pdfViewer.setSpread('odd');
+await pdfViewer.setSpread("odd");
 ```
 
 ## Usage
@@ -418,8 +471,7 @@ AngularJS [angular-pdfjs-viewer](https://github.com/legalthings/angular-pdfjs-vi
 \*\*Apache V2 License - https://www.apache.org/licenses/LICENSE-2.0
 
 ## More reading
+
 https://github.com/mozilla/pdf.js/wiki/Setup-pdf.js-in-a-website
 https://github.com/mozilla/pdf.js/wiki/Third-party-viewer-usage
 https://github.com/mozilla/pdf.js/wiki/Viewer-options
-
-
