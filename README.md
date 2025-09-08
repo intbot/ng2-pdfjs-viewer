@@ -12,7 +12,6 @@ The most reliable, feature-rich Angular PDF viewer component powered by Mozilla'
 [![Since 2018](https://img.shields.io/badge/since-2018-blue?logo=calendar)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
 [![License](https://img.shields.io/badge/license-Apache%202.0%20%2B%20Commons%20Clause-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![GitHub Stars](https://img.shields.io/github/stars/intbot/ng2-pdfjs-viewer?logo=github)](https://github.com/intbot/ng2-pdfjs-viewer)
-[![GitHub Issues](https://img.shields.io/github/issues/intbot/ng2-pdfjs-viewer?logo=github)](https://github.com/intbot/ng2-pdfjs-viewer/issues)
 
 </div>
 
@@ -83,11 +82,11 @@ Whether you need a simple embedded PDF viewer or a complex document management s
 - [Features](#-features)
 - [Installation](#-installation)
 - [Basic Usage](#-basic-usage)
-- [Advanced Configuration](#-advanced-configuration)
+- [Advanced Configuration](#advanced-configuration)
 - [API Reference](#-api-reference)
 - [Examples](#-examples)
 - [Migration Guide](#-migration-guide)
-- [Deprecated Features](#-deprecated-features)
+- [Deprecated Features](#deprecated-features)
 - [Contributing](#-contributing)
 - [License](#-license)
 
