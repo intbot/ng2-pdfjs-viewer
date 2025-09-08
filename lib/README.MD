@@ -137,7 +137,7 @@ Add PDF.js assets to your `angular.json`:
       "architect": {
         "build": {
           "options": {
-            "assets": [
+"assets": [
               {
                 "glob": "**/*",
                 "input": "node_modules/ng2-pdfjs-viewer/pdfjs",
@@ -504,7 +504,7 @@ export class MyComponent {
   <div class="loading">
     <mat-spinner></mat-spinner>
     <p>Loading your document...</p>
-  </div>
+</div>
 </ng-template>
 
 <ng-template #errorTemplate>
@@ -513,7 +513,7 @@ export class MyComponent {
     <h3>Oops! Something went wrong</h3>
     <p>We couldn't load your PDF. Please try again.</p>
     <button mat-button (click)="retry()">Retry</button>
-  </div>
+</div>
 </ng-template>
 
 <ng2-pdfjs-viewer
@@ -521,7 +521,7 @@ export class MyComponent {
   [customSpinnerTpl]="loadingTemplate"
   [customErrorTpl]="errorTemplate"
 >
-</ng2-pdfjs-viewer>
+  </ng2-pdfjs-viewer>
 ```
 
 ### 4. Programmatic Control

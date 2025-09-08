@@ -140,12 +140,19 @@ export class FeaturesComponent implements OnInit {
   public feedPaused = false;
   public feedFilter: Set<string> = new Set();
 
+  // Getter for filtered events
+  get filteredEventFeed() {
+    if (this.feedFilter.size === 0) {
+      return this.eventFeed;
+    }
+    return this.eventFeed.filter((event) => this.feedFilter.has(event.type));
+  }
+
   private pushEventToFeed(type: string, data?: any) {
     if (this.feedPaused) return;
     const now = new Date();
     const time = now.toLocaleTimeString([], { hour12: false });
-    // basic filter: if filters set, only include selected types
-    if (this.feedFilter.size > 0 && !this.feedFilter.has(type)) return;
+    // Always add to eventFeed, filtering happens in the getter
     this.eventFeed.unshift({ time, type, data });
     if (this.eventFeed.length > 200) this.eventFeed.pop();
   }
@@ -440,39 +447,39 @@ export class FeaturesComponent implements OnInit {
   public async triggerDownload() {
     try {
       const result = await this.pdfViewer.triggerDownload();
-      } catch (error) {
+    } catch (error) {
       console.error("🎬 Features Demo: Download failed:", error);
     }
   }
 
   public async triggerPrint() {
-      try {
+    try {
       const result = await this.pdfViewer.triggerPrint();
-      } catch (error) {
+    } catch (error) {
       console.error("🎬 Features Demo: Print failed:", error);
     }
   }
 
   public async goToPage(pageNumber: number) {
-      try {
+    try {
       const result = await this.pdfViewer.goToPage(pageNumber);
-      } catch (error) {
+    } catch (error) {
       console.error("🎬 Features Demo: Navigation failed:", error);
     }
   }
 
   public async rotateClockwise() {
-      try {
+    try {
       const result = await this.pdfViewer.triggerRotation("cw");
-      } catch (error) {
+    } catch (error) {
       console.error("🎬 Features Demo: Rotation failed:", error);
     }
   }
 
   public async rotateCounterClockwise() {
-      try {
+    try {
       const result = await this.pdfViewer.triggerRotation("ccw");
-      } catch (error) {
+    } catch (error) {
       console.error("🎬 Features Demo: Rotation failed:", error);
     }
   }

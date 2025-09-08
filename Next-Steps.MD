@@ -1,4 +1,1 @@
-- [ ] Can you check if the library's license is appropriate? We are using PDFjs source behind the scenes. Check those license files too under lib/pdfjs
-- [ ] Move to "Apache 2.0 + Commons Clause"
-- [ ] Instead of copying the readme files, are there other ways to reuse just one file?
-- [ ] Event section of sample app doesn't look clean
+- [ ] We have to publish like npm (tgz file?) and then use it in the sample app. How can we do this parallely without affecting the local testing config?  May be a duplicate package.json which take a tgz file? 
