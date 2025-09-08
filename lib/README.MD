@@ -694,3 +694,5 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 [![Angular](https://img.shields.io/badge/Angular-Component-green?logo=angular)](https://angular.dev/overview)
 
 </div>
+
+A SIMPLE test
