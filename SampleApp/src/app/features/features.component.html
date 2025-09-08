@@ -62,7 +62,7 @@
           <mat-tab-group>
             <!-- Traditional Individual Properties -->
             <mat-tab label="Individual Properties">
-              <div class="tab-content">
+            <div class="tab-content">
                 <h3>Control Visibility</h3>
                 <div class="action-buttons toggle-buttons">
                   <button
@@ -197,7 +197,7 @@
                   </button>
                 </div>
 
-                <mat-divider></mat-divider>
+              <mat-divider></mat-divider>
 
                 <!-- Auto-actions execute on component creation, not property changes. -->
                 <h3>Auto Actions (execute on load)</h3>
@@ -225,9 +225,9 @@
                   >
                     <mat-icon>refresh</mat-icon> Reload Viewer
                   </button>
-                </div>
+              </div>
 
-                <mat-divider></mat-divider>
+              <mat-divider></mat-divider>
 
                 <!-- Theme & Visual Customization -->
                 <h3>Theme & Visual Customization</h3>
@@ -302,7 +302,7 @@
                       placeholder="4px"
                     />
                   </mat-form-field>
-                </div>
+              </div>
 
                 <!-- Custom CSS -->
                 <mat-form-field appearance="outline" class="full-width">
@@ -315,7 +315,7 @@
                   ></textarea>
                 </mat-form-field>
 
-                <mat-divider></mat-divider>
+              <mat-divider></mat-divider>
 
                 <h3>Layout & Responsive</h3>
                 <div class="binding-grid">
@@ -325,8 +325,8 @@
                       <mat-option value="default">Default</mat-option>
                       <mat-option value="compact">Compact</mat-option>
                       <mat-option value="comfortable">Comfortable</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                  </mat-select>
+                </mat-form-field>
                   <mat-form-field>
                     <mat-label>Sidebar Width</mat-label>
                     <input
@@ -340,15 +340,15 @@
                     <mat-select [(ngModel)]="toolbarPosition">
                       <mat-option value="top">Top</mat-option>
                       <mat-option value="bottom">Bottom</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                  </mat-select>
+                </mat-form-field>
                   <mat-form-field>
                     <mat-label>Sidebar Position</mat-label>
                     <mat-select [(ngModel)]="sidebarPosition">
                       <mat-option value="left">Left</mat-option>
                       <mat-option value="right">Right</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                  </mat-select>
+                </mat-form-field>
                   <mat-form-field>
                     <mat-label>Responsive Breakpoint</mat-label>
                     <input
@@ -421,8 +421,8 @@
                       <mat-option value="de-AT">German</mat-option>
                       <mat-option value="fr-FR">French</mat-option>
                       <mat-option value="es-ES">Spanish</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                  </mat-select>
+                </mat-form-field>
                   <p class="mat-caption">
                     Change language and click "Reload Viewer" to test.
                   </p>
@@ -446,61 +446,61 @@
                   >
                     <mat-icon>refresh</mat-icon> Reload Viewer
                   </button>
-                </div>
               </div>
-            </mat-tab>
+            </div>
+          </mat-tab>
 
             <!-- Separated Binding Demo -->
             <mat-tab label="Property Binding">
-              <div class="tab-content">
+            <div class="tab-content">
                 <div class="binding-grid">
                   <mat-form-field>
                     <mat-label>Cursor</mat-label>
-                    <mat-select [(ngModel)]="cursor">
-                      <mat-option value="select">Text Selection</mat-option>
-                      <mat-option value="hand">Hand</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                <mat-select [(ngModel)]="cursor">
+                    <mat-option value="select">Text Selection</mat-option>
+                  <mat-option value="hand">Hand</mat-option>
+                </mat-select>
+              </mat-form-field>
 
                   <mat-form-field>
                     <mat-label>Scroll</mat-label>
-                    <mat-select [(ngModel)]="scroll">
-                      <mat-option value="vertical">Vertical</mat-option>
-                      <mat-option value="horizontal">Horizontal</mat-option>
-                      <mat-option value="wrapped">Wrapped</mat-option>
-                      <mat-option value="page">Page</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                <mat-select [(ngModel)]="scroll">
+                  <mat-option value="vertical">Vertical</mat-option>
+                  <mat-option value="horizontal">Horizontal</mat-option>
+                  <mat-option value="wrapped">Wrapped</mat-option>
+                    <mat-option value="page">Page</mat-option>
+                </mat-select>
+              </mat-form-field>
 
                   <mat-form-field>
                     <mat-label>Spread</mat-label>
-                    <mat-select [(ngModel)]="spread">
-                      <mat-option value="none">None</mat-option>
-                      <mat-option value="odd">Odd</mat-option>
-                      <mat-option value="even">Even</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                <mat-select [(ngModel)]="spread">
+                  <mat-option value="none">None</mat-option>
+                  <mat-option value="odd">Odd</mat-option>
+                  <mat-option value="even">Even</mat-option>
+                </mat-select>
+              </mat-form-field>
 
                   <mat-form-field>
                     <mat-label>Page Mode</mat-label>
-                    <mat-select [(ngModel)]="pageMode">
-                      <mat-option value="none">None</mat-option>
-                      <mat-option value="thumbs">Thumbnails</mat-option>
-                      <mat-option value="bookmarks">Bookmarks</mat-option>
-                      <mat-option value="attachments">Attachments</mat-option>
-                    </mat-select>
-                  </mat-form-field>
+                  <mat-select [(ngModel)]="pageMode">
+                  <mat-option value="none">None</mat-option>
+                  <mat-option value="thumbs">Thumbnails</mat-option>
+                  <mat-option value="bookmarks">Bookmarks</mat-option>
+                  <mat-option value="attachments">Attachments</mat-option>
+                </mat-select>
+              </mat-form-field>
 
                   <mat-form-field>
                     <mat-label>Rotation</mat-label>
-                    <mat-select [(ngModel)]="rotation">
-                      <mat-option [value]="0">0°</mat-option>
-                      <mat-option [value]="90">90°</mat-option>
-                      <mat-option [value]="180">180°</mat-option>
-                      <mat-option [value]="270">270°</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
+                  <mat-select [(ngModel)]="rotation">
+                    <mat-option [value]="0">0°</mat-option>
+                    <mat-option [value]="90">90°</mat-option>
+                    <mat-option [value]="180">180°</mat-option>
+                    <mat-option [value]="270">270°</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
 
                 <div class="zoom-demo-section">
                   <div
@@ -516,7 +516,7 @@
                       >Only for zoom, separated two-way binding to avoid
                       infinite loops</span
                     >
-                  </div>
+                </div>
                   <strong style="display: block; margin-bottom: 8px"
                     >Angular → PDF viewer</strong
                   >
@@ -535,49 +535,49 @@
                       [color]="currentZoom === '0.5' ? 'primary' : 'basic'"
                     >
                       50%
-                    </button>
+                  </button>
                     <button
                       mat-raised-button
                       (click)="setZoom('0.75')"
                       [color]="currentZoom === '0.75' ? 'primary' : 'basic'"
                     >
                       75%
-                    </button>
+                  </button>
                     <button
                       mat-raised-button
                       (click)="setZoom('1.0')"
                       [color]="currentZoom === '1.0' ? 'primary' : 'basic'"
                     >
                       100%
-                    </button>
+                  </button>
                     <button
                       mat-raised-button
                       (click)="setZoom('1.25')"
                       [color]="currentZoom === '1.25' ? 'primary' : 'basic'"
                     >
                       125%
-                    </button>
+                  </button>
                     <button
                       mat-raised-button
                       (click)="setZoom('1.5')"
                       [color]="currentZoom === '1.5' ? 'primary' : 'basic'"
                     >
                       150%
-                    </button>
+                  </button>
                     <button
                       mat-raised-button
                       (click)="setZoom('2.0')"
                       [color]="currentZoom === '2.0' ? 'primary' : 'basic'"
                     >
                       200%
-                    </button>
+                  </button>
                     <button
                       mat-raised-button
                       (click)="setZoom('page-fit')"
                       [color]="currentZoom === 'page-fit' ? 'primary' : 'basic'"
                     >
                       Page Fit
-                    </button>
+                </button>
                     <button
                       mat-raised-button
                       (click)="setZoom('page-width')"
@@ -586,14 +586,14 @@
                       "
                     >
                       Page Width
-                    </button>
+                </button>
                     <button
                       mat-raised-button
                       (click)="setZoom('auto')"
                       [color]="currentZoom === 'auto' ? 'primary' : 'basic'"
                     >
                       Auto
-                    </button>
+                </button>
                     <button
                       mat-raised-button
                       (click)="setZoom('page-actual')"
@@ -602,8 +602,8 @@
                       "
                     >
                       Actual Size
-                    </button>
-                  </div>
+                </button>
+              </div>
                   <strong style="display: block; margin-bottom: 8px"
                     >PDF Viewer → Angular</strong
                   >
@@ -637,12 +637,12 @@
                       >
                         {{ lastZoomSource }}
                       </mat-chip>
-                    </div>
+              </div>
                     <div style="margin-top: 8px; font-size: 12px; color: #666">
                       Use PDF viewer's zoom controls or mouse wheel to see this
                       update automatically
-                    </div>
-                  </div>
+                </div>
+                </div>
                 </div>
 
                 <div class="current-values">
@@ -667,14 +667,14 @@
                     <span
                       >Rotation: <strong>{{ rotation }}°</strong></span
                     >
-                  </div>
                 </div>
               </div>
-            </mat-tab>
+            </div>
+          </mat-tab>
 
             <!-- Actions Demo -->
             <mat-tab label="Actions">
-              <div class="tab-content">
+            <div class="tab-content">
                 <h3>On-Demand Actions</h3>
                 <div class="action-buttons">
                   <button
@@ -683,21 +683,21 @@
                     (click)="triggerDownload()"
                   >
                     <mat-icon>download</mat-icon> Download
-                  </button>
+                </button>
                   <button
                     mat-raised-button
                     color="primary"
                     (click)="triggerPrint()"
                   >
                     <mat-icon>print</mat-icon> Print
-                  </button>
+                </button>
                   <button
                     mat-raised-button
                     color="primary"
                     (click)="goToPage(1)"
                   >
                     <mat-icon>first_page</mat-icon> Page 1
-                  </button>
+                </button>
                   <button
                     mat-raised-button
                     color="primary"
@@ -718,17 +718,17 @@
                     (click)="rotateCounterClockwise()"
                   >
                     <mat-icon>rotate_left</mat-icon> Rotate CCW
-                  </button>
-                </div>
+                </button>
+              </div>
 
                 <mat-divider></mat-divider>
 
                 <h3>Error Handling Demo</h3>
                 <div class="error-config">
                   <mat-form-field class="full-width">
-                    <mat-label>Custom Error Message</mat-label>
+                  <mat-label>Custom Error Message</mat-label>
                     <input matInput [(ngModel)]="errorMessage" />
-                  </mat-form-field>
+                </mat-form-field>
                   <mat-slide-toggle [(ngModel)]="errorOverride"
                     >Override Default Error</mat-slide-toggle
                   >
@@ -869,10 +869,10 @@
                     <pre class="code-example">{{ themeConfig | json }}</pre>
                     <p>Usage: <code>[themeConfig]="themeConfig"</code></p>
                   </mat-expansion-panel>
-                </div>
               </div>
-            </mat-tab>
-          </mat-tab-group>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
         </mat-card-content>
       </mat-card>
     </div>
@@ -880,16 +880,16 @@
     <!-- PDF Viewer -->
     <div class="viewer-panel">
       <mat-card>
-        <mat-card-header>
+      <mat-card-header>
           <mat-card-title>ng2-pdfjs-viewer</mat-card-title>
           <mat-card-subtitle
             >Live Demo with Current Configuration</mat-card-subtitle
           >
-        </mat-card-header>
-
-        <mat-card-content>
+      </mat-card-header>
+      
+      <mat-card-content>
           <!-- trackBy forces component recreation when key changes -->
-          <ng2-pdfjs-viewer
+          <ng2-pdfjs-viewer 
             #pdfViewer
             *ngFor="let _ of [viewerTrackingKey]; trackBy: trackByKey"
             [pdfSrc]="pdfSrc"
@@ -987,7 +987,7 @@
               ></div>
               <div style="margin-top: 16px; font-size: 16px">
                 Loading PDF...
-              </div>
+        </div>
             </div>
           </ng-template>
 
@@ -1150,9 +1150,9 @@
               </div>
             </div>
           </ng-template>
-        </mat-card-content>
-      </mat-card>
-    </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 
     <!-- Event Feed Panel (Collapsible) -->
     <mat-card class="feed-panel">
@@ -1228,7 +1228,7 @@
               >Errors</mat-chip-option
             >
           </mat-chip-listbox>
-        </div>
+</div> 
         <div class="feed-list">
           <div
             class="feed-item"
