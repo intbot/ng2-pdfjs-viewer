@@ -25,9 +25,8 @@
     "shx": "^0.3.4"
   },
   "peerDependencies": {
-    "@angular/common": "^20.0.0",
-    "@angular/core": "^20.0.0",
-    "ng-packagr": "^20.0.0"
+    "@angular/common": "^10.0.0",
+    "@angular/core": "^10.0.0"
   },
   "$schema": "./node_modules/ng-packagr/package.schema.json",
   "bugs": {
@@ -46,6 +45,7 @@
     "angular-component",
     "angular-pdf",
     "ng2-pdf",
+    "angular 2 - 20",
     "angular 20",
     "angular-library",
     "typescript",

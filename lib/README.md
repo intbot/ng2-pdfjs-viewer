@@ -195,9 +195,20 @@ Add PDF.js assets to your `angular.json`:
 
 ### Prerequisites
 
-- Angular 20.0+ (supports Angular 2.0+)
-- Node.js 18.0+
-- TypeScript 5.0+
+- **Angular**: 20.0+ (recommended) | 2.0+ (supported)
+- **Node.js**: 18.0+
+- **TypeScript**: 5.0+
+
+### Angular Version Support
+
+| Angular Version | Support Level | Notes |
+|----------------|---------------|-------|
+| **20.0+** | ✅ **Recommended** | Fully tested and optimized |
+| **15.0 - 19.x** | ✅ **Supported** | Should work with minor testing |
+| **10.0 - 14.x** | ✅ **Supported** | Compatible with testing |
+| **2.0 - 9.x** | ⚠️ **Legacy** | May require additional testing |
+
+**Note**: While the library supports Angular 2.0+, it's primarily tested and optimized for Angular 20+. For production use with older versions, thorough testing is recommended. The library uses relaxed peer dependencies (Angular >=10.0.0) to ensure compatibility across different Angular versions.
 
 ### Install Package
 
