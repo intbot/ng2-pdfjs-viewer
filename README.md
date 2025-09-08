@@ -86,7 +86,7 @@ Whether you need a simple embedded PDF viewer or a complex document management s
 - [API Reference](#-api-reference)
 - [Examples](#-examples)
 - [Migration Guide](#-migration-guide)
-- [Deprecated Features](#deprecated-features)
+- [Deprecated Features](#-deprecated-features)
 - [Contributing](#-contributing)
 - [License](#-license)
 
@@ -589,9 +589,30 @@ export class PdfController {
    <ng2-pdfjs-viewer [customErrorTpl]="errorTemplate"></ng2-pdfjs-viewer>
    ```
 
+4. **Update Spinner Handling**
+
+   ```html
+   <!-- Old way -->
+   [spinnerHtml]="'<div class=\"spinner\">Loading...</div>'"
+
+   <!-- New way -->
+   <ng-template #spinnerTemplate>
+     <div class="spinner">Loading...</div>
+   </ng-template>
+   <ng2-pdfjs-viewer [customSpinnerTpl]="spinnerTemplate"></ng2-pdfjs-viewer>
+   ```
+
+   ```typescript
+   // Old way
+   this.pdfViewer.setSpinnerHtml('<div>Loading...</div>');
+
+   // New way
+   // Use [customSpinnerTpl] with ng-template
+   ```
+
 ---
 
-## ⚠️ Deprecated Features
+## 🗑️ Deprecated Features
 
 The following features are deprecated and will be removed in future versions:
 
