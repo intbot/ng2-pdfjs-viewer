@@ -215,3 +215,9 @@ This section documents the upgrade-safe, event-driven customization plan we adop
 3. Readiness-based dispatch via universal action dispatcher
 4. Zero modifications to PDF.js core files
 5. Backward compatible Angular surface (inputs/outputs only)
+
+# Next steps
+- [ ] Update Github tags.
+- [ ] Add release version in Github
+- [ ] Update npm tags
+- [ ] Upgrade PDF.js
