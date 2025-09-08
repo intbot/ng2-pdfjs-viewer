@@ -10,7 +10,7 @@ The most reliable, feature-rich Angular PDF viewer component powered by Mozilla'
 [![NPM Downloads](https://img.shields.io/npm/dm/ng2-pdfjs-viewer?label=downloads%2Fmonth&color=orange)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
 [![Total Downloads](https://img.shields.io/badge/total%20downloads-7M+-brightgreen?logo=npm)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
 [![Since 2018](https://img.shields.io/badge/since-2018-blue?logo=calendar)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![License](https://img.shields.io/badge/license-Apache%202.0%20%2B%20Commons%20Clause-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![GitHub Stars](https://img.shields.io/github/stars/intbot/ng2-pdfjs-viewer?logo=github)](https://github.com/intbot/ng2-pdfjs-viewer)
 [![GitHub Issues](https://img.shields.io/github/issues/intbot/ng2-pdfjs-viewer?logo=github)](https://github.com/intbot/ng2-pdfjs-viewer/issues)
 
@@ -18,7 +18,7 @@ The most reliable, feature-rich Angular PDF viewer component powered by Mozilla'
 
 <div align="center">
 
-[**Live Demo**](https://ng2-pdfjs-viewer.azurewebsites.net) • [**Documentation**](#documentation) • [**Examples**](#examples) • [**API Reference**](#api-reference) • [**Migration Guide**](#migration-guide)
+[**Live Demo**](https://ng2-pdfjs-viewer.azurewebsites.net) • [**API Reference**](#-api-reference) • [**Examples**](#-examples) • [**Migration Guide**](#-migration-guide)
 
 </div>
 
@@ -694,5 +694,3 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 [![Angular](https://img.shields.io/badge/Angular-Component-green?logo=angular)](https://angular.dev/overview)
 
 </div>
-
-A SIMPLE test 6 - re-enabling sync
