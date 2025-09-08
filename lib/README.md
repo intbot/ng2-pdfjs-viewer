@@ -43,7 +43,7 @@ Whether you need a simple embedded PDF viewer or a complex document management s
 - **📈 Proven Track Record** - 8+ years of continuous development and community support
 - **🔒 Security Focused** - Regular security updates and vulnerability patches
 
-### 🆕 Latest Features (v25.0.0)
+### 🆕 Latest Features (v25.x)
 
 | Feature                       | Description                                                        | Status |
 | ----------------------------- | ------------------------------------------------------------------ | ------ |
@@ -549,7 +549,7 @@ export class PdfController {
 
 ## 🔄 Migration Guide
 
-### From v20.x to v25.0.0
+### From v20.x to v25.x
 
 #### Breaking Changes
 
