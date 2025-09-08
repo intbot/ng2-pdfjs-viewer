@@ -627,6 +627,12 @@ this.pdfViewer.setErrorHtml("<div>Error</div>");
 
 ---
 
+## 📚 Additional Resources
+
+- **[Custom CSS Examples](Custom-CSS-Examples.md)** - Complete styling guide with theme customization examples
+- **[Error Display Examples](Error-Display-Examples.md)** - Custom error template examples and styling options
+- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the project
+
 ## 🤝 Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.

@@ -1,1 +1,0 @@
-- [ ] We have to publish like npm (tgz file?) and then use it in the sample app. How can we do this parallely without affecting the local testing config?  May be a duplicate package.json which take a tgz file? 
