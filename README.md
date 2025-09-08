@@ -82,11 +82,11 @@ Whether you need a simple embedded PDF viewer or a complex document management s
 - [Features](#-features)
 - [Installation](#-installation)
 - [Basic Usage](#-basic-usage)
-- [Advanced Configuration](#-advanced-configuration)
+- [Advanced Configuration](#advanced-configuration)
 - [API Reference](#-api-reference)
 - [Examples](#-examples)
 - [Migration Guide](#-migration-guide)
-- [Deprecated Features](#-deprecated-features)
+- [Deprecated Features](#deprecated-features)
 - [Contributing](#-contributing)
 - [License](#-license)
 
@@ -288,7 +288,7 @@ export class MyComponent {
 
 ---
 
-## ⚙️ Advanced Configuration
+## Advanced Configuration
 
 ### Theme Customization
 
@@ -612,7 +612,7 @@ export class PdfController {
 
 ---
 
-## 🗑️ Deprecated Features
+## Deprecated Features
 
 The following features are deprecated and will be removed in future versions:
 
