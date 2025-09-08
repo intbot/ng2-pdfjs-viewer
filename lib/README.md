@@ -79,17 +79,17 @@ Whether you need a simple embedded PDF viewer or a complex document management s
 
 ## 📋 Table of Contents
 
-- [Quick Start](#quick-start)
-- [Features](#features)
-- [Installation](#installation)
-- [Basic Usage](#basic-usage)
-- [Advanced Configuration](#advanced-configuration)
-- [API Reference](#api-reference)
-- [Examples](#examples)
-- [Migration Guide](#migration-guide)
-- [Deprecated Features](#deprecated-features)
-- [Contributing](#contributing)
-- [License](#license)
+- [Quick Start](#-quick-start)
+- [Features](#-features)
+- [Installation](#-installation)
+- [Basic Usage](#-basic-usage)
+- [Advanced Configuration](#-advanced-configuration)
+- [API Reference](#-api-reference)
+- [Examples](#-examples)
+- [Migration Guide](#-migration-guide)
+- [Deprecated Features](#-deprecated-features)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
