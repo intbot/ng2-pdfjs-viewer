@@ -712,7 +712,7 @@ This project is licensed under the **Apache License 2.0 + Commons Clause License
 
 <div align="center">
 
-**Made with ❤️ by the ng2-pdfjs-viewer team**
+**Made with ❤️ by [Aneesh](http://github.com/codehippie1)**
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/intbot/ng2-pdfjs-viewer)
 [![NPM](https://img.shields.io/badge/NPM-Package-red?logo=npm)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
