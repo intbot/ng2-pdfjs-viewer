@@ -1,1 +1,1 @@
-C:/Code/ng2-pdfjs-viewer-v4/lib/README.MD
+lib/README.md
