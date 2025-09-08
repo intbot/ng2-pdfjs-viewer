@@ -695,4 +695,4 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 </div>
 
-A SIMPLE test 5
+A SIMPLE test 6 - re-enabling sync
