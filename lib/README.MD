@@ -24,7 +24,7 @@ The most reliable, feature-rich Angular PDF viewer component powered by Mozilla'
 
 ---
 
-ng2-pdfjs-viewer is the most comprehensive and feature-rich Angular PDF viewer component available. **Born in 2018 and still going strong**, this battle-tested library has been trusted by developers worldwide for over 6 years, powering thousands of applications with over 7 million downloads.
+ng2-pdfjs-viewer is the most comprehensive and feature-rich Angular PDF viewer component available. **Born in 2018** and still going strong with over **7+ million downloads**, this battle-tested library has been trusted by developers worldwide for **over 8 years**, powering thousands of applications.
 
 This powerful library enables developers to seamlessly integrate PDF viewing capabilities into Angular applications with enterprise-grade features, custom theming, and mobile-first responsive design. Built on Mozilla's PDF.js v5.3.93, ng2-pdfjs-viewer provides advanced PDF rendering, document navigation, search functionality, and extensive customization options.
 
@@ -40,7 +40,7 @@ Whether you need a simple embedded PDF viewer or a complex document management s
 - **⚡ High Performance** - Event-driven architecture with efficient memory management and lazy loading
 - **🌍 Global Support** - Multi-language support with automatic locale detection and RTL compatibility
 - **🛡️ Production Tested** - Trusted by thousands of applications with millions of downloads
-- **📈 Proven Track Record** - 6+ years of continuous development and community support
+- **📈 Proven Track Record** - 8+ years of continuous development and community support
 - **🔒 Security Focused** - Regular security updates and vulnerability patches
 
 ### 🆕 Latest Features (v20.4.0)
@@ -137,7 +137,7 @@ Add PDF.js assets to your `angular.json`:
       "architect": {
         "build": {
           "options": {
-"assets": [
+            "assets": [
               {
                 "glob": "**/*",
                 "input": "node_modules/ng2-pdfjs-viewer/pdfjs",
@@ -504,7 +504,7 @@ export class MyComponent {
   <div class="loading">
     <mat-spinner></mat-spinner>
     <p>Loading your document...</p>
-</div>
+  </div>
 </ng-template>
 
 <ng-template #errorTemplate>
@@ -513,7 +513,7 @@ export class MyComponent {
     <h3>Oops! Something went wrong</h3>
     <p>We couldn't load your PDF. Please try again.</p>
     <button mat-button (click)="retry()">Retry</button>
-</div>
+  </div>
 </ng-template>
 
 <ng2-pdfjs-viewer
@@ -521,7 +521,7 @@ export class MyComponent {
   [customSpinnerTpl]="loadingTemplate"
   [customErrorTpl]="errorTemplate"
 >
-  </ng2-pdfjs-viewer>
+</ng2-pdfjs-viewer>
 ```
 
 ### 4. Programmatic Control

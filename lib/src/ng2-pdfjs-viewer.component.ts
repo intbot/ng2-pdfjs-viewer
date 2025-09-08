@@ -299,7 +299,7 @@ export class PdfJsViewerComponent
   public goBack(): void {
     if (window.history.length > 1) {
       window.history.back();
-    } else {
+      } else {
       window.close();
     }
   }
@@ -622,7 +622,7 @@ export class PdfJsViewerComponent
   public get page() {
     if (this.PDFViewerApplication && this.PDFViewerApplication.initialized) {
       return this.PDFViewerApplication.page;
-    } else {
+      } else {
       if (this.diagnosticLogs) {
         console.warn(
           "Document is not loaded yet!!!. Try to retrieve page# after full load.",
@@ -678,24 +678,24 @@ export class PdfJsViewerComponent
   // #endregion
 
   // #region Lifecycle Methods
-  ngOnInit(): void {
+  ngOnInit(): void {   
     // 🟢 TEST LOG - Build verification (BUILD_ID from separate file)
     console.log(
       "🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:",
       (window as any).NG2_PDF_VIEWER_BUILD_ID || "BUILD_ID_NOT_LOADED",
     );
-
+    
     // Configure action queue manager with diagnostic logs
     this.actionQueueManager = new ActionQueueManager(this.diagnosticLogs);
-
+    
     // Connect action queue manager to PostMessage system
     this.actionQueueManager.setPostMessageExecutor((action, payload) =>
       this.sendControlMessage(action, payload),
     );
-
+    
     // Set up PostMessage listener
     this.setupMessageListener();
-
+    
     // Load PDF for embedded views.
     if (!this.externalWindow) {
       this.loadPdf();
@@ -730,7 +730,7 @@ export class PdfJsViewerComponent
     ComponentUtils.cleanupEventHandlers(this);
 
     // Reset state flags
-    this.initialConfigQueued = false;
+          this.initialConfigQueued = false;
 
     // Clean up URL
     this.relaseUrl?.();
@@ -745,7 +745,7 @@ export class PdfJsViewerComponent
   private sendControlMessage(action: string, payload: any): Promise<any> {
     return new Promise((resolve, reject) => {
       const messageId = this.generateMessageId();
-
+      
       const message: ControlMessage = {
         type: "control-update",
         action,
@@ -774,7 +774,7 @@ export class PdfJsViewerComponent
     const pendingMessage = this.pendingMessages.get(response.id);
     if (pendingMessage) {
       this.pendingMessages.delete(response.id);
-
+      
       if (response.success) {
         pendingMessage.resolve(response);
       } else {
@@ -790,7 +790,7 @@ export class PdfJsViewerComponent
         this.handleControlResponse(event.data);
         return;
       }
-
+      
       // Handle PostMessage API ready notification
       if (event.data && event.data.type === "postmessage-ready") {
         this.isPostMessageReady = true;
@@ -802,18 +802,18 @@ export class PdfJsViewerComponent
           this.actionQueueManager.updateReadiness(this.postMessageReadiness);
           this.actionQueueManager.processQueuedActions();
         }
-
+        
         // Queue all initial configurations now that PostMessage API is ready (only once)
         if (!this.initialConfigQueued) {
           this.queueAllConfigurations();
           this.initialConfigQueued = true;
         }
-
+        
         // Apply any pending changes that occurred before PostMessage API was ready
         this.applyPendingChanges();
         return;
       }
-
+      
       // Handle state change notifications from PostMessage wrapper
       if (event.data && event.data.type === "state-change") {
         this.handleStateChangeNotification(event.data);
@@ -830,7 +830,7 @@ export class PdfJsViewerComponent
 
   private handleStateChangeNotification(notification: any): void {
     const { property, value, source } = notification;
-
+    
     // Internal loading overlay control is system-driven and must be handled unconditionally
     if (property === "loading") {
       this.isLoading = !!value;
@@ -858,7 +858,7 @@ export class PdfJsViewerComponent
       !this.changeOriginTracker.isProgrammatic(property)
     ) {
       this.changeOriginTracker.markUserInitiated(property);
-
+      
       switch (property) {
         case "cursor":
           if (this._cursor !== value) {
@@ -867,7 +867,7 @@ export class PdfJsViewerComponent
             this.cursorChange.emit(this._cursor);
           }
           break;
-
+          
         case "scroll":
           if (this._scroll !== value) {
             this._scroll =
@@ -875,7 +875,7 @@ export class PdfJsViewerComponent
             this.scrollChange.emit(this._scroll);
           }
           break;
-
+          
         case "spread":
           if (this._spread !== value) {
             this._spread =
@@ -883,7 +883,7 @@ export class PdfJsViewerComponent
             this.spreadChange.emit(this._spread);
           }
           break;
-
+          
         case "pageMode":
           if (this._pageMode !== value) {
             this._pageMode =
@@ -891,23 +891,23 @@ export class PdfJsViewerComponent
             this.pageModeChange.emit(this._pageMode);
           }
           break;
-
+          
         case "zoom":
           if (this._zoom !== value) {
             this._zoom = PropertyTransformers.transformZoom.fromViewer(value);
             this.zoomChange.emit(this._zoom);
           }
           break;
-
+          
         case "rotation":
           if (this._rotation !== value) {
             this._rotation =
               PropertyTransformers.transformRotation.fromViewer(value);
           }
           break;
-
+          
         // Note: namedDest is now a simple input property, not a two-way binding
-
+          
         default:
           if (this.diagnosticLogs) {
             console.log(
@@ -976,7 +976,7 @@ export class PdfJsViewerComponent
         break;
 
       default:
-        if (this.diagnosticLogs) {
+    if (this.diagnosticLogs) {
           console.log(
             `🔍 PdfJsViewer: Unknown event notification: ${eventName}`,
           );
@@ -1037,7 +1037,7 @@ export class PdfJsViewerComponent
     if (!this.isPostMessageReady) {
       return;
     }
-
+    
     if (this.pendingChanges.length > 0) {
       this.pendingChanges.forEach((changes, index) => {
         this.processChangesForQueuing(changes);
@@ -1050,7 +1050,7 @@ export class PdfJsViewerComponent
   private processChangesForQueuing(changes: SimpleChanges): void {
     Object.keys(changes).forEach((propertyName) => {
       const change = changes[propertyName];
-
+      
       if (change.currentValue !== change.previousValue) {
         // Handle auto-actions - queue for document load, don't execute immediately
         const autoActions = [
@@ -1069,7 +1069,7 @@ export class PdfJsViewerComponent
           }
           return;
         }
-
+        
         // Use universal dispatcher for ALL actions - pure event-driven approach
         const action = this.mapPropertyToAction(propertyName);
         if (action) {
@@ -1125,22 +1125,22 @@ export class PdfJsViewerComponent
       this.PDFViewerApplication.initializedPromise.then(() => {
         // All configurations are now handled via PostMessage system
         // No need to call configureVisibleFeatures() anymore
-
+        
         // Apply any pending changes that occurred before initialization
         this.applyPendingChanges();
 
         const app = this.PDFViewerApplication;
         const eventBus = app.eventBus;
-
+        
         // Store event handler references for cleanup
         const documentLoadedHandler = () => {
           if (this.diagnosticLogs)
             console.debug("PdfJsViewer: The document has now been loaded!");
           this.onDocumentLoad.emit();
-
+          
           // Queue auto-actions for this document load (not from component initialization)
           this.queueAutoActionsForDocumentLoad();
-
+          
           // Execute all queued auto-actions
           this.actionQueueManager.onDocumentLoaded();
         };
@@ -1175,7 +1175,7 @@ export class PdfJsViewerComponent
               "PdfJsViewer: The page has changed:",
               event.pageNumber,
             );
-
+          
           // Update two-way binding for page
           if (
             this._page !== event.pageNumber &&
@@ -1185,7 +1185,7 @@ export class PdfJsViewerComponent
             this._page = event.pageNumber;
             // Note: page property uses existing setter/getter, no need to emit pageChange here
           }
-
+          
           this.onPageChange.emit(event.pageNumber);
         };
 
@@ -1196,7 +1196,7 @@ export class PdfJsViewerComponent
           };
           if (this.diagnosticLogs)
             console.debug("PdfJsViewer: The rotation has changed!", event);
-
+          
           // Update two-way binding for rotation
           const normalizedRotation =
             PropertyTransformers.transformRotation.fromViewer(
@@ -1209,7 +1209,7 @@ export class PdfJsViewerComponent
             this.changeOriginTracker.markUserInitiated("rotation");
             this._rotation = normalizedRotation;
           }
-
+          
           this.onRotationChange.emit(newRotation);
         };
 
@@ -1220,7 +1220,7 @@ export class PdfJsViewerComponent
               "PdfJsViewer: The document has scale has changed!",
               newScale,
             );
-
+          
           // Update two-way binding for zoom
           const normalizedZoom = PropertyTransformers.transformZoom.fromViewer(
             event.scale,
@@ -1233,10 +1233,10 @@ export class PdfJsViewerComponent
             this._zoom = normalizedZoom;
             this.zoomChange.emit(normalizedZoom);
           }
-
+          
           this.onScaleChange.emit(newScale);
         };
-
+        
         // Store handlers for cleanup
         (this as any)._pdfEventHandlers = {
           documentloaded: documentLoadedHandler,
@@ -1247,7 +1247,7 @@ export class PdfJsViewerComponent
           rotationchanging: rotationChangingHandler,
           scalechanging: scaleChangingHandler,
         };
-
+        
         // Attach event listeners
         eventBus.on("documentloaded", documentLoadedHandler);
         eventBus.on("pagesloaded", pagesLoadedHandler);
@@ -1258,10 +1258,10 @@ export class PdfJsViewerComponent
         eventBus.on("scalechanging", scaleChangingHandler);
       });
     };
-
+    
     // Store the handler reference for cleanup
     (this as any)._webviewerLoadedHandler = webviewerLoadedHandler;
-
+    
     document.addEventListener("webviewerloaded", webviewerLoadedHandler);
   }
   // #endregion
@@ -1572,18 +1572,18 @@ export class PdfJsViewerComponent
 
     // Clean up existing event listeners
     ComponentUtils.cleanupEventHandlers(this);
-
+    
     // Clear the action queue to ensure clean state
     if (this.actionQueueManager) {
       this.actionQueueManager.clearQueues();
     }
-
+    
     // Reset PostMessage readiness state
     this.isPostMessageReady = false;
     this.postMessageReadiness = 0;
-    this.pendingInitialConfig = true;
+      this.pendingInitialConfig = true;
     this.initialConfigQueued = false; // Reset initial config flag
-
+    
     // Reload the PDF - this will trigger queueAllConfigurations() when PostMessage API is ready
     this.loadPdf();
   }
@@ -1713,7 +1713,7 @@ export class PdfJsViewerComponent
   }
 
   private renderLoadingSpinner(): void {
-    this.viewerTab.document.write(`
+        this.viewerTab.document.write(`
           <style>
           .loader {
             position: fixed;
@@ -1737,7 +1737,7 @@ export class PdfJsViewerComponent
           </style>
           <div class="loader"></div>
         `);
-  }
+    }
 
   private createFileUrl(): string {
     this.relaseUrl?.();
@@ -1806,14 +1806,14 @@ export class PdfJsViewerComponent
     } else {
       this.iframe.nativeElement.contentWindow.location.replace(viewerUrl);
     }
-
+    
     if (this.diagnosticLogs) {
       this.logViewerConfiguration(viewerUrl);
     }
   }
 
   private logViewerConfiguration(viewerUrl: string): void {
-    console.debug(`PdfJsViewer: Minimal URL configuration:
+      console.debug(`PdfJsViewer: Minimal URL configuration:
         pdfSrc = ${this.pdfSrc}
         externalWindow = ${this.externalWindow}
         viewerFolder = ${this.viewerFolder}
@@ -1845,7 +1845,7 @@ export class PdfJsViewerComponent
         printOnLoad = ${this.printOnLoad}
         showLastPageOnLoad = ${this.showLastPageOnLoad}
       `);
-  }
+      }
   // #endregion
 
   // #region Two-Way Binding Helper Methods
@@ -1890,9 +1890,9 @@ export class PdfJsViewerComponent
       | "user-interaction" = "property-change",
   ): Promise<ActionExecutionResult> {
     const requiredReadiness = this.getRequiredReadinessLevel(action);
-    const actionObj: ViewerAction = {
+      const actionObj: ViewerAction = {
       id: `${source}-${action}-${Date.now()}`,
-      action: action,
+        action: action,
       payload: payload,
     };
 

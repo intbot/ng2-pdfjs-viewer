@@ -41,7 +41,7 @@
     "viewerjs",
     "viewer.html"
   ],
-  "license": "Apache",
+  "license": "Apache-2.0 + Commons Clause",
   "scripts": {
     "clean": "shx rm -rf ./dist",
     "update-build-id": "node update-build-id.js",
