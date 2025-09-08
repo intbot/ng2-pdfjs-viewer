@@ -1,0 +1,14 @@
+name: Sync README
+on: [push]
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sync README
+        run: cp lib/README.md README.md
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Sync root README with lib/README"
+          commit_user_name: "GitHub Actions"
+          commit_user_email: "actions@github.com"
