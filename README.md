@@ -636,11 +636,17 @@ The following features are deprecated and will be removed in future versions:
 ### Migration Help
 
 ```typescript
-// Deprecated
+// Deprecated - Error Handling
 this.pdfViewer.setErrorHtml("<div>Error</div>");
 
-// New way
+// New way - Error Handling
 // Use [customErrorTpl] with ng-template
+
+// Deprecated - Spinner Handling
+this.pdfViewer.setSpinnerHtml("<div>Loading...</div>");
+
+// New way - Spinner Handling
+// Use [customSpinnerTpl] with ng-template
 ```
 
 ---
