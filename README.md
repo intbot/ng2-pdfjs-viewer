@@ -43,7 +43,7 @@ Whether you need a simple embedded PDF viewer or a complex document management s
 - **📈 Proven Track Record** - 8+ years of continuous development and community support
 - **🔒 Security Focused** - Regular security updates and vulnerability patches
 
-### 🆕 Latest Features (v20.4.0)
+### 🆕 Latest Features (v25.0.0)
 
 | Feature                       | Description                                                        | Status |
 | ----------------------------- | ------------------------------------------------------------------ | ------ |
@@ -549,7 +549,7 @@ export class PdfController {
 
 ## 🔄 Migration Guide
 
-### From v19.x to v20.4.0
+### From v20.x to v25.0.0
 
 #### Breaking Changes
 
@@ -569,21 +569,19 @@ export class PdfController {
 
    ```typescript
    // Old way
-   [customCSS] =
-     // New way
-     "'body { background: red; }'"[theme] =
-     "'light'"[primaryColor] =
-     "'#ff0000'"[backgroundColor] =
-       "'#ffffff'";
+   [customCSS]="'body { background: red; }'"
+   
+   // New way
+   [theme]="'light'"
+   [primaryColor]="'#ff0000'"
+   [backgroundColor]="'#ffffff'"
    ```
 
 3. **Update Error Handling**
 
    ```html
    <!-- Old way -->
-   [errorHtml]="'
-   <div>Custom error</div>
-   '"
+   [errorHtml]="'<div>Custom error</div>'"
 
    <!-- New way -->
    <ng-template #errorTemplate>
@@ -646,11 +644,12 @@ git clone https://github.com/intbot/ng2-pdfjs-viewer.git
 # Install dependencies
 npm install
 
-# Run the sample app
-npm run start
+# Clear Angular cache (Windows)
+Remove-Item -Recurse -Force "SampleApp\.angular"
 
-# Build the library
-npm run build
+
+# Build and test - All at once (Windows)
+@test.bat
 ```
 
 ### Reporting Issues
@@ -663,7 +662,7 @@ npm run build
 
 ## 📄 License
 
-This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **Apache License 2.0 + Commons Clause License Condition v1.0** - see the [LICENSE](LICENSE) file for details.
 
 ---
 
