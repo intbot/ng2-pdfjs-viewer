@@ -3,7 +3,7 @@
 The most reliable, feature-rich Angular PDF viewer component powered by Mozilla's PDF.js
 
 <div align="center">
-<img src="logo.svg" alt="ng2-pdfjs-viewer Logo" width="120" height="140" />
+<img src="https://raw.githubusercontent.com/intbot/ng2-pdfjs-viewer/master/lib/logo.svg" alt="ng2-pdfjs-viewer Logo" width="120" height="140" />
 </div>
 
 <div align="center">
