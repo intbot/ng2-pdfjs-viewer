@@ -79,13 +79,12 @@ export default function Home(): JSX.Element {
                     powering thousands of applications.
                   </p>
                   <div className={styles.showcaseImage}>
-                    {/* Placeholder for screenshot */}
                     <img 
-                      src="/img/viewer-screenshot.png" 
-                      alt="ng2-pdfjs-viewer Screenshot" 
-                      style={{maxWidth: '100%', height: 'auto', border: '1px solid #ccc', borderRadius: '8px'}}
+                      src="/img/ng2-pdfjs-viewer-screenshot.jpg" 
+                      alt="ng2-pdfjs-viewer in action - showing PDF viewer with sidebar, toolbar, and event feed" 
+                      style={{maxWidth: '100%', height: 'auto', border: '1px solid #ccc', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)'}}
                     />
-                    <p><em>Screenshot placeholder - Replace with actual viewer screenshot</em></p>
+                    <p><em>Live example showing ng2-pdfjs-viewer with full functionality including sidebar navigation, toolbar controls, and real-time event feed</em></p>
                   </div>
                 </div>
               </div>

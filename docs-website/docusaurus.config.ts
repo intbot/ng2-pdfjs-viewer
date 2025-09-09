@@ -158,7 +158,7 @@ const config: Config = {
       additionalLanguages: ['typescript', 'javascript', 'bash', 'json'],
     },
     metadata: [
-      {name: 'keywords', content: 'angular, pdf, viewer, pdfjs, pdf.js, typescript, component, library'},
+      { name: 'keywords', content: 'angular, angular-pdf-viewer, pdf-viewer, pdf-reader, PDF, PDF Viewer, pdfjs, pdf.js, viewer, viewerjs, ng2, angular-component, angular-pdf, ng2-pdf, angular 2 - 20, angular 20, angular-library, typescript, javascript,  pdf-rendering, pdf-annotations, pdf-zoom, pdf-printing, responsive-ui, custom PDF Viewer, accessibility, open-source, component, library'},
       {name: 'description', content: 'The most comprehensive Angular PDF viewer powered by Mozilla PDF.js. 7M+ downloads, mobile-first, production-ready.'},
       {property: 'og:image', content: 'img/ng2-pdfjs-viewer-social.jpg'},
       {property: 'og:description', content: 'The most comprehensive Angular PDF viewer powered by Mozilla PDF.js'},
