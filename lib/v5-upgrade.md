@@ -217,5 +217,6 @@ This section documents the upgrade-safe, event-driven customization plan we adop
 5. Backward compatible Angular surface (inputs/outputs only)
 
 # Next steps
+- [ ] A lot of console logs. Turn them all off using "switch"
 - [ ] Docusaurus documentation - Add social images, Review Config, Add algolia search
 - [ ] Upgrade PDF.js to latest version
