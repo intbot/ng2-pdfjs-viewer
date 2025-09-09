@@ -540,7 +540,51 @@ export class MyComponent {
   </ng2-pdfjs-viewer>
 ```
 
-### 4. Programmatic Control
+### 4. Convenience Setters (Object-Based Configuration)
+
+```typescript
+export class PdfController {
+  // Group visibility configuration
+  groupVisibility = {
+    "download": true,
+    "print": true,
+    "find": true,
+    "fullScreen": true,
+    "openFile": true,
+    "viewBookmark": true,
+    "annotations": false
+  };
+
+  // Auto actions configuration
+  autoActions = {
+    "downloadOnLoad": false,
+    "printOnLoad": false
+  };
+
+  // Control visibility configuration
+  controlVisibility = {
+    "showToolbarLeft": true,
+    "showToolbarMiddle": true,
+    "showToolbarRight": true,
+    "showSecondaryToolbarToggle": true,
+    "showSidebar": true,
+    "showSidebarLeft": true,
+    "showSidebarRight": true
+  };
+}
+```
+
+```html
+<ng2-pdfjs-viewer
+  pdfSrc="assets/sample.pdf"
+  [groupVisibility]="groupVisibility"
+  [autoActions]="autoActions"
+  [controlVisibility]="controlVisibility"
+>
+</ng2-pdfjs-viewer>
+```
+
+### 5. Programmatic Control
 
 ```typescript
 export class PdfController {
