@@ -25,8 +25,8 @@
     "shx": "^0.3.4"
   },
   "peerDependencies": {
-    "@angular/common": "^10.0.0",
-    "@angular/core": "^10.0.0"
+    "@angular/common": ">=10.0.0",
+    "@angular/core": ">=10.0.0"
   },
   "$schema": "./node_modules/ng-packagr/package.schema.json",
   "bugs": {
