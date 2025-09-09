@@ -17,7 +17,7 @@ The most reliable, feature-rich Angular PDF viewer component powered by Mozilla'
 
 <div align="center">
 
-[**Live Demo**](https://ng2-pdfjs-viewer.azurewebsites.net) • [**API Reference**](#-api-reference) • [**Examples**](#-examples) • [**Migration Guide**](#-migration-guide)
+[**Live Demo**](https://angular-pdf-viewer-demo.vercel.app/) • [**API Reference**](#-api-reference) • [**Examples**](#-examples) • [**Server Examples**](../Server-Side-Examples.md) • [**Migration Guide**](#-migration-guide)
 
 </div>
 
@@ -93,6 +93,9 @@ Whether you need a simple embedded PDF viewer or a complex document management s
 ---
 
 ## 🚀 Quick Start
+
+> **🎯 Live Demo**: [https://angular-pdf-viewer-demo.vercel.app/](https://angular-pdf-viewer-demo.vercel.app/)  
+> **📁 Source Code**: [https://github.com/intbot/ng2-pdfjs-viewer/tree/main/SampleApp](https://github.com/intbot/ng2-pdfjs-viewer/tree/main/SampleApp)
 
 ### 1. Install the Package
 
@@ -488,6 +491,9 @@ export class MyComponent {
 
 ## 🎨 Examples
 
+> **🎯 Live Demo**: [https://angular-pdf-viewer-demo.vercel.app/](https://angular-pdf-viewer-demo.vercel.app/)  
+> **📁 Source Code**: [https://github.com/intbot/ng2-pdfjs-viewer/tree/main/SampleApp](https://github.com/intbot/ng2-pdfjs-viewer/tree/main/SampleApp)
+
 ### 1. Basic PDF Viewer
 
 ```html
@@ -554,6 +560,20 @@ export class PdfController {
   }
 }
 ```
+
+### 6. Server-Side Integration
+
+For server-side developers, we provide comprehensive examples for integrating PDF APIs with ng2-pdfjs-viewer:
+
+**[📋 Server-Side Examples](../Server-Side-Examples.md)** - Complete examples for:
+- **ASP.NET Core (C#)** - RDLC reports, physical files, iTextSharp
+- **Node.js (Express)** - File serving, PDFKit, Puppeteer
+- **Python (FastAPI)** - ReportLab, WeasyPrint, file handling
+- **Java (Spring Boot)** - iText, JasperReports, file serving
+- **PHP (Laravel)** - TCPDF, DomPDF, file management
+- **Go (Gin)** - gofpdf, file serving, PDF generation
+
+Each example includes proper Content-Type headers, error handling, CORS configuration, and Angular integration patterns.
 
 ---
 
@@ -678,8 +698,6 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 # Clone the repository
 git clone https://github.com/intbot/ng2-pdfjs-viewer.git
 
-# Install dependencies
-npm install
 
 # Clear Angular cache (Windows)
 Remove-Item -Recurse -Force "SampleApp\.angular"
@@ -689,11 +707,6 @@ Remove-Item -Recurse -Force "SampleApp\.angular"
 @test.bat
 ```
 
-### Reporting Issues
-
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/intbot/ng2-pdfjs-viewer/issues)
-- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/intbot/ng2-pdfjs-viewer/discussions)
-- 📚 **Documentation**: [GitHub Wiki](https://github.com/intbot/ng2-pdfjs-viewer/wiki)
 
 ---
 
@@ -705,10 +718,11 @@ This project is licensed under the **Apache License 2.0 + Commons Clause License
 
 ## 🙏 Acknowledgments
 
-- **Mozilla PDF.js Team** - For the amazing PDF.js library
-- **Angular Team** - For the excellent framework
+
+
 - **Community Contributors** - For bug reports, feature requests, and contributions
 - **7+ Million Users** - For trusting us with your PDF viewing needs
+- **Mozilla PDF.js Team** - For the amazing PDF.js library
 
 ---
 
@@ -718,12 +732,12 @@ This project is licensed under the **Apache License 2.0 + Commons Clause License
 - 💬 **Community**: [GitHub Discussions](https://github.com/intbot/ng2-pdfjs-viewer/discussions)
 - 🐛 **Issues**: [GitHub Issues](https://github.com/intbot/ng2-pdfjs-viewer/issues)
 - 📧 **Email**: codehippie1@gmail.com
+- 📧 **Author**: [Aneesh Gopalakrishnan](http://github.com/codehippie1)
 
 ---
 
 <div align="center">
 
-**Made with ❤️ by [Aneesh](http://github.com/codehippie1)**
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/intbot/ng2-pdfjs-viewer)
 [![NPM](https://img.shields.io/badge/NPM-Package-red?logo=npm)](https://www.npmjs.com/package/ng2-pdfjs-viewer)

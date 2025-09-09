@@ -217,7 +217,5 @@ This section documents the upgrade-safe, event-driven customization plan we adop
 5. Backward compatible Angular surface (inputs/outputs only)
 
 # Next steps
-- [ ] Update Github tags.
-- [ ] Add release version in Github
-- [ ] Update npm tags
-- [ ] Upgrade PDF.js
+- [ ] Docusaurus documentation.
+- [ ] Upgrade PDF.js to latest version
