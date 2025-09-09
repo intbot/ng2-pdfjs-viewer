@@ -15,6 +15,10 @@ export class ActionQueueManager {
     this.diagnosticLogs = diagnosticLogs;
   }
 
+  setDiagnosticLogs(enabled: boolean): void {
+    this.diagnosticLogs = enabled;
+  }
+
   setPostMessageReady(ready: boolean, readiness: number = 0): void {
     this.isPostMessageReady = ready;
     this.postMessageReadiness = readiness;

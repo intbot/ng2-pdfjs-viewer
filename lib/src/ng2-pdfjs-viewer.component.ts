@@ -203,7 +203,21 @@ export class PdfJsViewerComponent
   @Input() public downloadFileName: string;
   @Input() public locale: string;
   @Input() public useOnlyCssZoom: boolean = false;
-  @Input() public diagnosticLogs: boolean = false;
+  @Input() public set diagnosticLogs(value: boolean) {
+    this._diagnosticLogs = value;
+    // Update action queue manager
+    if (this.actionQueueManager) {
+      this.actionQueueManager.setDiagnosticLogs(value);
+    }
+    // Send to wrapper
+    this.dispatchAction("set-diagnostic-logs", value, "property-change");
+  }
+  
+  public get diagnosticLogs(): boolean {
+    return this._diagnosticLogs;
+  }
+  
+  private _diagnosticLogs: boolean = false;
   // #endregion
 
   // #region Control Visibility Properties
@@ -399,9 +413,11 @@ export class PdfJsViewerComponent
     newProperty: string,
     value: any,
   ): void {
-    console.warn(
-      `⚠️ DEPRECATED: Property "${oldName}" is deprecated. Use "${newProperty}" instead.`,
-    );
+    if (this.diagnosticLogs) {
+      console.warn(
+        `⚠️ DEPRECATED: Property "${oldName}" is deprecated. Use "${newProperty}" instead.`,
+      );
+    }
     (this as any)[newProperty] = value;
   }
   // #endregion
@@ -680,18 +696,23 @@ export class PdfJsViewerComponent
   // #region Lifecycle Methods
   ngOnInit(): void {   
     // 🟢 TEST LOG - Build verification (BUILD_ID from separate file)
-    console.log(
-      "🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:",
-      (window as any).NG2_PDF_VIEWER_BUILD_ID || "BUILD_ID_NOT_LOADED",
-    );
+    if (this.diagnosticLogs) {
+      console.log(
+        "🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:",
+        (window as any).NG2_PDF_VIEWER_BUILD_ID || "BUILD_ID_NOT_LOADED",
+      );
+    }
     
     // Configure action queue manager with diagnostic logs
-    this.actionQueueManager = new ActionQueueManager(this.diagnosticLogs);
+    this.actionQueueManager = new ActionQueueManager(this._diagnosticLogs);
     
     // Connect action queue manager to PostMessage system
     this.actionQueueManager.setPostMessageExecutor((action, payload) =>
       this.sendControlMessage(action, payload),
     );
+
+    // Send diagnostic logs setting to wrapper
+    this.dispatchAction("set-diagnostic-logs", this._diagnosticLogs, "initial-load");
     
     // Set up PostMessage listener
     this.setupMessageListener();
@@ -1700,9 +1721,11 @@ export class PdfJsViewerComponent
         this.externalWindowOptions || "",
       );
       if (this.viewerTab == null) {
-        console.error(
-          "ng2-pdfjs-viewer: For 'externalWindow = true'. i.e opening in new tab to work, pop-ups should be enabled.",
-        );
+        if (this.diagnosticLogs) {
+          console.error(
+            "ng2-pdfjs-viewer: For 'externalWindow = true'. i.e opening in new tab to work, pop-ups should be enabled.",
+          );
+        }
         return;
       }
 

@@ -57,7 +57,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/ng2-pdfjs-viewer-social-card.png',
     navbar: {
       title: 'ng2-pdfjs-viewer',
       logo: {
@@ -160,9 +160,9 @@ const config: Config = {
     metadata: [
       { name: 'keywords', content: 'angular, angular-pdf-viewer, pdf-viewer, pdf-reader, PDF, PDF Viewer, pdfjs, pdf.js, viewer, viewerjs, ng2, angular-component, angular-pdf, ng2-pdf, angular 2 - 20, angular 20, angular-library, typescript, javascript,  pdf-rendering, pdf-annotations, pdf-zoom, pdf-printing, responsive-ui, custom PDF Viewer, accessibility, open-source, component, library'},
       {name: 'description', content: 'The most comprehensive Angular PDF viewer powered by Mozilla PDF.js. 7M+ downloads, mobile-first, production-ready.'},
-      {property: 'og:image', content: 'img/ng2-pdfjs-viewer-social.jpg'},
+      { property: 'og:image', content: 'img/ng2-pdfjs-viewer-social-card.png'},
       {property: 'og:description', content: 'The most comprehensive Angular PDF viewer powered by Mozilla PDF.js'},
-      {name: 'twitter:card', content: 'summary_large_image'},
+      { name: 'twitter:card', content: 'img/ng2-pdfjs-viewer-social-card.png'},
     ],
     algolia: {
       // Placeholder for Algolia search

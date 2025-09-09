@@ -50,6 +50,9 @@ export class ComponentUtils {
       textColor: "set-text-color",
       borderRadius: "set-border-radius",
       customCSS: "set-custom-css",
+
+      // Configuration
+      diagnosticLogs: "set-diagnostic-logs",
     };
 
     // Toolbar/Sidebar group visibility
