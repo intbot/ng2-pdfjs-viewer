@@ -1,0 +1,31 @@
+.features {
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+  width: 100%;
+}
+
+.featureIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.feature {
+  padding: 1rem;
+  border-radius: 8px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.feature:hover {
+  transform: translateY(-2px);
+}
+
+@media screen and (max-width: 996px) {
+  .features {
+    padding: 1rem 0;
+  }
+  
+  .feature {
+    margin-bottom: 2rem;
+  }
+}
