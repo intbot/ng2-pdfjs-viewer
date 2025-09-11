@@ -41,7 +41,7 @@ export class FeaturesComponent implements OnInit {
   // Configuration properties - directly bound to the viewer
   public pdfSrc = "/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf";
   public downloadFileName = "sample-document.pdf";
-  public diagnosticLogs = true; // Temporarily enabled for debugging theme issues
+  public diagnosticLogs = false;
 
   // Control visibility using individual properties (traditional approach)
   public showOpenFile = true;

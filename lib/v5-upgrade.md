@@ -217,5 +217,7 @@ This section documents the upgrade-safe, event-driven customization plan we adop
 5. Backward compatible Angular surface (inputs/outputs only)
 
 # Next steps
+- [ ] Publish Docusaurus to vercel
+- [ ] Update ReadMe with DocuSaurus prod link
 - [ ] Docusaurus documentation - Add algolia search
 - [ ] Upgrade PDF.js to latest version
