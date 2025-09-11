@@ -21,7 +21,7 @@ The most reliable, feature-rich Angular PDF viewer component powered by Mozilla'
 
 <div align="center">
 
-[**Live Demo**](https://angular-pdf-viewer-demo.vercel.app/) • [**API Reference**](#-api-reference) • [**Examples**](#-examples) • [**Server Examples**](../Server-Side-Examples.md) • [**Migration Guide**](#-migration-guide)
+[**Live Demo**](https://angular-pdf-viewer-demo.vercel.app/) • [**Documentation**](https://angular-pdf-viewer-docs.vercel.app/) • [**API Reference**](#-api-reference) • [**Examples**](#-examples) • [**Server Examples**](../Server-Side-Examples.md) • [**Migration Guide**](#-migration-guide)
 
 </div>
 
@@ -99,6 +99,7 @@ Whether you need a simple embedded PDF viewer or a complex document management s
 ## 🚀 Quick Start
 
 > **🎯 Live Demo**: [https://angular-pdf-viewer-demo.vercel.app/](https://angular-pdf-viewer-demo.vercel.app/)  
+> **📚 Documentation**: [https://angular-pdf-viewer-docs.vercel.app/](https://angular-pdf-viewer-docs.vercel.app/)  
 > **📁 Source Code**: [https://github.com/intbot/ng2-pdfjs-viewer/tree/main/SampleApp](https://github.com/intbot/ng2-pdfjs-viewer/tree/main/SampleApp)
 
 ### 1. Install the Package
@@ -496,6 +497,7 @@ export class MyComponent {
 ## 🎨 Examples
 
 > **🎯 Live Demo**: [https://angular-pdf-viewer-demo.vercel.app/](https://angular-pdf-viewer-demo.vercel.app/)  
+> **📚 Documentation**: [https://angular-pdf-viewer-docs.vercel.app/](https://angular-pdf-viewer-docs.vercel.app/)  
 > **📁 Source Code**: [https://github.com/intbot/ng2-pdfjs-viewer/tree/main/SampleApp](https://github.com/intbot/ng2-pdfjs-viewer/tree/main/SampleApp)
 
 ### 1. Basic PDF Viewer
