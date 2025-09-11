@@ -72,7 +72,7 @@ export default function Home(): JSX.Element {
             <div className="row">
               <div className="col col--12">
                 <div className="text--center">
-                  <Heading as="h2">Trusted by Thousands</Heading>
+                  <Heading as="h2">Trusted by Millions</Heading>
                   <p>
                     <strong>Born in 2018</strong> and still going strong with over <strong>7+ million downloads</strong>. 
                     This battle-tested library has been trusted by developers worldwide for over <strong>8 years</strong>, 
