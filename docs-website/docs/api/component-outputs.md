@@ -74,18 +74,13 @@ onAfterPrint() {
 ## Page Events
 
 ### `onPageChange`
-- **Type**: `EventEmitter<ChangedPage>`
+- **Type**: `EventEmitter<number>`
 - **Description**: Fired when the current page changes
 
 ```typescript
-interface ChangedPage {
-  pageNumber: number;
-  previousPageNumber: number;
-}
-
-onPageChange(event: ChangedPage) {
-  console.log(`Page changed from ${event.previousPageNumber} to ${event.pageNumber}`);
-  this.currentPage = event.pageNumber;
+onPageChange(pageNumber: number) {
+  console.log(`Page changed to: ${pageNumber}`);
+  this.currentPage = pageNumber;
 }
 ```
 
@@ -123,18 +118,13 @@ onPageRendered(event: PageRenderInfo) {
 ## View Events
 
 ### `onScaleChange`
-- **Type**: `EventEmitter<ChangedScale>`
+- **Type**: `EventEmitter<number>`
 - **Description**: Fired when scale/zoom changes
 
 ```typescript
-interface ChangedScale {
-  scale: number;
-  presetValue?: string;
-}
-
-onScaleChange(event: ChangedScale) {
-  console.log(`Scale changed to: ${event.scale}x`);
-  this.currentScale = event.scale;
+onScaleChange(scale: number) {
+  console.log(`Scale changed to: ${scale}x`);
+  this.currentScale = scale;
 }
 ```
 
@@ -144,12 +134,13 @@ onScaleChange(event: ChangedScale) {
 
 ```typescript
 interface ChangedRotation {
-  pagesRotation: number;
+  rotation: number;
+  page: number;
 }
 
 onRotationChange(event: ChangedRotation) {
-  console.log(`Document rotated: ${event.pagesRotation}°`);
-  this.currentRotation = event.pagesRotation;
+  console.log(`Document rotated: ${event.rotation}° on page ${event.page}`);
+  this.currentRotation = event.rotation;
 }
 ```
 
@@ -441,9 +432,9 @@ export class PdfViewerComponent {
   }
 
   // Page events
-  onPageChange(event: ChangedPage) {
-    console.log(`📖 Page changed from ${event.previousPageNumber} to ${event.pageNumber}`);
-    this.currentPage = event.pageNumber;
+  onPageChange(pageNumber: number) {
+    console.log(`📖 Page changed to: ${pageNumber}`);
+    this.currentPage = pageNumber;
   }
 
   onPagesInit(event: PagesInfo) {
@@ -456,13 +447,13 @@ export class PdfViewerComponent {
   }
 
   // View events
-  onScaleChange(event: ChangedScale) {
-    console.log(`🔍 Scale changed to: ${event.scale}x`);
-    this.currentScale = event.scale;
+  onScaleChange(scale: number) {
+    console.log(`🔍 Scale changed to: ${scale}x`);
+    this.currentScale = scale;
   }
 
   onRotationChange(event: ChangedRotation) {
-    console.log(`🔄 Rotation changed: ${event.pagesRotation}°`);
+    console.log(`🔄 Rotation changed: ${event.rotation}° on page ${event.page}`);
   }
 
   onPresentationModeChanged(event: PresentationMode) {

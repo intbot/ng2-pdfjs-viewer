@@ -151,7 +151,7 @@ Listen to PDF viewer events for better user experience:
 
 ```typescript title="event-handling.component.ts"
 import { Component } from '@angular/core';
-import { ChangedPage, ChangedScale, DocumentMetadata, DocumentOutline } from 'ng2-pdfjs-viewer';
+import { DocumentMetadata, DocumentOutline } from 'ng2-pdfjs-viewer';
 
 @Component({
   selector: 'app-event-handling',
@@ -175,14 +175,14 @@ export class EventHandlingComponent {
     console.error('Failed to load PDF:', error);
   }
 
-  onPageChange(event: ChangedPage) {
-    this.currentPage = event.pageNumber;
-    console.log(`Page changed from ${event.previousPageNumber} to ${event.pageNumber}`);
+  onPageChange(pageNumber: number) {
+    this.currentPage = pageNumber;
+    console.log(`Page changed to: ${pageNumber}`);
   }
 
-  onScaleChange(event: ChangedScale) {
-    this.currentScale = event.scale;
-    console.log(`Scale changed to: ${event.scale}x`);
+  onScaleChange(scale: number) {
+    this.currentScale = scale;
+    console.log(`Scale changed to: ${scale}x`);
   }
 
   onMetadataLoaded(event: DocumentMetadata) {

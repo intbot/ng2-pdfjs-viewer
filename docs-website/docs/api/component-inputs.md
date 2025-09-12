@@ -268,10 +268,6 @@ errorMessage = 'Failed to load document. Please try again.';
 
 ### Toolbar Controls
 
-#### `showToolbar`
-- **Type**: `boolean`
-- **Default**: `true`
-- **Description**: Show/hide the main toolbar
 
 #### `showToolbarLeft`
 - **Type**: `boolean`
