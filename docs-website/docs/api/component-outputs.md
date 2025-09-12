@@ -42,353 +42,366 @@ onDocumentError(error: DocumentError) {
 - **Type**: `EventEmitter<void>`
 - **Description**: Fired when document initialization begins
 
-### `onProgress`
-- **Type**: `EventEmitter<ProgressEvent>`
-- **Description**: Fired during document loading progress
+```typescript
+onDocumentInit() {
+  console.log('Document initialization started');
+  this.isInitializing = true;
+}
+```
+
+### `onBeforePrint`
+- **Type**: `EventEmitter<void>`
+- **Description**: Fired before print dialog opens
 
 ```typescript
-interface ProgressEvent {
-  loaded: number;
-  total: number;
-  percent: number;
+onBeforePrint() {
+  console.log('About to print document');
+  this.isPrinting = true;
 }
+```
 
-onProgress(event: ProgressEvent) {
-  console.log(`Loading progress: ${event.percent}%`);
-  this.loadingProgress = event.percent;
+### `onAfterPrint`
+- **Type**: `EventEmitter<void>`
+- **Description**: Fired after print dialog closes
+
+```typescript
+onAfterPrint() {
+  console.log('Print dialog closed');
+  this.isPrinting = false;
 }
 ```
 
 ## Page Events
 
 ### `onPageChange`
-- **Type**: `EventEmitter<PageChangeEvent>`
+- **Type**: `EventEmitter<ChangedPage>`
 - **Description**: Fired when the current page changes
 
 ```typescript
-interface PageChangeEvent {
-  current: number;
-  total: number;
-  previous: number;
-}
-
-onPageChange(event: PageChangeEvent) {
-  console.log(`Page ${event.current} of ${event.total}`);
-  this.currentPage = event.current;
-  this.totalPages = event.total;
-}
-```
-
-### `onPageRender`
-- **Type**: `EventEmitter<PageRenderEvent>`
-- **Description**: Fired when a page finishes rendering
-
-```typescript
-interface PageRenderEvent {
+interface ChangedPage {
   pageNumber: number;
-  source: any;
+  previousPageNumber: number;
 }
 
-onPageRender(event: PageRenderEvent) {
-  console.log(`Page ${event.pageNumber} rendered`);
+onPageChange(event: ChangedPage) {
+  console.log(`Page changed from ${event.previousPageNumber} to ${event.pageNumber}`);
+  this.currentPage = event.pageNumber;
 }
 ```
 
-### `onPagesLoaded`
-- **Type**: `EventEmitter<PagesLoadedEvent>`
-- **Description**: Fired when all pages are loaded
+### `onPagesInit`
+- **Type**: `EventEmitter<PagesInfo>`
+- **Description**: Fired when pages are initialized
 
 ```typescript
-interface PagesLoadedEvent {
+interface PagesInfo {
   pagesCount: number;
   source: any;
 }
 
-onPagesLoaded(event: PagesLoadedEvent) {
-  console.log(`All ${event.pagesCount} pages loaded`);
+onPagesInit(event: PagesInfo) {
+  console.log(`Pages initialized: ${event.pagesCount} pages`);
   this.totalPages = event.pagesCount;
+}
+```
+
+### `onPageRendered`
+- **Type**: `EventEmitter<PageRenderInfo>`
+- **Description**: Fired when a page finishes rendering
+
+```typescript
+interface PageRenderInfo {
+  pageNumber: number;
+  source: any;
+}
+
+onPageRendered(event: PageRenderInfo) {
+  console.log(`Page ${event.pageNumber} rendered`);
 }
 ```
 
 ## View Events
 
-### `onZoomChange`
-- **Type**: `EventEmitter<ZoomChangeEvent>`
-- **Description**: Fired when zoom level changes
+### `onScaleChange`
+- **Type**: `EventEmitter<ChangedScale>`
+- **Description**: Fired when scale/zoom changes
 
 ```typescript
-interface ZoomChangeEvent {
+interface ChangedScale {
   scale: number;
   presetValue?: string;
-  source: any;
 }
 
-onZoomChange(event: ZoomChangeEvent) {
-  console.log(`Zoom changed to: ${event.scale}x`);
-  this.currentZoom = event.scale;
+onScaleChange(event: ChangedScale) {
+  console.log(`Scale changed to: ${event.scale}x`);
+  this.currentScale = event.scale;
 }
 ```
 
 ### `onRotationChange`
-- **Type**: `EventEmitter<RotationChangeEvent>`
+- **Type**: `EventEmitter<ChangedRotation>`
 - **Description**: Fired when document rotation changes
 
 ```typescript
-interface RotationChangeEvent {
+interface ChangedRotation {
   pagesRotation: number;
-  source: any;
 }
 
-onRotationChange(event: RotationChangeEvent) {
+onRotationChange(event: ChangedRotation) {
   console.log(`Document rotated: ${event.pagesRotation}°`);
   this.currentRotation = event.pagesRotation;
 }
 ```
 
-### `onScaleChange`
-- **Type**: `EventEmitter<ScaleChangeEvent>`
-- **Description**: Fired when scale/zoom changes
+### `onPresentationModeChanged`
+- **Type**: `EventEmitter<PresentationMode>`
+- **Description**: Fired when presentation mode changes
 
 ```typescript
-interface ScaleChangeEvent {
-  scale: number;
-  presetValue?: string;
+interface PresentationMode {
+  active: boolean;
+  switchInProgress: boolean;
+}
+
+onPresentationModeChanged(event: PresentationMode) {
+  console.log(`Presentation mode: ${event.active ? 'active' : 'inactive'}`);
+  this.isPresentationMode = event.active;
 }
 ```
 
 ## Search Events
 
-### `onSearchStart`
-- **Type**: `EventEmitter<SearchEvent>`
-- **Description**: Fired when search begins
+### `onFind`
+- **Type**: `EventEmitter<FindOperation>`
+- **Description**: Fired when find/search operation occurs
 
 ```typescript
-interface SearchEvent {
+interface FindOperation {
   query: string;
   caseSensitive: boolean;
   entireWord: boolean;
   highlightAll: boolean;
+  findPrevious: boolean;
 }
 
-onSearchStart(event: SearchEvent) {
-  console.log(`Search started: "${event.query}"`);
+onFind(event: FindOperation) {
+  console.log(`Find operation: "${event.query}"`);
   this.isSearching = true;
 }
 ```
 
-### `onSearchResult`
-- **Type**: `EventEmitter<SearchResultEvent>`
-- **Description**: Fired when search results are found
+### `onUpdateFindMatchesCount`
+- **Type**: `EventEmitter<FindMatchesCount>`
+- **Description**: Fired when find matches count updates
 
 ```typescript
-interface SearchResultEvent {
+interface FindMatchesCount {
   matchesCount: number;
   current: number;
   query: string;
 }
 
-onSearchResult(event: SearchResultEvent) {
+onUpdateFindMatchesCount(event: FindMatchesCount) {
   console.log(`Found ${event.matchesCount} matches for "${event.query}"`);
   this.searchResults = event;
 }
 ```
 
-### `onSearchComplete`
-- **Type**: `EventEmitter<SearchCompleteEvent>`
-- **Description**: Fired when search completes
-
-```typescript
-interface SearchCompleteEvent {
-  query: string;
-  matchesCount: number;
-}
-
-onSearchComplete(event: SearchCompleteEvent) {
-  console.log(`Search complete: ${event.matchesCount} total matches`);
-  this.isSearching = false;
-}
-```
-
 ## User Interaction Events
 
-### `onTextSelection`
-- **Type**: `EventEmitter<TextSelectionEvent>`
-- **Description**: Fired when text is selected
+### `onOpenFile`
+- **Type**: `EventEmitter<void>`
+- **Description**: Fired when open file button is clicked
 
 ```typescript
-interface TextSelectionEvent {
-  text: string;
-  pageNumber: number;
-  boundingRect: DOMRect;
-}
-
-onTextSelection(event: TextSelectionEvent) {
-  console.log(`Selected text: "${event.text}" on page ${event.pageNumber}`);
-  this.selectedText = event.text;
+onOpenFile() {
+  console.log('Open file button clicked');
+  // Handle file opening logic
 }
 ```
 
-### `onAnnotationClick`
-- **Type**: `EventEmitter<AnnotationClickEvent>`
-- **Description**: Fired when an annotation is clicked
+### `onAnnotationLayerRendered`
+- **Type**: `EventEmitter<AnnotationLayerRenderEvent>`
+- **Description**: Fired when annotation layer is rendered
 
 ```typescript
-interface AnnotationClickEvent {
-  annotation: any;
+interface AnnotationLayerRenderEvent {
   pageNumber: number;
   source: any;
 }
 
-onAnnotationClick(event: AnnotationClickEvent) {
-  console.log(`Annotation clicked on page ${event.pageNumber}`);
+onAnnotationLayerRendered(event: AnnotationLayerRenderEvent) {
+  console.log(`Annotation layer rendered for page ${event.pageNumber}`);
 }
 ```
 
-### `onLinkClick`
-- **Type**: `EventEmitter<LinkClickEvent>`
-- **Description**: Fired when a link is clicked
+### `onBookmarkClick`
+- **Type**: `EventEmitter<BookmarkClick>`
+- **Description**: Fired when a bookmark is clicked
 
 ```typescript
-interface LinkClickEvent {
-  url: string;
+interface BookmarkClick {
   dest: any;
   pageNumber: number;
 }
 
-onLinkClick(event: LinkClickEvent) {
-  console.log(`Link clicked: ${event.url}`);
-  // Handle external links
-  if (event.url) {
-    window.open(event.url, '_blank');
-  }
+onBookmarkClick(event: BookmarkClick) {
+  console.log(`Bookmark clicked, going to page ${event.pageNumber}`);
 }
 ```
 
-## Print Events
-
-### `onPrintStart`
-- **Type**: `EventEmitter<PrintEvent>`
-- **Description**: Fired when printing starts
+### `onIdle`
+- **Type**: `EventEmitter<void>`
+- **Description**: Fired when viewer becomes idle
 
 ```typescript
-interface PrintEvent {
+onIdle() {
+  console.log('Viewer is now idle');
+  // Handle idle state
+}
+```
+
+## Metadata Events
+
+### `onMetadataLoaded`
+- **Type**: `EventEmitter<DocumentMetadata>`
+- **Description**: Fired when document metadata is loaded
+
+```typescript
+interface DocumentMetadata {
+  title?: string;
+  author?: string;
+  subject?: string;
+  keywords?: string;
+  creator?: string;
+  producer?: string;
+  creationDate?: Date;
+  modificationDate?: Date;
+}
+
+onMetadataLoaded(event: DocumentMetadata) {
+  console.log('Document metadata loaded:', event);
+  this.documentTitle = event.title;
+  this.documentAuthor = event.author;
+}
+```
+
+### `onOutlineLoaded`
+- **Type**: `EventEmitter<DocumentOutline>`
+- **Description**: Fired when document outline/bookmarks are loaded
+
+```typescript
+interface DocumentOutline {
+  items: any[];
   source: any;
 }
 
-onPrintStart(event: PrintEvent) {
-  console.log('Print started');
-  this.isPrinting = true;
+onOutlineLoaded(event: DocumentOutline) {
+  console.log('Document outline loaded:', event.items);
+  this.hasOutline = event.items && event.items.length > 0;
 }
 ```
 
-### `onPrintEnd`
-- **Type**: `EventEmitter<PrintEvent>`
-- **Description**: Fired when printing ends
+## Property Change Events
+
+### `zoomChange`
+- **Type**: `EventEmitter<string>`
+- **Description**: Fired when zoom level changes
 
 ```typescript
-onPrintEnd(event: PrintEvent) {
-  console.log('Print ended');
-  this.isPrinting = false;
+zoomChange(zoom: string) {
+  console.log(`Zoom changed to: ${zoom}`);
+  this.currentZoom = zoom;
 }
 ```
 
-## Download Events
-
-### `onDownloadStart`
-- **Type**: `EventEmitter<DownloadEvent>`
-- **Description**: Fired when download starts
+### `cursorChange`
+- **Type**: `EventEmitter<string>`
+- **Description**: Fired when cursor mode changes
 
 ```typescript
-interface DownloadEvent {
-  filename: string;
-  source: any;
-}
-
-onDownloadStart(event: DownloadEvent) {
-  console.log(`Download started: ${event.filename}`);
-  this.isDownloading = true;
+cursorChange(cursor: string) {
+  console.log(`Cursor changed to: ${cursor}`);
+  this.currentCursor = cursor;
 }
 ```
 
-### `onDownloadComplete`
-- **Type**: `EventEmitter<DownloadEvent>`
-- **Description**: Fired when download completes
+### `scrollChange`
+- **Type**: `EventEmitter<string>`
+- **Description**: Fired when scroll mode changes
 
 ```typescript
-onDownloadComplete(event: DownloadEvent) {
-  console.log(`Download complete: ${event.filename}`);
-  this.isDownloading = false;
+scrollChange(scroll: string) {
+  console.log(`Scroll changed to: ${scroll}`);
+  this.currentScroll = scroll;
 }
 ```
 
-## Sidebar Events
-
-### `onSidebarToggle`
-- **Type**: `EventEmitter<SidebarToggleEvent>`
-- **Description**: Fired when sidebar is toggled
+### `spreadChange`
+- **Type**: `EventEmitter<string>`
+- **Description**: Fired when spread mode changes
 
 ```typescript
-interface SidebarToggleEvent {
-  visible: boolean;
-  view: number;
-}
-
-onSidebarToggle(event: SidebarToggleEvent) {
-  console.log(`Sidebar ${event.visible ? 'opened' : 'closed'}`);
-  this.sidebarVisible = event.visible;
+spreadChange(spread: string) {
+  console.log(`Spread changed to: ${spread}`);
+  this.currentSpread = spread;
 }
 ```
 
-### `onOutlineLoad`
-- **Type**: `EventEmitter<OutlineEvent>`
-- **Description**: Fired when document outline loads
+### `pageModeChange`
+- **Type**: `EventEmitter<string>`
+- **Description**: Fired when page mode changes
 
 ```typescript
-interface OutlineEvent {
-  outline: any[];
-  source: any;
-}
-
-onOutlineLoad(event: OutlineEvent) {
-  console.log('Document outline loaded');
-  this.hasOutline = event.outline && event.outline.length > 0;
+pageModeChange(pageMode: string) {
+  console.log(`Page mode changed to: ${pageMode}`);
+  this.currentPageMode = pageMode;
 }
 ```
 
-## Thumbnail Events
+## Complete Event List
 
-### `onThumbnailLoad`
-- **Type**: `EventEmitter<ThumbnailEvent>`
-- **Description**: Fired when thumbnails load
+Here's the complete list of all available events:
 
-```typescript
-interface ThumbnailEvent {
-  pageNumber: number;
-  source: any;
-}
+### Document Events (5)
+- `onDocumentLoad` - Document loaded successfully
+- `onDocumentError` - Document load failed
+- `onDocumentInit` - Document initialization started
+- `onBeforePrint` - Before print dialog opens
+- `onAfterPrint` - After print dialog closes
 
-onThumbnailLoad(event: ThumbnailEvent) {
-  console.log(`Thumbnail loaded for page ${event.pageNumber}`);
-}
-```
+### Page Events (3)
+- `onPageChange` - Current page changed
+- `onPagesInit` - Pages initialized
+- `onPageRendered` - Page finished rendering
 
-## Error Events
+### View Events (3)
+- `onScaleChange` - Scale/zoom changed
+- `onRotationChange` - Rotation changed
+- `onPresentationModeChanged` - Presentation mode changed
 
-### `onRenderError`
-- **Type**: `EventEmitter<RenderError>`
-- **Description**: Fired when page rendering fails
+### Search Events (2)
+- `onFind` - Find operation performed
+- `onUpdateFindMatchesCount` - Find matches count updated
 
-```typescript
-interface RenderError {
-  pageNumber: number;
-  error: Error;
-  source: any;
-}
+### User Interaction Events (4)
+- `onOpenFile` - Open file button clicked
+- `onAnnotationLayerRendered` - Annotation layer rendered
+- `onBookmarkClick` - Bookmark clicked
+- `onIdle` - Viewer became idle
 
-onRenderError(event: RenderError) {
-  console.error(`Render error on page ${event.pageNumber}:`, event.error);
-}
-```
+### Metadata Events (2)
+- `onMetadataLoaded` - Document metadata loaded
+- `onOutlineLoaded` - Document outline loaded
+
+### Property Change Events (5)
+- `zoomChange` - Zoom level changed
+- `cursorChange` - Cursor mode changed
+- `scrollChange` - Scroll mode changed
+- `spreadChange` - Spread mode changed
+- `pageModeChange` - Page mode changed
+
+**Total: 24 Events**
 
 ## Complete Event Handling Example
 
@@ -398,9 +411,11 @@ export class PdfViewerComponent {
   isLoading = true;
   currentPage = 1;
   totalPages = 0;
-  currentZoom = 1;
+  currentScale = 1;
   isSearching = false;
   searchResults: any = null;
+  documentTitle = '';
+  hasOutline = false;
 
   // Document events
   onDocumentLoad() {
@@ -408,72 +423,110 @@ export class PdfViewerComponent {
     this.isLoading = false;
   }
 
-  onDocumentError(error: any) {
+  onDocumentError(error: DocumentError) {
     console.error('❌ Document load error:', error);
     this.isLoading = false;
   }
 
-  onProgress(event: any) {
-    console.log(`⏳ Loading progress: ${event.percent}%`);
+  onDocumentInit() {
+    console.log('🔄 Document initialization started');
+  }
+
+  onBeforePrint() {
+    console.log('🖨️ About to print document');
+  }
+
+  onAfterPrint() {
+    console.log('✅ Print dialog closed');
   }
 
   // Page events
-  onPageChange(event: any) {
-    console.log(`📖 Page changed: ${event.current}/${event.total}`);
-    this.currentPage = event.current;
-    this.totalPages = event.total;
+  onPageChange(event: ChangedPage) {
+    console.log(`📖 Page changed from ${event.previousPageNumber} to ${event.pageNumber}`);
+    this.currentPage = event.pageNumber;
   }
 
-  onPagesLoaded(event: any) {
-    console.log(`📚 All pages loaded: ${event.pagesCount}`);
+  onPagesInit(event: PagesInfo) {
+    console.log(`📚 Pages initialized: ${event.pagesCount} pages`);
     this.totalPages = event.pagesCount;
   }
 
-  // View events
-  onZoomChange(event: any) {
-    console.log(`🔍 Zoom changed: ${event.scale}x`);
-    this.currentZoom = event.scale;
+  onPageRendered(event: PageRenderInfo) {
+    console.log(`🎨 Page ${event.pageNumber} rendered`);
   }
 
-  onRotationChange(event: any) {
+  // View events
+  onScaleChange(event: ChangedScale) {
+    console.log(`🔍 Scale changed to: ${event.scale}x`);
+    this.currentScale = event.scale;
+  }
+
+  onRotationChange(event: ChangedRotation) {
     console.log(`🔄 Rotation changed: ${event.pagesRotation}°`);
   }
 
+  onPresentationModeChanged(event: PresentationMode) {
+    console.log(`📺 Presentation mode: ${event.active ? 'active' : 'inactive'}`);
+  }
+
   // Search events
-  onSearchStart(event: any) {
-    console.log(`🔎 Search started: "${event.query}"`);
+  onFind(event: FindOperation) {
+    console.log(`🔎 Find operation: "${event.query}"`);
     this.isSearching = true;
   }
 
-  onSearchResult(event: any) {
-    console.log(`🎯 Search results: ${event.matchesCount} matches`);
+  onUpdateFindMatchesCount(event: FindMatchesCount) {
+    console.log(`🎯 Found ${event.matchesCount} matches for "${event.query}"`);
     this.searchResults = event;
   }
 
-  onSearchComplete(event: any) {
-    console.log(`✅ Search complete: ${event.matchesCount} total matches`);
-    this.isSearching = false;
-  }
-
   // User interaction events
-  onTextSelection(event: any) {
-    console.log(`📝 Text selected: "${event.text}"`);
+  onOpenFile() {
+    console.log('📁 Open file button clicked');
   }
 
-  onLinkClick(event: any) {
-    console.log(`🔗 Link clicked: ${event.url}`);
-    if (event.url) {
-      window.open(event.url, '_blank');
-    }
+  onAnnotationLayerRendered(event: AnnotationLayerRenderEvent) {
+    console.log(`📝 Annotation layer rendered for page ${event.pageNumber}`);
   }
 
-  // Print/Download events
-  onPrintStart() {
-    console.log('🖨️ Print started');
+  onBookmarkClick(event: BookmarkClick) {
+    console.log(`🔖 Bookmark clicked, going to page ${event.pageNumber}`);
   }
 
-  onDownloadStart(event: any) {
-    console.log(`💾 Download started: ${event.filename}`);
+  onIdle() {
+    console.log('😴 Viewer is now idle');
+  }
+
+  // Metadata events
+  onMetadataLoaded(event: DocumentMetadata) {
+    console.log('📋 Document metadata loaded:', event);
+    this.documentTitle = event.title || 'Untitled Document';
+  }
+
+  onOutlineLoaded(event: DocumentOutline) {
+    console.log('📑 Document outline loaded');
+    this.hasOutline = event.items && event.items.length > 0;
+  }
+
+  // Property change events
+  zoomChange(zoom: string) {
+    console.log(`🔍 Zoom changed to: ${zoom}`);
+  }
+
+  cursorChange(cursor: string) {
+    console.log(`🖱️ Cursor changed to: ${cursor}`);
+  }
+
+  scrollChange(scroll: string) {
+    console.log(`📜 Scroll changed to: ${scroll}`);
+  }
+
+  spreadChange(spread: string) {
+    console.log(`📖 Spread changed to: ${spread}`);
+  }
+
+  pageModeChange(pageMode: string) {
+    console.log(`📄 Page mode changed to: ${pageMode}`);
   }
 }
 ```
@@ -485,37 +538,51 @@ export class PdfViewerComponent {
   <!-- Document Events -->
   (onDocumentLoad)="onDocumentLoad()"
   (onDocumentError)="onDocumentError($event)"
-  (onProgress)="onProgress($event)"
+  (onDocumentInit)="onDocumentInit()"
+  (onBeforePrint)="onBeforePrint()"
+  (onAfterPrint)="onAfterPrint()"
   
   <!-- Page Events -->
   (onPageChange)="onPageChange($event)"
-  (onPagesLoaded)="onPagesLoaded($event)"
+  (onPagesInit)="onPagesInit($event)"
+  (onPageRendered)="onPageRendered($event)"
   
   <!-- View Events -->
-  (onZoomChange)="onZoomChange($event)"
+  (onScaleChange)="onScaleChange($event)"
   (onRotationChange)="onRotationChange($event)"
+  (onPresentationModeChanged)="onPresentationModeChanged($event)"
   
   <!-- Search Events -->
-  (onSearchStart)="onSearchStart($event)"
-  (onSearchResult)="onSearchResult($event)"
-  (onSearchComplete)="onSearchComplete($event)"
+  (onFind)="onFind($event)"
+  (onUpdateFindMatchesCount)="onUpdateFindMatchesCount($event)"
   
   <!-- User Interaction Events -->
-  (onTextSelection)="onTextSelection($event)"
-  (onLinkClick)="onLinkClick($event)"
+  (onOpenFile)="onOpenFile()"
+  (onAnnotationLayerRendered)="onAnnotationLayerRendered($event)"
+  (onBookmarkClick)="onBookmarkClick($event)"
+  (onIdle)="onIdle()"
   
-  <!-- Print/Download Events -->
-  (onPrintStart)="onPrintStart()"
-  (onDownloadStart)="onDownloadStart($event)">
+  <!-- Metadata Events -->
+  (onMetadataLoaded)="onMetadataLoaded($event)"
+  (onOutlineLoaded)="onOutlineLoaded($event)"
+  
+  <!-- Property Change Events -->
+  (zoomChange)="zoomChange($event)"
+  (cursorChange)="cursorChange($event)"
+  (scrollChange)="scrollChange($event)"
+  (spreadChange)="spreadChange($event)"
+  (pageModeChange)="pageModeChange($event)">
 </ng2-pdfjs-viewer>
 
 <!-- Status Display -->
 <div class="status-bar">
   <span *ngIf="isLoading">Loading...</span>
   <span *ngIf="!isLoading">Page {{ currentPage }} of {{ totalPages }}</span>
-  <span *ngIf="currentZoom !== 1">Zoom: {{ (currentZoom * 100) | number:'1.0-0' }}%</span>
+  <span *ngIf="currentScale !== 1">Scale: {{ (currentScale * 100) | number:'1.0-0' }}%</span>
   <span *ngIf="isSearching">Searching...</span>
   <span *ngIf="searchResults">{{ searchResults.matchesCount }} matches found</span>
+  <span *ngIf="documentTitle">Title: {{ documentTitle }}</span>
+  <span *ngIf="hasOutline">📑 Has outline</span>
 </div>
 ```
 
@@ -526,26 +593,35 @@ Events you'll most commonly use:
 - `onDocumentLoad` - Document ready
 - `onDocumentError` - Handle errors
 - `onPageChange` - Track navigation
-- `onProgress` - Show loading progress
+- `onPagesInit` - Get page count
 
 ### User Interaction Events
 Events for interactive features:
-- `onTextSelection` - Handle text selection
-- `onLinkClick` - Handle link clicks
-- `onAnnotationClick` - Handle annotations
+- `onOpenFile` - Handle file opening
+- `onBookmarkClick` - Handle bookmark navigation
+- `onAnnotationLayerRendered` - Handle annotations
+- `onIdle` - Handle idle state
 
 ### Search Events
 Events for search functionality:
-- `onSearchStart` - Search begins
-- `onSearchResult` - Results found
-- `onSearchComplete` - Search finished
+- `onFind` - Find operation performed
+- `onUpdateFindMatchesCount` - Search results updated
 
 ### Advanced Events
 Events for advanced use cases:
-- `onZoomChange` - Zoom tracking
+- `onScaleChange` - Zoom tracking
 - `onRotationChange` - Rotation tracking
-- `onSidebarToggle` - Sidebar state
-- `onThumbnailLoad` - Thumbnail loading
+- `onPresentationModeChanged` - Presentation mode
+- `onMetadataLoaded` - Document metadata
+- `onOutlineLoaded` - Document outline
+
+### Property Change Events
+Events for property changes:
+- `zoomChange` - Zoom level changes
+- `cursorChange` - Cursor mode changes
+- `scrollChange` - Scroll mode changes
+- `spreadChange` - Spread mode changes
+- `pageModeChange` - Page mode changes
 
 ## Next Steps
 

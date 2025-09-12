@@ -135,18 +135,23 @@ Listen to PDF viewer events for better user experience:
   (onDocumentLoad)="onDocumentLoad()"
   (onDocumentError)="onDocumentError($event)"
   (onPageChange)="onPageChange($event)"
-  (onProgress)="onProgress($event)">
+  (onScaleChange)="onScaleChange($event)"
+  (onMetadataLoaded)="onMetadataLoaded($event)"
+  (onOutlineLoaded)="onOutlineLoaded($event)">
 </ng2-pdfjs-viewer>
 
 <div class="status">
   <p>Status: {{ status }}</p>
   <p>Current Page: {{ currentPage }} / {{ totalPages }}</p>
-  <p>Progress: {{ progress }}%</p>
+  <p>Zoom: {{ currentScale }}x</p>
+  <p *ngIf="documentTitle">Title: {{ documentTitle }}</p>
+  <p *ngIf="hasOutline">📑 Has outline</p>
 </div>
 ```
 
 ```typescript title="event-handling.component.ts"
 import { Component } from '@angular/core';
+import { ChangedPage, ChangedScale, DocumentMetadata, DocumentOutline } from 'ng2-pdfjs-viewer';
 
 @Component({
   selector: 'app-event-handling',
@@ -156,7 +161,9 @@ export class EventHandlingComponent {
   status = 'Loading...';
   currentPage = 0;
   totalPages = 0;
-  progress = 0;
+  currentScale = 1;
+  documentTitle = '';
+  hasOutline = false;
 
   onDocumentLoad() {
     this.status = 'Document loaded successfully!';
@@ -168,15 +175,24 @@ export class EventHandlingComponent {
     console.error('Failed to load PDF:', error);
   }
 
-  onPageChange(event: any) {
-    this.currentPage = event.current;
-    this.totalPages = event.total;
-    console.log(`Page changed: ${event.current}/${event.total}`);
+  onPageChange(event: ChangedPage) {
+    this.currentPage = event.pageNumber;
+    console.log(`Page changed from ${event.previousPageNumber} to ${event.pageNumber}`);
   }
 
-  onProgress(event: any) {
-    this.progress = Math.round(event.loaded / event.total * 100);
-    console.log(`Loading progress: ${this.progress}%`);
+  onScaleChange(event: ChangedScale) {
+    this.currentScale = event.scale;
+    console.log(`Scale changed to: ${event.scale}x`);
+  }
+
+  onMetadataLoaded(event: DocumentMetadata) {
+    this.documentTitle = event.title || 'Untitled Document';
+    console.log('Document metadata loaded:', event);
+  }
+
+  onOutlineLoaded(event: DocumentOutline) {
+    this.hasOutline = event.items && event.items.length > 0;
+    console.log('Document outline loaded:', event.items);
   }
 }
 ```
@@ -245,6 +261,139 @@ export class DynamicLoadingComponent {
 }
 ```
 
+## Advanced Configuration
+
+Use convenience configuration objects for cleaner, more maintainable code:
+
+```html title="advanced-config.component.html"
+<ng2-pdfjs-viewer
+  pdfSrc="assets/sample.pdf"
+  [showSpinner]="true"
+  [theme]="'dark'"
+  [groupVisibility]="groupVisibility"
+  [controlVisibility]="controlVisibility"
+  [autoActions]="autoActions"
+  [themeConfig]="themeConfig"
+  [layoutConfig]="layoutConfig"
+  (onDocumentLoad)="onDocumentLoad()"
+  (onPageChange)="onPageChange($event)">
+</ng2-pdfjs-viewer>
+
+<div class="controls">
+  <button (click)="downloadPdf()">Download</button>
+  <button (click)="printPdf()">Print</button>
+  <button (click)="goToPage(5)">Go to Page 5</button>
+  <button (click)="changeZoom('150%')">Zoom 150%</button>
+  <button (click)="rotateDocument('cw')">Rotate CW</button>
+</div>
+```
+
+```typescript title="advanced-config.component.ts"
+import { Component, ViewChild } from '@angular/core';
+import { Ng2PdfjsViewerComponent } from 'ng2-pdfjs-viewer';
+
+@Component({
+  selector: 'app-advanced-config',
+  templateUrl: './advanced-config.component.html'
+})
+export class AdvancedConfigComponent {
+  @ViewChild('pdfViewer') pdfViewer!: Ng2PdfjsViewerComponent;
+
+  // Convenience configuration objects
+  groupVisibility = {
+    download: true,
+    print: true,
+    find: true,
+    fullScreen: true,
+    openFile: false,
+    viewBookmark: true,
+    annotations: false
+  };
+
+  controlVisibility = {
+    showToolbarLeft: true,
+    showToolbarMiddle: true,
+    showToolbarRight: true,
+    showSidebar: true
+  };
+
+  autoActions = {
+    downloadOnLoad: false,
+    printOnLoad: false
+  };
+
+  themeConfig = {
+    theme: 'dark',
+    primaryColor: '#3f51b5',
+    backgroundColor: '#1e1e1e',
+    textColor: '#ffffff',
+    borderRadius: '8px'
+  };
+
+  layoutConfig = {
+    toolbarDensity: 'compact',
+    sidebarWidth: '280px',
+    toolbarPosition: 'top',
+    sidebarPosition: 'left',
+    responsiveBreakpoint: 768
+  };
+
+  // Method calls
+  async downloadPdf() {
+    try {
+      const result = await this.pdfViewer.triggerDownload();
+      console.log('Download triggered:', result);
+    } catch (error) {
+      console.error('Download failed:', error);
+    }
+  }
+
+  async printPdf() {
+    try {
+      const result = await this.pdfViewer.triggerPrint();
+      console.log('Print triggered:', result);
+    } catch (error) {
+      console.error('Print failed:', error);
+    }
+  }
+
+  async goToPage(pageNumber: number) {
+    try {
+      const result = await this.pdfViewer.setPage(pageNumber);
+      console.log(`Navigated to page ${pageNumber}:`, result);
+    } catch (error) {
+      console.error('Navigation failed:', error);
+    }
+  }
+
+  async changeZoom(zoomLevel: string) {
+    try {
+      const result = await this.pdfViewer.setZoom(zoomLevel);
+      console.log(`Zoom changed to ${zoomLevel}:`, result);
+    } catch (error) {
+      console.error('Zoom change failed:', error);
+    }
+  }
+
+  async rotateDocument(direction: 'cw' | 'ccw') {
+    try {
+      const result = await this.pdfViewer.triggerRotation(direction);
+      console.log(`Document rotated ${direction}:`, result);
+    } catch (error) {
+      console.error('Rotation failed:', error);
+    }
+  }
+
+  onDocumentLoad() {
+    console.log('Document loaded successfully!');
+  }
+
+  onPageChange(event: any) {
+    console.log(`Page changed to: ${event.pageNumber}`);
+  }
+}
+```
+
 ## Responsive Layout
 
 Create a responsive PDF viewer that adapts to different screen sizes:
@@ -254,9 +403,11 @@ Create a responsive PDF viewer that adapts to different screen sizes:
   <ng2-pdfjs-viewer
     pdfSrc="assets/sample.pdf"
     [showSpinner]="true"
-    [theme]="isMobile ? 'mobile' : 'desktop'"
+    [theme]="isMobile ? 'auto' : 'light'"
     [showToolbar]="!isMobile || showMobileToolbar"
-    [showSidebar]="!isMobile">
+    [showSidebar]="!isMobile"
+    [layoutConfig]="layoutConfig"
+    (onDocumentLoad)="onDocumentLoad()">
   </ng2-pdfjs-viewer>
   
   <button 
@@ -281,6 +432,14 @@ export class ResponsiveViewerComponent implements OnInit {
   isMobile = false;
   showMobileToolbar = false;
 
+  layoutConfig = {
+    toolbarDensity: 'compact',
+    sidebarWidth: '280px',
+    toolbarPosition: 'top',
+    sidebarPosition: 'left',
+    responsiveBreakpoint: 768
+  };
+
   ngOnInit() {
     this.checkScreenSize();
   }
@@ -299,6 +458,10 @@ export class ResponsiveViewerComponent implements OnInit {
 
   toggleMobileToolbar() {
     this.showMobileToolbar = !this.showMobileToolbar;
+  }
+
+  onDocumentLoad() {
+    console.log('Document loaded successfully!');
   }
 }
 ```
@@ -320,6 +483,116 @@ export class ResponsiveViewerComponent implements OnInit {
   .responsive-container {
     height: calc(100vh - 56px); /* Account for mobile browser UI */
   }
+}
+```
+
+## Error Handling with Custom Templates
+
+Implement comprehensive error handling with custom templates:
+
+```html title="error-handling.component.html"
+<!-- Custom Error Template -->
+<ng-template #errorTemplate let-error="errorMessage">
+  <div class="error-container">
+    <mat-icon class="error-icon">error_outline</mat-icon>
+    <h2>Failed to Load PDF</h2>
+    <p class="error-message">{{ error }}</p>
+    <div class="error-actions">
+      <button mat-button (click)="retry()">Retry</button>
+      <button mat-button (click)="loadFallback()">Load Fallback</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng2-pdfjs-viewer
+  [pdfSrc]="currentPdf"
+  [showSpinner]="true"
+  [errorOverride]="true"
+  [customErrorTpl]="errorTemplate"
+  [errorMessage]="customErrorMessage"
+  (onDocumentError)="onDocumentError($event)"
+  (onDocumentLoad)="onDocumentLoad()">
+</ng2-pdfjs-viewer>
+```
+
+```typescript title="error-handling.component.ts"
+import { Component } from '@angular/core';
+import { DocumentError } from 'ng2-pdfjs-viewer';
+
+@Component({
+  selector: 'app-error-handling',
+  templateUrl: './error-handling.component.html',
+  styleUrls: ['./error-handling.component.css']
+})
+export class ErrorHandlingComponent {
+  currentPdf = 'assets/sample.pdf';
+  customErrorMessage = '';
+  fallbackPdf = 'assets/fallback.pdf';
+
+  onDocumentError(error: DocumentError) {
+    console.error('PDF load error:', error);
+    
+    // Customize error message based on error type
+    if (error.message.includes('404')) {
+      this.customErrorMessage = 'The requested PDF file was not found. Please check the file path.';
+    } else if (error.message.includes('CORS')) {
+      this.customErrorMessage = 'Cross-origin request blocked. Please ensure CORS is properly configured.';
+    } else if (error.message.includes('password')) {
+      this.customErrorMessage = 'This PDF is password protected. Please provide the correct password.';
+    } else {
+      this.customErrorMessage = `An error occurred while loading the PDF: ${error.message}`;
+    }
+  }
+
+  onDocumentLoad() {
+    console.log('PDF loaded successfully!');
+    this.customErrorMessage = '';
+  }
+
+  retry() {
+    // Reload the same PDF
+    const currentSrc = this.currentPdf;
+    this.currentPdf = '';
+    setTimeout(() => {
+      this.currentPdf = currentSrc;
+    }, 100);
+  }
+
+  loadFallback() {
+    // Load a fallback PDF
+    this.currentPdf = this.fallbackPdf;
+    this.customErrorMessage = '';
+  }
+}
+```
+
+```css title="error-handling.component.css"
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  color: #f44336;
+}
+
+.error-icon {
+  font-size: 64px;
+  margin-bottom: 1rem;
+  color: #f44336;
+}
+
+.error-message {
+  margin: 1rem 0;
+  max-width: 400px;
+  line-height: 1.5;
+}
+
+.error-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
 }
 ```
 

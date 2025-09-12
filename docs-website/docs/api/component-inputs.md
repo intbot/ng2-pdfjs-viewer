@@ -31,6 +31,239 @@ pdfSrc = new Uint8Array(pdfBuffer);
 <ng2-pdfjs-viewer [showSpinner]="true"></ng2-pdfjs-viewer>
 ```
 
+#### `viewerId`
+- **Type**: `string`
+- **Default**: `'ng2-pdfjs-viewer-ID{increment}'`
+- **Description**: Unique identifier for the viewer instance
+
+```typescript
+viewerId = 'my-custom-viewer-id';
+```
+
+#### `viewerFolder`
+- **Type**: `string`
+- **Default**: `undefined`
+- **Description**: Custom PDF.js folder path for custom builds
+
+```typescript
+viewerFolder = 'assets/custom-pdfjs';
+```
+
+#### `externalWindow`
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Open PDF viewer in external window
+
+```typescript
+externalWindow = true;
+```
+
+#### `target`
+- **Type**: `string`
+- **Default**: `'_blank'`
+- **Description**: Target for external window (when externalWindow is true)
+
+```typescript
+target = '_blank'; // or '_self', '_parent', '_top'
+```
+
+#### `downloadFileName`
+- **Type**: `string`
+- **Default**: `undefined`
+- **Description**: Custom filename for PDF downloads
+
+```typescript
+downloadFileName = 'my-document.pdf';
+```
+
+#### `locale`
+- **Type**: `string`
+- **Default**: `undefined`
+- **Description**: Language/locale setting for the viewer
+
+```typescript
+locale = 'en-US'; // or 'es-ES', 'fr-FR', etc.
+```
+
+#### `useOnlyCssZoom`
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Use CSS-only zoom instead of canvas scaling
+
+```typescript
+useOnlyCssZoom = true;
+```
+
+#### `diagnosticLogs`
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Enable diagnostic logging for debugging
+
+```typescript
+diagnosticLogs = true; // Enable in development
+```
+
+## Individual Control Properties
+
+### Button Visibility Controls
+
+#### `showOpenFile`
+- **Type**: `boolean`
+- **Default**: `true`
+- **Description**: Show/hide the open file button
+
+```typescript
+showOpenFile = false; // Hide open file button
+```
+
+#### `showDownload`
+- **Type**: `boolean`
+- **Default**: `true`
+- **Description**: Show/hide the download button
+
+```typescript
+showDownload = true;
+```
+
+#### `showPrint`
+- **Type**: `boolean`
+- **Default**: `true`
+- **Description**: Show/hide the print button
+
+```typescript
+showPrint = true;
+```
+
+#### `showFullScreen`
+- **Type**: `boolean`
+- **Default**: `true`
+- **Description**: Show/hide the fullscreen button
+
+```typescript
+showFullScreen = false; // Hide fullscreen button
+```
+
+#### `showFind`
+- **Type**: `boolean`
+- **Default**: `true`
+- **Description**: Show/hide the find/search button
+
+```typescript
+showFind = true;
+```
+
+#### `showViewBookmark`
+- **Type**: `boolean`
+- **Default**: `true`
+- **Description**: Show/hide the bookmark view button
+
+```typescript
+showViewBookmark = false; // Hide bookmark button
+```
+
+#### `showAnnotations`
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Show/hide the annotations button
+
+```typescript
+showAnnotations = true; // Show annotations button
+```
+
+## Auto-Action Properties
+
+### Automatic Actions on Load
+
+#### `downloadOnLoad`
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Automatically trigger download when PDF loads
+
+```typescript
+downloadOnLoad = true; // Auto-download on load
+```
+
+#### `printOnLoad`
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Automatically trigger print when PDF loads
+
+```typescript
+printOnLoad = true; // Auto-print on load
+```
+
+#### `rotateCW`
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Automatically rotate clockwise on load
+
+```typescript
+rotateCW = true; // Auto-rotate clockwise
+```
+
+#### `rotateCCW`
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Automatically rotate counter-clockwise on load
+
+```typescript
+rotateCCW = true; // Auto-rotate counter-clockwise
+```
+
+#### `showLastPageOnLoad`
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Show last page instead of first page on load
+
+```typescript
+showLastPageOnLoad = true; // Start at last page
+```
+
+## Navigation Properties
+
+### Document Navigation
+
+#### `namedDest`
+- **Type**: `string`
+- **Default**: `undefined`
+- **Description**: Navigate to a named destination in the PDF
+
+```typescript
+namedDest = 'page.5'; // Go to page 5
+namedDest = 'chapter.1'; // Go to chapter 1
+```
+
+## Error Handling Properties
+
+### Custom Error Display
+
+#### `errorOverride`
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Override default error display with custom template
+
+```typescript
+errorOverride = true; // Use custom error template
+```
+
+#### `errorAppend`
+- **Type**: `boolean`
+- **Default**: `true`
+- **Description**: Append custom message to default error message
+
+```typescript
+errorAppend = false; // Replace default error message
+```
+
+#### `errorMessage`
+- **Type**: `string`
+- **Default**: `undefined`
+- **Description**: Custom error message to display
+
+```typescript
+errorMessage = 'Failed to load document. Please try again.';
+```
+
 ## Display Configuration
 
 ### Toolbar Controls
@@ -104,6 +337,24 @@ primaryColor = '#ff6b6b'; // Custom primary color
 - **Type**: `string`
 - **Default**: `'#333333'`
 - **Description**: Text color for UI elements
+
+#### `pageBorderColor`
+- **Type**: `string`
+- **Default**: `undefined`
+- **Description**: Color of page borders
+
+```typescript
+pageBorderColor = '#cccccc'; // Light gray borders
+```
+
+#### `toolbarColor`
+- **Type**: `string`
+- **Default**: `undefined`
+- **Description**: Background color of the toolbar
+
+```typescript
+toolbarColor = '#f5f5f5'; // Light gray toolbar
+```
 
 ### Advanced Theming
 
@@ -291,10 +542,58 @@ interface ViewerConfig {
 
 ### Layout Configuration
 
+#### `toolbarDensity`
+- **Type**: `'compact' | 'normal' | 'comfortable'`
+- **Default**: `'default'`
+- **Description**: Density of toolbar buttons
+
+```typescript
+toolbarDensity = 'compact'; // Smaller buttons, more space
+toolbarDensity = 'comfortable'; // Larger buttons, more padding
+```
+
+#### `sidebarWidth`
+- **Type**: `string`
+- **Default**: `undefined`
+- **Description**: Width of the sidebar
+
+```typescript
+sidebarWidth = '280px'; // Fixed width
+sidebarWidth = '25%'; // Percentage width
+```
+
+#### `toolbarPosition`
+- **Type**: `'top' | 'bottom'`
+- **Default**: `'top'`
+- **Description**: Position of the toolbar
+
+```typescript
+toolbarPosition = 'bottom'; // Move toolbar to bottom
+```
+
+#### `sidebarPosition`
+- **Type**: `'left' | 'right'`
+- **Default**: `'left'`
+- **Description**: Position of the sidebar
+
+```typescript
+sidebarPosition = 'right'; // Move sidebar to right
+```
+
+#### `responsiveBreakpoint`
+- **Type**: `string | number`
+- **Default**: `undefined`
+- **Description**: Breakpoint for responsive behavior
+
+```typescript
+responsiveBreakpoint = 768; // Mobile breakpoint
+responsiveBreakpoint = '768px'; // CSS breakpoint
+```
+
 #### `layoutConfig`
 - **Type**: `LayoutConfig`
 - **Default**: `undefined`
-- **Description**: Layout and responsive configuration
+- **Description**: Layout and responsive configuration object
 
 ```typescript
 interface LayoutConfig {
@@ -304,6 +603,114 @@ interface LayoutConfig {
   sidebarPosition?: 'left' | 'right';
   responsiveBreakpoint?: number;
 }
+
+layoutConfig: LayoutConfig = {
+  toolbarDensity: 'compact',
+  sidebarWidth: '280px',
+  toolbarPosition: 'top',
+  sidebarPosition: 'left',
+  responsiveBreakpoint: 768
+};
+```
+
+## Getter/Setter Properties
+
+### Current State Properties
+
+#### `zoom` (getter/setter)
+- **Type**: `string`
+- **Description**: Current zoom level of the PDF
+
+```typescript
+// Get current zoom
+const currentZoom = this.pdfViewer.zoom; // Returns 'auto', 'page-width', etc.
+
+// Set zoom level
+this.pdfViewer.zoom = '150%'; // Set to 150%
+this.pdfViewer.zoom = 'page-width'; // Fit to page width
+```
+
+#### `rotation` (getter/setter)
+- **Type**: `number`
+- **Description**: Current rotation angle in degrees
+
+```typescript
+// Get current rotation
+const currentRotation = this.pdfViewer.rotation; // Returns 0, 90, 180, 270
+
+// Set rotation
+this.pdfViewer.rotation = 90; // Rotate 90 degrees clockwise
+```
+
+#### `cursor` (getter/setter)
+- **Type**: `string`
+- **Description**: Current cursor mode
+
+```typescript
+// Get current cursor
+const currentCursor = this.pdfViewer.cursor; // Returns 'grab', 'grabbing', etc.
+
+// Set cursor mode
+this.pdfViewer.cursor = 'grab'; // Hand cursor for panning
+```
+
+#### `scroll` (getter/setter)
+- **Type**: `string`
+- **Description**: Current scroll mode
+
+```typescript
+// Get current scroll
+const currentScroll = this.pdfViewer.scroll; // Returns 'vertical', 'horizontal', etc.
+
+// Set scroll mode
+this.pdfViewer.scroll = 'vertical'; // Vertical scrolling only
+```
+
+#### `spread` (getter/setter)
+- **Type**: `string`
+- **Description**: Current spread mode
+
+```typescript
+// Get current spread
+const currentSpread = this.pdfViewer.spread; // Returns 'none', 'odd', 'even', etc.
+
+// Set spread mode
+this.pdfViewer.spread = 'odd'; // Show odd pages only
+```
+
+#### `pageMode` (getter/setter)
+- **Type**: `string`
+- **Description**: Current page mode
+
+```typescript
+// Get current page mode
+const currentPageMode = this.pdfViewer.pageMode; // Returns 'single', 'book', etc.
+
+// Set page mode
+this.pdfViewer.pageMode = 'book'; // Book-like page layout
+```
+
+#### `page` (getter/setter)
+- **Type**: `number`
+- **Description**: Current page number (1-based)
+
+```typescript
+// Get current page
+const currentPage = this.pdfViewer.page; // Returns 1, 2, 3, etc.
+
+// Set current page
+this.pdfViewer.page = 5; // Go to page 5
+```
+
+### External Window Properties
+
+#### `externalWindowOptions`
+- **Type**: `string`
+- **Default**: `undefined`
+- **Description**: Options for external window (when externalWindow is true)
+
+```typescript
+externalWindowOptions = 'width=1200,height=800,scrollbars=yes,resizable=yes';
 ```
 
 ## Deprecated Properties

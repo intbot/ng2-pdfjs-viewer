@@ -45,6 +45,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'api/component-inputs',
         'api/component-outputs',
+        'api/component-methods',
       ],
     },
     'changelog',
