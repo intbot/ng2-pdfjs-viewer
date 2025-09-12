@@ -30,6 +30,7 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatListModule } from "@angular/material/list";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { VercelAnalyticsService } from "./services/vercel-analytics.service";
 
 const MATERIAL_IMPORTS = [
   BrowserAnimationsModule,
@@ -68,7 +69,7 @@ const MATERIAL_IMPORTS = [
     FormsModule,
     MATERIAL_IMPORTS,
   ],
-  providers: [],
+  providers: [VercelAnalyticsService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

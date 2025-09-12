@@ -23,6 +23,7 @@
     "@angular/platform-browser": "^20.0.0",
     "@angular/platform-browser-dynamic": "^20.0.0",
     "@angular/router": "^20.0.0",
+    "@vercel/analytics": "^1.5.0",
     "core-js": "^3.40.0",
     "hammerjs": "^2.0.8",
     "ng2-pdfjs-viewer": "file:.yalc/ng2-pdfjs-viewer",

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
 import { ChangedScale, ChangedRotation } from "ng2-pdfjs-viewer";
+import { VercelAnalyticsService } from "../services/vercel-analytics.service";
 // Additional event data types will be available after library build:
 // DocumentError, PagesInfo, PresentationMode, FindOperation, FindMatchesCount,
 // DocumentMetadata, DocumentOutline, PageRenderInfo, AnnotationLayerRenderEvent, BookmarkClick
@@ -211,7 +212,7 @@ export class FeaturesComponent implements OnInit {
   public currentRotation = 0;
   public totalPages = 0;
 
-  constructor() {}
+  constructor(private analytics: VercelAnalyticsService) {}
 
   ngOnInit() {
     // Initialize detected zoom display
@@ -256,6 +257,12 @@ export class FeaturesComponent implements OnInit {
     if (this.pdfViewer?.PDFViewerApplication) {
       this.totalPages = this.pdfViewer.PDFViewerApplication.pagesCount || 0;
     }
+
+    // Track PDF load event
+    this.analytics.trackPdfViewerEvent('pdf_loaded', {
+      totalPages: this.totalPages,
+      source: 'features_demo'
+    });
 
     this.pushEventToFeed("documentLoad");
   }
@@ -447,16 +454,40 @@ export class FeaturesComponent implements OnInit {
   public async triggerDownload() {
     try {
       const result = await this.pdfViewer.triggerDownload();
+      
+      // Track download event
+      this.analytics.trackPdfViewerEvent('download_clicked', {
+        success: true,
+        source: 'features_demo'
+      });
       } catch (error) {
       console.error("🎬 Features Demo: Download failed:", error);
+      
+      // Track failed download
+      this.analytics.trackPdfViewerEvent('download_failed', {
+        error: error.message,
+        source: 'features_demo'
+      });
     }
   }
 
   public async triggerPrint() {
       try {
       const result = await this.pdfViewer.triggerPrint();
+      
+      // Track print event
+      this.analytics.trackPdfViewerEvent('print_clicked', {
+        success: true,
+        source: 'features_demo'
+      });
       } catch (error) {
       console.error("🎬 Features Demo: Print failed:", error);
+      
+      // Track failed print
+      this.analytics.trackPdfViewerEvent('print_failed', {
+        error: error.message,
+        source: 'features_demo'
+      });
     }
   }
 
