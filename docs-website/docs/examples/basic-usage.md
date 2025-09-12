@@ -486,6 +486,162 @@ export class ResponsiveViewerComponent implements OnInit {
 }
 ```
 
+## Two-Way Data Binding
+
+Use Angular's two-way binding syntax for properties that support it:
+
+```html title="two-way-binding.component.html"
+<ng2-pdfjs-viewer
+  pdfSrc="assets/sample.pdf"
+  [(zoom)]="currentZoom"
+  [(cursor)]="currentCursor"
+  [(scroll)]="currentScroll"
+  [(spread)]="currentSpread"
+  [(pageMode)]="currentPageMode"
+  (zoomChange)="onZoomChange($event)"
+  (cursorChange)="onCursorChange($event)">
+</ng2-pdfjs-viewer>
+
+<div class="controls">
+  <mat-form-field>
+    <mat-label>Zoom Level</mat-label>
+    <mat-select [(value)]="currentZoom">
+      <mat-option value="auto">Auto</mat-option>
+      <mat-option value="page-width">Page Width</mat-option>
+      <mat-option value="page-height">Page Height</mat-option>
+      <mat-option value="150%">150%</mat-option>
+      <mat-option value="200%">200%</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Cursor Mode</mat-label>
+    <mat-select [(value)]="currentCursor">
+      <mat-option value="select">Select</mat-option>
+      <mat-option value="hand">Hand</mat-option>
+      <mat-option value="zoom">Zoom</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Scroll Mode</mat-label>
+    <mat-select [(value)]="currentScroll">
+      <mat-option value="vertical">Vertical</mat-option>
+      <mat-option value="horizontal">Horizontal</mat-option>
+      <mat-option value="wrapped">Wrapped</mat-option>
+      <mat-option value="page">Page</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+```
+
+```typescript title="two-way-binding.component.ts"
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-two-way-binding',
+  templateUrl: './two-way-binding.component.html',
+  styleUrls: ['./two-way-binding.component.css']
+})
+export class TwoWayBindingComponent {
+  // Two-way bound properties
+  currentZoom = 'auto';
+  currentCursor = 'select';
+  currentScroll = 'vertical';
+  currentSpread = 'none';
+  currentPageMode = 'none';
+
+  onZoomChange(zoom: string) {
+    console.log(`Zoom changed to: ${zoom}`);
+    // The currentZoom property is automatically updated by two-way binding
+  }
+
+  onCursorChange(cursor: string) {
+    console.log(`Cursor changed to: ${cursor}`);
+    // The currentCursor property is automatically updated by two-way binding
+  }
+
+  // Programmatic changes also work with two-way binding
+  resetToDefaults() {
+    this.currentZoom = 'auto';
+    this.currentCursor = 'select';
+    this.currentScroll = 'vertical';
+    this.currentSpread = 'none';
+    this.currentPageMode = 'none';
+  }
+}
+```
+
+## Auto Actions Example
+
+Configure automatic actions that execute when the PDF loads:
+
+```html title="auto-actions.component.html"
+<ng2-pdfjs-viewer
+  pdfSrc="assets/sample.pdf"
+  [downloadOnLoad]="autoDownload"
+  [printOnLoad]="autoPrint"
+  [rotateCW]="autoRotateCW"
+  [rotateCCW]="autoRotateCCW"
+  [showLastPageOnLoad]="startAtLastPage"
+  [autoActions]="autoActionsConfig"
+  (onDocumentLoad)="onDocumentLoad()">
+</ng2-pdfjs-viewer>
+
+<div class="auto-actions-controls">
+  <mat-checkbox [(ngModel)]="autoDownload">Auto Download on Load</mat-checkbox>
+  <mat-checkbox [(ngModel)]="autoPrint">Auto Print on Load</mat-checkbox>
+  <mat-checkbox [(ngModel)]="autoRotateCW">Auto Rotate Clockwise</mat-checkbox>
+  <mat-checkbox [(ngModel)]="autoRotateCCW">Auto Rotate Counter-Clockwise</mat-checkbox>
+  <mat-checkbox [(ngModel)]="startAtLastPage">Start at Last Page</mat-checkbox>
+</div>
+```
+
+```typescript title="auto-actions.component.ts"
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-auto-actions',
+  templateUrl: './auto-actions.component.html',
+  styleUrls: ['./auto-actions.component.css']
+})
+export class AutoActionsComponent {
+  // Individual auto-action properties
+  autoDownload = false;
+  autoPrint = false;
+  autoRotateCW = false;
+  autoRotateCCW = false;
+  startAtLastPage = false;
+
+  // Convenience configuration object
+  autoActionsConfig = {
+    downloadOnLoad: false,
+    printOnLoad: false,
+    rotateCW: false,
+    rotateCCW: false,
+    showLastPageOnLoad: false
+  };
+
+  onDocumentLoad() {
+    console.log('PDF loaded - auto actions will execute if enabled');
+    
+    // Auto actions are handled automatically by the component
+    // No additional code needed
+  }
+
+  // Update convenience object when individual properties change
+  updateAutoActions() {
+    this.autoActionsConfig = {
+      downloadOnLoad: this.autoDownload,
+      printOnLoad: this.autoPrint,
+      rotateCW: this.autoRotateCW,
+      rotateCCW: this.autoRotateCCW,
+      showLastPageOnLoad: this.startAtLastPage
+    };
+  }
+}
+```
+
 ## Error Handling with Custom Templates
 
 Implement comprehensive error handling with custom templates:

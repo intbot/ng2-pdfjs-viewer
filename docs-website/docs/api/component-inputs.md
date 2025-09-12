@@ -172,6 +172,14 @@ showAnnotations = true; // Show annotations button
 
 ## Auto-Action Properties
 
+Auto actions are executed automatically when the PDF document loads successfully. They provide a way to trigger common actions without user interaction.
+
+### When Auto Actions Execute
+- **Trigger**: When `onDocumentLoad` event fires (PDF fully loaded)
+- **Order**: Actions execute in the order they are defined
+- **Timing**: After the PDF viewer is fully initialized and ready
+- **One-time**: Each auto action executes only once per document load
+
 ### Automatic Actions on Load
 
 #### `downloadOnLoad`
@@ -439,6 +447,9 @@ interface ControlVisibilityConfig {
 interface AutoActionConfig {
   downloadOnLoad?: boolean;
   printOnLoad?: boolean;
+  rotateCW?: boolean;
+  rotateCCW?: boolean;
+  showLastPageOnLoad?: boolean;
 }
 
 autoActions: AutoActionConfig = {
@@ -609,6 +620,22 @@ layoutConfig: LayoutConfig = {
 };
 ```
 
+## Two-Way Bound Properties
+
+These properties support two-way data binding with Angular's `[(property)]` syntax. They automatically emit change events when modified programmatically or by user interaction.
+
+### Two-Way Binding Properties
+- `zoom` - Zoom level with `zoomChange` event
+- `cursor` - Cursor mode with `cursorChange` event  
+- `scroll` - Scroll mode with `scrollChange` event
+- `spread` - Spread mode with `spreadChange` event
+- `pageMode` - Page mode with `pageModeChange` event
+- `page` - Current page number (read-only, no change event)
+- `pdfSrc` - PDF source (read-only, no change event)
+
+### One-Way Binding Properties
+- `rotation` - Document rotation (one-way only, no change event)
+
 ## Getter/Setter Properties
 
 ### Current State Properties
@@ -696,6 +723,19 @@ const currentPage = this.pdfViewer.page; // Returns 1, 2, 3, etc.
 
 // Set current page
 this.pdfViewer.page = 5; // Go to page 5
+```
+
+#### `pdfSrc` (getter/setter)
+- **Type**: `string | Blob | Uint8Array`
+- **Description**: Current PDF source
+
+```typescript
+// Get current PDF source
+const currentSrc = this.pdfViewer.pdfSrc; // Returns current PDF source
+
+// Set PDF source
+this.pdfViewer.pdfSrc = 'assets/new-document.pdf'; // Load new PDF
+this.pdfViewer.pdfSrc = new Blob([pdfData], { type: 'application/pdf' }); // Load from Blob
 ```
 
 ### External Window Properties
@@ -811,6 +851,9 @@ interface ControlVisibilityConfig {
 interface AutoActionConfig {
   downloadOnLoad?: boolean;
   printOnLoad?: boolean;
+  rotateCW?: boolean;
+  rotateCCW?: boolean;
+  showLastPageOnLoad?: boolean;
 }
 
 interface ThemeConfig {
