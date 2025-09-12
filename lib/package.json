@@ -1,6 +1,7 @@
 {
   "name": "ng2-pdfjs-viewer",
-  "version": "25.0.7",
+  "version": "25.0.8",
+  "description": "The most comprehensive Angular PDF viewer powered by Mozilla PDF.js. 7M+ downloads, mobile-first, production-ready with complete rewrite in v25.x",
   "author": {
     "name": "Aneesh Goapalakrishnan",
     "email": "codehippie1@gmail.com"
@@ -29,6 +30,7 @@
     "@angular/core": ">=10.0.0"
   },
   "$schema": "./node_modules/ng-packagr/package.schema.json",
+  "homepage": "https://angular-pdf-viewer-docs.vercel.app/",
   "bugs": {
     "url": "https://github.com/intbot/ng2-pdfjs-viewer/issues"
   },

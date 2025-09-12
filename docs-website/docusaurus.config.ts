@@ -163,15 +163,14 @@ const config: Config = {
       { property: 'og:image', content: 'img/ng2-pdfjs-viewer-social-card.png'},
       {property: 'og:description', content: 'The most comprehensive Angular PDF viewer powered by Mozilla PDF.js'},
       { name: 'twitter:card', content: 'img/ng2-pdfjs-viewer-social-card.png'},
+      { name: 'algolia-site-verification', content: '2EB837F87D9AEC8E' },
     ],
     algolia: {
-      // Placeholder for Algolia search
-      appId: 'YOUR_APP_ID',
-      apiKey: 'YOUR_SEARCH_API_KEY',
-      indexName: 'ng2-pdfjs-viewer',
-      // Optional: see doc section below
+      // Algolia search configuration via vercel environment variables
+      appId: process.env.ALGOLIA_APP_ID || '',
+      apiKey: process.env.ALGOLIA_SEARCH_API_KEY || '',
+      indexName: process.env.ALGOLIA_INDEX_NAME || '',
       contextualSearch: true,
-      // Optional: path for search page that enabled by default (`false` to disable it)
       searchPagePath: 'search',
     },
   } satisfies Preset.ThemeConfig,
