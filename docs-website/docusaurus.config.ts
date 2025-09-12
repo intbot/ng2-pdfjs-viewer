@@ -1,6 +1,10 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -36,6 +40,10 @@ const config: Config = {
     locales: ['en'],
   },
 
+  plugins: [
+    // Vercel Analytics will be added via React component in src/pages/index.tsx
+  ],
+
   presets: [
     [
       'classic',
@@ -50,6 +58,9 @@ const config: Config = {
         blog: false, // Disable blog
         theme: {
           customCss: './src/css/custom.css',
+        },
+        googleAnalytics: {
+          trackingID: 'G-XXXXXXXXXX', // Placeholder - will be set via env var
         },
       } satisfies Preset.Options,
     ],
@@ -166,10 +177,10 @@ const config: Config = {
       { name: 'algolia-site-verification', content: '2EB837F87D9AEC8E' },
     ],
     algolia: {
-      // Algolia search configuration via vercel environment variables
-      appId: process.env.ALGOLIA_APP_ID || '',
-      apiKey: process.env.ALGOLIA_SEARCH_API_KEY || '',
-      indexName: process.env.ALGOLIA_INDEX_NAME || '',
+      // Algolia search configuration via environment variables
+      appId: process.env.ALGOLIA_APP_ID || 'placeholder',
+      apiKey: process.env.ALGOLIA_SEARCH_API_KEY || 'placeholder',
+      indexName: process.env.ALGOLIA_INDEX_NAME || 'placeholder',
       contextualSearch: true,
       searchPagePath: 'search',
     },

@@ -447,39 +447,39 @@ export class FeaturesComponent implements OnInit {
   public async triggerDownload() {
     try {
       const result = await this.pdfViewer.triggerDownload();
-    } catch (error) {
+      } catch (error) {
       console.error("🎬 Features Demo: Download failed:", error);
     }
   }
 
   public async triggerPrint() {
-    try {
+      try {
       const result = await this.pdfViewer.triggerPrint();
-    } catch (error) {
+      } catch (error) {
       console.error("🎬 Features Demo: Print failed:", error);
     }
   }
 
   public async goToPage(pageNumber: number) {
-    try {
+      try {
       const result = await this.pdfViewer.goToPage(pageNumber);
-    } catch (error) {
+      } catch (error) {
       console.error("🎬 Features Demo: Navigation failed:", error);
     }
   }
 
   public async rotateClockwise() {
-    try {
+      try {
       const result = await this.pdfViewer.triggerRotation("cw");
-    } catch (error) {
+      } catch (error) {
       console.error("🎬 Features Demo: Rotation failed:", error);
     }
   }
 
   public async rotateCounterClockwise() {
-    try {
+      try {
       const result = await this.pdfViewer.triggerRotation("ccw");
-    } catch (error) {
+      } catch (error) {
       console.error("🎬 Features Demo: Rotation failed:", error);
     }
   }
