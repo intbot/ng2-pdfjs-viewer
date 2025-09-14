@@ -782,7 +782,7 @@ This project is licensed under the **Apache License 2.0 + Commons Clause License
 - 💬 **Community**: [GitHub Discussions](https://github.com/intbot/ng2-pdfjs-viewer/discussions)
 - 🐛 **Issues**: [GitHub Issues](https://github.com/intbot/ng2-pdfjs-viewer/issues)
 - 📧 **Email**: codehippie1@gmail.com
-- 📧 **Author**: [Aneesh Gopalakrishnan](http://github.com/codehippie1)
+- 👨‍💻 **Author**: [Aneesh Gopalakrishnan](http://github.com/codehippie1)
 
 ---
 
