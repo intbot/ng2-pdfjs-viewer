@@ -351,6 +351,33 @@ primaryColor = '#ff6b6b'; // Custom primary color
 pageBorderColor = '#cccccc'; // Light gray borders
 ```
 
+#### `pageSpacing`
+- **Type**: `object`
+- **Default**: `undefined`
+- **Description**: Control page spacing and margins (overrides PDF.js defaults)
+
+```typescript
+pageSpacing = {
+  margin: '5px auto 10px',           // Page margins (top, horizontal, bottom)
+  spreadMargin: '10px',              // Horizontal margin in spread mode
+  border: '2px solid #cccccc'        // Page border
+};
+
+// Use clean appearance (recommended)
+pageSpacing = {
+  margin: '1px auto -8px',           // PDF.js default
+  spreadMargin: '-3.5px',            // PDF.js default
+  border: '9px solid transparent'    // Invisible borders for spacing
+};
+
+// Use PDF.js original with borders
+pageSpacing = {
+  margin: '1px auto -8px',           // PDF.js default
+  spreadMargin: '-3.5px',            // PDF.js default
+  border: '9px solid transparent'    // PDF.js original borders
+};
+```
+
 #### `toolbarColor`
 - **Type**: `string`
 - **Default**: `undefined`
@@ -905,6 +932,12 @@ export class PdfViewerComponent {
     theme: 'dark',
     primaryColor: '#3f51b5',
     backgroundColor: '#1e1e1e',
+    pageBorderColor: '#555555',
+    pageSpacing: {
+      margin: '1px auto -8px',           // PDF.js default
+      spreadMargin: '-3.5px',            // PDF.js default
+      border: '9px solid transparent'    // Invisible borders for spacing
+    },
     textColor: '#ffffff'
   };
 }

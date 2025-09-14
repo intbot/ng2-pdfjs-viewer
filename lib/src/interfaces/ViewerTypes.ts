@@ -110,6 +110,11 @@ export interface ThemeConfig {
   primaryColor?: string;
   backgroundColor?: string;
   pageBorderColor?: string;
+  pageSpacing?: {
+    margin?: string;
+    spreadMargin?: string;
+    border?: string;
+  };
   toolbarColor?: string;
   textColor?: string;
   borderRadius?: string;

@@ -46,6 +46,7 @@ export class ComponentUtils {
       primaryColor: "set-primary-color",
       backgroundColor: "set-background-color",
       pageBorderColor: "set-page-border-color",
+      pageSpacing: "set-page-spacing",
       toolbarColor: "set-toolbar-color",
       textColor: "set-text-color",
       borderRadius: "set-border-radius",

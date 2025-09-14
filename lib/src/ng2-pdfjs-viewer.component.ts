@@ -253,6 +253,11 @@ export class PdfJsViewerComponent
   @Input() public primaryColor?: string;
   @Input() public backgroundColor?: string;
   @Input() public pageBorderColor?: string;
+  @Input() public pageSpacing?: {
+    margin?: string;
+    spreadMargin?: string;
+    border?: string;
+  };
   @Input() public toolbarColor?: string;
   @Input() public textColor?: string;
   @Input() public borderRadius?: string;
@@ -369,6 +374,8 @@ export class PdfJsViewerComponent
       this.backgroundColor = config.backgroundColor;
     if (config.pageBorderColor !== undefined)
       this.pageBorderColor = config.pageBorderColor;
+    if (config.pageSpacing !== undefined)
+      this.pageSpacing = config.pageSpacing;
     if (config.toolbarColor !== undefined)
       this.toolbarColor = config.toolbarColor;
     if (config.textColor !== undefined) this.textColor = config.textColor;
@@ -1460,6 +1467,13 @@ export class PdfJsViewerComponent
         "pageBorderColor",
         this.pageBorderColor,
         "set-page-border-color",
+      );
+    }
+    if (this.pageSpacing) {
+      this.queueConfiguration(
+        "pageSpacing",
+        this.pageSpacing,
+        "set-page-spacing",
       );
     }
     if (this.toolbarColor) {
