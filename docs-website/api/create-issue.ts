@@ -67,7 +67,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
 ## Developer Information
 - **Name**: ${formData.developerName}
-- **Email**: ${formData.email}
+- **Email**: ${formData.email || 'Not provided'}
 - **Company**: ${formData.companyName || 'Not provided'}
 - **Twitter**: ${formData.twitterHandle || 'Not provided'}
 - **LinkedIn**: ${formData.linkedinProfile || 'Not provided'}

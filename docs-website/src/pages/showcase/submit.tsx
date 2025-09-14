@@ -205,7 +205,7 @@ ${data.additionalNotes || 'None'}
           <div className={`${styles.alert} ${styles['alert--success']}`}>
             <h4>🎉 Thank you for your submission!</h4>
             <p>
-              Your project has been submitted for review. We'll get back to you within 24-48 hours.
+              Your project has been submitted for review. We'll get back to you within 1-2 weeks.
               You can track the status in our <a href="https://github.com/intbot/ng2-pdfjs-viewer/issues?q=is:issue+label:showcase+is:open" target="_blank" rel="noopener noreferrer">GitHub issues</a>.
             </p>
           </div>
@@ -403,7 +403,7 @@ ${data.additionalNotes || 'None'}
                   <div className="col col--6">
                     <div className="margin-bottom--sm">
                       <label htmlFor="email" className={styles.form__label}>
-                        Email <span className={styles.required}>*</span>
+                        Email
                       </label>
                       <input
                         type="email"
@@ -411,7 +411,6 @@ ${data.additionalNotes || 'None'}
                         className={styles.input}
                         value={formData.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
-                        required
                         placeholder="john@example.com"
                       />
                     </div>

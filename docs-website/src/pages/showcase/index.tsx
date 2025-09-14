@@ -167,6 +167,15 @@ export default function Showcase() {
               <a href="/showcase/submit" style={{ color: '#d68910', textDecoration: 'underline', fontWeight: '600' }}>
                 Submit your project
               </a> and inspire other developers!
+              <br /><br />
+              <div style={{ fontSize: '0.9rem', opacity: 0.9, lineHeight: '1.4' }}>
+                <strong>Why submit your project?</strong><br />
+                🚀 <strong>Free promotion</strong> - Showcase your work to 7M+ developers<br />
+                🔗 <strong>Quality backlinks</strong> - Boost your SEO with high-authority links<br />
+                👥 <strong>Community recognition</strong> - Get featured in our official showcase<br />
+                💼 <strong>Professional credibility</strong> - Demonstrate your technical skills<br />
+                🌟 <strong>Inspire others</strong> - Help fellow developers learn and grow
+              </div>
             </p>
           </div>
         </div>
