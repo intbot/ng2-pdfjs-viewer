@@ -153,11 +153,7 @@ ${data.additionalNotes || 'None'}
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          title: `New Project Submission: ${formData.name}`,
-          body: issueBody,
-          labels: ['showcase', 'pending-review']
-        })
+        body: JSON.stringify(formData)
       });
 
       if (response.ok) {
