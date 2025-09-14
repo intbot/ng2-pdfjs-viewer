@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './submit.module.css';
@@ -96,6 +96,30 @@ export default function SubmitProject() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [turnstileToken, setTurnstileToken] = useState<string>('');
+
+  // Load Turnstile script
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    script.async = true;
+    document.head.appendChild(script);
+
+    // Set up global callback
+    (window as any).onTurnstileSuccess = (token: string) => {
+      setTurnstileToken(token);
+    };
+
+    return () => {
+      // Cleanup script on unmount
+      const existingScript = document.querySelector('script[src="https://challenges.cloudflare.com/turnstile/v0/api.js"]');
+      if (existingScript) {
+        document.head.removeChild(existingScript);
+      }
+      // Cleanup global callback
+      delete (window as any).onTurnstileSuccess;
+    };
+  }, []);
 
   const handleInputChange = (field: keyof ProjectSubmission, value: string | string[]) => {
     setFormData(prev => ({
@@ -144,6 +168,13 @@ ${data.additionalNotes || 'None'}
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
+    // Validate Turnstile token
+    if (!turnstileToken) {
+      setSubmitStatus('error');
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       const issueBody = generateIssueBody(formData);
       
@@ -153,7 +184,10 @@ ${data.additionalNotes || 'None'}
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          ...formData,
+          turnstileToken
+        })
       });
 
       if (response.ok) {
@@ -484,10 +518,19 @@ ${data.additionalNotes || 'None'}
               </div>
 
               <div className="text--center">
+                <div className="margin-bottom--md">
+                  <div 
+                    className="cf-turnstile" 
+                    data-sitekey="0x4AAAAAAB1McRqFjezYeGis" 
+                    data-callback="onTurnstileSuccess"
+                    data-theme="light"
+                    style={{ display: 'inline-block' }}
+                  ></div>
+                </div>
                 <button
                   type="submit"
                   className={styles.submitButton}
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !turnstileToken}
                 >
                   {isSubmitting ? 'Submitting...' : 'Submit Project'}
                 </button>

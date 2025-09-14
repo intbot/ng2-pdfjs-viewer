@@ -15,6 +15,7 @@ interface CreateIssueRequest {
   twitterHandle?: string;
   linkedinProfile?: string;
   additionalNotes?: string;
+  turnstileToken: string;
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -42,7 +43,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ message: 'Name, description, and URL are required' });
   }
 
+  if (!formData.turnstileToken) {
+    return res.status(400).json({ message: 'Turnstile verification is required' });
+  }
+
   try {
+    // Verify Turnstile token
+    const turnstileResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        secret: process.env.TURNSTILE_SECRET_KEY || '',
+        response: formData.turnstileToken,
+        remoteip: req.headers['x-forwarded-for'] as string || req.connection.remoteAddress || ''
+      })
+    });
+
+    const turnstileResult = await turnstileResponse.json();
+    
+    if (!turnstileResult.success) {
+      console.error('Turnstile verification failed:', turnstileResult);
+      return res.status(400).json({ message: 'Verification failed. Please try again.' });
+    }
+
     const githubToken = process.env.GITHUB_TOKEN;
     
     if (!githubToken) {
