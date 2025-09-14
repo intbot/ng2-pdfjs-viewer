@@ -161,6 +161,12 @@ export default function Showcase() {
             <p className={styles.constructionDescription}>
               We're currently evaluating submitted projects and they will appear here soon. 
               Thank you for your patience as we curate the best examples for our community!
+              <br /><br />
+              <strong>Have you built something amazing with ng2-pdfjs-viewer?</strong>
+              <br />
+              <a href="/showcase/submit" style={{ color: '#d68910', textDecoration: 'underline', fontWeight: '600' }}>
+                Submit your project
+              </a> and inspire other developers!
             </p>
           </div>
         </div>
