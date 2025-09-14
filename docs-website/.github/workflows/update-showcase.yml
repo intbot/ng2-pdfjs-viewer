@@ -1,0 +1,80 @@
+name: Update Showcase
+on:
+  issues:
+    types: [opened, edited, labeled, unlabeled]
+  issue_comment:
+    types: [created]
+
+jobs:
+  process-submission:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'showcase')
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'docs-website/package-lock.json'
+      
+      - name: Install dependencies
+        working-directory: docs-website
+        run: npm ci
+      
+      - name: Parse issue and validate
+        id: parse
+        run: |
+          cd docs-website
+          node scripts/parse-issue.js "${{ github.event.issue.body }}" > project-data.json
+          echo "PROJECT_DATA=$(cat project-data.json)" >> $GITHUB_OUTPUT
+          
+          # Check if parsing was successful
+          if [ -s project-data.json ]; then
+            echo "VALID=true" >> $GITHUB_OUTPUT
+            echo "Project data parsed successfully"
+          else
+            echo "VALID=false" >> $GITHUB_OUTPUT
+            echo "Failed to parse project data"
+          fi
+      
+      - name: Auto-approve if valid
+        if: steps.parse.outputs.VALID == 'true' && !contains(github.event.issue.labels.*.name, 'approved')
+        run: |
+          gh issue edit ${{ github.event.issue.number }} --add-label "approved"
+          gh issue comment ${{ github.event.issue.number }} --body "✅ Auto-approved! Your project will be added to the showcase within 5 minutes."
+      
+      - name: Request more info if invalid
+        if: steps.parse.outputs.VALID == 'false' && !contains(github.event.issue.labels.*.name, 'approved')
+        run: |
+          gh issue comment ${{ github.event.issue.number }} --body "❌ Missing required fields. Please include: Name, Description, URL, Category, Developer, and Email. You can use the [submission form](https://angular-pdf-viewer-docs.vercel.app/showcase/submit) for easier submission."
+      
+      - name: Update showcase
+        if: contains(github.event.issue.labels.*.name, 'approved')
+        run: |
+          cd docs-website
+          node scripts/update-showcase.js project-data.json
+          
+          # Commit changes
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/projects.json
+          git commit -m "Add project: ${{ github.event.issue.title }}" || exit 0
+          git push
+      
+      - name: Update showcase page
+        if: contains(github.event.issue.labels.*.name, 'approved')
+        run: |
+          cd docs-website
+          npm run build
+          echo "Showcase updated successfully"
+      
+      - name: Notify completion
+        if: contains(github.event.issue.labels.*.name, 'approved')
+        run: |
+          gh issue comment ${{ github.event.issue.number }} --body "🎉 Your project has been added to the showcase! Check it out at https://angular-pdf-viewer-docs.vercel.app/showcase"

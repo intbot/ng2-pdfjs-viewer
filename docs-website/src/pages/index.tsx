@@ -78,6 +78,14 @@ export default function Home(): JSX.Element {
                     This battle-tested library has been trusted by developers worldwide for over <strong>8 years</strong>, 
                     powering thousands of applications.
                   </p>
+                  <div className="margin-top--md">
+                    <a href="/showcase" className="button button--primary button--lg margin-right--md">
+                      View Projects
+                    </a>
+                    <a href="/showcase/submit" className="button button--secondary button--lg">
+                      Submit Your Project
+                    </a>
+                  </div>
                   <div className={styles.showcaseImage}>
                     <img 
                       src="/img/ng2-pdfjs-viewer-screenshot.jpg" 

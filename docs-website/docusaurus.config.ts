@@ -83,6 +83,7 @@ const config: Config = {
           label: 'Docs',
         },
         {to: '/docs/examples/basic-usage', label: 'Examples', position: 'left'},
+        {to: '/showcase', label: 'Showcase', position: 'left'},
         {to: '/docs/migration/overview', label: 'Migration', position: 'left'},
         {to: '/docs/api/component-inputs', label: 'API', position: 'left'},
         {

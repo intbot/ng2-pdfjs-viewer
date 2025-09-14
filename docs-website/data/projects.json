@@ -1,0 +1,33 @@
+[
+  {
+    "id": "1",
+    "name": "PDF Document Manager",
+    "description": "Enterprise document management system with advanced PDF viewing capabilities",
+    "url": "https://example.com",
+    "category": "enterprise",
+    "industry": "Finance",
+    "techStack": ["Angular", "Node.js", "MongoDB"],
+    "featuresUsed": ["custom-theming", "annotations", "search"],
+    "versionUsed": "25.0.8",
+    "developerName": "John Doe",
+    "companyName": "Acme Corp",
+    "submittedAt": "2024-01-15T10:00:00Z",
+    "approvedAt": "2024-01-15T10:30:00Z",
+    "status": "approved"
+  },
+  {
+    "id": "2",
+    "name": "Educational PDF Reader",
+    "description": "Interactive PDF reader for students with note-taking and highlighting features",
+    "url": "https://example.com",
+    "category": "educational",
+    "industry": "Education",
+    "techStack": ["Angular", "TypeScript", "Firebase"],
+    "featuresUsed": ["mobile-optimization", "text-selection", "dark-mode"],
+    "versionUsed": "25.0.7",
+    "developerName": "Jane Smith",
+    "submittedAt": "2024-01-14T15:00:00Z",
+    "approvedAt": "2024-01-14T15:15:00Z",
+    "status": "approved"
+  }
+]

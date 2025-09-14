@@ -1,0 +1,284 @@
+/* Submit Project Form Styles */
+.submitContainer {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.submitHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, var(--ifm-color-primary-lightest) 0%, var(--ifm-color-primary-lighter) 100%);
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  border: 1px solid var(--ifm-color-primary-light);
+}
+
+.submitTitle {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--ifm-color-white);
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.submitDescription {
+  font-size: 1.2rem;
+  color: var(--ifm-color-white);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  opacity: 0.95;
+}
+
+.submissionForm {
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
+}
+
+.submissionForm:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.sectionTitle {
+  color: var(--ifm-heading-color);
+  margin-bottom: 2rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  border-bottom: 3px solid var(--ifm-color-primary);
+  padding-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sectionTitle::before {
+  font-size: 1.2rem;
+}
+
+.projectSection .sectionTitle::before {
+  content: "📋";
+}
+
+.featuresSection .sectionTitle::before {
+  content: "✨";
+}
+
+.contactSection .sectionTitle::before {
+  content: "👤";
+}
+
+.additionalSection .sectionTitle::before {
+  content: "📝";
+}
+
+.formRow {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.formRow .col {
+  flex: 1;
+}
+
+.form__label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--ifm-heading-color);
+  font-size: 1rem;
+}
+
+.required {
+  color: var(--ifm-color-danger);
+  font-weight: 700;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: var(--ifm-background-color);
+  color: var(--ifm-color-content);
+  font-family: inherit;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  outline: none;
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 0 0 4px var(--ifm-color-primary-lightest);
+  transform: translateY(-1px);
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--ifm-color-content-secondary);
+  opacity: 0.7;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.5;
+}
+
+.checkboxGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background: var(--ifm-color-emphasis-100);
+  border-radius: 12px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.checkboxItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.checkboxItem:hover {
+  background: var(--ifm-color-emphasis-200);
+  transform: translateY(-1px);
+}
+
+.checkboxItem input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--ifm-color-primary);
+  cursor: pointer;
+  margin: 0;
+}
+
+.checkboxItem label {
+  font-size: 1rem;
+  color: var(--ifm-color-content);
+  cursor: pointer;
+  margin: 0;
+  font-weight: 500;
+  flex: 1;
+}
+
+.versionInput {
+  background: var(--ifm-color-primary-lightest);
+  border-color: var(--ifm-color-primary-light);
+}
+
+.versionInput:focus {
+  background: var(--ifm-background-color);
+}
+
+.submitButton {
+  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, var(--ifm-color-primary-dark) 100%);
+  color: white;
+  border: none;
+  padding: 1.25rem 3rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 3rem auto 0;
+  min-width: 250px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.submitButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, var(--ifm-color-primary-dark) 0%, var(--ifm-color-primary-darker) 100%);
+}
+
+.submitButton:active {
+  transform: translateY(-1px);
+}
+
+.submitButton:disabled {
+  background: var(--ifm-color-emphasis-300);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.6;
+}
+
+.alert {
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.alert--success {
+  background: linear-gradient(135deg, var(--ifm-color-success-lightest) 0%, var(--ifm-color-success-lighter) 100%);
+  border: 2px solid var(--ifm-color-success);
+  color: var(--ifm-color-success-dark);
+}
+
+.alert--danger {
+  background: linear-gradient(135deg, var(--ifm-color-danger-lightest) 0%, var(--ifm-color-danger-lighter) 100%);
+  border: 2px solid var(--ifm-color-danger);
+  color: var(--ifm-color-danger-dark);
+}
+
+.text--danger {
+  color: var(--ifm-color-danger);
+}
+
+@media (max-width: 768px) {
+  .submitContainer {
+    padding: 1rem;
+  }
+  
+  .submitHeader {
+    padding: 2rem 1.5rem;
+  }
+  
+  .formRow {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .checkboxGrid {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  
+  .submitTitle {
+    font-size: 2.2rem;
+  }
+  
+  .submissionForm {
+    padding: 1.5rem;
+  }
+  
+  .submitButton {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    min-width: 200px;
+  }
+}
