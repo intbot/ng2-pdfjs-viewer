@@ -4,15 +4,64 @@
  */
 
 .heroBanner {
-  padding: 4rem 0;
+  padding: 6rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
+  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, var(--ifm-color-primary-dark) 100%);
+  color: white;
+}
+
+.heroBanner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="hero-pattern" width="50" height="50" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="40" cy="40" r="1" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23hero-pattern)"/></svg>');
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+}
+
+.heroTitle {
+  font-size: 3.5rem;
+  font-weight: 900;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.heroSubtitle {
+  font-size: 1.4rem;
+  margin-bottom: 2rem;
+  opacity: 0.95;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
 }
 
 @media screen and (max-width: 996px) {
   .heroBanner {
-    padding: 2rem;
+    padding: 4rem 2rem;
+  }
+  
+  .heroTitle {
+    font-size: 2.8rem;
+  }
+  
+  .heroSubtitle {
+    font-size: 1.2rem;
   }
 }
 
@@ -20,14 +69,61 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: 1.5rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+
+.heroButton {
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 200px;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.heroButton--primary {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  color: var(--ifm-color-primary);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.heroButton--primary:hover {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  color: var(--ifm-color-primary);
+}
+
+.heroButton--secondary {
+  background: transparent;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.heroButton--secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.8);
+  transform: translateY(-2px);
+  color: white;
 }
 
 @media screen and (max-width: 768px) {
   .buttons {
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
+  }
+  
+  .heroButton {
+    width: 100%;
+    max-width: 300px;
   }
 }
 
@@ -35,29 +131,242 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  margin: 1.5rem 0;
+  gap: 0.75rem;
+  margin: 2rem 0;
   flex-wrap: wrap;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .badges img {
-  height: 20px;
+  height: 24px;
+  transition: transform 0.2s ease;
+}
+
+.badges img:hover {
+  transform: scale(1.05);
 }
 
 .whyRewrite {
-  padding: 4rem 0;
-  background-color: var(--ifm-background-color-secondary);
+  padding: 6rem 0;
+  background: linear-gradient(135deg, var(--ifm-color-primary-lightest) 0%, var(--ifm-color-primary-lighter) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.whyRewrite::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="rewrite-pattern" width="30" height="30" patternUnits="userSpaceOnUse"><circle cx="15" cy="15" r="1" fill="rgba(0,0,0,0.05)"/><circle cx="5" cy="25" r="0.5" fill="rgba(0,0,0,0.03)"/><circle cx="25" cy="5" r="0.5" fill="rgba(0,0,0,0.03)"/></pattern></defs><rect width="100" height="100" fill="url(%23rewrite-pattern)"/></svg>');
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.rewriteContent {
+  position: relative;
+  z-index: 1;
+}
+
+.rewriteTitle {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  color: var(--ifm-heading-color);
+  text-align: center;
+}
+
+.rewriteDescription {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: var(--ifm-color-content-secondary);
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .showcase {
-  padding: 4rem 0;
+  padding: 6rem 0;
+  background: var(--ifm-background-color);
 }
 
-.showcaseImage {
-  margin-top: 2rem;
+.showcaseContent {
+  text-align: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.showcaseTitle {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  color: var(--ifm-heading-color);
+  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, var(--ifm-color-primary-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.showcaseDescription {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  color: var(--ifm-color-content-secondary);
+  margin-bottom: 3rem;
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.showcaseButtons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-bottom: 4rem;
+  flex-wrap: wrap;
+}
+
+.showcaseButton {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 200px;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.showcaseButton--primary {
+  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, var(--ifm-color-primary-dark) 100%);
+  color: white;
+  border: none;
+}
+
+.showcaseButton--primary:hover {
+  background: linear-gradient(135deg, var(--ifm-color-primary-dark) 0%, var(--ifm-color-primary-darker) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  color: white;
+}
+
+.showcaseButton--secondary {
+  background: var(--ifm-background-surface-color);
+  color: var(--ifm-color-content);
+  border: 2px solid var(--ifm-color-emphasis-300);
+}
+
+.showcaseButton--secondary:hover {
+  background: var(--ifm-color-emphasis-100);
+  border-color: var(--ifm-color-emphasis-400);
+  transform: translateY(-2px);
+  color: var(--ifm-color-content);
+}
+
+.showcaseImage {
+  margin-top: 3rem;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.showcaseImage:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+}
+
+.showcaseImage::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.showcaseImage:hover::before {
+  opacity: 1;
+}
+
+.showcaseImage::after {
+  content: '🚀 Click to view live demo';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.showcaseImage:hover::after {
+  opacity: 1;
+}
+
+.showcaseImage img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.showcaseImage:hover img {
+  transform: scale(1.02);
+}
+
+.showcaseCaption {
+  margin-top: 1.5rem;
+  font-style: italic;
+  color: var(--ifm-color-content-secondary);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+@media screen and (max-width: 768px) {
+  .showcaseButtons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .showcaseButton {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .showcaseImage {
+    margin-top: 2rem;
+  }
+  
+  .showcaseImage::after {
+    font-size: 0.9rem;
+    padding: 0.75rem 1.5rem;
+  }
 }
 
 .feature {

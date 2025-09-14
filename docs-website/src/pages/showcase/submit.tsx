@@ -98,8 +98,16 @@ export default function SubmitProject() {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [turnstileToken, setTurnstileToken] = useState<string>('');
 
-  // Load Turnstile script
+  // Load Turnstile script only in production
   useEffect(() => {
+    const isProduction = process.env.NODE_ENV === 'production';
+    
+    if (!isProduction) {
+      // In development, set a mock token to bypass validation
+      setTurnstileToken('dev-mock-token');
+      return;
+    }
+
     const script = document.createElement('script');
     script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
     script.async = true;
@@ -234,26 +242,6 @@ ${data.additionalNotes || 'None'}
             Your project will be reviewed and added to our showcase.
           </p>
         </div>
-
-        {submitStatus === 'success' && (
-          <div className={`${styles.alert} ${styles['alert--success']}`}>
-            <h4>🎉 Thank you for your submission!</h4>
-            <p>
-              Your project has been submitted for review. We'll get back to you within 1-2 weeks.
-              You can track the status in our <a href="https://github.com/intbot/ng2-pdfjs-viewer/issues?q=is:issue+label:showcase+is:open" target="_blank" rel="noopener noreferrer">GitHub issues</a>.
-            </p>
-          </div>
-        )}
-
-        {submitStatus === 'error' && (
-          <div className={`${styles.alert} ${styles['alert--danger']}`}>
-            <h4>❌ Submission Failed</h4>
-            <p>
-              There was an error submitting your project. Please try again or 
-              <a href="https://github.com/intbot/ng2-pdfjs-viewer/issues/new?template=project-submission.md" target="_blank" rel="noopener noreferrer"> submit directly on GitHub</a>.
-            </p>
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} className={styles.submissionForm}>
           <div className={styles.projectSection}>
@@ -518,15 +506,31 @@ ${data.additionalNotes || 'None'}
               </div>
 
               <div className="text--center">
-                <div className="margin-bottom--md">
-                  <div 
-                    className="cf-turnstile" 
-                    data-sitekey="0x4AAAAAAB1McRqFjezYeGis" 
-                    data-callback="onTurnstileSuccess"
-                    data-theme="light"
-                    style={{ display: 'inline-block' }}
-                  ></div>
-                </div>
+                {process.env.NODE_ENV === 'production' && (
+                  <div className="margin-bottom--md">
+                    <div 
+                      className="cf-turnstile" 
+                      data-sitekey="0x4AAAAAAB1McRqFjezYeGis" 
+                      data-callback="onTurnstileSuccess"
+                      data-theme="light"
+                      style={{ display: 'inline-block' }}
+                    ></div>
+                  </div>
+                )}
+                {process.env.NODE_ENV !== 'production' && (
+                  <div className="margin-bottom--md">
+                    <div style={{ 
+                      padding: '1rem', 
+                      background: '#e3f2fd', 
+                      border: '1px solid #2196f3', 
+                      borderRadius: '8px',
+                      color: '#1976d2',
+                      fontSize: '0.9rem'
+                    }}>
+                      🔧 Development Mode: Turnstile disabled for local testing
+                    </div>
+                  </div>
+                )}
                 <button
                   type="submit"
                   className={styles.submitButton}
@@ -535,6 +539,27 @@ ${data.additionalNotes || 'None'}
                   {isSubmitting ? 'Submitting...' : 'Submit Project'}
                 </button>
               </div>
+
+              {/* Success/Error Messages */}
+              {submitStatus === 'success' && (
+                <div className={`${styles.alert} ${styles['alert--success']}`}>
+                  <h4>🎉 Thank you for your submission!</h4>
+                  <p>
+                    Your project has been submitted for review. We'll get back to you within 1-2 weeks.
+                    You can track the status in our <a href="https://github.com/intbot/ng2-pdfjs-viewer/issues?q=is:issue+label:showcase+is:open" target="_blank" rel="noopener noreferrer">GitHub issues</a>.
+                  </p>
+                </div>
+              )}
+
+              {submitStatus === 'error' && (
+                <div className={`${styles.alert} ${styles['alert--danger']}`}>
+                  <h4>❌ Submission Failed</h4>
+                  <p>
+                    There was an error submitting your project. Please try again or 
+                    <a href="https://github.com/intbot/ng2-pdfjs-viewer/issues/new?template=project-submission.md" target="_blank" rel="noopener noreferrer"> submit directly on GitHub</a>.
+                  </p>
+                </div>
+              )}
             </form>
         </div>
     </Layout>
