@@ -702,13 +702,6 @@ export class PdfJsViewerComponent
 
   // #region Lifecycle Methods
   ngOnInit(): void {   
-    // 🟢 TEST LOG - Build verification (BUILD_ID from separate file)
-    if (this.diagnosticLogs) {
-      console.log(
-        "🟢 ng2-pdfjs-viewer.component.ts: TEST LOG - BUILD_ID:",
-        (window as any).NG2_PDF_VIEWER_BUILD_ID || "BUILD_ID_NOT_LOADED",
-      );
-    }
     
     // Configure action queue manager with diagnostic logs
     this.actionQueueManager = new ActionQueueManager(this._diagnosticLogs);

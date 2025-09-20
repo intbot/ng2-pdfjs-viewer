@@ -65,8 +65,7 @@
   "readme": "README.md",
   "scripts": {
     "clean": "shx rm -rf ./dist",
-    "update-build-id": "node update-build-id.js",
-    "build": "npm run update-build-id && npm run clean && ng-packagr -p ng-package.json",
+    "build": "npm run clean && ng-packagr -p ng-package.json",
     "package": "npm run build && cd dist && npm pack",
     "bump": "mkdir .git && npm version patch",
     "version": "npm run build && git add -A .",
