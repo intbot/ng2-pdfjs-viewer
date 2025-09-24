@@ -206,9 +206,7 @@ export class PdfJsViewerComponent
   @Input() public set diagnosticLogs(value: boolean) {
     this._diagnosticLogs = value;
     // Update action queue manager
-    if (this.actionQueueManager) {
-      this.actionQueueManager.setDiagnosticLogs(value);
-    }
+    this.actionQueueManager.setDiagnosticLogs(value);
     // Send to wrapper
     this.dispatchAction("set-diagnostic-logs", value, "property-change");
   }
@@ -488,7 +486,7 @@ export class PdfJsViewerComponent
   private postMessageReadiness = 0;
   private pendingInitialConfig = true;
   private initialConfigQueued = false;
-  private actionQueueManager: ActionQueueManager;
+  private actionQueueManager: ActionQueueManager = new ActionQueueManager(this._diagnosticLogs);
   private changeOriginTracker = new ChangeOriginTracker();
   private messageIdCounter = 0;
   private pendingMessages = new Map<
@@ -702,9 +700,6 @@ export class PdfJsViewerComponent
 
   // #region Lifecycle Methods
   ngOnInit(): void {   
-    
-    // Configure action queue manager with diagnostic logs
-    this.actionQueueManager = new ActionQueueManager(this._diagnosticLogs);
     
     // Connect action queue manager to PostMessage system
     this.actionQueueManager.setPostMessageExecutor((action, payload) =>
