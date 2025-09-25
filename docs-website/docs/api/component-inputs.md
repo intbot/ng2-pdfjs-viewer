@@ -978,6 +978,60 @@ export class PdfViewerComponent {
 </ng2-pdfjs-viewer>
 ```
 
+## Security Properties
+
+### `urlValidation`
+- **Type**: `boolean`
+- **Default**: `true`
+- **Description**: Enable URL validation security feature to prevent file parameter manipulation
+
+```typescript
+// Enable URL validation (default)
+urlValidation = true;
+
+// Disable URL validation
+urlValidation = false;
+```
+
+```html
+<ng2-pdfjs-viewer 
+  pdfSrc="document.pdf"
+  [urlValidation]="true">
+</ng2-pdfjs-viewer>
+```
+
+### `customSecurityTpl`
+- **Type**: `TemplateRef<any>`
+- **Default**: `undefined`
+- **Description**: Custom template for security warnings
+
+```html
+<ng2-pdfjs-viewer 
+  pdfSrc="document.pdf"
+  [customSecurityTpl]="securityTemplate">
+</ng2-pdfjs-viewer>
+
+<ng-template #securityTemplate let-warning="securityWarning">
+  <div class="security-warning" *ngIf="warning">
+    <h4>⚠️ Security Warning</h4>
+    <p>{{ warning.message }}</p>
+    <button (click)="pdfViewer.dismissSecurityWarning()">Dismiss</button>
+  </div>
+</ng-template>
+```
+
+### `securityWarning` (Read-only)
+- **Type**: `SecurityWarning | null`
+- **Description**: Current security warning data (read-only property)
+
+```typescript
+interface SecurityWarning {
+  message: string;        // Warning message
+  originalUrl: string;    // Original file URL
+  currentUrl: string;     // Current (modified) file URL
+}
+```
+
 ## Next Steps
 
 - 📤 [**Component Outputs**](./component-outputs) - Event handling

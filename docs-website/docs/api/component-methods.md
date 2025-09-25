@@ -244,6 +244,32 @@ clearQueue() {
 }
 ```
 
+## Security Methods
+
+### `setUrlValidation(enabled: boolean)`
+- **Type**: `Promise<ActionExecutionResult>`
+- **Description**: Enable or disable URL validation security feature
+- **Parameters**: 
+  - `enabled` - Whether to enable URL validation (default: true)
+
+```typescript
+async toggleSecurity() {
+  await this.pdfViewer.setUrlValidation(false);
+  console.log('URL validation disabled');
+}
+```
+
+### `dismissSecurityWarning()`
+- **Type**: `void`
+- **Description**: Dismiss the current security warning
+
+```typescript
+dismissWarning() {
+  this.pdfViewer.dismissSecurityWarning();
+  console.log('Security warning dismissed');
+}
+```
+
 ## Template Methods
 
 ### `getErrorTemplateData()`
