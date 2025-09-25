@@ -8,9 +8,9 @@ import {
   EventEmitter,
   ElementRef,
   OnChanges,
+  TemplateRef,
   SimpleChanges,
   AfterViewInit,
-  TemplateRef,
 } from "@angular/core";
 
 // Import extracted modules
@@ -244,6 +244,11 @@ export class PdfJsViewerComponent
   @Input() public errorOverride: boolean = false;
   @Input() public errorAppend: boolean = true;
   @Input() public errorMessage: string;
+  @Input() public urlValidation: boolean = true;
+  @Input() public customSecurityTpl: TemplateRef<any>;
+  
+  // Security warning state
+  public securityWarning: { message: string; originalUrl: string; currentUrl: string } | null = null;
   // #endregion
 
   // #region Theme & Visual Customization Properties
@@ -709,6 +714,9 @@ export class PdfJsViewerComponent
     // Send diagnostic logs setting to wrapper
     this.dispatchAction("set-diagnostic-logs", this._diagnosticLogs, "initial-load");
     
+    // Send URL validation setting to wrapper
+    this.dispatchAction("set-url-validation", this.urlValidation, "initial-load");
+    
     // Set up PostMessage listener
     this.setupMessageListener();
     
@@ -804,6 +812,16 @@ export class PdfJsViewerComponent
       // Handle control responses from the viewer
       if (event.data && event.data.type === "control-response") {
         this.handleControlResponse(event.data);
+        return;
+      }
+      
+      // Handle security warning from viewer
+      if (event.data && event.data.type === "ng2-pdfjs-viewer-security-warning") {
+        this.securityWarning = {
+          message: event.data.message,
+          originalUrl: event.data.originalUrl,
+          currentUrl: event.data.currentUrl
+        };
         return;
       }
       
@@ -1696,6 +1714,23 @@ export class PdfJsViewerComponent
     if (this.actionQueueManager) {
       this.actionQueueManager.clearQueues();
     }
+  }
+
+  /**
+   * Enable or disable URL validation security feature
+   * When enabled, prevents users from modifying the file parameter in the viewer URL
+   * @param enabled - Whether to enable URL validation (default: true)
+   * @returns Promise<ActionExecutionResult>
+   */
+  public setUrlValidation(enabled: boolean = true): Promise<ActionExecutionResult> {
+    return this.dispatchAction("set-url-validation", enabled, "user-interaction");
+  }
+
+  /**
+   * Dismiss the security warning
+   */
+  public dismissSecurityWarning(): void {
+    this.securityWarning = null;
   }
   // #endregion
 

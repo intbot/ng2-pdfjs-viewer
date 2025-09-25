@@ -14,6 +14,7 @@ ng2-pdfjs-viewer v25.x comes packed with powerful features designed for modern A
 | **Enhanced Error Handling** | Multiple error display styles with custom templates | ✅ New |
 | **Mobile-First Design** | Responsive layout optimized for touch devices | ✅ New |
 | **TypeScript Strict Mode** | Full type safety with comprehensive API coverage | ✅ New |
+| **URL Security Validation** | Prevents unauthorized file parameter manipulation with custom templates | ✅ New |
 
 ## 🏆 Unique Advantages
 
@@ -168,11 +169,24 @@ Complete visual control through CSS variables:
 - **Enterprise Applications**
 - **Mobile Applications**
 
+## 🔒 Security Features
+
+### URL Validation
+Prevents unauthorized file parameter manipulation in external viewer mode. When enabled, the component validates that the file parameter in the viewer URL hasn't been tampered with.
+
+### Custom Security Templates
+Use Angular templates to display custom security warnings when URL manipulation is detected.
+
+### Developer-Friendly
+Console warnings for debugging while maintaining user experience.
+
 ## What's Next?
 
 Explore specific features in detail:
 
 - 🎨 [**Theming**](./theming) - Customize the appearance
+- 🔒 [**Security**](./security) - URL validation and security features
+- 🪟 [**External Window**](./external-window) - External window and tab management
 - 📚 [**Examples**](../examples/basic-usage) - See it in action
 - 📖 [**API Reference**](../api/component-inputs) - Complete documentation
 - 🔄 [**Migration Guide**](../migration/overview) - Upgrade from v20.x

@@ -57,6 +57,7 @@ Whether you need a simple embedded PDF viewer or a complex document management s
 | **Enhanced Error Handling**   | Multiple error display styles with custom templates                | ✅ New |
 | **Mobile-First Design**       | Responsive layout optimized for touch devices                      | ✅ New |
 | **TypeScript Strict Mode**    | Full type safety with comprehensive API coverage                   | ✅ New |
+| **URL Security Validation**   | Prevents unauthorized file parameter manipulation with custom templates | ✅ New |
 
 ### 🏆 Unique Advantages
 
@@ -197,6 +198,12 @@ Add PDF.js assets to your `angular.json`:
 - **🔄 Rotation & Zoom** - Document manipulation with smooth animations
 - **📱 Touch Gestures** - Mobile-optimized touch interactions
 
+### 🔒 Security Features
+
+- **URL Validation** - Prevents unauthorized file parameter manipulation in external viewer
+- **Custom Security Templates** - Angular template support for security warnings
+- **Console Warnings** - Developer-friendly security notifications
+
 ---
 
 ## 📦 Installation
@@ -284,6 +291,31 @@ Add PDF.js assets to your `angular.json`:
 </ng2-pdfjs-viewer>
 ```
 
+### Security Configuration
+
+```html
+<!-- Basic security (default enabled) -->
+<ng2-pdfjs-viewer 
+  pdfSrc="assets/document.pdf"
+  [urlValidation]="true">
+</ng2-pdfjs-viewer>
+
+<!-- Custom security template -->
+<ng2-pdfjs-viewer 
+  pdfSrc="assets/document.pdf"
+  [urlValidation]="true"
+  [customSecurityTpl]="securityTemplate">
+</ng2-pdfjs-viewer>
+
+<ng-template #securityTemplate let-warning="securityWarning">
+  <div class="alert alert-warning" *ngIf="warning">
+    <h4>⚠️ Security Warning</h4>
+    <p>{{ warning.message }}</p>
+    <button (click)="pdfViewer.dismissSecurityWarning()">Dismiss</button>
+  </div>
+</ng-template>
+```
+
 ### Programmatic Control
 
 ```typescript
@@ -364,6 +396,35 @@ export class MyComponent {
 </ng2-pdfjs-viewer>
 ```
 
+### External Window Behavior
+
+```html
+<!-- Basic external window (reuses same tab) -->
+<ng2-pdfjs-viewer 
+  pdfSrc="document.pdf"
+  [externalWindow]="true">
+</ng2-pdfjs-viewer>
+
+<!-- Custom window options -->
+<ng2-pdfjs-viewer 
+  pdfSrc="document.pdf"
+  [externalWindow]="true"
+  [externalWindowOptions]="'width=1200,height=800,scrollbars=yes,resizable=yes'">
+</ng2-pdfjs-viewer>
+
+<!-- Force new tab each time -->
+<ng2-pdfjs-viewer 
+  pdfSrc="document.pdf"
+  [externalWindow]="true"
+  [target]="'pdf-viewer-' + Date.now()">
+</ng2-pdfjs-viewer>
+```
+
+**Tab Reuse Behavior:**
+- **Same `target` name** → Reuses existing tab (default behavior)
+- **Unique `target` name** → Always opens new tab
+- **`target="_blank"`** → Browser decides (usually reuses)
+
 ---
 
 ## 📚 API Reference
@@ -376,8 +437,8 @@ export class MyComponent {
 | `viewerId`                   | `string`                                  | auto         | Unique viewer identifier              |
 | `viewerFolder`               | `string`                                  | `'assets'`   | Path to PDF.js assets                 |
 | `externalWindow`             | `boolean`                                 | `false`      | Open in new window                    |
-| `externalWindowOptions`      | `string`                                  | -            | External window options               |
-| `target`                     | `string`                                  | `'_blank'`   | Target for external window            |
+| `externalWindowOptions`      | `string`                                  | -            | External window options (size, position, etc.) |
+| `target`                     | `string`                                  | `'_blank'`   | Target for external window (controls tab reuse) |
 | `theme`                      | `'light' \| 'dark' \| 'auto'`             | `'light'`    | Theme selection                       |
 | `primaryColor`               | `string`                                  | `'#007acc'`  | Primary color for UI elements         |
 | `backgroundColor`            | `string`                                  | `'#ffffff'`  | Background color                      |

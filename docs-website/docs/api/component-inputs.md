@@ -770,11 +770,32 @@ this.pdfViewer.pdfSrc = new Blob([pdfData], { type: 'application/pdf' }); // Loa
 #### `externalWindowOptions`
 - **Type**: `string`
 - **Default**: `undefined`
-- **Description**: Options for external window (when externalWindow is true)
+- **Description**: Window features for external window (size, position, scrollbars, etc.)
 
 ```typescript
 externalWindowOptions = 'width=1200,height=800,scrollbars=yes,resizable=yes';
 ```
+
+#### `target`
+- **Type**: `string`
+- **Default**: `'_blank'`
+- **Description**: Target name for external window (controls tab reuse behavior)
+
+```typescript
+// Reuse same tab (default)
+target = '_blank';
+
+// Always open new tab
+target = 'pdf-viewer-' + Date.now();
+
+// Named target (reuses if same name)
+target = 'my-pdf-viewer';
+```
+
+**Tab Reuse Behavior:**
+- **Same target name** → Reuses existing tab
+- **Unique target name** → Always opens new tab
+- **`_blank`** → Browser decides (usually reuses)
 
 ## Deprecated Properties
 
