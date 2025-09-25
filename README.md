@@ -498,6 +498,9 @@ export class MyComponent {
 | `themeConfig`                | `ThemeConfig`                             | -            | Theme configuration                   |
 | `groupVisibility`            | `GroupVisibilityConfig`                   | -            | Group visibility configuration        |
 | `layoutConfig`               | `LayoutConfig`                            | -            | Layout configuration                  |
+| `urlValidation`              | `boolean`                                 | `true`       | Enable URL validation                 |
+| `customSecurityTpl`          | `TemplateRef<any>`                        | -            | Custom security template              |
+| `securityWarning`            | `SecurityWarning \| null`                 | -            | Security warning data (read-only)     |
 
 ### Output Events
 
@@ -552,6 +555,8 @@ export class MyComponent {
 | `goBack()`                                               | -                                                           | `void`                                               | Go back in browser history        |
 | `closeViewer()`                                          | -                                                           | `void`                                               | Close viewer window               |
 | `getErrorTemplateData()`                                 | -                                                           | `any`                                                | Get error template data           |
+| `setUrlValidation(enabled: boolean)`                     | `enabled: boolean`                                          | `Promise<ActionExecutionResult>`                     | Enable/disable URL validation     |
+| `dismissSecurityWarning()`                               | -                                                           | `void`                                               | Dismiss security warning          |
 
 ---
 
