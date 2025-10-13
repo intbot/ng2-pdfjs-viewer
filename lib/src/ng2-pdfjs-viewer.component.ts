@@ -94,7 +94,7 @@ import { ChangeOriginTracker } from "./utils/ChangeOriginTracker";
       style="position:relative;width:100%;height:100%;"
     >
       <iframe
-        title="ng2-pdfjs-viewer"
+        [title]="iframeTitle || 'PDF document viewer'"
         [hidden]="externalWindow || (!externalWindow && !pdfSrc)"
         sandbox="allow-forms allow-scripts allow-same-origin allow-modals"
         [style.border]="iframeBorder"
@@ -267,7 +267,8 @@ export class PdfJsViewerComponent
   @Input() public textColor?: string;
   @Input() public borderRadius?: string;
   @Input() public customCSS?: string;
-  @Input() public cspNonce?: string; // CSP nonce for customCSS (optional)
+  @Input() public cspNonce?: string;
+  @Input() public iframeTitle?: string; // CSP nonce for customCSS (optional)
   // #endregion
 
   // #region Loading & Spinner Customization

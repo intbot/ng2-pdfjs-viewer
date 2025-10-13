@@ -427,6 +427,20 @@ cspNonce = 'random-nonce-value';
 The viewer is CSP-compliant by default. The `cspNonce` input is only needed when using `customCSS` with strict Content Security Policy that requires nonces for inline styles.
 :::
 
+#### `iframeTitle`
+
+- **Type**: `string`
+- **Default**: `'PDF document viewer'`
+- **Description**: Accessible title for the iframe element. Improves accessibility for screen readers.
+
+```typescript
+// Default accessible title
+iframeTitle = undefined; // Uses 'PDF document viewer'
+
+// Custom accessible title
+iframeTitle = 'User Manual - Chapter 3';
+```
+
 ### Advanced Theming
 
 #### `themeConfig`
@@ -443,6 +457,7 @@ interface ThemeConfig {
   borderRadius?: string;
   customCSS?: string;
   cspNonce?: string;  // Optional CSP nonce
+  iframeTitle?: string;  // Optional iframe title for accessibility
 }
 
 themeConfig: ThemeConfig = {

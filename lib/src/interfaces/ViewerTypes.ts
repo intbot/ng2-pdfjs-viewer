@@ -120,6 +120,7 @@ export interface ThemeConfig {
   borderRadius?: string;
   customCSS?: string;
   cspNonce?: string; // CSP nonce for customCSS (optional)
+  iframeTitle?: string; // Accessible title for the iframe (optional)
 }
 
 // New event data interfaces for enhanced PDF viewer functionality
