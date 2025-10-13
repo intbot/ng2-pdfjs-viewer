@@ -23,6 +23,9 @@ const sidebars: SidebarsConfig = {
       items: [
         'features/overview',
         'features/theming',
+        'features/security',
+        'features/iframe-security',
+        'features/external-window',
       ],
     },
     {
