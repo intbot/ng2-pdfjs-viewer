@@ -96,6 +96,8 @@ import { ChangeOriginTracker } from "./utils/ChangeOriginTracker";
       <iframe
         title="ng2-pdfjs-viewer"
         [hidden]="externalWindow || (!externalWindow && !pdfSrc)"
+        sandbox="allow-forms allow-scripts allow-same-origin allow-modals"
+        [style.border]="iframeBorder"
         #iframe
         width="100%"
         height="100%"
@@ -482,6 +484,14 @@ export class PdfJsViewerComponent
   // #region External Window Properties
   @Input() public externalWindowOptions: string;
   public viewerTab: any;
+  // #endregion
+
+  // #region Security Properties
+  // iframe sandbox is static for security and Angular compliance
+  // #endregion
+
+  // #region iframe Properties
+  @Input() public iframeBorder: string | number = "0";
   // #endregion
 
   // #region Private Properties

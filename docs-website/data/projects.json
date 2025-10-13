@@ -8,7 +8,7 @@
     "industry": "Finance",
     "techStack": ["Angular", "Node.js", "MongoDB"],
     "featuresUsed": ["custom-theming", "annotations", "search"],
-    "versionUsed": "25.0.8",
+    "versionUsed": "25.0.10",
     "developerName": "John Doe",
     "companyName": "Acme Corp",
     "submittedAt": "2024-01-15T10:00:00Z",

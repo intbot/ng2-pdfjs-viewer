@@ -1,8 +1,8 @@
-# What's New in v25.0.0 🎉
+# What's New in v25.x 🎉
 
 ## Release Highlights
 
-Version 25.0.0 marks a **complete rewrite** of ng2-pdfjs-viewer with modern Angular patterns, enhanced performance, and a focus on developer experience.
+Version 25.x marks a **complete rewrite** of ng2-pdfjs-viewer with modern Angular patterns, enhanced performance, and a focus on developer experience.
 
 :::tip Major Release
 This is a **major release** with breaking changes. Please review the [Migration Guide](./migration/overview) for upgrade instructions.

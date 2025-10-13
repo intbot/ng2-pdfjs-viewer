@@ -186,6 +186,7 @@ Explore specific features in detail:
 
 - 🎨 [**Theming**](./theming) - Customize the appearance
 - 🔒 [**Security**](./security) - URL validation and security features
+- 🛡️ [**iframe Security**](./iframe-security) - iframe sandbox and security configuration
 - 🪟 [**External Window**](./external-window) - External window and tab management
 - 📚 [**Examples**](../examples/basic-usage) - See it in action
 - 📖 [**API Reference**](../api/component-inputs) - Complete documentation

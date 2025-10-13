@@ -1032,6 +1032,77 @@ interface SecurityWarning {
 }
 ```
 
+### iframe Security (Built-in)
+
+The iframe includes built-in security with static sandbox attributes for enhanced protection:
+
+```html
+<!-- Built-in security (always enabled) -->
+<ng2-pdfjs-viewer 
+  pdfSrc="document.pdf">
+</ng2-pdfjs-viewer>
+```
+
+**Static Sandbox Attributes:**
+- `allow-forms` - Required for PDF form functionality
+- `allow-scripts` - Required for PDF.js JavaScript execution
+- `allow-same-origin` - Required for loading PDF files and assets
+- `allow-modals` - Required for PDF.js dialogs (print, download)
+
+**Security Benefits:**
+- **XSS Prevention** - Prevents malicious scripts from affecting parent page
+- **CSP Compliance** - Meets Content Security Policy requirements
+- **Data Protection** - Limits iframe access to parent window context
+- **Enterprise Ready** - Suitable for corporate security environments
+
+> **Note**: Sandbox attributes are fixed for security and Angular compliance. They cannot be customized dynamically.
+
+### `iframeBorder`
+- **Type**: `string | number`
+- **Default**: `"0"`
+- **Description**: iframe border style for visual customization
+
+```typescript
+// Default (no border)
+iframeBorder = "0";
+
+// Custom border style
+iframeBorder = "2px solid #ccc";
+
+// Numeric border (pixels)
+iframeBorder = 1;
+
+// No border (explicit)
+iframeBorder = "none";
+```
+
+```html
+<!-- Default (no border) -->
+<ng2-pdfjs-viewer 
+  pdfSrc="document.pdf">
+</ng2-pdfjs-viewer>
+
+<!-- Custom border -->
+<ng2-pdfjs-viewer 
+  pdfSrc="document.pdf"
+  iframeBorder="2px solid #ccc">
+</ng2-pdfjs-viewer>
+
+<!-- Numeric border -->
+<ng2-pdfjs-viewer 
+  pdfSrc="document.pdf"
+  [iframeBorder]="1">
+</ng2-pdfjs-viewer>
+```
+
+**Border Values:**
+- `"0"` or `0` - No border (default)
+- `"none"` - No border (explicit)
+- `"1px solid #000"` - 1px solid black border
+- `"2px dashed #ccc"` - 2px dashed gray border
+- `"3px solid #007acc"` - 3px solid blue border
+- Any valid CSS border value
+
 ## Next Steps
 
 - 📤 [**Component Outputs**](./component-outputs) - Event handling

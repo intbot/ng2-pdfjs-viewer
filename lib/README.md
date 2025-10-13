@@ -425,6 +425,55 @@ export class MyComponent {
 - **Unique `target` name** → Always opens new tab
 - **`target="_blank"`** → Browser decides (usually reuses)
 
+### iframe Security
+
+```html
+<!-- Built-in security (always enabled) -->
+<ng2-pdfjs-viewer 
+  pdfSrc="document.pdf">
+</ng2-pdfjs-viewer>
+```
+
+**Built-in Security Features:**
+- **Static Sandbox** - `allow-forms allow-scripts allow-same-origin allow-modals`
+- **XSS Prevention** - Prevents malicious scripts from affecting parent page
+- **CSP Compliance** - Meets Content Security Policy requirements
+- **Data Protection** - Limits iframe access to parent window context
+- **Enterprise Ready** - Suitable for corporate security environments
+
+**Sandbox Attributes (Fixed for Security):**
+- `allow-forms` - Required for PDF form functionality
+- `allow-scripts` - Required for PDF.js JavaScript execution
+- `allow-same-origin` - Required for loading PDF files and assets
+- `allow-modals` - Required for PDF.js dialogs (print, download)
+
+### iframe Styling
+
+```html
+<!-- Default (no border) -->
+<ng2-pdfjs-viewer 
+  pdfSrc="document.pdf">
+</ng2-pdfjs-viewer>
+
+<!-- Custom border -->
+<ng2-pdfjs-viewer 
+  pdfSrc="document.pdf"
+  iframeBorder="2px solid #ccc">
+</ng2-pdfjs-viewer>
+
+<!-- Numeric border -->
+<ng2-pdfjs-viewer 
+  pdfSrc="document.pdf"
+  [iframeBorder]="1">
+</ng2-pdfjs-viewer>
+
+<!-- No border (explicit) -->
+<ng2-pdfjs-viewer 
+  pdfSrc="document.pdf"
+  iframeBorder="0">
+</ng2-pdfjs-viewer>
+```
+
 ---
 
 ## 📚 API Reference
@@ -501,6 +550,7 @@ export class MyComponent {
 | `urlValidation`              | `boolean`                                 | `true`       | Enable URL validation                 |
 | `customSecurityTpl`          | `TemplateRef<any>`                        | -            | Custom security template              |
 | `securityWarning`            | `SecurityWarning \| null`                 | -            | Security warning data (read-only)     |
+| `iframeBorder`               | `string \| number`                        | `"0"`        | iframe border style                   |
 
 ### Output Events
 
