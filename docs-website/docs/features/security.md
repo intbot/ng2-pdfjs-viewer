@@ -248,7 +248,68 @@ interface SecurityWarning {
 ### Additional Security Measures
 
 1. **Server-Side Validation** - Always validate file access permissions
-2. **Content Security Policy** - Implement CSP headers
+2. **Content Security Policy** - Implement CSP headers (viewer is CSP-compliant)
 3. **HTTPS Only** - Use HTTPS in production
 4. **File Type Validation** - Validate PDF files on upload
 5. **Access Control** - Implement proper user authentication and authorization
+
+## 🔐 Content Security Policy (CSP) Compliance
+
+### Overview
+
+ng2-pdfjs-viewer is fully compliant with strict Content Security Policy (`style-src 'self'`). All styling is implemented using CSP-safe methods.
+
+### CSP Compliance Features
+
+- ✅ **External Stylesheets** - All static styles loaded from external CSS files
+- ✅ **CSS Custom Properties** - Dynamic styling via `element.style.setProperty()`
+- ✅ **CSS Classes** - Visibility and layout via class toggles
+- ✅ **Optional Nonce Support** - For `customCSS` with strict CSP
+
+### Using with Strict CSP
+
+The viewer works out-of-the-box with strict CSP policies:
+
+```html
+<!-- Your index.html -->
+<meta http-equiv="Content-Security-Policy" 
+      content="default-src 'self'; 
+               style-src 'self'; 
+               script-src 'self';">
+
+<!-- Viewer works without modifications -->
+<ng2-pdfjs-viewer pdfSrc="document.pdf"></ng2-pdfjs-viewer>
+```
+
+### Custom CSS with CSP
+
+When using `customCSS` with strict CSP, provide a nonce:
+
+```typescript
+// Component
+customCSS = '.page { box-shadow: 0 4px 8px rgba(0,0,0,0.2); }';
+cspNonce = 'your-random-nonce'; // Must match CSP policy
+```
+
+```html
+<!-- index.html -->
+<meta http-equiv="Content-Security-Policy" 
+      content="style-src 'self' 'nonce-your-random-nonce';">
+
+<!-- Template -->
+<ng2-pdfjs-viewer
+  [customCSS]="customCSS"
+  [cspNonce]="cspNonce">
+</ng2-pdfjs-viewer>
+```
+
+### CSP Best Practices
+
+1. **Default Usage** - No nonce needed for standard theming
+2. **Custom CSS** - Only provide nonce when using `customCSS`
+3. **Server-Generated Nonce** - Generate unique nonce per request
+4. **Test Thoroughly** - Verify zero CSP violations in console
+
+:::tip
+The viewer is CSP-compliant by default. You only need the `cspNonce` input when using `customCSS` with strict CSP policies.
+:::

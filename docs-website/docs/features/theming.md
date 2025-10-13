@@ -92,6 +92,32 @@ export class MyComponent {
 </ng2-pdfjs-viewer>
 ```
 
+## CSP Compliance
+
+:::info
+All theming features are **Content Security Policy (CSP) compliant**. The viewer uses only CSP-safe methods:
+- External CSS files
+- CSS custom properties via `element.style.setProperty()`
+- CSS class toggles
+
+No inline style injection that would violate strict CSP policies.
+:::
+
+### Using customCSS with Strict CSP
+
+When using `customCSS` with strict CSP, provide a nonce:
+
+```typescript
+themeConfig: ThemeConfig = {
+  theme: 'dark',
+  primaryColor: '#ff6b6b',
+  customCSS: '.page { box-shadow: 0 4px 8px rgba(0,0,0,0.2); }',
+  cspNonce: 'your-random-nonce'  // Match your CSP policy
+};
+```
+
+See [Security Features](./security#content-security-policy-csp-compliance) for details.
+
 ## CSS Custom Properties
 
 ### Available CSS Variables

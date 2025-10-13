@@ -267,6 +267,7 @@ export class PdfJsViewerComponent
   @Input() public textColor?: string;
   @Input() public borderRadius?: string;
   @Input() public customCSS?: string;
+  @Input() public cspNonce?: string; // CSP nonce for customCSS (optional)
   // #endregion
 
   // #region Loading & Spinner Customization
@@ -387,6 +388,7 @@ export class PdfJsViewerComponent
     if (config.borderRadius !== undefined)
       this.borderRadius = config.borderRadius;
     if (config.customCSS !== undefined) this.customCSS = config.customCSS;
+    if (config.cspNonce !== undefined) this.cspNonce = config.cspNonce;
   }
 
   @Input() public set groupVisibility(config: GroupVisibilityConfig) {
@@ -1510,7 +1512,11 @@ export class PdfJsViewerComponent
       );
     }
     if (this.customCSS) {
-      this.queueConfiguration("customCSS", this.customCSS, "set-custom-css");
+      // Pass both CSS and nonce for CSP support
+      const payload = this.cspNonce 
+        ? { css: this.customCSS, nonce: this.cspNonce }
+        : this.customCSS;
+      this.queueConfiguration("customCSS", payload, "set-custom-css");
     }
 
     // Queue CSS zoom configurations (immediate actions)

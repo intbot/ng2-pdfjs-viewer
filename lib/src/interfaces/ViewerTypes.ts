@@ -119,6 +119,7 @@ export interface ThemeConfig {
   textColor?: string;
   borderRadius?: string;
   customCSS?: string;
+  cspNonce?: string; // CSP nonce for customCSS (optional)
 }
 
 // New event data interfaces for enhanced PDF viewer functionality

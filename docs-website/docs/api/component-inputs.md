@@ -387,6 +387,46 @@ pageSpacing = {
 toolbarColor = '#f5f5f5'; // Light gray toolbar
 ```
 
+#### `borderRadius`
+- **Type**: `string`
+- **Default**: `undefined`
+- **Description**: Border radius for UI elements
+
+```typescript
+borderRadius = '8px'; // Rounded corners
+```
+
+#### `customCSS`
+- **Type**: `string`
+- **Default**: `undefined`
+- **Description**: Custom CSS styles to apply to the viewer
+
+```typescript
+customCSS = '.page { box-shadow: 0 4px 8px rgba(0,0,0,0.2); }';
+```
+
+#### `cspNonce`
+- **Type**: `string`
+- **Default**: `undefined`
+- **Description**: CSP nonce for customCSS when using strict Content Security Policy
+
+```typescript
+// Only needed with strict CSP and customCSS
+cspNonce = 'random-nonce-value';
+```
+
+```html
+<!-- With strict CSP -->
+<ng2-pdfjs-viewer
+  [customCSS]="customStyles"
+  [cspNonce]="cspNonce">
+</ng2-pdfjs-viewer>
+```
+
+:::info CSP Compliance
+The viewer is CSP-compliant by default. The `cspNonce` input is only needed when using `customCSS` with strict Content Security Policy that requires nonces for inline styles.
+:::
+
 ### Advanced Theming
 
 #### `themeConfig`
@@ -402,6 +442,7 @@ interface ThemeConfig {
   textColor?: string;
   borderRadius?: string;
   customCSS?: string;
+  cspNonce?: string;  // Optional CSP nonce
 }
 
 themeConfig: ThemeConfig = {

@@ -184,10 +184,11 @@
 
 This section documents the upgrade-safe, event-driven customization plan we adopt on top of the v5 architecture. All custom code continues to live in `postmessage-wrapper.js` (single-file integration), and all Angular surface is exposed via inputs/outputs on `ng2-pdfjs-viewer`.
 
-### Phase A: Theme & Visual Customization (Complete)
-- Inputs: `theme: 'light'|'dark'|'auto'`, `primaryColor`, `backgroundColor`, `pageBackgroundColor`, `toolbarColor`, `textColor`, `borderRadius`, `customCSS`.
-- Implementation: CSS custom properties injected from wrapper; no PDF.js code changes. Event-driven only.
-- Status: ✅ Complete
+### Phase A: Theme & Visual Customization (Complete - CSP-Compliant)
+- Inputs: `theme: 'light'|'dark'|'auto'`, `primaryColor`, `backgroundColor`, `pageBackgroundColor`, `toolbarColor`, `textColor`, `borderRadius`, `customCSS`, `cspNonce`.
+- Implementation: CSS custom properties via `element.style.setProperty()` (CSP-safe); static styles in external `ng2-customization.css`; no inline style injection. Event-driven only.
+- CSP Support: Optional `cspNonce` input for `customCSS` feature when using strict CSP policies.
+- Status: ✅ Complete ✅ CSP-Compliant
 
 ### Phase B: Loading & Spinner (Complete)
 - Inputs: `customSpinnerTpl`, `spinnerClass`, `spinnerHtml`; non-breaking default spinner.
@@ -215,3 +216,22 @@ This section documents the upgrade-safe, event-driven customization plan we adop
 3. Readiness-based dispatch via universal action dispatcher
 4. Zero modifications to PDF.js core files
 5. Backward compatible Angular surface (inputs/outputs only)
+6. **CSP-compliant styling** - all inline style injection eliminated
+
+---
+
+## CSP Compliance (Issue #284)
+
+**Problem**: Inline style injection violated strict Content Security Policy (`style-src 'self'`).
+
+**Solution**: External stylesheet + CSS custom properties + optional nonce for customCSS.
+
+**Changes**:
+- Created `ng2-customization.css` - all static CSS moved to external file
+- Modified `postmessage-wrapper.js` - replaced inline style injection with CSS classes and variables
+- Added `cspNonce` input - optional nonce support for `customCSS` feature
+- All theming/customization now CSP-safe via `element.style.setProperty()` and CSS classes
+
+**Impact**: Zero breaking changes. Works with strictest CSP policies. Backward compatible.
+
+---

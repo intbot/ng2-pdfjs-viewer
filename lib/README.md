@@ -200,6 +200,7 @@ Add PDF.js assets to your `angular.json`:
 
 ### 🔒 Security Features
 
+- **CSP Compliant** - Works with strict Content Security Policy (`style-src 'self'`)
 - **URL Validation** - Prevents unauthorized file parameter manipulation in external viewer
 - **Custom Security Templates** - Angular template support for security warnings
 - **Console Warnings** - Developer-friendly security notifications
@@ -496,6 +497,7 @@ export class MyComponent {
 | `textColor`                  | `string`                                  | -            | Text color                            |
 | `borderRadius`               | `string`                                  | -            | Border radius                         |
 | `customCSS`                  | `string`                                  | -            | Custom CSS styles                     |
+| `cspNonce`                   | `string`                                  | -            | CSP nonce for customCSS (optional)    |
 | `showSpinner`                | `boolean`                                 | `true`       | Show loading spinner                  |
 | `customSpinnerTpl`           | `TemplateRef`                             | -            | Custom spinner template               |
 | `spinnerClass`               | `string`                                  | -            | Custom spinner CSS class              |
