@@ -723,6 +723,44 @@
 
                 <mat-divider></mat-divider>
 
+                <h3>PDF Source Type Testing (Issue #283)</h3>
+                <p class="section-description">
+                  Test loading PDFs from different source types: string URL, Blob, or Uint8Array.
+                  This verifies that Issue #283 (Blob loading TypeError) is fixed.
+                </p>
+                <div class="action-buttons">
+                  <button
+                    mat-raised-button
+                    color="accent"
+                    (click)="loadStringPdf()"
+                    [disabled]="currentSourceType === 'string'"
+                  >
+                    <mat-icon>link</mat-icon> Load from String URL
+                  </button>
+                  <button
+                    mat-raised-button
+                    color="accent"
+                    (click)="loadBlobPdf()"
+                    [disabled]="currentSourceType === 'blob'"
+                  >
+                    <mat-icon>code</mat-icon> Load from Blob
+                  </button>
+                  <button
+                    mat-raised-button
+                    color="accent"
+                    (click)="loadUint8ArrayPdf()"
+                    [disabled]="currentSourceType === 'uint8array'"
+                  >
+                    <mat-icon>data_array</mat-icon> Load from Uint8Array
+                  </button>
+                </div>
+                <div class="info-box">
+                  <mat-icon>info</mat-icon>
+                  <span>Current Source Type: <strong>{{ currentSourceType }}</strong></span>
+                </div>
+
+                <mat-divider></mat-divider>
+
                 <h3>Error Handling Demo</h3>
                 <div class="error-config">
                   <mat-form-field class="full-width">

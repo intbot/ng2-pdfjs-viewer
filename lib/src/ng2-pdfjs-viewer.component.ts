@@ -732,20 +732,36 @@ export class PdfJsViewerComponent
     // Set up PostMessage listener
     this.setupMessageListener();
     
-    // Load PDF for embedded views.
-    if (!this.externalWindow) {
-      this.loadPdf();
-    }
+    // Note: PDF loading moved to ngAfterViewInit() to ensure iframe is ready
+    // This prevents "Cannot read properties of null (reading 'location')" error
+    // when pdfSrc is a Blob (Issue #283)
 
     // Bind events.
     this.bindToPdfJsEventBus();
   }
 
   ngAfterViewInit(): void {
-    // Minimal initialization - rely on event-driven readiness notifications
+    // Load PDF after view is initialized - trust Angular's lifecycle guarantee
+    // that iframe.nativeElement.contentWindow is now available
+    if (!this.externalWindow) {
+      this.loadPdf();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    // Handle pdfSrc changes - reload the PDF (Issue #283)
+    // Trust Angular's change detection event to trigger reload when needed
+    if (changes['pdfSrc'] && !changes['pdfSrc'].firstChange) {
+      // pdfSrc changed after initialization - reload the PDF
+      if (!this.externalWindow) {
+        // Reset configuration queuing since iframe will reload fresh
+        this.initialConfigQueued = false;
+        this.isPostMessageReady = false;
+        this.loadPdf();
+      }
+      return; // pdfSrc change requires full reload, skip other change processing
+    }
+    
     if (this.PDFViewerApplication) {
       // Only apply changes if PostMessage API is ready and viewer is initialized
       if (this.isPostMessageReady && this.PDFViewerApplication.initialized) {

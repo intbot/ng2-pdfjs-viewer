@@ -55,6 +55,8 @@ export class AppModule {}
 </ng2-pdfjs-viewer>
 ```
 
+The `pdfSrc` property accepts URLs (strings), Blob objects, or Uint8Array byte arrays.
+
 That's it! Your PDF viewer is ready to use.
 
 ## Why the Rewrite?

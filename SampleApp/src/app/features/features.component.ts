@@ -40,7 +40,7 @@ export class FeaturesComponent implements OnInit {
   interactiveErrorTpl!: TemplateRef<any>;
 
   // Configuration properties - directly bound to the viewer
-  public pdfSrc = "/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf";
+  public pdfSrc: string | Blob | Uint8Array = "/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf";
   public downloadFileName = "sample-document.pdf";
   public diagnosticLogs = false;
 
@@ -513,6 +513,43 @@ export class FeaturesComponent implements OnInit {
       } catch (error) {
       console.error("🎬 Features Demo: Rotation failed:", error);
     }
+  }
+
+  // Test Blob and Uint8Array loading (Issue #283)
+  public currentSourceType: 'string' | 'blob' | 'uint8array' = 'string';
+  
+  public async loadBlobPdf() {
+    try {
+      console.log("🧪 Testing Blob pdfSrc loading...");
+      const response = await fetch('/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf');
+      const blob = await response.blob();
+      this.pdfSrc = blob;
+      this.currentSourceType = 'blob';
+      console.log("✅ Blob pdfSrc set successfully:", blob);
+    } catch (error) {
+      console.error("❌ Blob loading failed:", error);
+    }
+  }
+  
+  public async loadUint8ArrayPdf() {
+    try {
+      console.log("🧪 Testing Uint8Array pdfSrc loading...");
+      const response = await fetch('/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf');
+      const arrayBuffer = await response.arrayBuffer();
+      const uint8Array = new Uint8Array(arrayBuffer);
+      this.pdfSrc = uint8Array;
+      this.currentSourceType = 'uint8array';
+      console.log("✅ Uint8Array pdfSrc set successfully:", uint8Array);
+    } catch (error) {
+      console.error("❌ Uint8Array loading failed:", error);
+    }
+  }
+  
+  public loadStringPdf() {
+    console.log("🧪 Testing string pdfSrc loading...");
+    this.pdfSrc = "/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf";
+    this.currentSourceType = 'string';
+    console.log("✅ String pdfSrc set successfully");
   }
 
   // Convenience setter demonstrations

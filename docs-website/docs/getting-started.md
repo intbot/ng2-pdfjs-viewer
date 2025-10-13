@@ -48,6 +48,8 @@ export class AppModule { }
 </ng2-pdfjs-viewer>
 ```
 
+The `pdfSrc` property accepts URLs (strings), Blob objects, or Uint8Array byte arrays.
+
 ### Step 4: Add a PDF File
 
 Place a PDF file in your `src/assets/` folder (e.g., `sample.pdf`).
