@@ -1,6 +1,9 @@
 {
   "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
-  "assets": ["./pdfjs/**/*.*"],
+  "assets": [
+    "./pdfjs/**/*.*",
+    "!./pdfjs/sampledoc/**/*"
+  ],
   "lib": {
     "entryFile": "./index.ts"
   }

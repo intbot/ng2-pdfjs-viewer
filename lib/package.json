@@ -23,7 +23,8 @@
   },
   "devDependencies": {
     "ng-packagr": "^20.0.0",
-    "shx": "^0.3.4"
+    "shx": "^0.3.4",
+    "terser": "^5.24.0"
   },
   "peerDependencies": {
     "@angular/common": ">=10.0.0",
@@ -65,7 +66,9 @@
   "readme": "README.md",
   "scripts": {
     "clean": "shx rm -rf ./dist",
-    "build": "npm run clean && ng-packagr -p ng-package.json",
+    "build": "npm run clean && ng-packagr -p ng-package.json && npm run remove-source-maps && npm run minify-pdfjs",
+    "remove-source-maps": "shx rm -f dist/pdfjs/build/*.map",
+    "minify-pdfjs": "terser dist/pdfjs/build/pdf.mjs --compress --mangle --output dist/pdfjs/build/pdf.mjs && terser dist/pdfjs/build/pdf.sandbox.mjs --compress --mangle --output dist/pdfjs/build/pdf.sandbox.mjs && terser dist/pdfjs/build/pdf.worker.mjs --compress --mangle --output dist/pdfjs/build/pdf.worker.mjs",
     "package": "npm run build && cd dist && npm pack",
     "bump": "mkdir .git && npm version patch",
     "version": "npm run build && git add -A .",
