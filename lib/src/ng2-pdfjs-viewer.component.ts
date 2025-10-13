@@ -755,6 +755,11 @@ export class PdfJsViewerComponent
     if (changes['pdfSrc'] && !changes['pdfSrc'].firstChange) {
       // pdfSrc changed after initialization - reload the PDF
       if (!this.externalWindow) {
+        // Show spinner immediately when PDF source changes (Issue #275)
+        this.isLoading = true;
+        this.hasError = false;
+        this.currentErrorMessage = "";
+        
         // Reset configuration queuing since iframe will reload fresh
         this.initialConfigQueued = false;
         this.isPostMessageReady = false;
@@ -1770,6 +1775,11 @@ export class PdfJsViewerComponent
   // #region PDF Loading and URL Handling
   private loadPdf(): void {
     if (!this.validatePdfSource()) return;
+
+    // Show spinner immediately when PDF loading starts (Issue #275)
+    this.isLoading = true;
+    this.hasError = false;
+    this.currentErrorMessage = "";
 
     this.setupExternalWindow();
     const fileUrl = this.createFileUrl();
