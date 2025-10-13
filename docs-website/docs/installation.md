@@ -28,16 +28,32 @@ your-app@1.0.0 /path/to/your-app
 
 ### Nginx Configuration
 
-For production deployments using nginx, you may need to configure MIME types for PDF.js ES modules (`.mjs` files):
+For production deployments using nginx, configure MIME types for PDF.js ES modules:
 
 ```nginx
 # Add to your nginx.conf or site configuration
 types {
     application/javascript  js mjs;
+    text/plain             ftl;
 }
 ```
 
-**Why this is needed**: PDF.js v5+ uses `.mjs` files (ES modules). Without proper MIME type configuration, nginx serves these files with incorrect content-type headers, causing the PDF viewer to crash during loading in production environments.
+### IIS Configuration (Windows Server)
+
+For production deployments using IIS, add to your `web.config`:
+
+```xml
+<configuration>
+  <system.webServer>
+    <staticContent>
+      <mimeMap fileExtension=".mjs" mimeType="application/javascript" />
+      <mimeMap fileExtension=".ftl" mimeType="text/plain" />
+    </staticContent>
+  </system.webServer>
+</configuration>
+```
+
+**Why this is needed**: PDF.js v5+ uses `.mjs` files (ES modules) and `.ftl` files (localization). Without proper MIME type configuration, web servers serve these files with incorrect content-type headers, causing the PDF viewer to crash during loading in production environments.
 
 **Symptoms**: Everything works locally but the viewer gets stuck at the loading screen in production.
 

@@ -116,17 +116,27 @@ export class AppComponent {
 
 ### Production Issues?
 
-**PDF viewer stuck at loading screen in production (nginx)**
+**PDF viewer stuck at loading screen in production**
 
-This is caused by incorrect MIME types for `.mjs` files. Add to your nginx configuration:
+This is caused by incorrect MIME types for `.mjs` and `.ftl` files.
 
+**Nginx configuration:**
 ```nginx
 types {
     application/javascript  js mjs;
+    text/plain             ftl;
 }
 ```
 
-**Why**: PDF.js v5+ uses ES modules (`.mjs` files) that need proper MIME type configuration.
+**IIS configuration (web.config):**
+```xml
+<staticContent>
+  <mimeMap fileExtension=".mjs" mimeType="application/javascript" />
+  <mimeMap fileExtension=".ftl" mimeType="text/plain" />
+</staticContent>
+```
+
+**Why**: PDF.js v5+ uses ES modules (`.mjs`) and localization files (`.ftl`) that need proper MIME type configuration.
 
 ## What's Next?
 
