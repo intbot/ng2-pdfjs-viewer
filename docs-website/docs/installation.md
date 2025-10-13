@@ -24,6 +24,23 @@ your-app@1.0.0 /path/to/your-app
 └── ng2-pdfjs-viewer@25.0.10
 ```
 
+## Production Deployment
+
+### Nginx Configuration
+
+For production deployments using nginx, you may need to configure MIME types for PDF.js ES modules (`.mjs` files):
+
+```nginx
+# Add to your nginx.conf or site configuration
+types {
+    application/javascript  js mjs;
+}
+```
+
+**Why this is needed**: PDF.js v5+ uses `.mjs` files (ES modules). Without proper MIME type configuration, nginx serves these files with incorrect content-type headers, causing the PDF viewer to crash during loading in production environments.
+
+**Symptoms**: Everything works locally but the viewer gets stuck at the loading screen in production.
+
 ## Angular Version Compatibility
 
 | Angular Version | Support Level | Notes |

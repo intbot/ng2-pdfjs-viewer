@@ -114,6 +114,20 @@ export class AppComponent {
 2. **Reinstall dependencies**: `npm install`
 3. **Check Angular version**: Ensure compatibility
 
+### Production Issues?
+
+**PDF viewer stuck at loading screen in production (nginx)**
+
+This is caused by incorrect MIME types for `.mjs` files. Add to your nginx configuration:
+
+```nginx
+types {
+    application/javascript  js mjs;
+}
+```
+
+**Why**: PDF.js v5+ uses ES modules (`.mjs` files) that need proper MIME type configuration.
+
 ## What's Next?
 
 - 🎨 [**Features Overview**](./features/overview) - Explore all available features

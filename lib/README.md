@@ -215,6 +215,21 @@ Add PDF.js assets to your `angular.json`:
 - **Node.js**: 18.0+
 - **TypeScript**: 5.0+
 
+### Production Deployment
+
+#### Nginx Configuration
+
+For production deployments using nginx, you may need to configure MIME types for PDF.js ES modules (`.mjs` files):
+
+```nginx
+# Add to your nginx.conf or site configuration
+types {
+    application/javascript  js mjs;
+}
+```
+
+**Why this is needed**: PDF.js v5+ uses `.mjs` files (ES modules). Without proper MIME type configuration, nginx serves these files with incorrect content-type headers, causing the PDF viewer to crash during loading in production environments.
+
 ### Angular Version Support
 
 | Angular Version | Support Level | Notes |
@@ -498,6 +513,7 @@ export class MyComponent {
 | `borderRadius`               | `string`                                  | -            | Border radius                         |
 | `customCSS`                  | `string`                                  | -            | Custom CSS styles                     |
 | `cspNonce`                   | `string`                                  | -            | CSP nonce for customCSS (optional)    |
+| `iframeTitle`                | `string`                                  | -            | Accessible title for iframe (optional) |
 | `showSpinner`                | `boolean`                                 | `true`       | Show loading spinner                  |
 | `customSpinnerTpl`           | `TemplateRef`                             | -            | Custom spinner template               |
 | `spinnerClass`               | `string`                                  | -            | Custom spinner CSS class              |
