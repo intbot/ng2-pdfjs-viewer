@@ -52,6 +52,7 @@ const sidebars: SidebarsConfig = {
       ],
     },
     'changelog',
+    'faq',
   ],
 };
 
