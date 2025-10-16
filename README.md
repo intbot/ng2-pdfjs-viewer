@@ -939,6 +939,18 @@ This project is licensed under the **Apache License 2.0 + Commons Clause License
 <div align="center">
 
 
+## 🔒 Security
+
+I take security of this library seriously. If you discover a security vulnerability, please report it privately:
+
+- **🔒 Private Reporting**: [Security Policy](https://github.com/intbot/ng2-pdfjs-viewer/security/policy)
+- **📧 Email**: [codehippie1@gmail.com](mailto:codehippie1@gmail.com)
+- **⚠️ Please do NOT** report security issues through public GitHub issues
+
+For security best practices and vulnerability reporting guidelines, see our [Security Policy](https://github.com/intbot/ng2-pdfjs-viewer/security/policy).
+
+---
+
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/intbot/ng2-pdfjs-viewer)
 [![NPM](https://img.shields.io/badge/NPM-Package-red?logo=npm)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
 [![Angular](https://img.shields.io/badge/Angular-Component-green?logo=angular)](https://angular.dev/overview)
