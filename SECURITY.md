@@ -7,7 +7,7 @@ We actively maintain and provide security updates for the following versions:
 | Version | Supported          |
 | ------- | ------------------ |
 | 25.x.x  | :white_check_mark: |
-| 24.x.x  | :white_check_mark: |
+| 24.x.x  | :x:                |
 | 23.x.x  | :x:                |
 | < 23.x  | :x:                |
 
