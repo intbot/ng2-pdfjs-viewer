@@ -8,8 +8,8 @@ We actively maintain and provide security updates for the following versions:
 | ------- | ------------------ |
 | 25.x.x  | :white_check_mark: |
 | 24.x.x  | :x:                |
-| 23.x.x  | :x:                |
-| < 23.x  | :x:                |
+| 20.x.x  | :x:                |
+| < 20.x  | :x:                |
 
 ## Reporting a Vulnerability
 
