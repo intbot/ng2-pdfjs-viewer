@@ -55,6 +55,13 @@ import { ChangeOriginTracker } from "./utils/ChangeOriginTracker";
   standalone: false,
   styles: [
     `
+      /* Main container styling */
+      .ng2-pdfjs-viewer-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
       /* Spinner overlay styling */
       .ng2-pdfjs-loading-overlay {
         position: absolute;
@@ -66,6 +73,27 @@ import { ChangeOriginTracker } from "./utils/ChangeOriginTracker";
         backdrop-filter: saturate(120%) blur(1px);
       }
 
+      /* Default spinner content styling */
+      .ng2-pdfjs-spinner-content {
+        text-align: center;
+      }
+
+      .ng2-pdfjs-spinner-icon {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #2196F3;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      .ng2-pdfjs-spinner-text {
+        margin-top: 16px;
+        color: #666;
+        font-size: 16px;
+      }
+
       /* Error overlay styling */
       .ng2-pdfjs-error-overlay {
         position: absolute;
@@ -75,6 +103,32 @@ import { ChangeOriginTracker } from "./utils/ChangeOriginTracker";
         justify-content: center;
         background: rgba(255, 255, 255, 0.9);
         backdrop-filter: saturate(120%) blur(1px);
+      }
+
+      /* Default error content styling */
+      .ng2-pdfjs-error-content {
+        text-align: center;
+        max-width: 400px;
+        padding: 20px;
+      }
+
+      .ng2-pdfjs-error-icon {
+        font-size: 48px;
+        color: #f44336;
+        margin-bottom: 16px;
+      }
+
+      .ng2-pdfjs-error-title {
+        color: #333;
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      .ng2-pdfjs-error-message {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.4;
       }
 
       /* Default spinner animation */
@@ -89,10 +143,7 @@ import { ChangeOriginTracker } from "./utils/ChangeOriginTracker";
     `,
   ],
   template: `
-    <div
-      class="ng2-pdfjs-viewer-container"
-      style="position:relative;width:100%;height:100%;"
-    >
+    <div class="ng2-pdfjs-viewer-container">
       <iframe
         [title]="iframeTitle || 'PDF document viewer'"
         [hidden]="externalWindow || (!externalWindow && !pdfSrc)"
@@ -107,18 +158,15 @@ import { ChangeOriginTracker } from "./utils/ChangeOriginTracker";
         class="ng2-pdfjs-loading-overlay"
         *ngIf="showSpinner && isLoading && !externalWindow"
         [ngClass]="spinnerClass"
-        style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.6);backdrop-filter:saturate(120%) blur(1px);"
       >
         <ng-container
           *ngIf="customSpinnerTpl; else defaultSpinner"
           [ngTemplateOutlet]="customSpinnerTpl"
         ></ng-container>
         <ng-template #defaultSpinner>
-          <div style="text-align:center;">
-            <div
-              style="display:inline-block;width:40px;height:40px;border:4px solid #f3f3f3;border-top:4px solid #2196F3;border-radius:50%;animation:spin 1s linear infinite;"
-            ></div>
-            <div style="margin-top:16px;color:#666;font-size:16px;">
+          <div class="ng2-pdfjs-spinner-content">
+            <div class="ng2-pdfjs-spinner-icon"></div>
+            <div class="ng2-pdfjs-spinner-text">
               Loading PDF...
             </div>
           </div>
@@ -129,7 +177,6 @@ import { ChangeOriginTracker } from "./utils/ChangeOriginTracker";
         class="ng2-pdfjs-error-overlay"
         *ngIf="errorOverride && hasError && !externalWindow"
         [ngClass]="errorClass"
-        style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.9);backdrop-filter:saturate(120%) blur(1px);"
       >
         <ng-container
           *ngIf="customErrorTpl; else defaultError"
@@ -137,16 +184,14 @@ import { ChangeOriginTracker } from "./utils/ChangeOriginTracker";
           [ngTemplateOutletContext]="getErrorTemplateData()"
         ></ng-container>
         <ng-template #defaultError>
-          <div style="text-align:center;max-width:400px;padding:20px;">
-            <div style="font-size:48px;color:#f44336;margin-bottom:16px;">
+          <div class="ng2-pdfjs-error-content">
+            <div class="ng2-pdfjs-error-icon">
               ⚠️
             </div>
-            <div
-              style="color:#333;font-size:18px;font-weight:500;margin-bottom:8px;"
-            >
+            <div class="ng2-pdfjs-error-title">
               Error Loading PDF
             </div>
-            <div style="color:#666;font-size:14px;line-height:1.4;">
+            <div class="ng2-pdfjs-error-message">
               {{ currentErrorMessage }}
             </div>
           </div>
