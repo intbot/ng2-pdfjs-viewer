@@ -313,3 +313,34 @@ cspNonce = 'your-random-nonce'; // Must match CSP policy
 :::tip
 The viewer is CSP-compliant by default. You only need the `cspNonce` input when using `customCSS` with strict CSP policies.
 :::
+
+## 🚨 Reporting Security Vulnerabilities
+
+We take security seriously and encourage responsible disclosure of security vulnerabilities.
+
+### 🔒 Private Vulnerability Reporting
+
+**Please do NOT report security vulnerabilities through public GitHub issues, discussions, or pull requests.**
+
+Instead, please report security vulnerabilities privately by:
+
+- **📧 Email**: [codehippie1@gmail.com](mailto:codehippie1@gmail.com)
+- **🔒 GitHub Security**: [Report a vulnerability](https://github.com/intbot/ng2-pdfjs-viewer/security/policy)
+- **📋 Security Policy**: [Full Security Policy](https://github.com/intbot/ng2-pdfjs-viewer/security/policy)
+
+### 📝 What to Include
+
+When reporting a vulnerability, please include:
+
+- **Description**: Clear description of the vulnerability
+- **Steps to Reproduce**: Detailed steps to reproduce the issue
+- **Impact Assessment**: Potential impact and affected components
+- **Environment**: Browser, Angular version, ng2-pdfjs-viewer version
+- **Proof of Concept**: If applicable, include a minimal reproduction case
+- **Suggested Fix**: If you have ideas for a fix, please share them
+
+### 🏆 Security Hall of Fame
+
+We recognize security researchers who help improve ng2-pdfjs-viewer security. Contributors will be acknowledged in our security policy and documentation.
+
+For complete security guidelines and reporting procedures, see our [Security Policy](https://github.com/intbot/ng2-pdfjs-viewer/security/policy).
