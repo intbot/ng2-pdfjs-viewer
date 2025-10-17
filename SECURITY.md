@@ -128,5 +128,5 @@ We thank the security community for their contributions to making ng2-pdfjs-view
 
 ---
 
-**Last Updated**: January 2025  
-**Version**: 25.0.12
+**Last Updated**: October 2025  
+**Version**: 25.x

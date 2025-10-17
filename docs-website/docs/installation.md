@@ -21,7 +21,7 @@ npm list ng2-pdfjs-viewer
 You should see output similar to:
 ```
 your-app@1.0.0 /path/to/your-app
-└── ng2-pdfjs-viewer@25.0.12
+└── ng2-pdfjs-viewer@25.0.13
 ```
 
 ## Production Deployment

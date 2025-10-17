@@ -163,13 +163,68 @@
 
 ## Future Upgrade Process
 
-1. **Download new PDF.js version**
-2. **Replace all PDF.js files** (viewer.mjs, viewer.html, viewer.css, etc.)  
-3. **Preserve `postmessage-wrapper.js`** (single integration file)
-4. **Test functionality** - verify all features work
-5. **Update wrapper if needed** (much easier than merging patches)
+### Standard PDF.js Upgrade Steps
 
-**Proven Success**: v5.3.93 upgrade required **zero code changes** and worked immediately.
+1. **Download new PDF.js version**
+2. **Replace core PDF.js files**:
+   - `viewer.mjs`
+   - `viewer.html` ⚠️ **Manual edits required** (see below)
+   - `viewer.css` ⚠️ **Manual edits required** (see below)
+   - All other PDF.js files (worker, fonts, images, etc.)
+3. **Preserve `postmessage-wrapper.js`** (single integration file)
+4. **Re-apply manual edits** (see sections below)
+5. **Test functionality** - verify all features work
+6. **Update wrapper if needed** (much easier than merging patches)
+
+### Manual Edits Required for Each Upgrade
+
+#### 1. viewer.html - PostMessage Wrapper Integration
+**Location**: After the closing `</div>` tag (around line 740)
+**Purpose**: Include our custom postmessage wrapper for Angular integration
+
+```html
+<!-- Add this script tag after the main viewer content -->
+<script src="postmessage-wrapper.js"></script>
+```
+
+#### 2. viewer.html - CSP Compliance Fix
+**Location**: Line ~706 (printServiceDialog)
+**Purpose**: Remove inline styles for CSP compliance
+
+**Change from:**
+```html
+<dialog id="printServiceDialog" style="min-width: 200px;">
+```
+
+**Change to:**
+```html
+<dialog id="printServiceDialog" class="print-service-dialog">
+```
+
+#### 3. viewer.css - Print Service Dialog Styling
+**Location**: After `#printButton::before` styles (around line 5300)
+**Purpose**: Add CSS class for print service dialog
+
+```css
+/* Print service dialog styling */
+.print-service-dialog {
+  min-width: 200px;
+}
+```
+
+### Upgrade Checklist
+
+- [ ] Download new PDF.js version
+- [ ] Replace `viewer.mjs` and other core files
+- [ ] Replace `viewer.html` and add postmessage wrapper script
+- [ ] Remove inline style from `printServiceDialog` in `viewer.html`
+- [ ] Replace `viewer.css` and add print service dialog class
+- [ ] Verify `postmessage-wrapper.js` is preserved
+- [ ] Test component functionality
+- [ ] Verify CSP compliance (no inline style violations)
+- [ ] Update this documentation if new manual edits are needed
+
+**Proven Success**: v5.3.93 upgrade required **zero code changes** and worked immediately after applying the manual edits above.
 
 ---
 

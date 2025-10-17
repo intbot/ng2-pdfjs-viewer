@@ -5299,6 +5299,11 @@ body.wait::before{
           mask-image:var(--toolbarButton-print-icon);
 }
 
+/* Print service dialog styling */
+.print-service-dialog {
+  min-width: 200px;
+}
+
 #downloadButton::before{
   -webkit-mask-image:var(--toolbarButton-download-icon);
           mask-image:var(--toolbarButton-download-icon);

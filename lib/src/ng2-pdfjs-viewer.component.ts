@@ -140,6 +140,16 @@ import { ChangeOriginTracker } from "./utils/ChangeOriginTracker";
           transform: rotate(360deg);
         }
       }
+
+      /* Iframe border styling */
+      .ng2-pdfjs-viewer-iframe {
+        border: 0;
+      }
+      
+      /* Dynamic border classes */
+      .ng2-pdfjs-viewer-iframe.has-border {
+        border: 1px solid #ccc;
+      }
     `,
   ],
   template: `
@@ -148,7 +158,7 @@ import { ChangeOriginTracker } from "./utils/ChangeOriginTracker";
         [title]="iframeTitle || 'PDF document viewer'"
         [hidden]="externalWindow || (!externalWindow && !pdfSrc)"
         sandbox="allow-forms allow-scripts allow-same-origin allow-modals"
-        [style.border]="iframeBorder"
+        [class]="getIframeClasses()"
         #iframe
         width="100%"
         height="100%"
@@ -361,6 +371,19 @@ export class PdfJsViewerComponent
       ...this.errorTemplateData,
     };
   }
+
+  // Helper method to get iframe CSS classes
+  public getIframeClasses(): string {
+    const classes = ['ng2-pdfjs-viewer-iframe'];
+    
+    // Add border class if iframeBorder is set and not "0"
+    if (this.iframeBorder && this.iframeBorder !== "0" && this.iframeBorder !== 0) {
+      classes.push('has-border');
+    }
+    
+    return classes.join(' ');
+  }
+
 
   // Error template button actions
   public reloadViewer(): void {
