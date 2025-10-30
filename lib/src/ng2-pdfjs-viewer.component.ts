@@ -939,11 +939,10 @@ export class PdfJsViewerComponent
           this.actionQueueManager.processQueuedActions();
         }
         
-        // Queue all initial configurations now that PostMessage API is ready (only once)
-        if (!this.initialConfigQueued) {
-          this.queueAllConfigurations();
-          this.initialConfigQueued = true;
-        }
+        // Always (re)apply initial configurations when PostMessage API is ready.
+        // This makes reloads idempotently reconfigure the viewer.
+        this.queueAllConfigurations();
+        this.initialConfigQueued = true;
         
         // Apply any pending changes that occurred before PostMessage API was ready
         this.applyPendingChanges();
@@ -1918,7 +1917,9 @@ export class PdfJsViewerComponent
       this.relaseUrl = () => URL.revokeObjectURL(url);
       return encodeURIComponent(url);
     } else if (this._src instanceof Uint8Array) {
-      let blob = new Blob([this._src], { type: "application/pdf" });
+      // Ensure BlobPart type safety by passing ArrayBuffer
+      const arrayBuffer = (this._src as Uint8Array).buffer as ArrayBuffer;
+      let blob = new Blob([arrayBuffer], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       this.relaseUrl = () => URL.revokeObjectURL(url);
       return encodeURIComponent(url);
