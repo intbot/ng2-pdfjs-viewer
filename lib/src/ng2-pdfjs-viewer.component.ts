@@ -1931,6 +1931,7 @@ export class PdfJsViewerComponent
     let viewerUrl = this.getBaseViewerUrl();
     viewerUrl = this.addFileParameter(viewerUrl, fileUrl);
     viewerUrl = this.addViewerIdParameter(viewerUrl);
+    viewerUrl = this.addUrlValidationParameter(viewerUrl);
     viewerUrl = this.addCacheBustingIfNeeded(viewerUrl);
 
     return viewerUrl;
@@ -1950,6 +1951,11 @@ export class PdfJsViewerComponent
     return typeof this.viewerId !== "undefined"
       ? `${viewerUrl}&viewerId=${this.viewerId}`
       : viewerUrl;
+  }
+
+  private addUrlValidationParameter(viewerUrl: string): string {
+    const flag = this.urlValidation === false ? 0 : 1;
+    return `${viewerUrl}&urlValidation=${flag}`;
   }
 
   private addCacheBustingIfNeeded(viewerUrl: string): string {
