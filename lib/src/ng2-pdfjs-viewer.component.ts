@@ -309,7 +309,7 @@ export class PdfJsViewerComponent
   // #endregion
 
   // #region Theme & Visual Customization Properties
-  @Input() public theme: "light" | "dark" | "auto" = "light";
+  @Input() public theme: "light" | "dark" | "auto" = "auto";
   @Input() public primaryColor?: string;
   @Input() public backgroundColor?: string;
   @Input() public pageBorderColor?: string;
@@ -1553,7 +1553,7 @@ export class PdfJsViewerComponent
     // Queue theme and visual customization configurations
     // Always queue theme to ensure initial styles are applied
 
-    this.queueConfiguration("theme", this.theme || "light", "set-theme");
+    this.queueConfiguration("theme", this.theme || "auto", "set-theme");
 
     if (this.primaryColor) {
       this.queueConfiguration(

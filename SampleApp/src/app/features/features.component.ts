@@ -112,7 +112,7 @@ export class FeaturesComponent implements OnInit {
   public errorMessage = "Custom error message for demonstration";
 
   // Theme & Visual Customization
-  public theme: "light" | "dark" | "auto" = "light";
+  public theme: "light" | "dark" | "auto" = "auto";
   public primaryColor = "#007acc";
   public backgroundColor = "";
   public pageBorderColor = "";
