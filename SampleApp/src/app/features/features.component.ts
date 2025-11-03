@@ -13,6 +13,7 @@ import { VercelAnalyticsService } from "../services/vercel-analytics.service";
 })
 export class FeaturesComponent implements OnInit {
   @ViewChild("pdfViewer", { static: false }) public pdfViewer;
+  @ViewChild("externalBlobViewer", { static: false }) public externalBlobViewer;
 
   // Template references for different spinner styles
   @ViewChild("defaultSpinnerTemplate", { static: true })
@@ -550,6 +551,23 @@ export class FeaturesComponent implements OnInit {
     this.pdfSrc = "/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf";
     this.currentSourceType = 'string';
     console.log("✅ String pdfSrc set successfully");
+  }
+  
+  public async loadBlobPdfInExternalWindow() {
+    try {
+      console.log("🧪 Testing Blob pdfSrc loading in external window with urlValidation=false...");
+      const response = await fetch('/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf');
+      const blob = await response.blob();
+      
+      // Set blob for the separate external viewer and refresh
+      this.externalBlobViewer.pdfSrc = blob;
+      this.externalBlobViewer.refresh();
+      
+      console.log("✅ Blob pdfSrc set successfully for external window:", blob);
+      console.log("🔍 Check the console of the new window/tab for urlValidation diagnostic logs");
+    } catch (error) {
+      console.error("❌ Blob loading failed:", error);
+    }
   }
 
   // Convenience setter demonstrations
