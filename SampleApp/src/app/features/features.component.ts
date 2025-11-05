@@ -159,6 +159,42 @@ export class FeaturesComponent implements OnInit {
     if (this.eventFeed.length > 200) this.eventFeed.pop();
   }
 
+  // Format JSON as single line for console-like display
+  public formatJsonCompact(data: any): string {
+    if (data === null || data === undefined) return '';
+    try {
+      return JSON.stringify(data);
+    } catch (e) {
+      return String(data);
+    }
+  }
+
+  // Get CSS class for event type based on category
+  public getEventTypeClass(type: string): string {
+    // Document events
+    if (type.includes('document') || type.includes('metadata')) {
+      return 'event-document';
+    }
+    // Render events
+    if (type.includes('render') || type.includes('Rendered')) {
+      return 'event-render';
+    }
+    // Find events
+    if (type.includes('find') || type.includes('Find')) {
+      return 'event-find';
+    }
+    // Outline events
+    if (type.includes('outline') || type.includes('bookmark')) {
+      return 'event-outline';
+    }
+    // Error events
+    if (type.includes('error') || type.includes('Error')) {
+      return 'event-error';
+    }
+    // Default
+    return 'event-default';
+  }
+
   // Event tracking for demonstration
   public eventCounts = {
     documentLoad: 0,

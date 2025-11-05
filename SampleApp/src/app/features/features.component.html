@@ -1194,26 +1194,9 @@
     <!-- Event Feed Panel (Collapsible) -->
     <mat-card class="feed-panel">
       <mat-card-header>
-        <mat-card-title>Event Feed</mat-card-title>
-        <span class="spacer"></span>
-        <button
-          mat-stroked-button
-          color="primary"
-          (click)="feedPaused = !feedPaused"
-        >
-          {{ feedPaused ? "Resume" : "Pause" }}
-        </button>
-        <button
-          mat-stroked-button
-          (click)="eventFeed = []"
-          style="margin-left: 0.5rem"
-        >
-          Clear
-        </button>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="feed-controls">
-          <mat-chip-listbox aria-label="Feed Filters">
+        <mat-card-title>
+          Event Feed
+          <mat-chip-listbox aria-label="Feed Filters" class="inline-chips">
             <mat-chip-option
               [selected]="feedFilter.size === 0"
               (click)="feedFilter.clear()"
@@ -1265,7 +1248,24 @@
               >Errors</mat-chip-option
             >
           </mat-chip-listbox>
-</div> 
+        </mat-card-title>
+        <span class="spacer"></span>
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="feedPaused = !feedPaused"
+        >
+          {{ feedPaused ? "Resume" : "Pause" }}
+        </button>
+        <button
+          mat-stroked-button
+          (click)="eventFeed = []"
+          style="margin-left: 0.5rem"
+        >
+          Clear
+        </button>
+      </mat-card-header>
+      <mat-card-content> 
         <div class="feed-list">
           <div
             class="feed-item"
@@ -1273,8 +1273,8 @@
             [attr.data-type]="e.type"
           >
             <span class="feed-time">{{ e.time }}</span>
-            <span class="feed-type">{{ e.type }}</span>
-            <span class="feed-data" *ngIf="e.data as d">{{ d | json }}</span>
+            <span class="feed-type" [ngClass]="getEventTypeClass(e.type)">{{ e.type }}</span>
+            <span class="feed-data" *ngIf="e.data">{{ formatJsonCompact(e.data) }}</span>
           </div>
         </div>
       </mat-card-content>
