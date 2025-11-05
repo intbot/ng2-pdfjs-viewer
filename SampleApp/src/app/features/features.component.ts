@@ -153,7 +153,7 @@ export class FeaturesComponent implements OnInit {
   private pushEventToFeed(type: string, data?: any) {
     if (this.feedPaused) return;
     const now = new Date();
-    const time = now.toLocaleTimeString([], { hour12: false });
+    const time = now.toLocaleTimeString([], { hour12: true });
     // Always add to eventFeed, filtering happens in the getter
     this.eventFeed.unshift({ time, type, data });
     if (this.eventFeed.length > 200) this.eventFeed.pop();
