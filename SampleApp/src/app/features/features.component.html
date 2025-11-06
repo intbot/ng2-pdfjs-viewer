@@ -1199,52 +1199,32 @@
           <mat-chip-listbox aria-label="Feed Filters" class="inline-chips">
             <mat-chip-option
               [selected]="feedFilter.size === 0"
-              (click)="feedFilter.clear()"
+              (click)="clearFilters()"
               >All</mat-chip-option
             >
             <mat-chip-option
-              [selected]="feedFilter.has('documentLoad')"
-              (click)="
-                feedFilter.has('documentLoad')
-                  ? feedFilter.delete('documentLoad')
-                  : feedFilter.add('documentLoad')
-              "
-              >Document</mat-chip-option
+              [selected]="feedFilter.has('document')"
+              (click)="selectFilterCategory('document')"
+              >Document & Viewer</mat-chip-option
             >
             <mat-chip-option
-              [selected]="feedFilter.has('pageRendered')"
-              (click)="
-                feedFilter.has('pageRendered')
-                  ? feedFilter.delete('pageRendered')
-                  : feedFilter.add('pageRendered')
-              "
+              [selected]="feedFilter.has('render')"
+              (click)="selectFilterCategory('render')"
               >Render</mat-chip-option
             >
             <mat-chip-option
               [selected]="feedFilter.has('find')"
-              (click)="
-                feedFilter.has('find')
-                  ? feedFilter.delete('find')
-                  : feedFilter.add('find')
-              "
+              (click)="selectFilterCategory('find')"
               >Find</mat-chip-option
             >
             <mat-chip-option
-              [selected]="feedFilter.has('outlineLoaded')"
-              (click)="
-                feedFilter.has('outlineLoaded')
-                  ? feedFilter.delete('outlineLoaded')
-                  : feedFilter.add('outlineLoaded')
-              "
+              [selected]="feedFilter.has('outline')"
+              (click)="selectFilterCategory('outline')"
               >Outline</mat-chip-option
             >
             <mat-chip-option
-              [selected]="feedFilter.has('documentError')"
-              (click)="
-                feedFilter.has('documentError')
-                  ? feedFilter.delete('documentError')
-                  : feedFilter.add('documentError')
-              "
+              [selected]="feedFilter.has('error')"
+              (click)="selectFilterCategory('error')"
               >Errors</mat-chip-option
             >
           </mat-chip-listbox>

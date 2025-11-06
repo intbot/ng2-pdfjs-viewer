@@ -142,12 +142,82 @@ export class FeaturesComponent implements OnInit {
   public feedPaused = false;
   public feedFilter: Set<string> = new Set();
 
+  // Select a single filter category (exclusive selection)
+  // Clicking a filter button selects only that category and clears others
+  public selectFilterCategory(category: string): void {
+    // If clicking the same category that's already selected, deselect it (show all)
+    if (this.feedFilter.has(category) && this.feedFilter.size === 1) {
+      this.feedFilter = new Set();
+    } else {
+      // Select only this category (exclusive)
+      this.feedFilter = new Set([category]);
+    }
+  }
+
+  // Clear all filters (for "All" button)
+  public clearFilters(): void {
+    this.feedFilter = new Set();
+  }
+
+  // Map event types to categories
+  // Categories match the filter buttons in the UI: document, render, find, outline, error
+  // IMPORTANT: Order matters - check specific categories first, then broader ones
+  private getEventCategory(eventType: string): string {
+    // Render events - visual rendering of pages and annotations ONLY
+    // Check this FIRST to avoid false matches (e.g., pageChange should NOT match pageRendered)
+    if (['pageRendered', 'annotationLayerRendered'].includes(eventType)) {
+      return 'render';
+    }
+    
+    // Find events - search functionality
+    if (['find', 'updateFindMatchesCount'].includes(eventType)) {
+      return 'find';
+    }
+    
+    // Outline events - navigation structure (bookmarks/outline)
+    if (['outlineLoaded', 'bookmarkClick'].includes(eventType)) {
+      return 'outline';
+    }
+    
+    // Error events - error conditions
+    if (['documentError'].includes(eventType)) {
+      return 'error';
+    }
+    
+    // Document events - document lifecycle, viewer navigation, and print operations
+    // Note: "Document" button includes document lifecycle + navigation + print
+    // This is broader than ideal, but keeps the UI simple with 5 buttons
+    if (['documentLoad', 'documentInit', 'pagesInit', 'metadataLoaded', 'openFile',
+         'pageChange', 'scaleChange', 'rotationChange', 'presentationModeChanged',
+         'beforePrint', 'afterPrint'].includes(eventType)) {
+      return 'document';
+    }
+    
+    // System/other events - internal events that don't fit other categories
+    // These will show when "All" is selected but won't have a dedicated filter button
+    if (['idle'].includes(eventType)) {
+      return 'other';
+    }
+    
+    // Default - uncategorized events
+    return 'other';
+  }
+
   // Getter for filtered events
   get filteredEventFeed() {
+    // If no filters selected, show all events
     if (this.feedFilter.size === 0) {
       return this.eventFeed;
     }
-    return this.eventFeed.filter((event) => this.feedFilter.has(event.type));
+    
+    // Filter events by category - only include events whose category is in the selected filters
+    const filtered = this.eventFeed.filter((event) => {
+      const category = this.getEventCategory(event.type);
+      const isSelected = this.feedFilter.has(category);
+      return isSelected;
+    });
+    
+    return filtered;
   }
 
   private pushEventToFeed(type: string, data?: any) {
@@ -171,28 +241,21 @@ export class FeaturesComponent implements OnInit {
 
   // Get CSS class for event type based on category
   public getEventTypeClass(type: string): string {
-    // Document events
-    if (type.includes('document') || type.includes('metadata')) {
-      return 'event-document';
+    const category = this.getEventCategory(type);
+    switch (category) {
+      case 'document':
+        return 'event-document';
+      case 'render':
+        return 'event-render';
+      case 'find':
+        return 'event-find';
+      case 'outline':
+        return 'event-outline';
+      case 'error':
+        return 'event-error';
+      default:
+        return 'event-default';
     }
-    // Render events
-    if (type.includes('render') || type.includes('Rendered')) {
-      return 'event-render';
-    }
-    // Find events
-    if (type.includes('find') || type.includes('Find')) {
-      return 'event-find';
-    }
-    // Outline events
-    if (type.includes('outline') || type.includes('bookmark')) {
-      return 'event-outline';
-    }
-    // Error events
-    if (type.includes('error') || type.includes('Error')) {
-      return 'event-error';
-    }
-    // Default
-    return 'event-default';
   }
 
   // Event tracking for demonstration
