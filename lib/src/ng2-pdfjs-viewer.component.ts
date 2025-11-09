@@ -157,13 +157,13 @@ import { ChangeOriginTracker } from "./utils/ChangeOriginTracker";
       <iframe
         [title]="iframeTitle || 'PDF document viewer'"
         [hidden]="externalWindow || (!externalWindow && !pdfSrc)"
-        sandbox="allow-forms allow-scripts allow-same-origin allow-modals"
+        sandbox="allow-forms allow-scripts allow-same-origin allow-modals allow-downloads"
         [class]="getIframeClasses()"
         #iframe
         width="100%"
         height="100%"
       ></iframe>
-
+      
       <div
         class="ng2-pdfjs-loading-overlay"
         *ngIf="showSpinner && isLoading && !externalWindow"
@@ -287,6 +287,7 @@ export class PdfJsViewerComponent
 
   // #region Auto-Action Properties
   @Input() public downloadOnLoad: boolean = false;
+  @Input() public enableSandbox: boolean = false;
   @Input() public printOnLoad: boolean = false;
   @Input() public rotateCW: boolean = false;
   @Input() public rotateCCW: boolean = false;
