@@ -287,7 +287,6 @@ export class PdfJsViewerComponent
 
   // #region Auto-Action Properties
   @Input() public downloadOnLoad: boolean = false;
-  @Input() public enableSandbox: boolean = false;
   @Input() public printOnLoad: boolean = false;
   @Input() public rotateCW: boolean = false;
   @Input() public rotateCCW: boolean = false;
