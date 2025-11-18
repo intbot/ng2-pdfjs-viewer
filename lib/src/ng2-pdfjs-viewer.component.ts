@@ -794,8 +794,9 @@ export class PdfJsViewerComponent
   ngOnInit(): void {   
     
     // Connect action queue manager to PostMessage system
+    // Wrap sendControlMessage to handle iframe unavailability by re-queuing actions
     this.actionQueueManager.setPostMessageExecutor((action, payload) =>
-      this.sendControlMessage(action, payload),
+      this.sendControlMessageWithRequeue(action, payload),
     );
 
     // Send diagnostic logs setting to wrapper
@@ -888,18 +889,74 @@ export class PdfJsViewerComponent
 
       this.pendingMessages.set(messageId, { resolve, reject });
 
-      // Send message to iframe
-      if (
-        this.iframe &&
-        this.iframe.nativeElement &&
-        this.iframe.nativeElement.contentWindow
-      ) {
+      // Send message to iframe - verify accessibility (event-driven check)
+      if (this.isIframeAccessible()) {
         this.iframe.nativeElement.contentWindow.postMessage(message, "*");
       } else {
         this.pendingMessages.delete(messageId);
         reject(new Error("Iframe not available"));
       }
     });
+  }
+
+  // Wrapper for sendControlMessage that re-queues actions on iframe unavailability
+  // This ensures actions are retried when iframe becomes available (event-driven)
+  private async sendControlMessageWithRequeue(action: string, payload: any): Promise<any> {
+    try {
+      return await this.sendControlMessage(action, payload);
+    } catch (error) {
+      // If iframe is not available, re-queue the action for retry
+      // This handles the edge case where iframe becomes unavailable between checks
+      if (error instanceof Error && error.message === "Iframe not available") {
+        // Re-queue the action - it will be retried when processQueuedActions() is called again
+        // This happens when iframe becomes available or readiness increases
+        const requiredReadiness = this.getRequiredReadinessLevel(action);
+        const actionObj: ViewerAction = {
+          id: `requeue-${action}-${Date.now()}`,
+          action: action,
+          payload: payload,
+        };
+        this.actionQueueManager.queueAction(actionObj, requiredReadiness);
+        
+        // Trigger processing if iframe becomes available soon (event-driven, no polling)
+        Promise.resolve().then(() => {
+          if (this.isIframeAccessible() && this.isPostMessageReady) {
+            this.actionQueueManager.processQueuedActions();
+          }
+        });
+        
+        // Re-throw to maintain error handling in ActionQueueManager
+        throw error;
+      }
+      // Re-throw other errors
+      throw error;
+    }
+  }
+
+  // Event-driven iframe accessibility check (no polling, trust-based)
+  private isIframeAccessible(): boolean {
+    return !!(
+      this.iframe &&
+      this.iframe.nativeElement &&
+      this.iframe.nativeElement.contentWindow
+    );
+  }
+
+  // Process actions when PostMessage API is ready (extracted for reuse)
+  private processPostMessageReadyActions(): void {
+    // CRITICAL FIX: Process queued actions when readiness level increases
+    if (this.actionQueueManager) {
+      this.actionQueueManager.updateReadiness(this.postMessageReadiness);
+      this.actionQueueManager.processQueuedActions();
+    }
+    
+    // Always (re)apply initial configurations when PostMessage API is ready.
+    // This makes reloads idempotently reconfigure the viewer.
+    this.queueAllConfigurations();
+    this.initialConfigQueued = true;
+    
+    // Apply any pending changes that occurred before PostMessage API was ready
+    this.applyPendingChanges();
   }
 
   private handleControlResponse(response: ControlResponse): void {
@@ -939,19 +996,20 @@ export class PdfJsViewerComponent
 
         this.postMessageReadiness = event.data.readiness || 0;
 
-        // CRITICAL FIX: Process queued actions when readiness level increases
-        if (this.actionQueueManager) {
-          this.actionQueueManager.updateReadiness(this.postMessageReadiness);
-          this.actionQueueManager.processQueuedActions();
+        // Verify iframe is accessible before processing actions (event-driven readiness check)
+        // This prevents "Iframe not available" errors when dialog reopens quickly
+        if (this.isIframeAccessible()) {
+          // Iframe is ready - process actions immediately
+          this.processPostMessageReadyActions();
+        } else {
+          // Iframe not accessible yet - defer to next change detection cycle (event-driven)
+          // This handles Material Dialog lifecycle timing issues
+          Promise.resolve().then(() => {
+            if (this.isIframeAccessible()) {
+              this.processPostMessageReadyActions();
+            }
+          });
         }
-        
-        // Always (re)apply initial configurations when PostMessage API is ready.
-        // This makes reloads idempotently reconfigure the viewer.
-        this.queueAllConfigurations();
-        this.initialConfigQueued = true;
-        
-        // Apply any pending changes that occurred before PostMessage API was ready
-        this.applyPendingChanges();
         return;
       }
       
