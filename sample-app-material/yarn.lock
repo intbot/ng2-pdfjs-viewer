@@ -5032,10 +5032,10 @@ neo-async@^2.6.2:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-ng2-pdfjs-viewer@^25.0.17:
-  version "25.0.17"
-  resolved "https://registry.yarnpkg.com/ng2-pdfjs-viewer/-/ng2-pdfjs-viewer-25.0.17.tgz#cc79139bb8f84717747a4c363231e38e812b87b8"
-  integrity sha512-NmDL5hbWjWF+dknzN/ixtr+LLPX1xJykB3LIbPuMU0j6KDamnYyuCnIhlAk5AzSl7/cNbNKJemA44Cd6hqcgqg==
+ng2-pdfjs-viewer@^25.0.18:
+  version "25.0.18"
+  resolved "https://registry.yarnpkg.com/ng2-pdfjs-viewer/-/ng2-pdfjs-viewer-25.0.18.tgz#e31bc8aac4699d2f0597138157cba3f9e3121f03"
+  integrity sha512-Q8cuYgH5UsC4MOHjZ8fDdmSzWaZWkWa6nTBzBm87PaBOJRlPYoLCZuba76TWK1R0v4vPPt4sf4xmvvWF9i9dXQ==
   dependencies:
     tslib "^2.3.0"
 
