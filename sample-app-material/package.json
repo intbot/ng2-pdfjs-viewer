@@ -1,0 +1,30 @@
+{
+  "name": "angular-starter",
+  "version": "20.0.0",
+  "private": true,
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build"
+  },
+  "dependencies": {
+    "@angular/animations": "^20.0.4",
+    "@angular/cdk": "^20.0.3",
+    "@angular/common": "^20.0.4",
+    "@angular/compiler": "^20.0.4",
+    "@angular/core": "^20.0.4",
+    "@angular/forms": "^20.0.4",
+    "@angular/material": "^20.0.3",
+    "@angular/platform-browser": "^20.0.4",
+    "@angular/router": "^20.0.4",
+    "ng2-pdfjs-viewer": "^25.0.17",
+    "rxjs": "^7.8.1",
+    "tslib": "^2.5.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^20.0.3",
+    "@angular/cli": "^20.0.3",
+    "@angular/compiler-cli": "^20.0.4",
+    "typescript": "~5.8.3"
+  }
+}

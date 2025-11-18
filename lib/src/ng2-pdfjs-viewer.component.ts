@@ -11,6 +11,7 @@ import {
   TemplateRef,
   SimpleChanges,
   AfterViewInit,
+  ChangeDetectorRef,
 } from "@angular/core";
 
 // Import extracted modules
@@ -574,6 +575,11 @@ export class PdfJsViewerComponent
   private initialConfigQueued = false;
   private actionQueueManager: ActionQueueManager = new ActionQueueManager(this._diagnosticLogs);
   private changeOriginTracker = new ChangeOriginTracker();
+  private cdr: ChangeDetectorRef;
+
+  constructor(cdr: ChangeDetectorRef) {
+    this.cdr = cdr;
+  }
   private messageIdCounter = 0;
   private pendingMessages = new Map<
     string,
@@ -974,6 +980,8 @@ export class PdfJsViewerComponent
         this.hasError = false;
         this.currentErrorMessage = "";
       }
+      // Trigger change detection for OnPush scenarios (PostMessage runs outside Angular zone)
+      this.cdr.markForCheck();
       return;
     }
 

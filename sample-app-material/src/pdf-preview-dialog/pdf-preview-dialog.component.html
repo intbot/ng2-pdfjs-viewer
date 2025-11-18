@@ -1,0 +1,25 @@
+<div class="rb-dialog-header-container">
+  <div class="rb-dialog-title-container">
+    <h2 class="rb-dialog-title-header">{{ fileName }}</h2>
+  </div>
+  <div class="rb-dialog-actions">
+    <button data-test-id="close-pdf-preview" mat-icon-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+
+<mat-dialog-content class="rb-content-container preview-dialog-container">
+  <div class="content-pdf">
+    <ng2-pdfjs-viewer
+      [showDownload]="true"
+      [downloadFileName]="fileName"
+      [showFullScreen]="false"
+      [urlValidation]="false"
+      [pdfSrc]="blob"
+      [diagnosticLogs]="true"
+      [theme]="'dark'"
+      [showSpinner]="false"
+    />
+  </div>
+</mat-dialog-content>

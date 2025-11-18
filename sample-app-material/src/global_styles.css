@@ -1,0 +1,29 @@
+/* Add application styles & imports to this file! */
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  margin-top: 8px;
+}
+
+button {
+  align-self: start;
+  margin-top: 16px;
+}
+
+.rb-dialog-xxl {
+  max-width: 90vw;
+  width: 90vw;
+  height: 90vh;
+}
+
+.rb-dialog-header-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mat-mdc-dialog-content {
+  max-height: 100% !important;
+}
