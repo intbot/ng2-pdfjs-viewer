@@ -1996,10 +1996,10 @@ export class PdfJsViewerComponent
 
   private buildViewerUrl(fileUrl: string): string {
     let viewerUrl = this.getBaseViewerUrl();
-    viewerUrl = this.addFileParameter(viewerUrl, fileUrl);
-    viewerUrl = this.addViewerIdParameter(viewerUrl);
     viewerUrl = this.addUrlValidationParameter(viewerUrl);
+    viewerUrl = this.addViewerIdParameter(viewerUrl);
     viewerUrl = this.addCacheBustingIfNeeded(viewerUrl);
+    viewerUrl = this.addFileParameter(viewerUrl, fileUrl);
 
     return viewerUrl;
   }
@@ -2011,7 +2011,7 @@ export class PdfJsViewerComponent
   }
 
   private addFileParameter(viewerUrl: string, fileUrl: string): string {
-    return `${viewerUrl}?file=${fileUrl}`;
+    return `${viewerUrl}&file=${fileUrl}`;
   }
 
   private addViewerIdParameter(viewerUrl: string): string {
@@ -2022,7 +2022,7 @@ export class PdfJsViewerComponent
 
   private addUrlValidationParameter(viewerUrl: string): string {
     const flag = this.urlValidation === false ? 0 : 1;
-    return `${viewerUrl}&urlValidation=${flag}`;
+    return `${viewerUrl}?urlValidation=${flag}`;
   }
 
   private addCacheBustingIfNeeded(viewerUrl: string): string {
