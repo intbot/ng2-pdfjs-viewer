@@ -17,21 +17,15 @@ export interface ControlResponse {
   error?: string;
 }
 
-// Two-way binding support interfaces
-export interface PropertyChangeEvent {
-  property: string;
-  value: any;
-  source: "user" | "programmatic";
-  timestamp: number;
-}
-
 // Action Queue System Interfaces
 export interface ViewerAction {
   id: string;
   action: string;
   payload: any;
-  condition?: (viewer: any) => boolean;
   resolver?: (result: ActionExecutionResult) => void;
+  // Retry bookkeeping for transient iframe-unavailable failures
+  retries?: number;
+  requeued?: boolean;
 }
 
 export interface ActionExecutionResult {
@@ -177,14 +171,14 @@ export interface DocumentOutline {
 export interface PageRenderInfo {
   pageNumber: number;
   source?: string; // Optional - may contain non-cloneable objects
-  timestamp?: number;
+  timestamp?: number; // Epoch milliseconds (Date.now())
 }
 
 // New high-value events
 export interface AnnotationLayerRenderEvent {
   pageNumber: number;
   error?: Error;
-  timestamp: number;
+  timestamp: number; // Epoch milliseconds (Date.now())
 }
 
 export interface BookmarkClick {

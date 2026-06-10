@@ -1,121 +1,80 @@
-// Property transformation utilities
+// Property normalization between component inputs and PDF.js viewer values
+
+// Lowercase + whitelist with fallback
+const pick = (
+  value: string | null | undefined,
+  allowed: readonly string[],
+  fallback: string,
+): string => {
+  const v = value ? value.toLowerCase() : "";
+  return allowed.includes(v) ? v : fallback;
+};
+
 export class PropertyTransformers {
   static transformZoom = {
     toViewer: (zoom: string): string => {
       if (!zoom) return "auto";
-
-      // Convert common zoom values to PDF.js format
-      const zoomMappings: { [key: string]: string } = {
-        auto: "auto",
-        "page-fit": "page-fit",
-        "page-width": "page-width",
-        "page-actual": "page-actual",
-      };
-
-      return zoomMappings[zoom.toLowerCase()] || zoom;
+      const v = zoom.toLowerCase();
+      // Named zooms normalize to lowercase; numeric strings pass through
+      return ["auto", "page-fit", "page-width", "page-actual"].includes(v)
+        ? v
+        : zoom;
     },
 
     fromViewer: (viewerZoom: any): string => {
       if (typeof viewerZoom === "string") return viewerZoom;
-      if (typeof viewerZoom === "number") {
-        // Convert numeric zoom to string without % to avoid feedback loop
-        // PDF.js accepts numeric strings like "1.25" directly
-        return viewerZoom.toString();
-      }
+      // Numeric scale as a plain string ("1.25") - PDF.js accepts it directly
+      if (typeof viewerZoom === "number") return viewerZoom.toString();
       return "auto";
     },
   };
 
   static transformRotation = {
-    toViewer: (rotation: number): number => {
-      // Normalize rotation to 0, 90, 180, 270
-      return ((rotation % 360) + 360) % 360;
-    },
+    toViewer: (rotation: number): number => ((rotation % 360) + 360) % 360,
 
-    fromViewer: (viewerRotation: any): number => {
-      return typeof viewerRotation === "number" ? viewerRotation : 0;
-    },
+    fromViewer: (viewerRotation: any): number =>
+      typeof viewerRotation === "number" ? viewerRotation : 0,
   };
 
   static transformCursor = {
-    toViewer: (cursor: string): string => {
-      if (!cursor) return "select";
+    toViewer: (cursor: string): string =>
+      pick(cursor, ["select", "hand", "zoom"], "select"),
 
-      const cursorMappings: { [key: string]: string } = {
-        select: "select",
-        hand: "hand",
-        zoom: "zoom",
-      };
-
-      return cursorMappings[cursor.toLowerCase()] || "select";
-    },
-
-    fromViewer: (viewerCursor: any): string => {
-      return typeof viewerCursor === "string" ? viewerCursor : "select";
-    },
+    fromViewer: (viewerCursor: any): string =>
+      typeof viewerCursor === "string" ? viewerCursor : "select",
   };
 
   static transformScroll = {
-    toViewer: (scroll: string): string => {
-      if (!scroll) return "vertical";
-
-      const scrollMappings: { [key: string]: string } = {
-        vertical: "vertical",
-        horizontal: "horizontal",
-        wrapped: "wrapped",
-        page: "page",
-      };
-
-      return scrollMappings[scroll.toLowerCase()] || "vertical";
-    },
+    toViewer: (scroll: string): string =>
+      pick(scroll, ["vertical", "horizontal", "wrapped", "page"], "vertical"),
 
     fromViewer: (viewerScroll: any): string => {
-      const scrollModes = ["vertical", "horizontal", "wrapped", "page"];
+      const modes = ["vertical", "horizontal", "wrapped", "page"];
       if (typeof viewerScroll === "number") {
-        return scrollModes[viewerScroll] || "vertical";
+        return modes[viewerScroll] || "vertical";
       }
       return typeof viewerScroll === "string" ? viewerScroll : "vertical";
     },
   };
 
   static transformSpread = {
-    toViewer: (spread: string): string => {
-      if (!spread) return "none";
-
-      const spreadMappings: { [key: string]: string } = {
-        none: "none",
-        odd: "odd",
-        even: "even",
-      };
-
-      return spreadMappings[spread.toLowerCase()] || "none";
-    },
+    toViewer: (spread: string): string =>
+      pick(spread, ["none", "odd", "even"], "none"),
 
     fromViewer: (viewerSpread: any): string => {
-      const spreadModes = ["none", "odd", "even"];
+      const modes = ["none", "odd", "even"];
       if (typeof viewerSpread === "number") {
-        return spreadModes[viewerSpread] || "none";
+        return modes[viewerSpread] || "none";
       }
       return typeof viewerSpread === "string" ? viewerSpread : "none";
     },
   };
 
   static transformPageMode = {
-    toViewer: (pageMode: string): string => {
-      if (!pageMode) return "none";
+    toViewer: (pageMode: string): string =>
+      pick(pageMode, ["none", "thumbs", "bookmarks", "attachments"], "none"),
 
-      const pageModeMapping: { [key: string]: string } = {
-        none: "none",
-        thumbs: "thumbs",
-        bookmarks: "bookmarks",
-        attachments: "attachments",
-      };
-
-      return pageModeMapping[pageMode.toLowerCase()] || "none";
-    },
-
-    fromViewer: (viewerPageMode: any): string => {
-      return typeof viewerPageMode === "string" ? viewerPageMode : "none";
-    },
+    fromViewer: (viewerPageMode: any): string =>
+      typeof viewerPageMode === "string" ? viewerPageMode : "none",
   };
 }

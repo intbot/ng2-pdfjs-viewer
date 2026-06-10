@@ -8,6 +8,7 @@ import { PdfJsViewerComponent } from "./ng2-pdfjs-viewer.component";
   exports: [PdfJsViewerComponent],
 })
 export class PdfJsViewerModule {
+  /** @deprecated Import PdfJsViewerModule directly; forRoot() registers no providers. */
   static forRoot(): ModuleWithProviders<PdfJsViewerModule> {
     return {
       ngModule: PdfJsViewerModule,

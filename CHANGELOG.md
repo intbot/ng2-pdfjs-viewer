@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+#### 📦 Leaner Package
+
+- npm tarball reduced ~29% (4.1 MB → 2.9 MB packed, 11.1 MB → 8.1 MB unpacked)
+- `viewer.mjs` (551 KB → 288 KB) and the postMessage bridge (72 KB → 19 KB) now ship minified
+- Source maps and debug tooling no longer included in the package
+- 1,000+ lines of dead code removed from the library source
+
+### Fixed
+
+- Window `message` listener is now removed on component destroy (memory leak with repeated create/destroy)
+- `message` events are filtered by source on both sides — multiple viewers on one page no longer cross-talk
+- False "SECURITY ALERT" console errors no longer fire on legitimate `pdfSrc` changes
+- Config-object inputs (`themeConfig`, `controlVisibility`, etc.) now apply live after initial load
+- Changing `locale` at runtime now reloads the viewer with the new language
+- `zoomChange` now emits named presets (`page-fit`, `page-width`, `auto`) instead of raw numeric scales
+- `errorMessage`, `errorAppend`, and `errorOverride` now compose and display as documented
+- `showAnnotations` now actually toggles the annotation editor, not just the toolbar button
+- `refresh()` no longer silently kills event emitters; queued actions resolve with real results
+- Blocked popups in external-window mode no longer crash `loadPdf`
+- `ActionExecutionResult` and `ChangedPage` types are now exported
+
+### Removed
+
+- The bundled sample PDF (`web/compressed.tracemonkey-pldi-09.pdf`) no longer ships in the package — apps that referenced it from `assets/pdfjs/web/` should bundle their own copy
+
 ## [20.4.0] - 2024-12-07
 
 ### Added

@@ -2,15 +2,14 @@ import { Injectable, signal } from '@angular/core';
 import { SamplePdf } from '../models';
 
 /**
- * The set of sample PDFs the playground showcases. The research paper ships with
- * the bundled PDF.js assets; the others are small redistributable samples added
- * under assets/samples (see P6). All entries resolve to a real, loadable file.
+ * The set of sample PDFs the playground showcases, all bundled under
+ * assets/samples. All entries resolve to a real, loadable file.
  */
 const SAMPLES: SamplePdf[] = [
   {
     id: 'research',
     label: 'Research paper',
-    src: '/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf',
+    src: '/assets/samples/tracemonkey.pdf',
     note: 'Text-heavy academic paper — great for search, outline and text selection.',
   },
   {

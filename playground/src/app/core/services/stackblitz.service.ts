@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import sdk from '@stackblitz/sdk';
 
-const SAMPLE_PDF = '/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf';
+const SAMPLE_PDF = '/assets/samples/tracemonkey.pdf';
 
 /** Opens a runnable Angular project on StackBlitz that embeds a page's snippet. */
 @Injectable({ providedIn: 'root' })

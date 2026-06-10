@@ -41,7 +41,7 @@ export class FeaturesComponent implements OnInit {
   interactiveErrorTpl!: TemplateRef<any>;
 
   // Configuration properties - directly bound to the viewer
-  public pdfSrc: string | Blob | Uint8Array = "/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf";
+  public pdfSrc: string | Blob | Uint8Array = "/assets/samples/compressed.tracemonkey-pldi-09.pdf";
   public downloadFileName = "sample-document.pdf";
   public diagnosticLogs = false;
 
@@ -621,7 +621,7 @@ export class FeaturesComponent implements OnInit {
   public async loadBlobPdf() {
     try {
       console.log("🧪 Testing Blob pdfSrc loading...");
-      const response = await fetch('/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf');
+      const response = await fetch('/assets/samples/compressed.tracemonkey-pldi-09.pdf');
       const blob = await response.blob();
       this.pdfSrc = blob;
       this.currentSourceType = 'blob';
@@ -634,7 +634,7 @@ export class FeaturesComponent implements OnInit {
   public async loadUint8ArrayPdf() {
     try {
       console.log("🧪 Testing Uint8Array pdfSrc loading...");
-      const response = await fetch('/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf');
+      const response = await fetch('/assets/samples/compressed.tracemonkey-pldi-09.pdf');
       const arrayBuffer = await response.arrayBuffer();
       const uint8Array = new Uint8Array(arrayBuffer);
       this.pdfSrc = uint8Array;
@@ -647,7 +647,7 @@ export class FeaturesComponent implements OnInit {
   
   public loadStringPdf() {
     console.log("🧪 Testing string pdfSrc loading...");
-    this.pdfSrc = "/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf";
+    this.pdfSrc = "/assets/samples/compressed.tracemonkey-pldi-09.pdf";
     this.currentSourceType = 'string';
     console.log("✅ String pdfSrc set successfully");
   }
@@ -655,7 +655,7 @@ export class FeaturesComponent implements OnInit {
   public async loadBlobPdfInExternalWindow() {
     try {
       console.log("🧪 Testing Blob pdfSrc loading in external window with urlValidation=false...");
-      const response = await fetch('/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf');
+      const response = await fetch('/assets/samples/compressed.tracemonkey-pldi-09.pdf');
       const blob = await response.blob();
       
       // Set blob for the separate external viewer and refresh
@@ -816,7 +816,7 @@ export class FeaturesComponent implements OnInit {
   }
 
   public restoreValidPdf() {
-    this.pdfSrc = "/assets/pdfjs/web/compressed.tracemonkey-pldi-09.pdf";
+    this.pdfSrc = "/assets/samples/compressed.tracemonkey-pldi-09.pdf";
     console.log("Restored valid PDF");
     this.reloadViewer(); // Reload the component to apply the valid PDF
   }

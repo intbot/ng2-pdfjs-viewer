@@ -60,6 +60,7 @@ Whether you need a simple embedded PDF viewer or a complex document management s
 | **Mobile-First Design**       | Responsive layout optimized for touch devices                      | ✅ New |
 | **TypeScript Strict Mode**    | Full type safety with comprehensive API coverage                   | ✅ New |
 | **URL Security Validation**   | Prevents unauthorized file parameter manipulation with custom templates | ✅ New |
+| **Leaner, Faster Package**    | ~29% smaller npm package (4.1 MB → 2.9 MB), viewer scripts now ship minified, 1,000+ lines of dead code removed | ✅ New |
 
 ### 🏆 Unique Advantages
 

@@ -67,8 +67,8 @@
   "scripts": {
     "clean": "shx rm -rf ./dist",
     "build": "npm run clean && ng-packagr -p ng-package.json && npm run remove-source-maps && npm run minify-pdfjs",
-    "remove-source-maps": "shx rm -f dist/pdfjs/build/*.map",
-    "minify-pdfjs": "terser dist/pdfjs/build/pdf.mjs --compress --mangle --output dist/pdfjs/build/pdf.mjs && terser dist/pdfjs/build/pdf.sandbox.mjs --compress --mangle --output dist/pdfjs/build/pdf.sandbox.mjs && terser dist/pdfjs/build/pdf.worker.mjs --compress --mangle --output dist/pdfjs/build/pdf.worker.mjs",
+    "remove-source-maps": "shx rm -f dist/pdfjs/build/*.map dist/pdfjs/web/*.map",
+    "minify-pdfjs": "terser dist/pdfjs/build/pdf.mjs --compress --mangle --module --output dist/pdfjs/build/pdf.mjs && terser dist/pdfjs/build/pdf.sandbox.mjs --compress --mangle --module --output dist/pdfjs/build/pdf.sandbox.mjs && terser dist/pdfjs/build/pdf.worker.mjs --compress --mangle --module --output dist/pdfjs/build/pdf.worker.mjs && terser dist/pdfjs/web/viewer.mjs --compress --mangle --module --output dist/pdfjs/web/viewer.mjs && terser dist/pdfjs/web/postmessage-wrapper.js --compress --mangle --output dist/pdfjs/web/postmessage-wrapper.js",
     "package": "npm run build && cd dist && npm pack",
     "bump": "mkdir .git && npm version patch",
     "version": "npm run build && git add -A .",

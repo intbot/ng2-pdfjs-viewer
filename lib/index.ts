@@ -3,6 +3,8 @@ export * from "./src/ng2-pdfjs-viewer.component";
 
 // Export types that are needed by consumer applications
 export {
+  ActionExecutionResult,
+  ChangedPage,
   ChangedScale,
   ChangedRotation,
   ControlVisibilityConfig,

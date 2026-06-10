@@ -1,15 +1,18 @@
 import { ViewerAction, ActionExecutionResult } from "../interfaces/ViewerTypes";
 
-// Simplified Action Queue Manager - Single queue with readiness-based execution
+// Single action queue with readiness-gated execution
 export class ActionQueueManager {
+  // Bounded history for getActionStatus()/getQueueStatus(); prevents unbounded
+  // growth in long-lived viewers (every dispatched action has a unique id).
+  private static readonly MAX_EXECUTED_RESULTS = 100;
+
   private actionQueue: Array<{ action: ViewerAction; readinessLevel: number }> =
     [];
   private executedActions: Map<string, ActionExecutionResult> = new Map();
   public isDocumentLoaded = false;
-  private isPostMessageReady = false;
   private postMessageReadiness = 0;
   private diagnosticLogs = false;
-  private postMessageExecutor?: (action: string, payload: any) => Promise<any>;
+  private postMessageExecutor?: (action: ViewerAction) => Promise<any>;
 
   constructor(diagnosticLogs = false) {
     this.diagnosticLogs = diagnosticLogs;
@@ -19,41 +22,12 @@ export class ActionQueueManager {
     this.diagnosticLogs = enabled;
   }
 
-  setPostMessageReady(ready: boolean, readiness: number = 0): void {
-    this.isPostMessageReady = ready;
-    this.postMessageReadiness = readiness;
-
-    if (ready) {
-      this.processQueuedActions();
-    }
-  }
-
   updateReadiness(readiness: number): void {
-    if (this.postMessageReadiness !== readiness) {
-      this.postMessageReadiness = readiness;
-    }
+    this.postMessageReadiness = readiness;
   }
 
-  // Simplified queue management - single queue with readiness levels
   queueAction(action: ViewerAction, readinessLevel: number): void {
     this.actionQueue.push({ action, readinessLevel });
-  }
-
-  // Legacy methods for backward compatibility - now just delegate to main queue
-  queueImmediateAction(action: ViewerAction): void {
-    this.queueAction(action, 3);
-  }
-
-  queueViewerReadyAction(action: ViewerAction): void {
-    this.queueAction(action, 4);
-  }
-
-  queueDocumentLoadedAction(action: ViewerAction): void {
-    this.queueAction(action, 5);
-  }
-
-  queueOnDemandAction(action: ViewerAction): Promise<ActionExecutionResult> {
-    return this.executeAction(action);
   }
 
   onDocumentLoaded(): void {
@@ -61,28 +35,19 @@ export class ActionQueueManager {
     this.processQueuedActions();
   }
 
-  // Process all queued actions that now meet readiness requirements
+  // Execute every queued action whose readiness requirement is now met
   public processQueuedActions(): void {
-    const executableActions = this.actionQueue.filter((item) => {
+    const ready: ViewerAction[] = [];
+    this.actionQueue = this.actionQueue.filter((item) => {
       const canExecute =
         this.postMessageReadiness >= item.readinessLevel &&
         (item.readinessLevel < 5 || this.isDocumentLoaded);
-
-      return canExecute;
+      if (canExecute) {
+        ready.push(item.action);
+      }
+      return !canExecute;
     });
-
-    // Remove executable actions from queue
-    this.actionQueue = this.actionQueue.filter((item) => {
-      return !(
-        this.postMessageReadiness >= item.readinessLevel &&
-        (item.readinessLevel < 5 || this.isDocumentLoaded)
-      );
-    });
-
-    // Execute all ready actions
-    executableActions.forEach((item) => {
-      this.executeAction(item.action);
-    });
+    ready.forEach((action) => this.executeAction(action));
   }
 
   public async executeAction(
@@ -95,36 +60,41 @@ export class ActionQueueManager {
     };
 
     try {
-      if (action.condition && !action.condition(null)) {
-        result.error = "Condition not met";
-        this.executedActions.set(action.id, result);
-        return result;
-      }
-
       const success = await this.executeActionViaPostMessage(action);
       result.success = success;
-
-      // If action has a resolver (from user interaction), call it
-      if (action.resolver) {
-        action.resolver(result);
-      }
+      action.resolver?.(result);
     } catch (error) {
       result.error = error instanceof Error ? error.message : String(error);
       if (this.diagnosticLogs) {
         console.error(
-          `🔍 ActionQueueManager: Error executing action ${action.action}:`,
+          `ActionQueueManager: Error executing action ${action.action}:`,
           error,
         );
       }
-
-      // If action has a resolver (from user interaction), call it with error
-      if (action.resolver) {
-        action.resolver(result);
+      // A requeued action retries later with the same id and resolver - don't
+      // settle the caller's promise on the transient failure.
+      if (action.requeued) {
+        action.requeued = false;
+      } else {
+        action.resolver?.(result);
       }
     }
 
-    this.executedActions.set(action.id, result);
+    this.recordResult(action.id, result);
     return result;
+  }
+
+  private recordResult(id: string, result: ActionExecutionResult): void {
+    if (
+      this.executedActions.size >= ActionQueueManager.MAX_EXECUTED_RESULTS &&
+      !this.executedActions.has(id)
+    ) {
+      const oldest = this.executedActions.keys().next().value;
+      if (oldest !== undefined) {
+        this.executedActions.delete(oldest);
+      }
+    }
+    this.executedActions.set(id, result);
   }
 
   private async executeActionViaPostMessage(
@@ -134,12 +104,12 @@ export class ActionQueueManager {
       throw new Error("PostMessage executor not set");
     }
 
-    await this.postMessageExecutor(action.action, action.payload);
+    await this.postMessageExecutor(action);
     return true;
   }
 
   setPostMessageExecutor(
-    executor: (action: string, payload: any) => Promise<any>,
+    executor: (action: ViewerAction) => Promise<any>,
   ): void {
     this.postMessageExecutor = executor;
   }
@@ -158,9 +128,25 @@ export class ActionQueueManager {
     return result.success ? "completed" : "failed";
   }
 
+  // Drop queued actions (settling their callers' promises) and clear history
   clearQueues(): void {
+    for (const item of this.actionQueue) {
+      item.action.resolver?.({
+        actionId: item.action.id,
+        success: false,
+        error: "Action discarded: queue cleared",
+        timestamp: Date.now(),
+      });
+    }
     this.actionQueue = [];
     this.executedActions.clear();
+  }
+
+  // Full reset for a new document load (pdfSrc change / refresh)
+  reset(): void {
+    this.clearQueues();
+    this.isDocumentLoaded = false;
+    this.postMessageReadiness = 0;
   }
 
   getQueueStatus(): { queuedActions: number; executedActions: number } {

@@ -1,8 +1,12 @@
 {
   "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
   "assets": [
-    "./pdfjs/**/*.*",
-    "!./pdfjs/sampledoc/**/*"
+    {
+      "glob": "**/*.*",
+      "input": "pdfjs",
+      "output": "pdfjs",
+      "ignore": ["**/*.map", "web/debugger.*"]
+    }
   ],
   "lib": {
     "entryFile": "./index.ts"
