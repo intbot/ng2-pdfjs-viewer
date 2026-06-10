@@ -1,7 +1,9 @@
-
-Try - https://ng-doc.com/
-
-
+> ## ⚠️ Deprecated — superseded by `../playground/`
+>
+> This demo has been replaced by the new **[playground](../playground/)** — a feature-grouped,
+> multi-page interactive explorer (Angular 20, standalone + signals, ⌘K, live code, StackBlitz).
+> `SampleApp/` is kept temporarily for reference and will be removed in a future release.
+> **New work should go to `../playground/`.**
 
 # SampleApp
 

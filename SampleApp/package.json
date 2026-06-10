@@ -9,7 +9,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "node e2e/smoke.js"
   },
   "private": true,
   "dependencies": {
@@ -35,10 +35,11 @@
     "@angular/cli": "^20.0.0",
     "@angular/compiler-cli": "^20.0.0",
     "@angular/language-service": "^20.0.0",
+    "@eslint/js": "^9.0.0",
     "@types/jasmine": "^5.1.5",
-    "@types/jasminewd2": "^2.0.13",
     "@types/node": "^22.13.0",
-    "codelyzer": "^6.0.2",
+    "angular-eslint": "^20.0.0",
+    "eslint": "^9.0.0",
     "jasmine-core": "~5.5.0",
     "jasmine-spec-reporter": "~7.0.0",
     "karma": "~6.4.4",
@@ -46,12 +47,10 @@
     "karma-coverage-istanbul-reporter": "^3.0.3",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
-    "protractor": "~7.0.0",
     "puppeteer": "^24.11.2",
     "shx": "^0.3.4",
-    "ts-node": "^10.9.2",
-    "tslint": "~5.20.1",
-    "typescript": "~5.8.3"
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.0.0"
   },
   "browserslist": [
     "last 2 version",
