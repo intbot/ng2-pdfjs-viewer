@@ -1,0 +1,40 @@
+# Dependabot version-update PRs.
+#
+# Scope is intentionally limited to what actually ships / runs CI:
+#   - /lib            the published npm package (its build tooling)
+#   - github-actions  the workflows that build, publish, and score the repo
+#
+# The non-shipped demo apps and docs site (playground/, SampleApp/,
+# sample-app-material/, docs-website/) are deliberately NOT listed here. Their
+# security ALERTS are auto-dismissed by a repository-level Dependabot auto-triage
+# rule that matches their manifest paths (configured in repo Settings -> Code security ->
+# Dependabot -> Auto-triage rules). Opening version-update PRs for them would
+# just add noise without affecting the published library's credibility.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/lib"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      lib-dev-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    commit-message:
+      prefix: "chore(deps)"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      actions:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "chore(ci)"

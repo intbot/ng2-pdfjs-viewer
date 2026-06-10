@@ -3,3 +3,30 @@
 # yalc
 .yalc/
 yalc.lock
+
+# Local-only / private working area (junction to a separate private repo —
+# see scripts/setup-private.sh). `private/` is the legacy name for the same idea.
+internal/
+private/
+
+# Local Claude Code state (per-machine commands, permissions, skills).
+# CLAUDE.md IS committed (public contributor guidance); .claude/ is not.
+.claude/
+# Local MCP server config (per-machine tooling, e.g. Playwright MCP).
+.mcp.json
+# Playwright MCP session workspace (page snapshots, console logs) and stray
+# test screenshots — regenerated on every browser-testing session.
+.playwright-mcp/
+/pg-*.png
+/pg-*.jpeg
+/docs-landing.jpeg
+
+# Secrets / env files — never commit
+.env
+.env.*
+*.pem
+*.key
+
+# Local-only config overrides
+*.local.json
+*.local.toml

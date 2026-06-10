@@ -8,21 +8,32 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      # Required for npm trusted publishing (OIDC) and build provenance.
+      # The short-lived OIDC token replaces the long-lived NPM_TOKEN secret.
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v4
       # Setup .npmrc file to publish to npm
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
+      # Trusted publishing + provenance require npm >= 11.5.1.
+      - name: Upgrade npm
+        run: npm install -g npm@latest
       - name: Install dependencies
         working-directory: ./lib
         run: npm ci
       - name: Build
         working-directory: ./lib
         run: npm run build
+      # Publishes via npm trusted publishing (OIDC) and attaches a build
+      # provenance attestation (repo is public, so provenance is generated).
+      # No NODE_AUTH_TOKEN: auth comes from the OIDC id-token above, once a
+      # GitHub Actions trusted publisher is configured for this package on npm
+      # (npmjs.com -> package settings -> Trusted Publisher). See CONTRIBUTING.md.
       - name: Publish to npm
         working-directory: ./lib/dist
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --provenance --access public

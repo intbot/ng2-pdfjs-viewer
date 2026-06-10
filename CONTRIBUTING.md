@@ -221,14 +221,43 @@ ng2-pdfjs-viewer/
 
 ### Publishing
 
-```bash
-# Build and package
-npm run build
-npm run package
+Publishing is **automated**: pushing a `v*` tag triggers `.github/workflows/main.yml`,
+which builds `lib/` and publishes to npm using **trusted publishing (OIDC)** with a
+**provenance attestation** — no long-lived npm token is stored in the repo.
 
-# Publish to npm
-npm publish
+```bash
+# Cut a release (from lib/) — builds, commits, tags, and pushes the tag
+cd lib
+npm version patch   # or minor / major
 ```
+
+For a local dry run you can still `npm run build && npm run package` in `lib/` to produce
+the tarball without publishing.
+
+#### One-time setup: npm trusted publisher (maintainer only)
+
+Before the OIDC publish works, the `ng2-pdfjs-viewer` package must trust this repo's workflow:
+
+1. On npmjs.com → the `ng2-pdfjs-viewer` package → **Settings → Trusted Publisher**.
+2. Add a **GitHub Actions** publisher: organization `intbot`, repository `ng2-pdfjs-viewer`,
+   workflow filename `main.yml`.
+3. Once configured, the legacy `NPM_TOKEN` repository secret can be deleted.
+
+Provenance is generated automatically because this is a public repository.
+
+### Repository security & Dependabot
+
+This repo ships only the `lib/` package — it has **zero runtime dependencies**. The playground and
+demo apps (`playground/`, `SampleApp/`, `sample-app-material/`) and the docs site (`docs-website/`)
+are **not published**.
+
+To keep the repository's security signal honest, Dependabot **alerts** for those non-shipped
+projects are auto-dismissed by a repository-level **auto-triage rule** that matches their manifest
+paths. This is configured once in **Settings → Code security → Dependabot → Auto-triage rules**
+(action: auto-dismiss; manifest path: `playground/**`, `SampleApp/**`, `sample-app-material/**`, `docs-website/**`);
+the built-in "dismiss low-impact dev-scoped" preset is also enabled. Dependabot **version-update**
+PRs are scoped to `/lib` and the GitHub Actions workflows via `.github/dependabot.yml`. See
+`SECURITY.md` for the rationale.
 
 ## 🐛 Bug Reports
 

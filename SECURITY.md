@@ -73,6 +73,26 @@ ng2-pdfjs-viewer is built on [PDF.js](https://mozilla.github.io/pdf.js/), which 
 - **Sandboxing**: Isolated execution environment
 - **Regular Updates**: Following PDF.js security updates
 
+### Supply Chain & Dependencies
+
+We take supply-chain integrity seriously, and the published package is intentionally lean:
+
+- **Zero runtime dependencies.** The published `ng2-pdfjs-viewer` package ships with no runtime
+  `dependencies`. The Mozilla PDF.js viewer is **bundled as a static asset**, not pulled as an npm
+  dependency, so installing this library does not add transitive runtime packages (or their CVEs)
+  to your application.
+- **Provenance / build attestation.** Releases are built and published from GitHub Actions using
+  npm **trusted publishing (OIDC)**, and each release carries a verifiable
+  [npm provenance attestation](https://docs.npmjs.com/generating-provenance-statements). You can
+  confirm on the npm package page that a given version was built from this repository's CI.
+- **About repository Dependabot alerts.** This repository also contains non-shipped projects — the
+  demo apps (`SampleApp/`, `sample-app-material/`) and the documentation site (`docs-website/`).
+  Any Dependabot alerts you see on the repository pertain to **that tooling, not the published
+  library**, and their dependencies never reach consumers of the npm package. Alerts scoped to
+  those paths are auto-triaged so they do not misrepresent the security of the shipped component.
+- **Health metrics.** Supply-chain health is tracked publicly via
+  [OpenSSF Scorecard](https://scorecard.dev/viewer/?uri=github.com/intbot/ng2-pdfjs-viewer).
+
 ## Security Best Practices
 
 ### For Developers

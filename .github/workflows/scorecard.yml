@@ -1,0 +1,50 @@
+# OpenSSF Scorecard — supply-chain health checks for the repository.
+# Publishes results to the public OpenSSF dashboard and uploads SARIF to the
+# repo's code-scanning so the Scorecard badge (in lib/README.md) resolves.
+name: Scorecard supply-chain security
+on:
+  branch_protection_rule:
+  schedule:
+    # Weekly, Mondays 07:00 UTC
+    - cron: '0 7 * * 1'
+  push:
+    branches: ["master"]
+
+permissions: read-all
+
+jobs:
+  analysis:
+    name: Scorecard analysis
+    runs-on: ubuntu-latest
+    permissions:
+      # Needed to upload results to code-scanning.
+      security-events: write
+      # Needed to publish results and get a badge (publish_results: true).
+      id-token: write
+      contents: read
+      actions: read
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: "Run analysis"
+        uses: ossf/scorecard-action@v2
+        with:
+          results_file: results.sarif
+          results_format: sarif
+          # Publish results to the OpenSSF REST API + enable the badge.
+          publish_results: true
+
+      - name: "Upload artifact"
+        uses: actions/upload-artifact@v4
+        with:
+          name: SARIF file
+          path: results.sarif
+          retention-days: 5
+
+      - name: "Upload to code-scanning"
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results.sarif
