@@ -1,0 +1,54 @@
+<pg-page
+  title="Loading & Spinners"
+  lead="Control the loading experience: toggle the built-in spinner, apply your own spinner CSS class, or hand the viewer a fully custom loading template."
+  [tags]="['showSpinner','spinnerClass','customSpinnerTpl']"
+  [code]="code()"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
+
+  <div preview>
+    @for (k of [runKey()]; track k) {
+      <ng2-pdfjs-viewer
+        [pdfSrc]="src()"
+        [showSpinner]="showSpinner()"
+        [spinnerClass]="spinnerClass() || undefined"
+        [customSpinnerTpl]="selectedTpl()">
+      </ng2-pdfjs-viewer>
+    }
+
+    <ng-template #tplDots>
+      <div class="pgt pgt-dots"><span><i></i><i></i><i></i></span><p>Fetching your document…</p></div>
+    </ng-template>
+    <ng-template #tplBar>
+      <div class="pgt pgt-bar"><span><i></i></span><p>Loading PDF</p></div>
+    </ng-template>
+    <ng-template #tplPulse>
+      <div class="pgt pgt-pulse"><span>⬡</span><p>Preparing viewer…</p></div>
+    </ng-template>
+  </div>
+
+  <div controls>
+    <div class="ph">Spinner</div>
+    <div class="row">
+      <span>Show spinner</span>
+      <span class="switch" [class.on]="showSpinner()" (click)="showSpinner.set(!showSpinner())"
+            role="switch" [attr.aria-checked]="showSpinner()" tabindex="0" (keydown.enter)="showSpinner.set(!showSpinner())"></span>
+    </div>
+    <div class="row">
+      <label for="ld-class">Spinner class</label>
+      <select id="ld-class" class="ctl-input" [value]="spinnerClass()" (change)="setClass($event)">
+        @for (c of spinnerClasses; track c) { <option [value]="c">{{ c || 'default' }}</option> }
+      </select>
+    </div>
+    <div class="ph">Custom template</div>
+    <div class="row">
+      <label for="ld-tpl">customSpinnerTpl</label>
+      <select id="ld-tpl" class="ctl-input" [value]="customTpl()" (change)="setTpl($event)">
+        @for (t of tplKinds; track t) { <option [value]="t">{{ t }}</option> }
+      </select>
+    </div>
+    <div class="row">
+      <span>Replay load</span>
+      <button class="ctl-input" type="button" (click)="rerun()">↻ Reload viewer</button>
+    </div>
+  </div>
+</pg-page>

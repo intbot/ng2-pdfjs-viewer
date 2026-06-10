@@ -1,0 +1,79 @@
+<pg-page
+  title="Navigation & View Modes"
+  lead="Drive the document programmatically — jump to a page, set zoom, switch the cursor tool, and change scroll, spread, page-mode and rotation. Zoom, cursor, scroll, spread and page-mode are two-way bound."
+  [tags]="['[(zoom)]','[(cursor)]','[(scroll)]','[(spread)]','[(pageMode)]','[page]','[rotation]']"
+  [code]="code()"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
+
+  <div preview>
+    <ng2-pdfjs-viewer
+      [pdfSrc]="src()"
+      [page]="page()"
+      [zoom]="zoom()" (zoomChange)="zoom.set($event)"
+      [cursor]="cursor()" (cursorChange)="cursor.set($event)"
+      [scroll]="scroll()" (scrollChange)="scroll.set($event)"
+      [spread]="spread()" (spreadChange)="spread.set($event)"
+      [pageMode]="pageMode()" (pageModeChange)="pageMode.set($event)"
+      [rotation]="rotation()"
+      [namedDest]="namedDest()">
+    </ng2-pdfjs-viewer>
+  </div>
+
+  <div controls>
+    <div class="ph">Page &amp; Zoom</div>
+    <div class="row">
+      <label for="nav-page">Go to page</label>
+      <input id="nav-page" type="range" min="1" max="14" [value]="page()" (input)="setPage($event)" />
+    </div>
+    <div class="row">
+      <label for="nav-zoom">Zoom</label>
+      <select id="nav-zoom" class="ctl-input" (change)="setStr(zoom, $event)">
+        @if (!isNamedZoom(zoom())) { <option [value]="zoom()" [selected]="true">{{ fmtZoom(zoom()) }}</option> }
+        @for (z of zooms; track z.v) { <option [value]="z.v" [selected]="z.v === zoom()">{{ z.l }}</option> }
+      </select>
+    </div>
+
+    <div class="ph">Tools &amp; Modes</div>
+    <div class="row">
+      <span>Cursor</span>
+      <span class="seg">
+        <button [class.on]="cursor() === 'select'" (click)="cursor.set('select')">Select</button>
+        <button [class.on]="cursor() === 'hand'" (click)="cursor.set('hand')">Hand</button>
+      </span>
+    </div>
+    <div class="row">
+      <label for="nav-scroll">Scroll</label>
+      <select id="nav-scroll" class="ctl-input" [value]="scroll()" (change)="setStr(scroll, $event)">
+        @for (s of scrolls; track s) { <option [value]="s">{{ s }}</option> }
+      </select>
+    </div>
+    <div class="row">
+      <span>Spread</span>
+      <span class="seg">
+        <button [class.on]="spread() === 'none'" (click)="spread.set('none')">None</button>
+        <button [class.on]="spread() === 'odd'" (click)="spread.set('odd')">Odd</button>
+        <button [class.on]="spread() === 'even'" (click)="spread.set('even')">Even</button>
+      </span>
+    </div>
+    <div class="row">
+      <span>Rotate</span>
+      <span class="seg">
+        <button (click)="rotate(-90)">⟲</button>
+        <button>{{ rotation() }}°</button>
+        <button (click)="rotate(90)">⟳</button>
+      </span>
+    </div>
+    <div class="row">
+      <label for="nav-mode">Sidebar (pageMode)</label>
+      <select id="nav-mode" class="ctl-input" [value]="pageMode()" (change)="setStr(pageMode, $event)">
+        @for (m of pageModes; track m) { <option [value]="m">{{ m }}</option> }
+      </select>
+    </div>
+    <div class="row">
+      <label for="nav-dest">Named dest</label>
+      <input id="nav-dest" class="ctl-input" style="width:130px" [value]="namedDest()"
+             (change)="setStr(namedDest, $event)" placeholder="e.g. section.3" />
+    </div>
+    <p class="note">Jumps to a named destination — needs a PDF that defines them (the bundled samples don’t).</p>
+  </div>
+</pg-page>

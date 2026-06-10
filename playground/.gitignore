@@ -1,0 +1,17 @@
+# Angular / Node
+/node_modules
+/dist
+/.angular
+/out-tsc
+
+# editor / OS
+.idea/
+.vscode/
+*.log
+.DS_Store
+Thumbs.db
+
+# the local lib link target is built from ../lib
+
+# e2e screenshot output
+/e2e/shots/

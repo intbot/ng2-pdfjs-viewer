@@ -1,0 +1,46 @@
+<pg-page
+  title="Toolbar & Controls"
+  lead="Show or hide individual toolbar buttons — or whole toolbar and sidebar groups. Flip a switch and the toolbar, and the generated code, update instantly."
+  [tags]="['showDownload','showPrint','showFind','showAnnotations','showToolbarLeft','showSecondaryToolbarToggle','showSidebar']"
+  [code]="code()"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
+
+  <div preview>
+    <ng2-pdfjs-viewer
+      [pdfSrc]="src()"
+      [showOpenFile]="showOpenFile()"
+      [showDownload]="showDownload()"
+      [showPrint]="showPrint()"
+      [showFind]="showFind()"
+      [showFullScreen]="showFullScreen()"
+      [showViewBookmark]="showViewBookmark()"
+      [showAnnotations]="showAnnotations()"
+      [showToolbarLeft]="showToolbarLeft()"
+      [showToolbarMiddle]="showToolbarMiddle()"
+      [showToolbarRight]="showToolbarRight()"
+      [showSecondaryToolbarToggle]="showSecondaryToolbarToggle()"
+      [showSidebar]="showSidebar()">
+    </ng2-pdfjs-viewer>
+  </div>
+
+  <div controls>
+    <div class="ph">Buttons</div>
+    @for (t of toggles; track t.key) {
+      <div class="row">
+        <span>{{ t.label }}</span>
+        <span class="switch" [class.on]="t.sig()" (click)="t.sig.set(!t.sig())"
+              role="switch" [attr.aria-checked]="t.sig()" tabindex="0"
+              (keydown.enter)="t.sig.set(!t.sig())" (keydown.space)="t.sig.set(!t.sig())"></span>
+      </div>
+    }
+    <div class="ph">Groups</div>
+    @for (t of groupToggles; track t.key) {
+      <div class="row">
+        <span>{{ t.label }}</span>
+        <span class="switch" [class.on]="t.sig()" (click)="t.sig.set(!t.sig())"
+              role="switch" [attr.aria-checked]="t.sig()" tabindex="0"
+              (keydown.enter)="t.sig.set(!t.sig())" (keydown.space)="t.sig.set(!t.sig())"></span>
+      </div>
+    }
+  </div>
+</pg-page>

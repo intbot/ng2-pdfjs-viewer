@@ -1,0 +1,53 @@
+<div class="brand">
+  <span class="mk" aria-hidden="true">P</span>
+  <span class="bt"><b>ng2-pdfjs-viewer</b><small>playground</small></span>
+</div>
+
+<header class="top">
+  <nav class="crumb" aria-label="Breadcrumb">
+    @if (currentGroup()) { <span>{{ currentGroup() }}</span><span class="sep">/</span> }
+    <b>{{ currentTitle() }}</b>
+  </nav>
+
+  <button class="kbtn" type="button" (click)="palette.show()" aria-label="Open command palette">
+    <span aria-hidden="true">⌕</span> Search features <span class="kbd">⌘K</span>
+  </button>
+
+  <span class="sp"></span>
+
+  <label class="srcpick">
+    <span class="visually-hidden">Sample PDF</span>
+    <select class="ctl-input" (change)="onSampleChange($event)">
+      @for (s of samples.samples; track s.id) {
+        <option [value]="s.id" [selected]="s.id === samples.current().id">📄 {{ s.label }}</option>
+      }
+    </select>
+  </label>
+
+  <button class="ghost" type="button" (click)="theme.toggle()" [attr.aria-label]="'Switch to ' + (theme.mode() === 'dark' ? 'light' : 'dark') + ' theme'">
+    {{ theme.mode() === 'dark' ? '☀' : '☾' }}
+  </button>
+  <a class="ghost" href="https://github.com/intbot/ng2-pdfjs-viewer" target="_blank" rel="noopener" aria-label="GitHub repository">★</a>
+</header>
+
+<aside class="side" aria-label="Feature navigation">
+  @for (group of groups; track group) {
+    <div class="glabel">{{ group }}</div>
+    @for (f of featuresIn(group); track f.id) {
+      <a class="n"
+         [routerLink]="['/', f.route]"
+         routerLinkActive="on"
+         [routerLinkActiveOptions]="{ exact: f.route === '' }">
+        <span class="ic" aria-hidden="true">{{ f.icon }}</span>
+        <span class="nt">{{ f.title }}</span>
+        @if (f.badge) { <span class="badge">{{ f.badge }}</span> }
+      </a>
+    }
+  }
+</aside>
+
+<main class="main">
+  <router-outlet />
+</main>
+
+<pg-command-palette />

@@ -1,0 +1,37 @@
+<pg-page
+  title="PDF Sources"
+  lead="The same [pdfSrc] input accepts a URL string, a Blob, or a Uint8Array — so you can stream, generate, or upload PDFs. Switch the source type below, or load your own file."
+  [tags]="['pdfSrc','URL','Blob','Uint8Array','file upload','externalWindow']"
+  [code]="code()"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
+
+  <div preview>
+    <!-- urlValidation off: this page legitimately swaps pdfSrc between URL / Blob / bytes -->
+    <ng2-pdfjs-viewer [pdfSrc]="src()" viewerId="sources" [urlValidation]="false"></ng2-pdfjs-viewer>
+    <!-- renders nothing inline: externalWindow viewers open in their own tab on refresh() -->
+    <ng2-pdfjs-viewer #ext class="pg-external" [externalWindow]="true" viewerId="sources-external"
+                      [urlValidation]="false"></ng2-pdfjs-viewer>
+  </div>
+
+  <div controls>
+    <div class="ph">Source type</div>
+    <div class="row">
+      <span>Load as</span>
+      <span class="seg">
+        <button [class.on]="kind() === 'url'" (click)="useKind('url')">URL</button>
+        <button [class.on]="kind() === 'blob'" (click)="useKind('blob')">Blob</button>
+        <button [class.on]="kind() === 'bytes'" (click)="useKind('bytes')">Bytes</button>
+      </span>
+    </div>
+    <div class="ph">Upload your own</div>
+    <input class="file" type="file" accept="application/pdf" (change)="onFile($event)" aria-label="Upload a PDF" />
+    <p class="hint">A <code>File</code> is a <code>Blob</code> — it binds straight to <code>[pdfSrc]</code> with no conversion.</p>
+
+    <div class="ph">New tab</div>
+    <div class="row">
+      <span>External window</span>
+      <button class="ctl-input" type="button" (click)="openExternal(ext)">⧉ Open in new tab</button>
+    </div>
+    <p class="hint">An <code>externalWindow</code> viewer renders nothing inline — set <code>pdfSrc</code> and call <code>refresh()</code> from a click to open the PDF in its own tab.</p>
+  </div>
+</pg-page>

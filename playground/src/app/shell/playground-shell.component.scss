@@ -1,0 +1,70 @@
+:host {
+  display: grid;
+  grid-template-columns: 264px 1fr;
+  grid-template-rows: 56px 1fr;
+  grid-template-areas: 'brand top' 'side main';
+  height: 100vh;
+  overflow: hidden;
+}
+
+.brand {
+  grid-area: brand;
+  display: flex; align-items: center; gap: 10px; padding: 0 16px;
+  border-bottom: 1px solid var(--border); border-right: 1px solid var(--border);
+}
+.mk {
+  width: 28px; height: 28px; border-radius: 8px; flex: none;
+  background: conic-gradient(from 200deg, var(--v), var(--c), var(--pop), var(--v));
+  display: grid; place-items: center; color: #0a0a0a; font-weight: 800;
+}
+.bt b { font-family: var(--display); font-size: 14px; display: block; line-height: 1.05; }
+.bt small { color: var(--faint); font-size: 11px; }
+
+.top {
+  grid-area: top; display: flex; align-items: center; gap: 12px;
+  padding: 0 18px; border-bottom: 1px solid var(--border);
+}
+.crumb { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.crumb b { color: var(--ink); }
+.crumb .sep { color: var(--faint); }
+.kbtn {
+  display: flex; align-items: center; gap: 8px; margin-left: 8px;
+  background: var(--panel-2); border: 1px solid var(--border); border-radius: 10px;
+  padding: 7px 11px; color: var(--faint); font-size: 13px; font-family: var(--body); cursor: pointer;
+}
+.kbtn:hover { color: var(--muted); }
+.sp { flex: 1; }
+.srcpick select { max-width: 200px; }
+.ghost {
+  width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--border);
+  background: var(--panel-2); color: var(--muted); cursor: pointer;
+  display: grid; place-items: center; font-size: 14px;
+}
+.ghost:hover { color: var(--ink); border-color: var(--border-strong); }
+
+.side {
+  grid-area: side; border-right: 1px solid var(--border); overflow: auto; padding: 12px 10px;
+}
+.glabel {
+  font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--faint); font-weight: 600; padding: 13px 10px 5px;
+}
+.n {
+  display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 9px;
+  color: var(--muted); font-size: 13.5px; cursor: pointer;
+}
+.n:hover { background: var(--panel-2); color: var(--ink); }
+.n.on {
+  background: color-mix(in srgb, var(--v) 16%, transparent); color: var(--ink);
+  font-weight: 600; box-shadow: inset 2px 0 0 var(--v);
+}
+.n .ic { width: 17px; text-align: center; opacity: 0.85; }
+.n .nt { flex: 1; }
+.n .badge { font-size: 10px; color: var(--faint); border: 1px solid var(--border); border-radius: 6px; padding: 0 6px; }
+
+.main { grid-area: main; overflow: auto; position: relative; }
+
+@media (max-width: 900px) {
+  :host { grid-template-columns: 1fr; grid-template-areas: 'top top' 'main main'; }
+  .brand, .side { display: none; }
+}

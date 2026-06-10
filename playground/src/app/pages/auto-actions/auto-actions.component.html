@@ -1,0 +1,43 @@
+<pg-page
+  title="Auto Actions"
+  lead="Fire actions automatically the moment the document loads — auto download or print, rotate, or jump to the last page — and set the download filename."
+  [tags]="['downloadOnLoad','printOnLoad','showLastPageOnLoad','rotateCW','rotateCCW','downloadFileName']"
+  [code]="code()"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
+
+  <div preview>
+    <!-- Auto actions only fire on document load, so re-create the viewer
+         (keyed @for) whenever a toggle changes to replay the load. -->
+    @for (k of [runKey()]; track k) {
+      <ng2-pdfjs-viewer
+        [pdfSrc]="src()"
+        [downloadFileName]="downloadFileName()"
+        [downloadOnLoad]="downloadOnLoad()"
+        [printOnLoad]="printOnLoad()"
+        [showLastPageOnLoad]="showLastPageOnLoad()"
+        [rotateCW]="rotateCW()"
+        [rotateCCW]="rotateCCW()">
+      </ng2-pdfjs-viewer>
+    }
+  </div>
+
+  <div controls>
+    <div class="ph">On document load</div>
+    @for (t of toggles; track t.key) {
+      <div class="row">
+        <span>{{ t.label }}</span>
+        <span class="switch" [class.on]="t.sig()" (click)="toggle(t)"
+              role="switch" [attr.aria-checked]="t.sig()" tabindex="0" (keydown.enter)="toggle(t)"></span>
+      </div>
+    }
+    <div class="row">
+      <span>Replay load</span>
+      <button class="ctl-input" type="button" (click)="rerun()">↻ Reload viewer</button>
+    </div>
+    <div class="ph">Download filename</div>
+    <div class="row">
+      <input class="ctl-input" style="width:100%" [value]="downloadFileName()" (input)="setName($event)" aria-label="Download filename" />
+    </div>
+    <p class="note">Auto download/print may be blocked by the browser until you interact with the page.</p>
+  </div>
+</pg-page>

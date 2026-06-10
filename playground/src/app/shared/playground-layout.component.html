@@ -1,0 +1,58 @@
+<header class="phead">
+  <h1>{{ title() }}</h1>
+  @if (lead()) { <p class="lead">{{ lead() }}</p> }
+  @if (tags().length) {
+    <div class="tags">
+      @for (t of tags(); track t) { <span class="tag">{{ t }}</span> }
+    </div>
+  }
+</header>
+
+<div class="tabbar">
+  <div class="seg" role="tablist">
+    <button role="tab" [class.on]="tab() === 'preview'" (click)="setTab('preview')">Preview</button>
+    <button role="tab" [class.on]="tab() === 'code'" (click)="setTab('code')">Code</button>
+    <button role="tab" [class.on]="tab() === 'split'" (click)="setTab('split')">Split</button>
+  </div>
+
+  <div class="widths" role="group" aria-label="Preview width">
+    <button [class.on]="width() === 'mobile'" (click)="setWidth('mobile')" title="375px">📱 375</button>
+    <button [class.on]="width() === 'fluid'" (click)="setWidth('fluid')" title="Fluid">📐 Fluid</button>
+    <button [class.on]="width() === 'desktop'" (click)="setWidth('desktop')" title="1024px">🖥 1024</button>
+  </div>
+
+  <button class="share" type="button" (click)="share()">{{ linked() ? '✓ Link copied' : '🔗 Share' }}</button>
+  <button class="sbz" type="button" (click)="openStackblitz()">⚡ Open in StackBlitz</button>
+</div>
+
+<div class="work" [class.split]="tab() === 'split'" [class.codeonly]="tab() === 'code'">
+  <!-- Always mounted: detaching the viewer resets its iframe to about:blank
+       and the loaded PDF is lost. Code-only mode hides it with CSS instead. -->
+  <section class="previewcard">
+    <div class="pchead"><span class="d"><i></i><i></i><i></i></span> live preview · ng2-pdfjs-viewer</div>
+    <div class="resizable" [style.maxWidth]="widthPx[width()]">
+      <ng-content select="[preview]" />
+    </div>
+  </section>
+
+  @if (tab() !== 'preview') {
+    <section class="codecard">
+      <div class="ch">
+        app.component.html
+        <span class="sp"></span>
+        @if (docHref()) { <a class="doc" [href]="docHref()" target="_blank" rel="noopener">Docs ↗</a> }
+        <button class="cp" type="button" [class.done]="copied()" (click)="copy()">
+          {{ copied() ? '✓ Copied' : '⧉ Copy' }}
+        </button>
+      </div>
+      <pre><code>{{ code() }}</code></pre>
+    </section>
+  }
+
+  <aside class="ctlcard">
+    <div class="ch">Controls</div>
+    <div class="ctl">
+      <ng-content select="[controls]" />
+    </div>
+  </aside>
+</div>

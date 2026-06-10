@@ -1,0 +1,68 @@
+<pg-page
+  title="Error Handling"
+  lead="Customize what users see when a document fails to load: override the message, validate URLs before fetching, or render a fully custom error template."
+  [tags]="['errorOverride','errorAppend','errorMessage','urlValidation','customErrorTpl']"
+  [code]="code()"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
+
+  <div preview>
+    <!-- urlValidation is a viewer URL parameter, read only at load —
+         the keyed @for re-creates the viewer when it changes. -->
+    @for (v of [urlValidation()]; track v) {
+      <ng2-pdfjs-viewer
+        [pdfSrc]="src()"
+        [errorOverride]="errorOverride()"
+        [errorAppend]="errorAppend()"
+        [errorMessage]="errorMessage()"
+        [customErrorTpl]="selectedErrTpl()"
+        [urlValidation]="v">
+      </ng2-pdfjs-viewer>
+    }
+
+    <ng-template #tplBranded let-msg="errorMessage">
+      <div class="pge pge-branded">
+        <span class="badge">⚠</span>
+        <h3>Document unavailable</h3>
+        <p>{{ msg }}</p>
+        <small>ng2-pdfjs-viewer · custom error template</small>
+      </div>
+    </ng-template>
+    <ng-template #tplMinimal let-msg="errorMessage">
+      <div class="pge pge-minimal">⚠ {{ msg }}</div>
+    </ng-template>
+  </div>
+
+  <div controls>
+    <div class="ph">Simulate</div>
+    <div class="row">
+      <span>Load a broken URL</span>
+      <span class="switch" [class.on]="broken()" (click)="broken.set(!broken())"
+            role="switch" [attr.aria-checked]="broken()" tabindex="0" (keydown.enter)="broken.set(!broken())"></span>
+    </div>
+    <div class="ph">Handling</div>
+    <div class="row">
+      <span>Override message</span>
+      <span class="switch" [class.on]="errorOverride()" (click)="errorOverride.set(!errorOverride())"
+            role="switch" [attr.aria-checked]="errorOverride()" tabindex="0" (keydown.enter)="errorOverride.set(!errorOverride())"></span>
+    </div>
+    <div class="row">
+      <span>Append to default</span>
+      <span class="switch" [class.on]="errorAppend()" (click)="errorAppend.set(!errorAppend())"
+            role="switch" [attr.aria-checked]="errorAppend()" tabindex="0" (keydown.enter)="errorAppend.set(!errorAppend())"></span>
+    </div>
+    <div class="row">
+      <span>URL validation</span>
+      <span class="switch" [class.on]="urlValidation()" (click)="urlValidation.set(!urlValidation())"
+            role="switch" [attr.aria-checked]="urlValidation()" tabindex="0" (keydown.enter)="urlValidation.set(!urlValidation())"></span>
+    </div>
+    <div class="row">
+      <label for="err-tpl">customErrorTpl</label>
+      <select id="err-tpl" class="ctl-input" [value]="errTpl()" (change)="setTpl($event)">
+        @for (t of errTpls; track t) { <option [value]="t">{{ t }}</option> }
+      </select>
+    </div>
+    <div class="ph">Message</div>
+    <input class="ctl-input" style="width:100%" [value]="errorMessage()" (input)="setMsg($event)" aria-label="Error message" />
+    <p class="note">Toggle “Load a broken URL” to see the message render in the viewer.</p>
+  </div>
+</pg-page>

@@ -1,0 +1,187 @@
+/* ng2-pdfjs-viewer playground — design tokens + global base.
+   Dark-first; light theme via [data-theme="light"]. */
+
+:root {
+  /* palette — dark */
+  --bg: #07080c;
+  --panel: #0d0f16;
+  --panel-2: #12151f;
+  --elev: #171b26;
+  --border: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --ink: #eef1f7;
+  --muted: #aab3c2;
+  --faint: #6e7788;
+
+  /* brand */
+  --v: #7c5cff;
+  --c: #22d3ee;
+  --pop: #ff8a5c;
+  --good: #3ddc97;
+  --warn: #fbbf24;
+  --bad: #fb7185;
+  --accent: var(--v);
+
+  /* type */
+  --display: 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+
+  /* shape */
+  --radius: 14px;
+  --radius-sm: 9px;
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  --shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+:root[data-theme='light'] {
+  --bg: #f5f6fa;
+  --panel: #ffffff;
+  --panel-2: #f1f3f8;
+  --elev: #ffffff;
+  --border: #e6e9f0;
+  --border-strong: #d6dae3;
+  --ink: #161a23;
+  --muted: #566072;
+  --faint: #97a0b0;
+  --shadow: 0 18px 50px rgba(30, 40, 80, 0.1);
+  --shadow-sm: 0 8px 24px rgba(30, 40, 80, 0.07);
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; margin: 0; }
+
+body {
+  font-family: var(--body);
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* gradient mesh + grain, used on overview/landing-ish surfaces */
+.mesh {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(50% 40% at 16% 6%, rgba(124, 92, 255, 0.22), transparent 60%),
+    radial-gradient(45% 45% at 88% 10%, rgba(34, 211, 238, 0.16), transparent 60%),
+    radial-gradient(40% 50% at 72% 92%, rgba(255, 138, 92, 0.12), transparent 60%);
+}
+.grain {
+  position: fixed; inset: 0; z-index: 0; opacity: 0.04; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* scrollbars */
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
+*::-webkit-scrollbar-track { background: transparent; }
+
+/* shared primitives */
+.btn {
+  font-family: var(--display); font-weight: 600; font-size: 13.5px;
+  padding: 8px 14px; border-radius: var(--radius-sm); cursor: pointer;
+  border: 1px solid var(--border); background: var(--panel-2); color: var(--ink);
+  display: inline-flex; align-items: center; gap: 8px; transition: 0.15s;
+}
+.btn:hover { border-color: var(--border-strong); }
+.btn.p { border: 0; color: #0a0a0a; background: linear-gradient(120deg, var(--v), var(--c)); }
+.btn.ghost { background: transparent; }
+
+.tag {
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  background: var(--panel); border: 1px solid var(--border); border-radius: 7px; padding: 3px 8px;
+}
+
+.kbd {
+  font-family: var(--mono); font-size: 11px; color: var(--faint);
+  border: 1px solid var(--border); border-radius: 6px; padding: 1px 6px;
+}
+
+/* form controls reused across pages */
+.field { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.field > label { font-size: 12.5px; color: var(--ink); }
+
+.ctl-input {
+  font-family: var(--body); background: var(--panel-2); border: 1px solid var(--border);
+  color: var(--ink); border-radius: 8px; font-size: 12px; padding: 6px 8px;
+}
+select.ctl-input { cursor: pointer; }
+input[type='range'] { accent-color: var(--accent); }
+
+.switch {
+  width: 38px; height: 22px; border-radius: 999px; background: var(--panel-2);
+  border: 1px solid var(--border); position: relative; cursor: pointer; flex: none;
+}
+.switch::after {
+  content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px;
+  border-radius: 50%; background: var(--faint); transition: 0.15s;
+}
+.switch.on { background: color-mix(in srgb, var(--accent) 35%, var(--panel-2)); }
+.switch.on::after { left: 18px; background: var(--accent); }
+
+.seg {
+  display: inline-flex; background: var(--panel-2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 3px; gap: 3px;
+}
+.seg button {
+  font-family: var(--body); border: 0; background: transparent; color: var(--muted);
+  font-size: 12.5px; padding: 5px 11px; border-radius: 7px; cursor: pointer;
+}
+.seg button.on { background: var(--accent); color: #0a0a0a; font-weight: 600; }
+
+/* ── custom spinner templates (Loading page) ─────────────────────────
+   Rendered inside the viewer's loading overlay via customSpinnerTpl, i.e.
+   outside the declaring component's DOM — so they live in global styles. */
+.pgt {
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  font-family: var(--display); color: var(--ink);
+}
+.pgt p { margin: 0; font-size: 13px; color: var(--muted); }
+.pgt-dots span { display: flex; gap: 7px; }
+.pgt-dots i {
+  width: 11px; height: 11px; border-radius: 50%;
+  background: linear-gradient(120deg, var(--v), var(--c));
+  animation: pgt-bounce 0.9s ease-in-out infinite;
+}
+.pgt-dots i:nth-child(2) { animation-delay: 0.15s; }
+.pgt-dots i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes pgt-bounce { 0%, 100% { transform: translateY(0); opacity: 0.5; } 50% { transform: translateY(-9px); opacity: 1; } }
+.pgt-bar span { width: 160px; height: 6px; border-radius: 99px; background: var(--panel-2); overflow: hidden; display: block; }
+.pgt-bar i {
+  display: block; width: 40%; height: 100%; border-radius: 99px;
+  background: linear-gradient(90deg, var(--v), var(--c));
+  animation: pgt-slide 1.1s ease-in-out infinite;
+}
+@keyframes pgt-slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(420%); } }
+.pgt-pulse span { font-size: 34px; color: var(--v); animation: pgt-pulse 1.2s ease-in-out infinite; }
+@keyframes pgt-pulse { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.25); opacity: 1; } }
+
+/* ── custom error templates (Errors page) — same overlay situation ── */
+.pge { font-family: var(--body); text-align: center; }
+.pge-branded {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 28px 32px; border: 1px solid var(--border); border-radius: 14px;
+  background: var(--panel); box-shadow: var(--shadow-sm); max-width: 340px;
+}
+.pge-branded .badge {
+  width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+  font-size: 20px; color: #0a0a0a; background: linear-gradient(120deg, var(--warn), var(--pop));
+}
+.pge-branded h3 { font-family: var(--display); font-size: 16px; margin: 4px 0 0; }
+.pge-branded p { font-size: 13px; color: var(--muted); margin: 0; }
+.pge-branded small { font-size: 10.5px; color: var(--faint); letter-spacing: 0.06em; text-transform: uppercase; }
+.pge-minimal {
+  font-family: var(--mono); font-size: 13px; color: var(--bad);
+  border: 1px dashed color-mix(in srgb, var(--bad) 50%, transparent);
+  border-radius: 9px; padding: 12px 18px;
+}
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}

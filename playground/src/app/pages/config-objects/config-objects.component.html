@@ -1,0 +1,43 @@
+<pg-page
+  title="Config Objects"
+  lead="Prefer one object over many inputs? The convenience setters — controlVisibility, themeConfig, autoActions, viewerConfig, groupVisibility — let you configure the viewer with grouped config objects."
+  [tags]="['controlVisibility','themeConfig','autoActions','viewerConfig','groupVisibility']"
+  [code]="code()"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
+
+  <div preview>
+    <!-- Config objects are applied when the viewer loads; the keyed @for
+         re-creates it whenever any object changes so every toggle is live. -->
+    @for (k of [runKey()]; track k) {
+      <ng2-pdfjs-viewer
+        [pdfSrc]="src()"
+        [controlVisibility]="controlVisibility()"
+        [themeConfig]="themeConfig()"
+        [autoActions]="autoActions()"
+        [viewerConfig]="viewerConfig()"
+        [groupVisibility]="groupVisibility()">
+      </ng2-pdfjs-viewer>
+    }
+  </div>
+
+  <div controls>
+    @for (g of groups; track g) {
+      <div class="ph">{{ g }}</div>
+      @for (r of rowsFor(g); track r.label) {
+        <div class="row">
+          <span>{{ r.label }}</span>
+          <span class="switch" [class.on]="r.sig()" (click)="r.sig.set(!r.sig())"
+                role="switch" [attr.aria-checked]="r.sig()" tabindex="0" (keydown.enter)="r.sig.set(!r.sig())"></span>
+        </div>
+      }
+    }
+    <div class="ph">themeConfig</div>
+    <div class="row">
+      <label for="co-theme">theme</label>
+      <select id="co-theme" class="ctl-input" [value]="theme()" (change)="setTheme($event)">
+        <option value="light">light</option><option value="dark">dark</option><option value="auto">auto</option>
+      </select>
+    </div>
+    <p class="note">Config objects are read when the viewer loads — this page reloads the preview on every change.</p>
+  </div>
+</pg-page>

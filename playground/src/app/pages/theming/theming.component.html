@@ -1,0 +1,95 @@
+<pg-page
+  title="Theming & Appearance"
+  lead="Recolor the viewer to match your brand — theme mode, primary color, radius, density and toolbar/sidebar positions. Everything applies live."
+  [tags]="['theme','primaryColor','borderRadius','toolbarDensity','toolbarPosition','sidebarPosition','customCSS']"
+  [code]="code()"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#theming">
+
+  <div preview>
+    <ng2-pdfjs-viewer
+      [pdfSrc]="src()"
+      [theme]="theme()"
+      [primaryColor]="primaryColor() || undefined"
+      [backgroundColor]="backgroundColor() || undefined"
+      [toolbarColor]="toolbarColor() || undefined"
+      [textColor]="textColor() || undefined"
+      [pageBorderColor]="pageBorderColor() || undefined"
+      [borderRadius]="borderRadius() || undefined"
+      [toolbarDensity]="toolbarDensity()"
+      [toolbarPosition]="toolbarPosition()"
+      [sidebarPosition]="sidebarPosition()"
+      [sidebarWidth]="sidebarWidth() || undefined"
+      [customCSS]="customCSS() || undefined">
+    </ng2-pdfjs-viewer>
+  </div>
+
+  <div controls>
+    <div class="ph">Theme</div>
+    <div class="row">
+      <label for="th-mode">Mode</label>
+      <select id="th-mode" class="ctl-input" [value]="theme()" (change)="setTheme($event)">
+        <option value="light">light</option><option value="dark">dark</option><option value="auto">auto</option>
+      </select>
+    </div>
+    <div class="row">
+      <span>Primary color</span>
+      <span class="swatch">
+        @for (c of colors; track c) {
+          <i [style.background]="c || 'transparent'" [class.on]="primaryColor() === c"
+             [style.borderStyle]="c ? 'solid' : 'dashed'"
+             (click)="primaryColor.set(c)" role="button" tabindex="0"
+             [attr.aria-label]="c || 'default'" (keydown.enter)="primaryColor.set(c)"></i>
+        }
+      </span>
+    </div>
+    <div class="row">
+      <label for="th-radius">Border radius</label>
+      <select id="th-radius" class="ctl-input" [value]="borderRadius()" (change)="setRadius($event)">
+        @for (r of radii; track r) { <option [value]="r">{{ r || 'default' }}</option> }
+      </select>
+    </div>
+
+    <div class="ph">Colors</div>
+    @for (c of colorRows; track c.key) {
+      <div class="row colorrow">
+        <span>{{ c.label }}</span>
+        <input type="color" [value]="c.sig() || '#888888'" (input)="setColor(c.sig, $event)" [attr.aria-label]="c.key" />
+      </div>
+    }
+    <div class="row">
+      <span>Reset colors</span>
+      <button class="ctl-input" type="button" (click)="resetColors()">↺ defaults</button>
+    </div>
+
+    <div class="ph">Custom CSS</div>
+    <textarea class="ctl-input css-box" [value]="customCSS()" (input)="setCSS($event)"
+              placeholder=".page &#123; box-shadow: 0 10px 30px rgba(0,0,0,.4); &#125;"
+              aria-label="Custom CSS injected into the viewer"></textarea>
+
+    <div class="ph">Layout</div>
+    <div class="row">
+      <label for="th-density">Toolbar density</label>
+      <select id="th-density" class="ctl-input" [value]="toolbarDensity()" (change)="setDensity($event)">
+        <option value="default">default</option><option value="compact">compact</option><option value="comfortable">comfortable</option>
+      </select>
+    </div>
+    <div class="row">
+      <label for="th-tpos">Toolbar position</label>
+      <select id="th-tpos" class="ctl-input" [value]="toolbarPosition()" (change)="setTPos($event)">
+        <option value="top">top</option><option value="bottom">bottom</option>
+      </select>
+    </div>
+    <div class="row">
+      <label for="th-spos">Sidebar position</label>
+      <select id="th-spos" class="ctl-input" [value]="sidebarPosition()" (change)="setSPos($event)">
+        <option value="left">left</option><option value="right">right</option>
+      </select>
+    </div>
+    <div class="row">
+      <label for="th-swidth">Sidebar width</label>
+      <select id="th-swidth" class="ctl-input" [value]="sidebarWidth()" (change)="setSidebarWidth($event)">
+        @for (w of sidebarWidths; track w) { <option [value]="w">{{ w || 'default' }}</option> }
+      </select>
+    </div>
+  </div>
+</pg-page>

@@ -1,0 +1,25 @@
+<pg-page
+  title="Localization"
+  lead="Set the viewer locale and PDF.js translates the entire toolbar and UI. Pick a language to re-render the viewer in it."
+  [tags]="['locale','i18n']"
+  [code]="code()"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
+
+  <div preview>
+    <!-- locale is applied before PDF.js initializes, so a locale change
+         needs a fresh viewer — the keyed @for re-creates it. -->
+    @for (l of [locale()]; track l) {
+      <ng2-pdfjs-viewer [pdfSrc]="src()" [locale]="l" viewerId="localization"></ng2-pdfjs-viewer>
+    }
+  </div>
+
+  <div controls>
+    <div class="ph">Language</div>
+    <div class="row">
+      <label for="loc-sel">Locale</label>
+      <select id="loc-sel" class="ctl-input" [value]="locale()" (change)="setLocale($event)">
+        @for (l of locales; track l.code) { <option [value]="l.code">{{ l.label }}</option> }
+      </select>
+    </div>
+  </div>
+</pg-page>

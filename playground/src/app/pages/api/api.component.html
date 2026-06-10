@@ -1,0 +1,47 @@
+<pg-page
+  title="API & Inspector"
+  lead="Grab the component with @ViewChild and drive it from TypeScript — set the page, read live state. The inspector below reflects the viewer as you interact with it."
+  [tags]="['@ViewChild','page','onPageChange','onScaleChange','inspector']"
+  [code]="code()"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
+
+  <div preview>
+    <ng2-pdfjs-viewer #viewer
+      [pdfSrc]="src()"
+      [page]="page()"
+      (onPageChange)="onPage($event)"
+      (onScaleChange)="onScale($event)"
+      (onRotationChange)="onRotation($event)">
+    </ng2-pdfjs-viewer>
+  </div>
+
+  <div controls>
+    <div class="ph">Imperative control</div>
+    <div class="row">
+      <span>Page</span>
+      <span class="seg">
+        <button (click)="go(-1)">‹ Prev</button>
+        <button>{{ page() }}</button>
+        <button (click)="go(1)">Next ›</button>
+      </span>
+    </div>
+
+    <div class="ph">Methods</div>
+    <div class="mbtns">
+      <button class="ctl-input" type="button" (click)="call(viewer, 'download')">⭳ triggerDownload()</button>
+      <button class="ctl-input" type="button" (click)="call(viewer, 'print')">⎙ triggerPrint()</button>
+      <button class="ctl-input" type="button" (click)="call(viewer, 'rotateCW')">⟳ triggerRotation('cw')</button>
+      <button class="ctl-input" type="button" (click)="call(viewer, 'rotateCCW')">⟲ triggerRotation('ccw')</button>
+      <button class="ctl-input" type="button" (click)="call(viewer, 'refresh')">↻ refresh()</button>
+    </div>
+
+    <div class="ph">Live inspector</div>
+    <table class="inspect">
+      <tbody>
+        @for (r of rows(); track r.k) {
+          <tr><td>{{ r.k }}</td><td>{{ r.v }}</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</pg-page>

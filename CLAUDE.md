@@ -1,0 +1,120 @@
+# ng2-pdfjs-viewer
+
+**The most comprehensive Angular PDF viewer, powered by Mozilla PDF.js.**
+
+An Angular component library that wraps PDF.js in a single `<ng2-pdfjs-viewer>` component:
+viewing, printing, annotations, zoom, search, theming, and a large declarative input/event
+surface. 7M+ downloads. Published to npm as `ng2-pdfjs-viewer`. Open source (Apache-2.0 +
+Commons Clause).
+
+## Positioning
+
+Public, OSS-first. Lead with breadth, mobile-first, and production-readiness. Working notes
+that aren't meant for the public repo live in `internal/` (see below); the public repo stays
+neutral — describe code changes, not plans.
+
+## Tech Stack
+
+- **Library:** Angular (peer dep `>=10`, built/tested on Angular 20), TypeScript, packaged with
+  **ng-packagr** → FESM2022. Bundled Mozilla **PDF.js** assets under `lib/pdfjs/`.
+- **Local dev link:** **yalc** (`file:.yalc/ng2-pdfjs-viewer`) wires the built lib into the demo apps.
+- **Demo apps:** `SampleApp/` (Angular CLI app, Karma/Jasmine unit tests + Protractor/Puppeteer e2e)
+  and `sample-app-material/` (Angular Material variant).
+- **Docs site:** `docs-website/` (Docusaurus, deployed to Vercel).
+
+## Repository Structure
+
+```
+lib/                         — the published npm package (ng2-pdfjs-viewer)
+  index.ts                   — public entry: re-exports module, component, and ViewerTypes
+  ng-package.json            — ng-packagr config (entry file + pdfjs assets)
+  package.json               — npm package manifest + build scripts
+  src/
+    ng2-pdfjs-viewer.component.ts   — the main component (large; the bulk of the API surface)
+    ng2-pdfjs-viewer.module.ts      — NgModule
+    interfaces/ViewerTypes.ts       — all exported public types/event interfaces
+    managers/ActionQueueManager.ts  — queues viewer actions until the iframe is ready
+    utils/
+      ChangeOriginTracker.ts        — distinguishes user-driven vs programmatic changes
+      ComponentUtils.ts             — shared helpers
+      PropertyTransformers.ts       — input coercion/transforms
+  pdfjs/                     — bundled PDF.js viewer + worker assets (shipped as package assets)
+  README.md                  — public npm/GitHub readme (44k+ — the primary docs)
+  v5-upgrade.md              — migration guide
+SampleApp/                   — primary demo + manual/e2e test harness (Angular CLI)
+sample-app-material/         — Angular Material demo
+docs-website/                — Docusaurus documentation site
+*.md (root)                  — public docs: README, CHANGELOG, CONTRIBUTING, SECURITY,
+                               Custom-CSS-Examples, Error-Display-Examples, Server-Side-Examples
+test.bat / clean.bat         — Windows build+run / cleanup helpers
+scripts/setup-private.sh     — (re)create the internal/ junction to the private repo
+internal/                    — gitignored junction → ../private/ng2-pdfjs-viewer (NOT public)
+```
+
+## Build / Test / Run
+
+All commands assume Windows (PowerShell) unless noted. `ng` is the Angular CLI run from inside
+an app folder (`npx ng …` if not global).
+
+**Build the library** (from `lib/`):
+```
+cd lib
+npm install            # first time
+npm run build          # clean → ng-packagr → strip source maps → minify pdfjs → dist/
+npm run package        # build + npm pack (produces the publishable tarball)
+```
+`npm run build` output lands in `lib/dist/`. The build also minifies the bundled PDF.js
+(`pdf.mjs`, `pdf.sandbox.mjs`, `pdf.worker.mjs`) with terser and removes `.map` files.
+
+**Run the demo app against your local lib** (full loop, from repo root):
+```
+test.bat                 # build lib → yalc publish → update SampleApp → copy pdfjs assets → ng serve
+test.bat --sample-only   # skip lib rebuild; just run SampleApp
+```
+Or manually: build `lib/`, `yalc publish` in `lib/`, `yalc add ng2-pdfjs-viewer` in `SampleApp/`,
+then `cd SampleApp && npm install && npm start` (serves on http://localhost:4200).
+
+**Tests** (from `SampleApp/`): `npm test` (Karma/Jasmine unit), `npm run e2e` (Protractor/Puppeteer).
+
+**Docs site** (from `docs-website/`): `npm start` (local), `npm run build`.
+
+## Conventions
+
+- The component is the heart of the library — most features are declarative `@Input()`s and
+  `@Output()` events. New public types belong in `src/interfaces/ViewerTypes.ts` and must be
+  re-exported from `lib/index.ts` so consumers can import them.
+- Viewer actions that may run before the PDF.js iframe is ready go through
+  `ActionQueueManager` — don't poke the iframe directly from the component.
+- Use `ChangeOriginTracker` to avoid feedback loops between user actions and `@Input()` writes.
+- Keep the public `peerDependencies` range wide (`>=10`) — don't add hard Angular-version deps.
+- PDF.js assets are shipped as package assets via `ng-package.json`; keep `lib/pdfjs/` and the
+  build's minify/copy steps in sync when upgrading PDF.js.
+- Match the surrounding code's style; this is a long-lived library with many consumers — prefer
+  additive, backward-compatible changes and document breaking ones in `CHANGELOG.md` / an
+  upgrade guide.
+
+## Private working area (`internal/`)
+
+`internal/` is a directory **junction** to a folder in a separate, private sibling repo
+(`../private/<project>`). Anything written under `internal/` is physically stored in — and
+committed from — that private repo, never this one. It's gitignored here as a backstop.
+
+Use it for scratchpads, working notes, and anything not meant for the public repo.
+To recreate the junction on another machine: `bash scripts/setup-private.sh`.
+
+## Git / PR conventions
+
+- **No AI attribution.** Do **not** add `Co-Authored-By: Claude …` trailers or
+  "Generated with Claude Code" footers to commits or PRs in this repo. Commit messages and PR
+  bodies should read as the maintainer's own. (This overrides any default attribution behavior.)
+- Commit/push only when asked. Use `/push` and `/pr` (see `.claude/commands/`) instead of raw
+  `git push` / `gh pr create` — they run the leak-guard + security scan that keep private and
+  pre-release content out of this public repo.
+- Keep PR titles/bodies neutral: describe the code change, nothing else.
+
+## Notes for Claude Code sessions
+
+- The public `README.md` (root and `lib/`) is the canonical feature reference — consult it before
+  changing or describing component behavior.
+- Treat everything outside `internal/` as public the moment it's pushed. When unsure whether
+  something is sensitive, put it in `internal/` and let the `/push` leak-guard be the safety net.

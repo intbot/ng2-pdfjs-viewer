@@ -1,0 +1,23 @@
+<pg-page
+  title="Quick Start & Embed"
+  lead="Add the module, drop in one element, point it at a PDF. The viewer fills its container, so sizing is just CSS — embed it full-page or inline within your content."
+  [tags]="['pdfSrc','viewerId','container sizing']"
+  [code]="code()"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#installation">
+
+  <div preview>
+    <ng2-pdfjs-viewer [pdfSrc]="src()" viewerId="quickstart"></ng2-pdfjs-viewer>
+  </div>
+
+  <div controls>
+    <div class="ph">Install</div>
+    <p class="hint">npm i ng2-pdfjs-viewer</p>
+    <div class="ph">Steps</div>
+    <ol class="steps">
+      <li>Import <code>PdfJsViewerModule</code> (or the standalone component).</li>
+      <li>Add <code>&lt;ng2-pdfjs-viewer&gt;</code> to a sized container.</li>
+      <li>Bind <code>[pdfSrc]</code> to a URL, Blob, or byte array.</li>
+    </ol>
+    <p class="hint">The viewer is 100% width/height of its parent — give the parent a height (e.g. <code>height: 80vh</code>).</p>
+  </div>
+</pg-page>

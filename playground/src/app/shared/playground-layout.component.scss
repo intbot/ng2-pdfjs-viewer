@@ -1,0 +1,84 @@
+:host { display: block; padding: 24px 28px 40px; }
+
+.phead h1 { font-family: var(--display); font-size: 25px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 6px; }
+.phead .lead { color: var(--muted); font-size: 14px; max-width: 700px; line-height: 1.55; margin: 0 0 14px; }
+.tags { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 18px; }
+
+.tabbar { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+.widths { margin-left: auto; display: inline-flex; gap: 4px; }
+.widths button {
+  font-family: var(--mono); font-size: 11px; border: 1px solid var(--border);
+  background: var(--panel-2); color: var(--muted); border-radius: 8px; padding: 6px 10px; cursor: pointer;
+}
+.widths button.on { border-color: var(--c); color: var(--c); }
+.share {
+  font-family: var(--body); font-size: 12.5px; color: var(--muted);
+  background: var(--panel-2); border: 1px solid var(--border); border-radius: 9px;
+  padding: 8px 12px; cursor: pointer;
+}
+.share:hover { color: var(--ink); border-color: var(--border-strong); }
+.sbz {
+  display: inline-flex; align-items: center; gap: 7px; font-family: var(--display); font-weight: 600;
+  font-size: 12.5px; color: #0a0a0a; background: linear-gradient(120deg, var(--v), var(--c));
+  border: 0; border-radius: 9px; padding: 8px 13px; cursor: pointer;
+}
+
+.work {
+  display: grid; grid-template-columns: minmax(0, 1fr) 320px;
+  grid-template-areas: 'preview controls';
+  gap: 16px; align-items: start;
+}
+.work.split { grid-template-areas: 'preview controls' 'code controls'; }
+.work.codeonly { grid-template-areas: 'code controls'; }
+.work.codeonly .previewcard { display: none; }
+
+.previewcard { grid-area: preview; border: 1px solid var(--border); border-radius: var(--radius); background: var(--panel); overflow: hidden; }
+.pchead {
+  display: flex; align-items: center; gap: 8px; padding: 9px 12px;
+  border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 11.5px; color: var(--faint);
+}
+.pchead .d { display: flex; gap: 6px; }
+.pchead .d i { width: 10px; height: 10px; border-radius: 50%; display: block; }
+.pchead .d i:nth-child(1) { background: #fb7185; }
+.pchead .d i:nth-child(2) { background: #fbbf24; }
+.pchead .d i:nth-child(3) { background: #3ddc97; }
+.resizable { padding: 16px; margin: 0 auto; width: 100%; transition: max-width 0.25s ease; }
+
+/* the projected viewer host gets a consistent frame + height */
+.resizable ::ng-deep ng2-pdfjs-viewer,
+.resizable ::ng-deep .pg-viewer {
+  display: block; height: 460px; border: 1px solid var(--border); border-radius: 11px; overflow: hidden;
+}
+/* externalWindow instances render in their own tab — no inline frame */
+.resizable ::ng-deep ng2-pdfjs-viewer.pg-external { display: none; }
+
+.ctlcard { grid-area: controls; border: 1px solid var(--border); border-radius: var(--radius); background: var(--panel); }
+.ctlcard .ch { font-family: var(--display); font-size: 12.5px; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+.ctl { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 12px; }
+.ctl ::ng-deep .ph {
+  font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); margin-top: 10px;
+}
+.ctl ::ng-deep .ph:first-child { margin-top: 0; }
+.ctl ::ng-deep .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 28px; }
+.ctl ::ng-deep .row > label,
+.ctl ::ng-deep .row > span:first-child { font-size: 12.5px; color: var(--ink); }
+
+.codecard { grid-area: code; border: 1px solid var(--border); border-radius: var(--radius); background: var(--panel); overflow: hidden; }
+.codecard .ch {
+  display: flex; align-items: center; gap: 10px; padding: 10px 13px; border-bottom: 1px solid var(--border);
+  font-family: var(--mono); font-size: 11.5px; color: var(--faint);
+}
+.codecard .ch .sp { flex: 1; }
+.codecard .ch .doc { font-family: var(--body); color: var(--muted); font-size: 11.5px; }
+.codecard .ch .cp {
+  font-family: var(--body); font-size: 11.5px; color: var(--muted);
+  border: 1px solid var(--border); border-radius: 7px; padding: 4px 10px; cursor: pointer; background: var(--panel-2);
+}
+.codecard .ch .cp.done { color: var(--good); border-color: var(--good); }
+.codecard pre { margin: 0; padding: 15px 16px; overflow: auto; }
+.codecard code { font-family: var(--mono); font-size: 12.5px; line-height: 1.75; color: var(--ink); white-space: pre; }
+
+@media (max-width: 1080px) {
+  .work, .work.split { grid-template-columns: 1fr; grid-template-areas: 'preview' 'controls' 'code'; }
+  .work.codeonly { grid-template-columns: 1fr; grid-template-areas: 'code' 'controls'; }
+}

@@ -1,0 +1,51 @@
+<pg-page
+  title="Events & Console"
+  lead="The viewer emits 19 events across its lifecycle — document load, page/scale/rotation changes, find, outline, metadata, print and more. Interact with the preview and watch them stream in."
+  [tags]="['onDocumentLoad','onPageChange','onScaleChange','onFind','onOutlineLoaded','onMetadataLoaded','+13']"
+  [code]="code()"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#events">
+
+  <div preview>
+    <ng2-pdfjs-viewer
+      [pdfSrc]="src()"
+      (onDocumentInit)="push('onDocumentInit')"
+      (onDocumentLoad)="push('onDocumentLoad')"
+      (onPagesInit)="push('onPagesInit', $event)"
+      (onPageChange)="push('onPageChange', $event)"
+      (onScaleChange)="push('onScaleChange', $event)"
+      (onRotationChange)="push('onRotationChange', $event)"
+      (onFind)="push('onFind', $event)"
+      (onUpdateFindMatchesCount)="push('onUpdateFindMatchesCount', $event)"
+      (onMetadataLoaded)="push('onMetadataLoaded', $event)"
+      (onOutlineLoaded)="push('onOutlineLoaded')"
+      (onPageRendered)="push('onPageRendered', $event)"
+      (onBeforePrint)="push('onBeforePrint')"
+      (onAfterPrint)="push('onAfterPrint')"
+      (onPresentationModeChanged)="push('onPresentationModeChanged', $event)"
+      (onOpenFile)="push('onOpenFile')"
+      (onBookmarkClick)="push('onBookmarkClick', $event)"
+      (onAnnotationLayerRendered)="push('onAnnotationLayerRendered', $event)"
+      (onDocumentError)="push('onDocumentError', $event)"
+      (onIdle)="push('onIdle')">
+    </ng2-pdfjs-viewer>
+  </div>
+
+  <div controls>
+    <div class="ph">Console</div>
+    <div class="conrow">
+      <span class="cnt">{{ count() }} events</span>
+      <button class="btn ghost" type="button" (click)="clear()">Clear</button>
+    </div>
+    <div class="console">
+      @for (e of log(); track e.t) {
+        <div class="ev">
+          <span class="seq">{{ e.t }}</span>
+          <span class="name">{{ e.name }}</span>
+          @if (e.detail) { <span class="detail">{{ e.detail }}</span> }
+        </div>
+      } @empty {
+        <div class="hint">Interact with the viewer — change page, search, rotate — to see events here.</div>
+      }
+    </div>
+  </div>
+</pg-page>
