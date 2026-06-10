@@ -26,6 +26,9 @@ export interface ViewerAction {
   // Retry bookkeeping for transient iframe-unavailable failures
   retries?: number;
   requeued?: boolean;
+  // Explicit readiness level for actions whose level isn't derivable from
+  // the action name (batched 'configure' carries steps of one level each)
+  level?: number;
 }
 
 export interface ActionExecutionResult {

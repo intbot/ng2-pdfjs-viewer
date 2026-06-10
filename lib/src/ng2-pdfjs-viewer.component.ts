@@ -12,6 +12,7 @@ import {
   SimpleChanges,
   AfterViewInit,
   ChangeDetectorRef,
+  isDevMode,
 } from "@angular/core";
 
 // Import extracted modules
@@ -216,6 +217,19 @@ function hasObservers(emitter: EventEmitter<any>): boolean {
   return (
     (emitter as any).observed === true ||
     ((emitter as any).observers?.length ?? 0) > 0
+  );
+}
+
+// Config-object inputs are commonly bound to getters that return a FRESH
+// object every change-detection cycle. Reference identity then flags a
+// "change" each cycle - only the content matters.
+function shallowEquals(a: any, b: any): boolean {
+  if (a === b) return true;
+  if (!a || !b || typeof a !== "object" || typeof b !== "object") return false;
+  const aKeys = Object.keys(a);
+  const bKeys = Object.keys(b);
+  return (
+    aKeys.length === bKeys.length && aKeys.every((k) => a[k] === b[k])
   );
 }
 // #endregion
@@ -774,6 +788,8 @@ export class PdfJsViewerComponent
     this.cdr = cdr;
   }
   private messageIdCounter = 0;
+  // Monotonic suffix keeps action ids unique even within one millisecond
+  private actionIdCounter = 0;
   private pendingMessages = new Map<
     string,
     {
@@ -1049,8 +1065,16 @@ export class PdfJsViewerComponent
     ) {
       this.applyChanges(changes);
     } else {
-      // Coalesce per property - only the latest value matters once ready
-      Object.assign(this.pendingChanges, changes);
+      // Coalesce per property - only the latest value matters once ready.
+      // Initial bindings (firstChange) are excluded: the batched 'configure'
+      // snapshot reads live property values when the viewer becomes ready,
+      // so replaying them here would only duplicate traffic (and an initial
+      // locale binding would trigger a spurious boot-time refresh).
+      for (const key of Object.keys(changes)) {
+        if (!changes[key].firstChange) {
+          this.pendingChanges[key] = changes[key];
+        }
+      }
     }
   }
 
@@ -1120,7 +1144,7 @@ export class PdfJsViewerComponent
         actionObj.requeued = true;
         this.actionQueueManager.queueAction(
           actionObj,
-          this.getRequiredReadinessLevel(actionObj.action),
+          actionObj.level ?? this.getRequiredReadinessLevel(actionObj.action),
         );
 
         // Trigger processing if iframe becomes available soon (event-driven, no polling)
@@ -1370,9 +1394,13 @@ export class PdfJsViewerComponent
 
       // Config-object inputs: their setters already copied the values onto
       // the individual properties - propagate those to the viewer. Keys the
-      // config never set stay undefined and are skipped.
+      // config never set stay undefined and are skipped. Same-content objects
+      // (fresh references from getter bindings) are not real changes.
       const fanout = CONFIG_FANOUT[propertyName];
       if (fanout) {
+        if (shallowEquals(change.currentValue, change.previousValue)) {
+          continue;
+        }
         for (const prop of fanout) {
           const entry = REGISTRY_BY_PROP[prop];
           const v = entry?.get ? entry.get(this) : (this as any)[prop];
@@ -1560,6 +1588,18 @@ export class PdfJsViewerComponent
   // Snapshot every registry-backed property and queue it for the (re)loaded
   // viewer, then enable wrapper-side event notifications.
   private queueAllConfigurations(): void {
+    // The whole configuration snapshot ships as ONE batched 'configure'
+    // message per readiness level (instead of ~40 individual messages).
+    // The wrapper replays each step through its normal control dispatch.
+    const batches = new Map<number, Array<{ action: string; payload: any }>>();
+    const add = (level: number, action: string, payload: any): void => {
+      let steps = batches.get(level);
+      if (!steps) {
+        batches.set(level, (steps = []));
+      }
+      steps.push({ action, payload });
+    };
+
     for (const entry of PROPERTY_REGISTRY) {
       if (entry.init === false) {
         continue;
@@ -1574,21 +1614,26 @@ export class PdfJsViewerComponent
           typeof value === "string" &&
           value.trim() !== "");
       if (send) {
-        this.dispatchAction(
+        add(
+          entry.level,
           entry.action,
           entry.payload ? entry.payload(value, this) : value,
-          "initial-load",
         );
       }
     }
 
     for (const action of ENABLE_EVENT_ACTIONS) {
-      this.dispatchAction(action, true, "initial-load");
+      add(this.getRequiredReadinessLevel(action), action, true);
     }
     // Idle is opt-in: enabling it installs document-wide activity listeners
     // in the iframe, so only pay for it when someone listens
     if (hasObservers(this.onIdle)) {
-      this.dispatchAction("enable-idle", true, "initial-load");
+      add(this.getRequiredReadinessLevel("enable-idle"), "enable-idle", true);
+    }
+
+    // Ascending level order so lower-readiness batches apply first
+    for (const level of [...batches.keys()].sort((a, b) => a - b)) {
+      this.dispatchAction("configure", batches.get(level), "initial-load", level);
     }
   }
 
@@ -1817,20 +1862,13 @@ export class PdfJsViewerComponent
       viewerUrl += `&viewerId=${this.viewerId}`;
     }
     viewerUrl += `&urlValidation=${this.urlValidation === false ? 0 : 1}`;
-    // Cache-bust on dev hosts so editing pdfjs assets takes effect
-    if (this.isDevelopmentMode()) {
+    // Cache-bust in Angular dev mode so editing pdfjs assets takes effect.
+    // (Angular's own signal, not a hostname/port heuristic - production apps
+    // served from localhost keep clean, cacheable viewer URLs.)
+    if (isDevMode()) {
       viewerUrl += `&_t=${Date.now()}`;
     }
     return viewerUrl;
-  }
-
-  private isDevelopmentMode(): boolean {
-    return (
-      window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1" ||
-      window.location.port === "4200" ||
-      window.location.href.includes("localhost:4200")
-    );
   }
 
   private navigateToViewer(viewerUrl: string): void {
@@ -1860,12 +1898,14 @@ export class PdfJsViewerComponent
       | "initial-load"
       | "property-change"
       | "user-interaction" = "property-change",
+    level?: number,
   ): Promise<ActionExecutionResult> {
-    const requiredReadiness = this.getRequiredReadinessLevel(action);
+    const requiredReadiness = level ?? this.getRequiredReadinessLevel(action);
     const actionObj: ViewerAction = {
-      id: `${source}-${action}-${Date.now()}`,
+      id: `${source}-${action}-${++this.actionIdCounter}`,
       action: action,
       payload: payload,
+      level: level,
     };
 
     // Check if we have sufficient readiness to execute immediately

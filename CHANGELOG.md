@@ -11,10 +11,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### 📦 Leaner Package
 
-- npm tarball reduced ~29% (4.1 MB → 2.9 MB packed, 11.1 MB → 8.1 MB unpacked)
+- npm tarball reduced ~29% (4.1 MB → 2.9 MB packed, 11.1 MB → 7.9 MB unpacked)
 - `viewer.mjs` (551 KB → 288 KB) and the postMessage bridge (72 KB → 19 KB) now ship minified
+- `viewer.css` now ships minified (223 KB → 185 KB)
 - Source maps and debug tooling no longer included in the package
 - 1,000+ lines of dead code removed from the library source
+
+#### ⚡ Faster Startup
+
+- Initial viewer configuration is batched into one message per readiness level
+  (previously ~40 individual postMessage round-trips per document load)
+- Viewer URL cache-busting now keys off Angular's `isDevMode()` instead of a
+  hostname/port heuristic — production apps served from localhost get clean,
+  cacheable viewer URLs
 
 ### Fixed
 
