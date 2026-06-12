@@ -112,14 +112,6 @@ pdfjs-document-properties-size-kb = { NUMBER($kb, maximumSignificantDigits: 3) }
 #   $mb (Number) - the PDF file size in megabytes
 #   $b (Number) - the PDF file size in bytes
 pdfjs-document-properties-size-mb = { NUMBER($mb, maximumSignificantDigits: 3) } מ״ב ({ $b } בתים)
-# Variables:
-#   $size_kb (Number) - the PDF file size in kilobytes
-#   $size_b (Number) - the PDF file size in bytes
-pdfjs-document-properties-kb = { $size_kb } ק״ב ({ $size_b } בתים)
-# Variables:
-#   $size_mb (Number) - the PDF file size in megabytes
-#   $size_b (Number) - the PDF file size in bytes
-pdfjs-document-properties-mb = { $size_mb } מ״ב ({ $size_b } בתים)
 pdfjs-document-properties-title = כותרת:
 pdfjs-document-properties-author = מחבר:
 pdfjs-document-properties-subject = נושא:
@@ -129,10 +121,6 @@ pdfjs-document-properties-modification-date = תאריך שינוי:
 # Variables:
 #   $dateObj (Date) - the creation/modification date and time of the PDF file
 pdfjs-document-properties-date-time-string = { DATETIME($dateObj, dateStyle: "short", timeStyle: "medium") }
-# Variables:
-#   $date (Date) - the creation/modification date of the PDF file
-#   $time (Time) - the creation/modification time of the PDF file
-pdfjs-document-properties-date-string = { $date }, { $time }
 pdfjs-document-properties-creator = יוצר:
 pdfjs-document-properties-producer = יצרן PDF:
 pdfjs-document-properties-version = גרסת PDF:
@@ -213,6 +201,15 @@ pdfjs-thumb-page-title =
 #   $page (Number) - the page number
 pdfjs-thumb-page-canvas =
     .aria-label = תצוגה מקדימה של עמוד { $page }
+# Variables:
+#   $page (Number) - the page number
+pdfjs-thumb-page-checkbox1 =
+    .title = בחירת עמוד { $page }
+# Variables:
+#   $page (Number) - the page number
+#   $total (Number) - the number of pages
+pdfjs-thumb-page-title1 =
+    .title = עמוד { $page } מתוך { $total }
 
 ## Find panel button title and messages
 
@@ -275,10 +272,6 @@ pdfjs-rendering-error = אירעה שגיאה בעת עיבוד הדף.
 
 ## Annotations
 
-# Variables:
-#   $date (Date) - the modification date of the annotation
-#   $time (Time) - the modification time of the annotation
-pdfjs-annotation-date-string = { $date }, { $time }
 # .alt: This is used as a tooltip.
 # Variables:
 #   $type (String) - an annotation type from a list defined in the PDF spec
@@ -302,9 +295,13 @@ pdfjs-web-fonts-disabled = גופני רשת מנוטרלים: לא ניתן ל�
 
 pdfjs-editor-free-text-button =
     .title = טקסט
+pdfjs-editor-color-picker-free-text-input =
+    .title = שינוי צבע הטקסט
 pdfjs-editor-free-text-button-label = טקסט
 pdfjs-editor-ink-button =
     .title = ציור
+pdfjs-editor-color-picker-ink-input =
+    .title = שינוי צבע הציור
 pdfjs-editor-ink-button-label = ציור
 pdfjs-editor-stamp-button =
     .title = הוספה או עריכת תמונות
@@ -316,6 +313,14 @@ pdfjs-highlight-floating-button1 =
     .title = סימון
     .aria-label = סימון
 pdfjs-highlight-floating-button-label = סימון
+pdfjs-comment-floating-button =
+    .title = הערה
+    .aria-label = הערה
+pdfjs-comment-floating-button-label = הערה
+pdfjs-editor-comment-button =
+    .title = הערה
+    .aria-label = הערה
+pdfjs-editor-comment-button-label = הערה
 pdfjs-editor-signature-button =
     .title = הוספת חתימה
 pdfjs-editor-signature-button-label = הוספת חתימה
@@ -378,20 +383,27 @@ pdfjs-editor-add-saved-signature-button =
 pdfjs-free-text2 =
     .aria-label = עורך טקסט
     .default-content = נא להתחיל להקליד…
-pdfjs-free-text =
-    .aria-label = עורך טקסט
-pdfjs-free-text-default-content = להתחיל להקליד…
-pdfjs-ink =
-    .aria-label = עורך ציור
-pdfjs-ink-canvas =
-    .aria-label = תמונה שנוצרה על־ידי משתמש
+# Used to show how many comments are present in the pdf file.
+# Variables:
+#   $count (Number) - the number of comments.
+pdfjs-editor-comments-sidebar-title =
+    { $count ->
+        [one] הערה
+       *[other] הערות
+    }
+pdfjs-editor-comments-sidebar-close-button =
+    .title = סגירת סרגל הצד
+    .aria-label = סגירת סרגל הצד
+pdfjs-editor-comments-sidebar-close-button-label = סגירת סרגל הצד
+# Instructional copy to add a comment by selecting text or an annotations.
+pdfjs-editor-comments-sidebar-no-comments1 = ראית משהו ראוי לציון? ניתן לסמן אותו ולהשאיר הערה.
+pdfjs-editor-comments-sidebar-no-comments-link = מידע נוסף
 
 ## Alt-text dialog
 
 pdfjs-editor-alt-text-button-label = טקסט חלופי
 pdfjs-editor-alt-text-edit-button =
     .aria-label = עריכת טקסט חלופי
-pdfjs-editor-alt-text-edit-button-label = עריכת טקסט חלופי
 pdfjs-editor-alt-text-dialog-label = בחירת אפשרות
 pdfjs-editor-alt-text-dialog-description = טקסט חלופי עוזר כשאנשים לא יכולים לראות את התמונה או כשהיא לא נטענת.
 pdfjs-editor-alt-text-add-description-label = הוספת תיאור
@@ -411,14 +423,6 @@ pdfjs-editor-alt-text-button =
 ## Editor resizers
 ## This is used in an aria label to help to understand the role of the resizer.
 
-pdfjs-editor-resizer-label-top-left = פינה שמאלית עליונה - שינוי גודל
-pdfjs-editor-resizer-label-top-middle = למעלה באמצע - שינוי גודל
-pdfjs-editor-resizer-label-top-right = פינה ימנית עליונה - שינוי גודל
-pdfjs-editor-resizer-label-middle-right = ימינה באמצע - שינוי גודל
-pdfjs-editor-resizer-label-bottom-right = פינה ימנית תחתונה - שינוי גודל
-pdfjs-editor-resizer-label-bottom-middle = למטה באמצע - שינוי גודל
-pdfjs-editor-resizer-label-bottom-left = פינה שמאלית תחתונה - שינוי גודל
-pdfjs-editor-resizer-label-middle-left = שמאלה באמצע - שינוי גודל
 pdfjs-editor-resizer-top-left =
     .aria-label = פינה שמאלית עליונה - שינוי גודל
 pdfjs-editor-resizer-top-middle =
@@ -524,6 +528,14 @@ pdfjs-editor-alt-text-settings-show-dialog-button-label = הצגת עורך טק
 pdfjs-editor-alt-text-settings-show-dialog-description = מסייע לך לוודא שלכל התמונות שלך יש טקסט חלופי.
 pdfjs-editor-alt-text-settings-close-button = סגירה
 
+## Accessibility labels (announced by screen readers) for objects added to the editor.
+
+pdfjs-editor-highlight-added-alert = הסימון נוסף
+pdfjs-editor-freetext-added-alert = הטקסט נוסף
+pdfjs-editor-ink-added-alert = הציור נוסף
+pdfjs-editor-stamp-added-alert = התמונה נוספה
+pdfjs-editor-signature-added-alert = החתימה נוספה
+
 ## "Annotations removed" bar
 
 pdfjs-editor-undo-bar-message-highlight = הסימון הוסר
@@ -531,6 +543,7 @@ pdfjs-editor-undo-bar-message-freetext = הטקסט הוסר
 pdfjs-editor-undo-bar-message-ink = הציור הוסר
 pdfjs-editor-undo-bar-message-stamp = התמונה הוסרה
 pdfjs-editor-undo-bar-message-signature = החתימה הוסרה
+pdfjs-editor-undo-bar-message-comment = ההערה הוסרה
 # Variables:
 #   $count (Number) - the number of removed annotations.
 pdfjs-editor-undo-bar-message-multiple =
@@ -592,6 +605,8 @@ pdfjs-editor-add-signature-save-checkbox = שמירת החתימה
 pdfjs-editor-add-signature-save-warning-message = הגעת למגבלה של 5 חתימות שמורות. יש להסיר אחד כדי לשמור עוד.
 pdfjs-editor-add-signature-image-upload-error-title = לא ניתן להעלות את התמונה
 pdfjs-editor-add-signature-image-upload-error-description = נא לבדוק את החיבור שלך לרשת או לנסות תמונה אחרת.
+pdfjs-editor-add-signature-image-no-data-error-title = לא ניתן להמיר את התמונה הזו לחתימה
+pdfjs-editor-add-signature-image-no-data-error-description = נא לנסות להעלות תמונה אחרת.
 pdfjs-editor-add-signature-error-close-button = סגירה
 
 ## Dialog buttons
@@ -599,6 +614,123 @@ pdfjs-editor-add-signature-error-close-button = סגירה
 pdfjs-editor-add-signature-cancel-button = ביטול
 pdfjs-editor-add-signature-add-button = הוספה
 pdfjs-editor-edit-signature-update-button = עדכון
+
+## Comment popup
+
+pdfjs-editor-edit-comment-popup-button-label = עריכת הערה
+pdfjs-editor-edit-comment-popup-button =
+    .title = עריכת הערה
+pdfjs-editor-delete-comment-popup-button-label = הסרת הערה
+pdfjs-editor-delete-comment-popup-button =
+    .title = הסרת הערה
+pdfjs-show-comment-button =
+    .title = הצגת הערה
+
+##  Edit a comment dialog
+
+# An existing comment is edited
+pdfjs-editor-edit-comment-dialog-title-when-editing = עריכת הערה
+pdfjs-editor-edit-comment-dialog-save-button-when-editing = עדכון
+# No existing comment
+pdfjs-editor-edit-comment-dialog-title-when-adding = הוספת הערה
+pdfjs-editor-edit-comment-dialog-save-button-when-adding = הוספה
+pdfjs-editor-edit-comment-dialog-text-input =
+    .placeholder = להתחיל להקליד…
+pdfjs-editor-edit-comment-dialog-cancel-button = ביטול
+
+## Edit a comment button in the editor toolbar
+
+pdfjs-editor-add-comment-button =
+    .title = הוספת הערה
+
+## The view manager is a sidebar displaying different views:
+##  - thumbnails;
+##  - outline;
+##  - attachments;
+##  - layers.
+## The thumbnails view is used to edit the pdf: remove/insert pages, ...
+
+pdfjs-toggle-views-manager-notification-button =
+    .title = החלפת תצוגת סרגל צד (מסמך שמכיל תמונות ממוזערות/תוכן עניינים/קבצים מצורפים/שכבות)
+pdfjs-toggle-views-manager-button1-label = ניהול עמודים
+pdfjs-views-manager-sidebar =
+    .aria-label = סרגל צד
+pdfjs-views-manager-sidebar-resizer =
+    .aria-label = שינוי גודל סרגל הצד
+pdfjs-views-manager-view-selector-button =
+    .title = תצוגות
+pdfjs-views-manager-view-selector-button-label = תצוגות
+pdfjs-views-manager-pages-title = עמודים
+pdfjs-views-manager-outlines-title1 = תוכן העניינים של המסמך
+    .title = הצגת תוכן העניינים של המסמך (יש ללחוץ לחיצה כפולה כדי להרחיב או לצמצם את כל הפריטים)
+pdfjs-views-manager-attachments-title = קבצים מצורפים
+pdfjs-views-manager-layers-title1 = שכבות
+    .title = הצגת שכבות (יש ללחוץ לחיצה כפולה כדי לאפס את כל השכבות למצב ברירת המחדל)
+pdfjs-views-manager-pages-option-label = עמודים
+pdfjs-views-manager-outlines-option-label = תוכן העניינים של המסמך
+pdfjs-views-manager-attachments-option-label = קבצים מצורפים
+pdfjs-views-manager-layers-option-label = שכבות
+pdfjs-views-manager-add-file-button =
+    .title = הוספת קובץ
+pdfjs-views-manager-add-file-button-label = הוספת קובץ
+# Variables:
+#   $count (Number) - the number of selected pages.
+pdfjs-views-manager-pages-status-action-label =
+    { $count ->
+        [one] אחד נבחר
+       *[other] { $count } נבחרו
+    }
+pdfjs-views-manager-pages-status-none-action-label = בחירת עמודים
+pdfjs-views-manager-pages-status-action-button-label = ניהול
+pdfjs-views-manager-pages-status-copy-button-label = העתקה
+pdfjs-views-manager-pages-status-cut-button-label = גזירה
+pdfjs-views-manager-pages-status-delete-button-label = מחיקה
+pdfjs-views-manager-pages-status-export-selected-button-label = ייצוא הפריטים שנבחרו…
+# Variables:
+#   $count (Number) - the number of selected pages to be cut.
+pdfjs-views-manager-status-undo-cut-label =
+    { $count ->
+        [one] עמוד אחד נגזר
+       *[other] { $count } עמודים נגזרו
+    }
+# Variables:
+#   $count (Number) - the number of selected pages to be copied.
+pdfjs-views-manager-pages-status-undo-copy-label =
+    { $count ->
+        [one] עמוד אחד הועתק
+       *[other] { $count } עמודים הועתקו
+    }
+# Variables:
+#   $count (Number) - the number of selected pages to be deleted.
+pdfjs-views-manager-pages-status-undo-delete-label =
+    { $count ->
+        [one] עמוד אחד נמחק
+       *[other] { $count } עמודים נמחקו
+    }
+pdfjs-views-manager-pages-status-waiting-ready-label = בתהליך הכנת הקובץ שלך…
+pdfjs-views-manager-pages-status-waiting-uploading-label = בתהליך העלאת הקובץ…
+pdfjs-views-manager-status-warning-cut-label = לא ניתן היה לגזור. נא לרענן את הדף ולנסות שוב.
+pdfjs-views-manager-status-warning-copy-label = לא ניתן היה להעתיק. נא לרענן את הדף ולנסות שוב.
+pdfjs-views-manager-status-warning-delete-label = לא ניתן היה למחוק. נא לרענן את הדף ולנסות שוב.
+pdfjs-views-manager-status-warning-save-label = לא ניתן היה לשמור. נא לרענן את הדף ולנסות שוב.
+pdfjs-views-manager-status-undo-button-label = ביטול פעולה
+pdfjs-views-manager-status-done-button-label = סיום
+pdfjs-views-manager-status-close-button =
+    .title = סגירה
+pdfjs-views-manager-status-close-button-label = סגירה
+pdfjs-views-manager-paste-button-label = הדבקה
+pdfjs-views-manager-paste-button-before =
+    .title = להדביק לפני העמוד הראשון
+# Variables:
+#   $page (Number) - the page number after which the paste button is.
+pdfjs-views-manager-paste-button-after =
+    .title = להדביק אחרי עמוד { $page }
+# Badge used to promote a new feature in the UI, keep it as short as possible.
+# It's spelled uppercase for English, but it can be translated as usual.
+pdfjs-new-badge-content = חדש
+pdfjs-views-manager-waiting-for-file = בתהליך העלאת הקובץ…
+pdfjs-toggle-views-manager-button1 =
+    .title = ניהול עמודים
 
 ## Main menu for adding/removing signatures
 

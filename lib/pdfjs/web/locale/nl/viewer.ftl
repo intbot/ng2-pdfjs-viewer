@@ -112,14 +112,6 @@ pdfjs-document-properties-size-kb = { NUMBER($kb, maximumSignificantDigits: 3) }
 #   $mb (Number) - the PDF file size in megabytes
 #   $b (Number) - the PDF file size in bytes
 pdfjs-document-properties-size-mb = { NUMBER($mb, maximumSignificantDigits: 3) } MB ({ $b } bytes)
-# Variables:
-#   $size_kb (Number) - the PDF file size in kilobytes
-#   $size_b (Number) - the PDF file size in bytes
-pdfjs-document-properties-kb = { $size_kb } KB ({ $size_b } bytes)
-# Variables:
-#   $size_mb (Number) - the PDF file size in megabytes
-#   $size_b (Number) - the PDF file size in bytes
-pdfjs-document-properties-mb = { $size_mb } MB ({ $size_b } bytes)
 pdfjs-document-properties-title = Titel:
 pdfjs-document-properties-author = Auteur:
 pdfjs-document-properties-subject = Onderwerp:
@@ -129,10 +121,6 @@ pdfjs-document-properties-modification-date = Wijzigingsdatum:
 # Variables:
 #   $dateObj (Date) - the creation/modification date and time of the PDF file
 pdfjs-document-properties-date-time-string = { DATETIME($dateObj, dateStyle: "short", timeStyle: "medium") }
-# Variables:
-#   $date (Date) - the creation/modification date of the PDF file
-#   $time (Time) - the creation/modification time of the PDF file
-pdfjs-document-properties-date-string = { $date }, { $time }
 pdfjs-document-properties-creator = Maker:
 pdfjs-document-properties-producer = PDF-producent:
 pdfjs-document-properties-version = PDF-versie:
@@ -213,6 +201,15 @@ pdfjs-thumb-page-title =
 #   $page (Number) - the page number
 pdfjs-thumb-page-canvas =
     .aria-label = Miniatuur van pagina { $page }
+# Variables:
+#   $page (Number) - the page number
+pdfjs-thumb-page-checkbox1 =
+    .title = Pagina { $page } selecteren
+# Variables:
+#   $page (Number) - the page number
+#   $total (Number) - the number of pages
+pdfjs-thumb-page-title1 =
+    .title = Pagina { $page } van { $total }
 
 ## Find panel button title and messages
 
@@ -275,10 +272,6 @@ pdfjs-rendering-error = Er is een fout opgetreden bij het weergeven van de pagin
 
 ## Annotations
 
-# Variables:
-#   $date (Date) - the modification date of the annotation
-#   $time (Time) - the modification time of the annotation
-pdfjs-annotation-date-string = { $date }, { $time }
 # .alt: This is used as a tooltip.
 # Variables:
 #   $type (String) - an annotation type from a list defined in the PDF spec
@@ -302,9 +295,13 @@ pdfjs-web-fonts-disabled = Weblettertypen zijn uitgeschakeld: gebruik van ingebe
 
 pdfjs-editor-free-text-button =
     .title = Tekst
+pdfjs-editor-color-picker-free-text-input =
+    .title = Tekstkleur wijzigen
 pdfjs-editor-free-text-button-label = Tekst
 pdfjs-editor-ink-button =
     .title = Tekenen
+pdfjs-editor-color-picker-ink-input =
+    .title = Tekenkleur wijzigen
 pdfjs-editor-ink-button-label = Tekenen
 pdfjs-editor-stamp-button =
     .title = Afbeeldingen toevoegen of bewerken
@@ -316,6 +313,14 @@ pdfjs-highlight-floating-button1 =
     .title = Markeren
     .aria-label = Markeren
 pdfjs-highlight-floating-button-label = Markeren
+pdfjs-comment-floating-button =
+    .title = Opmerking
+    .aria-label = Opmerking
+pdfjs-comment-floating-button-label = Opmerking
+pdfjs-editor-comment-button =
+    .title = Opmerking
+    .aria-label = Opmerking
+pdfjs-editor-comment-button-label = Opmerking
 pdfjs-editor-signature-button =
     .title = Handtekening toevoegen
 pdfjs-editor-signature-button-label = Handtekening toevoegen
@@ -378,20 +383,27 @@ pdfjs-editor-add-saved-signature-button =
 pdfjs-free-text2 =
     .aria-label = Tekstbewerker
     .default-content = Start met typen…
-pdfjs-free-text =
-    .aria-label = Tekstbewerker
-pdfjs-free-text-default-content = Begin met typen…
-pdfjs-ink =
-    .aria-label = Tekeningbewerker
-pdfjs-ink-canvas =
-    .aria-label = Door gebruiker gemaakte afbeelding
+# Used to show how many comments are present in the pdf file.
+# Variables:
+#   $count (Number) - the number of comments.
+pdfjs-editor-comments-sidebar-title =
+    { $count ->
+        [one] Opmerking
+       *[other] Opmerkingen
+    }
+pdfjs-editor-comments-sidebar-close-button =
+    .title = De zijbalk sluiten
+    .aria-label = De zijbalk sluiten
+pdfjs-editor-comments-sidebar-close-button-label = De zijbalk sluiten
+# Instructional copy to add a comment by selecting text or an annotations.
+pdfjs-editor-comments-sidebar-no-comments1 = Ziet u iets noemenswaardigs? Markeer het en laat een opmerking achter.
+pdfjs-editor-comments-sidebar-no-comments-link = Meer info
 
 ## Alt-text dialog
 
 pdfjs-editor-alt-text-button-label = Alternatieve tekst
 pdfjs-editor-alt-text-edit-button =
     .aria-label = Alternatieve tekst bewerken
-pdfjs-editor-alt-text-edit-button-label = Alternatieve tekst bewerken
 pdfjs-editor-alt-text-dialog-label = Kies een optie
 pdfjs-editor-alt-text-dialog-description = Alternatieve tekst helpt wanneer mensen de afbeelding niet kunnen zien of wanneer deze niet wordt geladen.
 pdfjs-editor-alt-text-add-description-label = Voeg een beschrijving toe
@@ -411,14 +423,6 @@ pdfjs-editor-alt-text-button =
 ## Editor resizers
 ## This is used in an aria label to help to understand the role of the resizer.
 
-pdfjs-editor-resizer-label-top-left = Linkerbovenhoek – formaat wijzigen
-pdfjs-editor-resizer-label-top-middle = Midden boven – formaat wijzigen
-pdfjs-editor-resizer-label-top-right = Rechterbovenhoek – formaat wijzigen
-pdfjs-editor-resizer-label-middle-right = Midden rechts – formaat wijzigen
-pdfjs-editor-resizer-label-bottom-right = Rechterbenedenhoek – formaat wijzigen
-pdfjs-editor-resizer-label-bottom-middle = Midden onder – formaat wijzigen
-pdfjs-editor-resizer-label-bottom-left = Linkerbenedenhoek – formaat wijzigen
-pdfjs-editor-resizer-label-middle-left = Links midden – formaat wijzigen
 pdfjs-editor-resizer-top-left =
     .aria-label = Linkerbovenhoek – formaat wijzigen
 pdfjs-editor-resizer-top-middle =
@@ -524,6 +528,14 @@ pdfjs-editor-alt-text-settings-show-dialog-button-label = Alternatieve-tekstbewe
 pdfjs-editor-alt-text-settings-show-dialog-description = Helpt u ervoor te zorgen dat al uw afbeeldingen alternatieve tekst hebben.
 pdfjs-editor-alt-text-settings-close-button = Sluiten
 
+## Accessibility labels (announced by screen readers) for objects added to the editor.
+
+pdfjs-editor-highlight-added-alert = Markering toegevoegd
+pdfjs-editor-freetext-added-alert = Tekst toegevoegd
+pdfjs-editor-ink-added-alert = Tekening toegevoegd
+pdfjs-editor-stamp-added-alert = Afbeelding toegevoegd
+pdfjs-editor-signature-added-alert = Handtekening toegevoegd
+
 ## "Annotations removed" bar
 
 pdfjs-editor-undo-bar-message-highlight = Markering verwijderd
@@ -531,6 +543,7 @@ pdfjs-editor-undo-bar-message-freetext = Tekst verwijderd
 pdfjs-editor-undo-bar-message-ink = Tekening verwijderd
 pdfjs-editor-undo-bar-message-stamp = Afbeelding verwijderd
 pdfjs-editor-undo-bar-message-signature = Handtekening verwijderd
+pdfjs-editor-undo-bar-message-comment = Opmerking verwijderd
 # Variables:
 #   $count (Number) - the number of removed annotations.
 pdfjs-editor-undo-bar-message-multiple =
@@ -592,6 +605,8 @@ pdfjs-editor-add-signature-save-checkbox = Handtekening opslaan
 pdfjs-editor-add-signature-save-warning-message = U hebt de limiet van 5 opgeslagen handtekeningen bereikt. Verwijder er een om een andere op te slaan.
 pdfjs-editor-add-signature-image-upload-error-title = Kan afbeelding niet uploaden
 pdfjs-editor-add-signature-image-upload-error-description = Controleer uw netwerkverbinding of probeer een andere afbeelding.
+pdfjs-editor-add-signature-image-no-data-error-title = Kan deze afbeelding niet naar een handtekening converteren
+pdfjs-editor-add-signature-image-no-data-error-description = Probeer een andere afbeelding te uploaden.
 pdfjs-editor-add-signature-error-close-button = Sluiten
 
 ## Dialog buttons
@@ -599,6 +614,123 @@ pdfjs-editor-add-signature-error-close-button = Sluiten
 pdfjs-editor-add-signature-cancel-button = Annuleren
 pdfjs-editor-add-signature-add-button = Toevoegen
 pdfjs-editor-edit-signature-update-button = Bijwerken
+
+## Comment popup
+
+pdfjs-editor-edit-comment-popup-button-label = Opmerking bewerken
+pdfjs-editor-edit-comment-popup-button =
+    .title = Opmerking bewerken
+pdfjs-editor-delete-comment-popup-button-label = Opmerking verwijderen
+pdfjs-editor-delete-comment-popup-button =
+    .title = Opmerking verwijderen
+pdfjs-show-comment-button =
+    .title = Opmerking tonen
+
+##  Edit a comment dialog
+
+# An existing comment is edited
+pdfjs-editor-edit-comment-dialog-title-when-editing = Opmerking bewerken
+pdfjs-editor-edit-comment-dialog-save-button-when-editing = Bijwerken
+# No existing comment
+pdfjs-editor-edit-comment-dialog-title-when-adding = Opmerking toevoegen
+pdfjs-editor-edit-comment-dialog-save-button-when-adding = Toevoegen
+pdfjs-editor-edit-comment-dialog-text-input =
+    .placeholder = Begin met typen…
+pdfjs-editor-edit-comment-dialog-cancel-button = Annuleren
+
+## Edit a comment button in the editor toolbar
+
+pdfjs-editor-add-comment-button =
+    .title = Opmerking toevoegen
+
+## The view manager is a sidebar displaying different views:
+##  - thumbnails;
+##  - outline;
+##  - attachments;
+##  - layers.
+## The thumbnails view is used to edit the pdf: remove/insert pages, ...
+
+pdfjs-toggle-views-manager-notification-button =
+    .title = Zijbalk in-/uitschakelen (document bevat miniaturen/overzicht/bijlagen/lagen)
+pdfjs-toggle-views-manager-button1-label = Pagina’s beheren
+pdfjs-views-manager-sidebar =
+    .aria-label = Zijbalk
+pdfjs-views-manager-sidebar-resizer =
+    .aria-label = Groottewijziging zijbalk
+pdfjs-views-manager-view-selector-button =
+    .title = Weergaven
+pdfjs-views-manager-view-selector-button-label = Weergaven
+pdfjs-views-manager-pages-title = Pagina’s
+pdfjs-views-manager-outlines-title1 = Documentoverzicht
+    .title = Documentoverzicht (dubbelklik om alle items uit te vouwen/samen te vouwen)
+pdfjs-views-manager-attachments-title = Bijlagen
+pdfjs-views-manager-layers-title1 = Lagen
+    .title = Lagen (dubbelklik om alle lagen naar de standaardstatus terug te zetten)
+pdfjs-views-manager-pages-option-label = Pagina’s
+pdfjs-views-manager-outlines-option-label = Documentoverzicht
+pdfjs-views-manager-attachments-option-label = Bijlagen
+pdfjs-views-manager-layers-option-label = Lagen
+pdfjs-views-manager-add-file-button =
+    .title = Bestand toevoegen
+pdfjs-views-manager-add-file-button-label = Bestand toevoegen
+# Variables:
+#   $count (Number) - the number of selected pages.
+pdfjs-views-manager-pages-status-action-label =
+    { $count ->
+        [one] { $count } geselecteerd
+       *[other] { $count } geselecteerd
+    }
+pdfjs-views-manager-pages-status-none-action-label = Pagina’s selecteren
+pdfjs-views-manager-pages-status-action-button-label = Beheren
+pdfjs-views-manager-pages-status-copy-button-label = Kopiëren
+pdfjs-views-manager-pages-status-cut-button-label = Knippen
+pdfjs-views-manager-pages-status-delete-button-label = Verwijderen
+pdfjs-views-manager-pages-status-export-selected-button-label = Geselecteerde exporteren…
+# Variables:
+#   $count (Number) - the number of selected pages to be cut.
+pdfjs-views-manager-status-undo-cut-label =
+    { $count ->
+        [one] 1 pagina geknipt
+       *[other] { $count } pagina’s geknipt
+    }
+# Variables:
+#   $count (Number) - the number of selected pages to be copied.
+pdfjs-views-manager-pages-status-undo-copy-label =
+    { $count ->
+        [one] 1 pagina gekopieerd
+       *[other] { $count } pagina’s gekopieerd
+    }
+# Variables:
+#   $count (Number) - the number of selected pages to be deleted.
+pdfjs-views-manager-pages-status-undo-delete-label =
+    { $count ->
+        [one] 1 pagina verwijderd
+       *[other] { $count } pagina’s verwijderd
+    }
+pdfjs-views-manager-pages-status-waiting-ready-label = Uw bestand voorbereiden…
+pdfjs-views-manager-pages-status-waiting-uploading-label = Bestand uploaden…
+pdfjs-views-manager-status-warning-cut-label = Kan niet knippen. Vernieuw de pagina en probeer het opnieuw.
+pdfjs-views-manager-status-warning-copy-label = Kan niet kopiëren. Vernieuw de pagina en probeer het opnieuw.
+pdfjs-views-manager-status-warning-delete-label = Kan niet verwijderen. Vernieuw de pagina en probeer het opnieuw.
+pdfjs-views-manager-status-warning-save-label = Kan niet opslaan. Vernieuw de pagina en probeer het opnieuw.
+pdfjs-views-manager-status-undo-button-label = Ongedaan maken
+pdfjs-views-manager-status-done-button-label = Gereed
+pdfjs-views-manager-status-close-button =
+    .title = Sluiten
+pdfjs-views-manager-status-close-button-label = Sluiten
+pdfjs-views-manager-paste-button-label = Plakken
+pdfjs-views-manager-paste-button-before =
+    .title = Plakken voor de eerste pagina
+# Variables:
+#   $page (Number) - the page number after which the paste button is.
+pdfjs-views-manager-paste-button-after =
+    .title = Plakken na pagina { $page }
+# Badge used to promote a new feature in the UI, keep it as short as possible.
+# It's spelled uppercase for English, but it can be translated as usual.
+pdfjs-new-badge-content = NIEUW
+pdfjs-views-manager-waiting-for-file = Bestand uploaden…
+pdfjs-toggle-views-manager-button1 =
+    .title = Pagina’s beheren
 
 ## Main menu for adding/removing signatures
 

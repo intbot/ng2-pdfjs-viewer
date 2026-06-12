@@ -89,24 +89,12 @@ pdfjs-document-properties-button =
 pdfjs-document-properties-button-label = Sifat Dokumen…
 pdfjs-document-properties-file-name = Nama fail:
 pdfjs-document-properties-file-size = Saiz fail:
-# Variables:
-#   $size_kb (Number) - the PDF file size in kilobytes
-#   $size_b (Number) - the PDF file size in bytes
-pdfjs-document-properties-kb = { $size_kb } KB ({ $size_b } bait)
-# Variables:
-#   $size_mb (Number) - the PDF file size in megabytes
-#   $size_b (Number) - the PDF file size in bytes
-pdfjs-document-properties-mb = { $size_mb } MB ({ $size_b } bait)
 pdfjs-document-properties-title = Tajuk:
 pdfjs-document-properties-author = Pengarang:
 pdfjs-document-properties-subject = Subjek:
 pdfjs-document-properties-keywords = Kata kunci:
 pdfjs-document-properties-creation-date = Masa Dicipta:
 pdfjs-document-properties-modification-date = Tarikh Ubahsuai:
-# Variables:
-#   $date (Date) - the creation/modification date of the PDF file
-#   $time (Time) - the creation/modification time of the PDF file
-pdfjs-document-properties-date-string = { $date }, { $time }
 pdfjs-document-properties-creator = Pencipta:
 pdfjs-document-properties-producer = Pengeluar PDF:
 pdfjs-document-properties-version = Versi PDF:
@@ -207,9 +195,6 @@ pdfjs-page-scale-actual = Saiz Sebenar
 #   $scale (Number) - percent value for page scale
 pdfjs-page-scale-percent = { $scale }%
 
-## PDF page
-
-
 ## Loading indicator messages
 
 pdfjs-loading-error = Masalah berlaku semasa menuatkan sebuah PDF.
@@ -235,63 +220,3 @@ pdfjs-password-invalid = Kata laluan salah. Cuba lagi.
 pdfjs-password-ok-button = OK
 pdfjs-password-cancel-button = Batal
 pdfjs-web-fonts-disabled = Fon web dinyahdayakan: tidak dapat menggunakan fon terbenam PDF.
-
-## Editing
-
-
-## Default editor aria labels
-
-
-## Remove button for the various kind of editor.
-
-
-##
-
-
-## Alt-text dialog
-
-
-## Editor resizers
-## This is used in an aria label to help to understand the role of the resizer.
-
-
-## Color picker
-
-
-## Show all highlights
-## This is a toggle button to show/hide all the highlights.
-
-
-## New alt-text dialog
-## Group note for entire feature: Alternative text (alt text) helps when people can't see the image. This feature includes a tool to create alt text automatically using an AI model that works locally on the user's device to preserve privacy.
-
-
-## Image alt-text settings
-
-
-## "Annotations removed" bar
-
-
-## Add a signature dialog
-
-
-## Tab names
-
-
-## Tab panels
-
-
-## Controls
-
-
-## Dialog buttons
-
-
-## Main menu for adding/removing signatures
-
-
-## Editor toolbar
-
-
-## Edit signature description dialog
-

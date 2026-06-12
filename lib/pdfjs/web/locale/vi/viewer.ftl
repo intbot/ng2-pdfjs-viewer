@@ -112,14 +112,6 @@ pdfjs-document-properties-size-kb = { NUMBER($kb, maximumSignificantDigits: 3) }
 #   $mb (Number) - the PDF file size in megabytes
 #   $b (Number) - the PDF file size in bytes
 pdfjs-document-properties-size-mb = { NUMBER($mb, maximumSignificantDigits: 3) } MB ({ $b } bytes)
-# Variables:
-#   $size_kb (Number) - the PDF file size in kilobytes
-#   $size_b (Number) - the PDF file size in bytes
-pdfjs-document-properties-kb = { $size_kb } KB ({ $size_b } byte)
-# Variables:
-#   $size_mb (Number) - the PDF file size in megabytes
-#   $size_b (Number) - the PDF file size in bytes
-pdfjs-document-properties-mb = { $size_mb } MB ({ $size_b } byte)
 pdfjs-document-properties-title = Tiêu đề:
 pdfjs-document-properties-author = Tác giả:
 pdfjs-document-properties-subject = Chủ đề:
@@ -129,10 +121,6 @@ pdfjs-document-properties-modification-date = Ngày sửa đổi:
 # Variables:
 #   $dateObj (Date) - the creation/modification date and time of the PDF file
 pdfjs-document-properties-date-time-string = { DATETIME($dateObj, dateStyle: "short", timeStyle: "medium") }
-# Variables:
-#   $date (Date) - the creation/modification date of the PDF file
-#   $time (Time) - the creation/modification time of the PDF file
-pdfjs-document-properties-date-string = { $date }, { $time }
 pdfjs-document-properties-creator = Người tạo:
 pdfjs-document-properties-producer = Phần mềm tạo PDF:
 pdfjs-document-properties-version = Phiên bản PDF:
@@ -213,6 +201,15 @@ pdfjs-thumb-page-title =
 #   $page (Number) - the page number
 pdfjs-thumb-page-canvas =
     .aria-label = Ảnh thu nhỏ của trang { $page }
+# Variables:
+#   $page (Number) - the page number
+pdfjs-thumb-page-checkbox1 =
+    .title = Chọn trang { $page }
+# Variables:
+#   $page (Number) - the page number
+#   $total (Number) - the number of pages
+pdfjs-thumb-page-title1 =
+    .title = Trang { $page } / { $total }
 
 ## Find panel button title and messages
 
@@ -267,10 +264,6 @@ pdfjs-rendering-error = Lỗi khi hiển thị trang.
 
 ## Annotations
 
-# Variables:
-#   $date (Date) - the modification date of the annotation
-#   $time (Time) - the modification time of the annotation
-pdfjs-annotation-date-string = { $date }, { $time }
 # .alt: This is used as a tooltip.
 # Variables:
 #   $type (String) - an annotation type from a list defined in the PDF spec
@@ -294,9 +287,13 @@ pdfjs-web-fonts-disabled = Phông chữ Web bị vô hiệu hóa: không thể s
 
 pdfjs-editor-free-text-button =
     .title = Văn bản
+pdfjs-editor-color-picker-free-text-input =
+    .title = Thay đổi màu chữ
 pdfjs-editor-free-text-button-label = Văn bản
 pdfjs-editor-ink-button =
     .title = Vẽ
+pdfjs-editor-color-picker-ink-input =
+    .title = Thay đổi màu vẽ
 pdfjs-editor-ink-button-label = Vẽ
 pdfjs-editor-stamp-button =
     .title = Thêm hoặc chỉnh sửa hình ảnh
@@ -308,6 +305,14 @@ pdfjs-highlight-floating-button1 =
     .title = Đánh dấu
     .aria-label = Đánh dấu
 pdfjs-highlight-floating-button-label = Đánh dấu
+pdfjs-comment-floating-button =
+    .title = Chú thích
+    .aria-label = Chú thích
+pdfjs-comment-floating-button-label = Chú thích
+pdfjs-editor-comment-button =
+    .title = Chú thích
+    .aria-label = Chú thích
+pdfjs-editor-comment-button-label = Chú thích
 pdfjs-editor-signature-button =
     .title = Thêm chữ ký
 pdfjs-editor-signature-button-label = Thêm chữ ký
@@ -370,20 +375,23 @@ pdfjs-editor-add-saved-signature-button =
 pdfjs-free-text2 =
     .aria-label = Trình chỉnh sửa văn bản
     .default-content = Bắt đầu nhập…
-pdfjs-free-text =
-    .aria-label = Trình sửa văn bản
-pdfjs-free-text-default-content = Bắt đầu nhập…
-pdfjs-ink =
-    .aria-label = Trình sửa nét vẽ
-pdfjs-ink-canvas =
-    .aria-label = Hình ảnh do người dùng tạo
+# Used to show how many comments are present in the pdf file.
+# Variables:
+#   $count (Number) - the number of comments.
+pdfjs-editor-comments-sidebar-title = Chú thích
+pdfjs-editor-comments-sidebar-close-button =
+    .title = Đóng thanh lề
+    .aria-label = Đóng thanh lề
+pdfjs-editor-comments-sidebar-close-button-label = Đóng thanh lề
+# Instructional copy to add a comment by selecting text or an annotations.
+pdfjs-editor-comments-sidebar-no-comments1 = Bạn thấy điều gì đáng chú ý? Hãy đánh dấu và để lại chú thích.
+pdfjs-editor-comments-sidebar-no-comments-link = Tìm hiểu thêm
 
 ## Alt-text dialog
 
 pdfjs-editor-alt-text-button-label = Văn bản thay thế
 pdfjs-editor-alt-text-edit-button =
     .aria-label = Chỉnh sửa văn bản thay thế
-pdfjs-editor-alt-text-edit-button-label = Chỉnh sửa văn bản thay thế
 pdfjs-editor-alt-text-dialog-label = Chọn một lựa chọn
 pdfjs-editor-alt-text-dialog-description = Văn bản thay thế sẽ hữu ích khi mọi người không thể thấy hình ảnh hoặc khi hình ảnh không tải.
 pdfjs-editor-alt-text-add-description-label = Thêm một mô tả
@@ -403,14 +411,6 @@ pdfjs-editor-alt-text-button =
 ## Editor resizers
 ## This is used in an aria label to help to understand the role of the resizer.
 
-pdfjs-editor-resizer-label-top-left = Trên cùng bên trái — thay đổi kích thước
-pdfjs-editor-resizer-label-top-middle = Trên cùng ở giữa — thay đổi kích thước
-pdfjs-editor-resizer-label-top-right = Trên cùng bên phải — thay đổi kích thước
-pdfjs-editor-resizer-label-middle-right = Ở giữa bên phải — thay đổi kích thước
-pdfjs-editor-resizer-label-bottom-right = Dưới cùng bên phải — thay đổi kích thước
-pdfjs-editor-resizer-label-bottom-middle = Ở giữa dưới cùng — thay đổi kích thước
-pdfjs-editor-resizer-label-bottom-left = Góc dưới bên trái — thay đổi kích thước
-pdfjs-editor-resizer-label-middle-left = Ở giữa bên trái — thay đổi kích thước
 pdfjs-editor-resizer-top-left =
     .aria-label = Trên cùng bên trái — thay đổi kích thước
 pdfjs-editor-resizer-top-middle =
@@ -516,6 +516,14 @@ pdfjs-editor-alt-text-settings-show-dialog-button-label = Hiển thị ngay trì
 pdfjs-editor-alt-text-settings-show-dialog-description = Giúp bạn đảm bảo tất cả hình ảnh của bạn đều có văn bản thay thế.
 pdfjs-editor-alt-text-settings-close-button = Đóng
 
+## Accessibility labels (announced by screen readers) for objects added to the editor.
+
+pdfjs-editor-highlight-added-alert = Đã thêm tô sáng
+pdfjs-editor-freetext-added-alert = Đã thêm chữ
+pdfjs-editor-ink-added-alert = Đã thêm bản vẽ
+pdfjs-editor-stamp-added-alert = Đã thêm ảnh
+pdfjs-editor-signature-added-alert = Đã thêm chữ ký
+
 ## "Annotations removed" bar
 
 pdfjs-editor-undo-bar-message-highlight = Đã xóa đánh dấu
@@ -523,6 +531,7 @@ pdfjs-editor-undo-bar-message-freetext = Đã xóa văn bản
 pdfjs-editor-undo-bar-message-ink = Đã xóa bản vẽ
 pdfjs-editor-undo-bar-message-stamp = Đã xóa hình ảnh
 pdfjs-editor-undo-bar-message-signature = Chữ ký đã bị xoá
+pdfjs-editor-undo-bar-message-comment = Đã xoá chú thích
 # Variables:
 #   $count (Number) - the number of removed annotations.
 pdfjs-editor-undo-bar-message-multiple = { $count } chú thích đã bị xóa
@@ -580,6 +589,8 @@ pdfjs-editor-add-signature-save-checkbox = Lưu chữ ký
 pdfjs-editor-add-signature-save-warning-message = Bạn đã đạt đến giới hạn 5 chữ ký đã lưu. Hãy xóa một cái để lưu thêm.
 pdfjs-editor-add-signature-image-upload-error-title = Không thể tải lên hình ảnh
 pdfjs-editor-add-signature-image-upload-error-description = Kiểm tra kết nối mạng của bạn hoặc thử hình ảnh khác.
+pdfjs-editor-add-signature-image-no-data-error-title = Không thể chuyển đổi hình ảnh này thành chữ ký
+pdfjs-editor-add-signature-image-no-data-error-description = Vui lòng thử tải lên một hình ảnh khác.
 pdfjs-editor-add-signature-error-close-button = Đóng
 
 ## Dialog buttons
@@ -587,6 +598,107 @@ pdfjs-editor-add-signature-error-close-button = Đóng
 pdfjs-editor-add-signature-cancel-button = Hủy bỏ
 pdfjs-editor-add-signature-add-button = Thêm
 pdfjs-editor-edit-signature-update-button = Cập nhật
+
+## Comment popup
+
+pdfjs-editor-edit-comment-popup-button-label = Chỉnh sửa chú thích
+pdfjs-editor-edit-comment-popup-button =
+    .title = Chỉnh sửa chú thích
+pdfjs-editor-delete-comment-popup-button-label = Xoá chú thích
+pdfjs-editor-delete-comment-popup-button =
+    .title = Xoá chú thích
+pdfjs-show-comment-button =
+    .title = Hiển thị chú thích
+
+##  Edit a comment dialog
+
+# An existing comment is edited
+pdfjs-editor-edit-comment-dialog-title-when-editing = Chỉnh sửa chú thích
+pdfjs-editor-edit-comment-dialog-save-button-when-editing = Cập nhật
+# No existing comment
+pdfjs-editor-edit-comment-dialog-title-when-adding = Thêm chú thích
+pdfjs-editor-edit-comment-dialog-save-button-when-adding = Thêm
+pdfjs-editor-edit-comment-dialog-text-input =
+    .placeholder = Bắt đầu nhập…
+pdfjs-editor-edit-comment-dialog-cancel-button = Hủy bỏ
+
+## Edit a comment button in the editor toolbar
+
+pdfjs-editor-add-comment-button =
+    .title = Thêm chú thích
+
+## The view manager is a sidebar displaying different views:
+##  - thumbnails;
+##  - outline;
+##  - attachments;
+##  - layers.
+## The thumbnails view is used to edit the pdf: remove/insert pages, ...
+
+pdfjs-toggle-views-manager-notification-button =
+    .title = Bật tắt thanh lề (tài liệu bao gồm hình thu nhỏ/phác thảo/tập tin đính kèm/lớp)
+pdfjs-toggle-views-manager-button1-label = Quản lý trang
+pdfjs-views-manager-sidebar =
+    .aria-label = Thanh lề
+pdfjs-views-manager-sidebar-resizer =
+    .aria-label = Công cụ điều chỉnh kích thước thanh lề
+pdfjs-views-manager-view-selector-button =
+    .title = Chế độ hiển thị
+pdfjs-views-manager-view-selector-button-label = Chế độ hiển thị
+pdfjs-views-manager-pages-title = Trang
+pdfjs-views-manager-outlines-title1 = Bản phác thảo tài liệu
+    .title = Bản phác thảo tài liệu (nhấp đúp chuột để mở rộng/thu gọn tất cả các mục)
+pdfjs-views-manager-attachments-title = Đính kèm
+pdfjs-views-manager-layers-title1 = Lớp
+    .title = Lớp (nhấp đúp chuột để đặt lại tất cả các lớp về trạng thái mặc định.)
+pdfjs-views-manager-pages-option-label = Trang
+pdfjs-views-manager-outlines-option-label = Bản phác thảo tài liệu
+pdfjs-views-manager-attachments-option-label = Đính kèm
+pdfjs-views-manager-layers-option-label = Lớp
+pdfjs-views-manager-add-file-button =
+    .title = Thêm tập tin
+pdfjs-views-manager-add-file-button-label = Thêm tập tin
+# Variables:
+#   $count (Number) - the number of selected pages.
+pdfjs-views-manager-pages-status-action-label = { $count } đã chọn
+pdfjs-views-manager-pages-status-none-action-label = Chọn trang
+pdfjs-views-manager-pages-status-action-button-label = Quản lý
+pdfjs-views-manager-pages-status-copy-button-label = Sao chép
+pdfjs-views-manager-pages-status-cut-button-label = Cắt
+pdfjs-views-manager-pages-status-delete-button-label = Dán
+pdfjs-views-manager-pages-status-export-selected-button-label = Xuất các mục đã chọn…
+# Variables:
+#   $count (Number) - the number of selected pages to be cut.
+pdfjs-views-manager-status-undo-cut-label = Đã cắt { $count } trang
+# Variables:
+#   $count (Number) - the number of selected pages to be copied.
+pdfjs-views-manager-pages-status-undo-copy-label = Đã sao chép { $count } trang
+# Variables:
+#   $count (Number) - the number of selected pages to be deleted.
+pdfjs-views-manager-pages-status-undo-delete-label = Đã xoá { $count } trang
+pdfjs-views-manager-pages-status-waiting-ready-label = Đang chuẩn bị tập tin của bạn…
+pdfjs-views-manager-pages-status-waiting-uploading-label = Đang tải lên tập tin…
+pdfjs-views-manager-status-warning-cut-label = Không thể cắt. Vui lòng làm mới trang và thử lại.
+pdfjs-views-manager-status-warning-copy-label = Không thể sao chép. Vui lòng làm mới trang và thử lại.
+pdfjs-views-manager-status-warning-delete-label = Không thể xoá. Vui lòng làm mới trang và thử lại.
+pdfjs-views-manager-status-warning-save-label = Không thể lưu. Vui lòng làm mới trang và thử lại.
+pdfjs-views-manager-status-undo-button-label = Hoàn tác
+pdfjs-views-manager-status-done-button-label = Xong
+pdfjs-views-manager-status-close-button =
+    .title = Đóng
+pdfjs-views-manager-status-close-button-label = Đóng
+pdfjs-views-manager-paste-button-label = Dán
+pdfjs-views-manager-paste-button-before =
+    .title = Dán trước trang đầu
+# Variables:
+#   $page (Number) - the page number after which the paste button is.
+pdfjs-views-manager-paste-button-after =
+    .title = Dán sau trang { $page }
+# Badge used to promote a new feature in the UI, keep it as short as possible.
+# It's spelled uppercase for English, but it can be translated as usual.
+pdfjs-new-badge-content = MỚI
+pdfjs-views-manager-waiting-for-file = Đang tải lên tập tin…
+pdfjs-toggle-views-manager-button1 =
+    .title = Quản lý trang
 
 ## Main menu for adding/removing signatures
 

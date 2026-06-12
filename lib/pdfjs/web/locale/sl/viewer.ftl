@@ -112,14 +112,6 @@ pdfjs-document-properties-size-kb = { NUMBER($kb, maximumSignificantDigits: 3) }
 #   $mb (Number) - the PDF file size in megabytes
 #   $b (Number) - the PDF file size in bytes
 pdfjs-document-properties-size-mb = { NUMBER($mb, maximumSignificantDigits: 3) } MB ({ $b } bajtov)
-# Variables:
-#   $size_kb (Number) - the PDF file size in kilobytes
-#   $size_b (Number) - the PDF file size in bytes
-pdfjs-document-properties-kb = { $size_kb } KB ({ $size_b } bajtov)
-# Variables:
-#   $size_mb (Number) - the PDF file size in megabytes
-#   $size_b (Number) - the PDF file size in bytes
-pdfjs-document-properties-mb = { $size_mb } MB ({ $size_b } bajtov)
 pdfjs-document-properties-title = Ime:
 pdfjs-document-properties-author = Avtor:
 pdfjs-document-properties-subject = Tema:
@@ -129,10 +121,6 @@ pdfjs-document-properties-modification-date = Datum spremembe:
 # Variables:
 #   $dateObj (Date) - the creation/modification date and time of the PDF file
 pdfjs-document-properties-date-time-string = { DATETIME($dateObj, dateStyle: "short", timeStyle: "medium") }
-# Variables:
-#   $date (Date) - the creation/modification date of the PDF file
-#   $time (Time) - the creation/modification time of the PDF file
-pdfjs-document-properties-date-string = { $date }, { $time }
 pdfjs-document-properties-creator = Ustvaril:
 pdfjs-document-properties-producer = Izdelovalec PDF:
 pdfjs-document-properties-version = Različica PDF:
@@ -213,6 +201,15 @@ pdfjs-thumb-page-title =
 #   $page (Number) - the page number
 pdfjs-thumb-page-canvas =
     .aria-label = Sličica strani { $page }
+# Variables:
+#   $page (Number) - the page number
+pdfjs-thumb-page-checkbox1 =
+    .title = Izberi stran { $page }
+# Variables:
+#   $page (Number) - the page number
+#   $total (Number) - the number of pages
+pdfjs-thumb-page-title1 =
+    .title = Stran { $page } od { $total }
 
 ## Find panel button title and messages
 
@@ -230,7 +227,7 @@ pdfjs-find-match-case-checkbox-label = Razlikuj velike/male črke
 pdfjs-find-match-diacritics-checkbox-label = Razlikuj diakritične znake
 pdfjs-find-entire-word-checkbox-label = Cele besede
 pdfjs-find-reached-top = Dosežen začetek dokumenta iz smeri konca
-pdfjs-find-reached-bottom = Doseženo konec dokumenta iz smeri začetka
+pdfjs-find-reached-bottom = Dosežen konec dokumenta, nadaljevanje od začetka
 # Variables:
 #   $current (Number) - the index of the currently active find result
 #   $total (Number) - the total number of matches in the document
@@ -279,10 +276,6 @@ pdfjs-rendering-error = Med pripravljanjem strani je prišlo do napake!
 
 ## Annotations
 
-# Variables:
-#   $date (Date) - the modification date of the annotation
-#   $time (Time) - the modification time of the annotation
-pdfjs-annotation-date-string = { $date }, { $time }
 # .alt: This is used as a tooltip.
 # Variables:
 #   $type (String) - an annotation type from a list defined in the PDF spec
@@ -306,9 +299,13 @@ pdfjs-web-fonts-disabled = Spletne pisave so onemogočene: vgradnih pisav za PDF
 
 pdfjs-editor-free-text-button =
     .title = Besedilo
+pdfjs-editor-color-picker-free-text-input =
+    .title = Spremeni barvo besedila
 pdfjs-editor-free-text-button-label = Besedilo
 pdfjs-editor-ink-button =
     .title = Riši
+pdfjs-editor-color-picker-ink-input =
+    .title = Spremeni barvo risbe
 pdfjs-editor-ink-button-label = Riši
 pdfjs-editor-stamp-button =
     .title = Dodajanje ali urejanje slik
@@ -320,6 +317,14 @@ pdfjs-highlight-floating-button1 =
     .title = Označi
     .aria-label = Označi
 pdfjs-highlight-floating-button-label = Označi
+pdfjs-comment-floating-button =
+    .title = Komentiraj
+    .aria-label = Komentiraj
+pdfjs-comment-floating-button-label = Komentiraj
+pdfjs-editor-comment-button =
+    .title = Komentiraj
+    .aria-label = Komentiraj
+pdfjs-editor-comment-button-label = Komentiraj
 pdfjs-editor-signature-button =
     .title = Dodaj podpis
 pdfjs-editor-signature-button-label = Dodaj podpis
@@ -382,20 +387,29 @@ pdfjs-editor-add-saved-signature-button =
 pdfjs-free-text2 =
     .aria-label = Urejevalnik besedila
     .default-content = Začnite tipkati …
-pdfjs-free-text =
-    .aria-label = Urejevalnik besedila
-pdfjs-free-text-default-content = Začnite tipkati …
-pdfjs-ink =
-    .aria-label = Urejevalnik risanja
-pdfjs-ink-canvas =
-    .aria-label = Uporabnikova slika
+# Used to show how many comments are present in the pdf file.
+# Variables:
+#   $count (Number) - the number of comments.
+pdfjs-editor-comments-sidebar-title =
+    { $count ->
+        [one] Komentar
+        [two] Komentarja
+        [few] Komentarji
+       *[other] Komentarji
+    }
+pdfjs-editor-comments-sidebar-close-button =
+    .title = Zapri stransko vrstico
+    .aria-label = Zapri stransko vrstico
+pdfjs-editor-comments-sidebar-close-button-label = Zapri stransko vrstico
+# Instructional copy to add a comment by selecting text or an annotations.
+pdfjs-editor-comments-sidebar-no-comments1 = Ste zasledili kaj omembe vrednega? Narišite oznako in dopišite komentar.
+pdfjs-editor-comments-sidebar-no-comments-link = Več o tem
 
 ## Alt-text dialog
 
 pdfjs-editor-alt-text-button-label = Nadomestno besedilo
 pdfjs-editor-alt-text-edit-button =
     .aria-label = Uredi nadomestno besedilo
-pdfjs-editor-alt-text-edit-button-label = Uredi nadomestno besedilo
 pdfjs-editor-alt-text-dialog-label = Izberite možnost
 pdfjs-editor-alt-text-dialog-description = Nadomestno besedilo se prikaže tistim, ki ne vidijo slike, ali če se ta ne naloži.
 pdfjs-editor-alt-text-add-description-label = Dodaj opis
@@ -415,14 +429,6 @@ pdfjs-editor-alt-text-button =
 ## Editor resizers
 ## This is used in an aria label to help to understand the role of the resizer.
 
-pdfjs-editor-resizer-label-top-left = Zgornji levi kot – spremeni velikost
-pdfjs-editor-resizer-label-top-middle = Zgoraj na sredini – spremeni velikost
-pdfjs-editor-resizer-label-top-right = Zgornji desni kot – spremeni velikost
-pdfjs-editor-resizer-label-middle-right = Desno na sredini – spremeni velikost
-pdfjs-editor-resizer-label-bottom-right = Spodnji desni kot – spremeni velikost
-pdfjs-editor-resizer-label-bottom-middle = Spodaj na sredini – spremeni velikost
-pdfjs-editor-resizer-label-bottom-left = Spodnji levi kot – spremeni velikost
-pdfjs-editor-resizer-label-middle-left = Levo na sredini – spremeni velikost
 pdfjs-editor-resizer-top-left =
     .aria-label = Zgornji levi kot – spremeni velikost
 pdfjs-editor-resizer-top-middle =
@@ -528,6 +534,14 @@ pdfjs-editor-alt-text-settings-show-dialog-button-label = Ob dodajanju slike tak
 pdfjs-editor-alt-text-settings-show-dialog-description = Pomaga vam zagotoviti, da imajo vse vaše slike nadomestno besedilo.
 pdfjs-editor-alt-text-settings-close-button = Zapri
 
+## Accessibility labels (announced by screen readers) for objects added to the editor.
+
+pdfjs-editor-highlight-added-alert = Označba dodana
+pdfjs-editor-freetext-added-alert = Besedilo dodano
+pdfjs-editor-ink-added-alert = Risba dodana
+pdfjs-editor-stamp-added-alert = Slika dodana
+pdfjs-editor-signature-added-alert = Podpis dodan
+
 ## "Annotations removed" bar
 
 pdfjs-editor-undo-bar-message-highlight = Označba odstranjena
@@ -535,6 +549,7 @@ pdfjs-editor-undo-bar-message-freetext = Besedilo odstranjeno
 pdfjs-editor-undo-bar-message-ink = Risba odstranjena
 pdfjs-editor-undo-bar-message-stamp = Slika odstranjena
 pdfjs-editor-undo-bar-message-signature = Podpis odstranjen
+pdfjs-editor-undo-bar-message-comment = Komentar odstranjen
 # Variables:
 #   $count (Number) - the number of removed annotations.
 pdfjs-editor-undo-bar-message-multiple =
@@ -598,6 +613,8 @@ pdfjs-editor-add-signature-save-checkbox = Shrani podpis
 pdfjs-editor-add-signature-save-warning-message = Dosegli ste omejitev 5 shranjenih podpisov. Če želite shraniti novega, enega odstranite.
 pdfjs-editor-add-signature-image-upload-error-title = Slike ni bilo mogoče naložiti
 pdfjs-editor-add-signature-image-upload-error-description = Preverite svojo povezavo z omrežjem ali poskusite z drugo sliko.
+pdfjs-editor-add-signature-image-no-data-error-title = Te slike ni mogoče pretvoriti v podpis
+pdfjs-editor-add-signature-image-no-data-error-description = Poskusite naložiti drugo sliko.
 pdfjs-editor-add-signature-error-close-button = Zapri
 
 ## Dialog buttons
@@ -605,6 +622,131 @@ pdfjs-editor-add-signature-error-close-button = Zapri
 pdfjs-editor-add-signature-cancel-button = Prekliči
 pdfjs-editor-add-signature-add-button = Dodaj
 pdfjs-editor-edit-signature-update-button = Spremeni
+
+## Comment popup
+
+pdfjs-editor-edit-comment-popup-button-label = Uredi komentar
+pdfjs-editor-edit-comment-popup-button =
+    .title = Uredi komentar
+pdfjs-editor-delete-comment-popup-button-label = Odstrani komentar
+pdfjs-editor-delete-comment-popup-button =
+    .title = Odstrani komentar
+pdfjs-show-comment-button =
+    .title = Pokaži komentar
+
+##  Edit a comment dialog
+
+# An existing comment is edited
+pdfjs-editor-edit-comment-dialog-title-when-editing = Uredi komentar
+pdfjs-editor-edit-comment-dialog-save-button-when-editing = Spremeni
+# No existing comment
+pdfjs-editor-edit-comment-dialog-title-when-adding = Dodaj komentar
+pdfjs-editor-edit-comment-dialog-save-button-when-adding = Dodaj
+pdfjs-editor-edit-comment-dialog-text-input =
+    .placeholder = Začnite tipkati …
+pdfjs-editor-edit-comment-dialog-cancel-button = Prekliči
+
+## Edit a comment button in the editor toolbar
+
+pdfjs-editor-add-comment-button =
+    .title = Dodaj komentar
+
+## The view manager is a sidebar displaying different views:
+##  - thumbnails;
+##  - outline;
+##  - attachments;
+##  - layers.
+## The thumbnails view is used to edit the pdf: remove/insert pages, ...
+
+pdfjs-toggle-views-manager-notification-button =
+    .title = Preklopi stransko vrstico (dokument vsebuje sličice/oris/priponke/plasti)
+pdfjs-toggle-views-manager-button1-label = Upravljanje strani
+pdfjs-views-manager-sidebar =
+    .aria-label = Stranska vrstica
+pdfjs-views-manager-sidebar-resizer =
+    .aria-label = Sprememba velikosti stranske vrstice
+pdfjs-views-manager-view-selector-button =
+    .title = Pogledi
+pdfjs-views-manager-view-selector-button-label = Pogledi
+pdfjs-views-manager-pages-title = Strani
+pdfjs-views-manager-outlines-title1 = Oris dokumenta
+    .title = Oris dokumenta (dvokliknite za razširitev ali strnitev vseh elementov)
+pdfjs-views-manager-attachments-title = Priponke
+pdfjs-views-manager-layers-title1 = Plasti
+    .title = Plasti (dvokliknite za ponastavitev vseh plasti na privzeto stanje)
+pdfjs-views-manager-pages-option-label = Strani
+pdfjs-views-manager-outlines-option-label = Oris dokumenta
+pdfjs-views-manager-attachments-option-label = Priponke
+pdfjs-views-manager-layers-option-label = Plasti
+pdfjs-views-manager-add-file-button =
+    .title = Dodaj datoteko
+pdfjs-views-manager-add-file-button-label = Dodaj datoteko
+# Variables:
+#   $count (Number) - the number of selected pages.
+pdfjs-views-manager-pages-status-action-label =
+    { $count ->
+        [one] { $count } izbrana
+        [two] { $count } izbrani
+        [few] { $count } izbrane
+       *[other] { $count } izbranih
+    }
+pdfjs-views-manager-pages-status-none-action-label = Izberite strani
+pdfjs-views-manager-pages-status-action-button-label = Upravljaj
+pdfjs-views-manager-pages-status-copy-button-label = Kopiraj
+pdfjs-views-manager-pages-status-cut-button-label = Izreži
+pdfjs-views-manager-pages-status-delete-button-label = Izbriši
+pdfjs-views-manager-pages-status-export-selected-button-label = Izvozi izbor …
+# Variables:
+#   $count (Number) - the number of selected pages to be cut.
+pdfjs-views-manager-status-undo-cut-label =
+    { $count ->
+        [one] { $count } stran izrezana
+        [two] { $count } strani izrezani
+        [few] { $count } strani izrezane
+       *[other] { $count } strani izrezanih
+    }
+# Variables:
+#   $count (Number) - the number of selected pages to be copied.
+pdfjs-views-manager-pages-status-undo-copy-label =
+    { $count ->
+        [one] { $count } stran kopirana
+        [two] { $count } strani kopirani
+        [few] { $count } strani kopirane
+       *[other] { $count } strani kopiranih
+    }
+# Variables:
+#   $count (Number) - the number of selected pages to be deleted.
+pdfjs-views-manager-pages-status-undo-delete-label =
+    { $count ->
+        [one] { $count } stran izbrisana
+        [two] { $count } strani izbrisani
+        [few] { $count } strani izbrisane
+       *[other] { $count } strani izbrisanih
+    }
+pdfjs-views-manager-pages-status-waiting-ready-label = Pripravljanje datoteke za vas …
+pdfjs-views-manager-pages-status-waiting-uploading-label = Nalaganje datoteke …
+pdfjs-views-manager-status-warning-cut-label = Izrezovanje ni bilo mogoče. Osvežite stran in poskusite znova.
+pdfjs-views-manager-status-warning-copy-label = Kopiranje ni bilo mogoče. Osvežite stran in poskusite znova.
+pdfjs-views-manager-status-warning-delete-label = Brisanje ni bilo mogoče. Osvežite stran in poskusite znova.
+pdfjs-views-manager-status-warning-save-label = Shranjevanje ni bilo mogoče. Osvežite stran in poskusite znova.
+pdfjs-views-manager-status-undo-button-label = Razveljavi
+pdfjs-views-manager-status-done-button-label = Končano
+pdfjs-views-manager-status-close-button =
+    .title = Zapri
+pdfjs-views-manager-status-close-button-label = Zapri
+pdfjs-views-manager-paste-button-label = Prilepi
+pdfjs-views-manager-paste-button-before =
+    .title = Prilepi pred prvo stran
+# Variables:
+#   $page (Number) - the page number after which the paste button is.
+pdfjs-views-manager-paste-button-after =
+    .title = Prilepi za stranjo { $page }
+# Badge used to promote a new feature in the UI, keep it as short as possible.
+# It's spelled uppercase for English, but it can be translated as usual.
+pdfjs-new-badge-content = NOVO
+pdfjs-views-manager-waiting-for-file = Nalaganje datoteke …
+pdfjs-toggle-views-manager-button1 =
+    .title = Upravljanje strani
 
 ## Main menu for adding/removing signatures
 

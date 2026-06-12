@@ -14,18 +14,22 @@
     "access": "public"
   },
   "module": "dist/fesm2022/ng2-pdfjs-viewer.mjs",
-  "typings": "dist/index.d.ts",
+  "typings": "dist/types/ng2-pdfjs-viewer.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/types/ng2-pdfjs-viewer.d.ts",
       "default": "./dist/fesm2022/ng2-pdfjs-viewer.mjs"
     }
   },
   "devDependencies": {
-    "csso-cli": "^4.0.2",
-    "ng-packagr": "^20.0.0",
+    "@angular/compiler-cli": "^22.0.0",
+    "esbuild": "^0.28.0",
+    "jsdom": "^29.1.1",
+    "ng-packagr": "^22.0.0",
     "shx": "^0.3.4",
-    "terser": "^5.24.0"
+    "terser": "^5.24.0",
+    "typescript": "~6.0.0",
+    "vitest": "^4.1.8"
   },
   "peerDependencies": {
     "@angular/common": ">=10.0.0",
@@ -49,8 +53,8 @@
     "angular-component",
     "angular-pdf",
     "ng2-pdf",
-    "angular 2 - 20",
-    "angular 20",
+    "angular 2 - 22",
+    "angular 22",
     "angular-library",
     "typescript",
     "javascript",
@@ -70,8 +74,9 @@
     "build": "npm run clean && ng-packagr -p ng-package.json && npm run remove-source-maps && npm run minify-pdfjs && npm run minify-css",
     "remove-source-maps": "shx rm -f dist/pdfjs/build/*.map dist/pdfjs/web/*.map dist/fesm2022/*.map && node -e \"const fs=require('fs'),p='dist/fesm2022/ng2-pdfjs-viewer.mjs';fs.writeFileSync(p,fs.readFileSync(p,'utf8').replace(/\\/\\/# sourceMappingURL=\\S+\\s*$/,''))\"",
     "minify-pdfjs": "terser dist/pdfjs/build/pdf.mjs --compress --mangle --module --output dist/pdfjs/build/pdf.mjs && terser dist/pdfjs/build/pdf.sandbox.mjs --compress --mangle --module --output dist/pdfjs/build/pdf.sandbox.mjs && terser dist/pdfjs/build/pdf.worker.mjs --compress --mangle --module --output dist/pdfjs/build/pdf.worker.mjs && terser dist/pdfjs/web/viewer.mjs --compress --mangle --module --output dist/pdfjs/web/viewer.mjs && terser dist/pdfjs/web/postmessage-wrapper.js --compress --mangle --output dist/pdfjs/web/postmessage-wrapper.js",
-    "minify-css": "csso dist/pdfjs/web/viewer.css --output dist/pdfjs/web/viewer.css",
+    "minify-css": "esbuild dist/pdfjs/web/viewer.css --minify --outfile=dist/pdfjs/web/viewer.css --allow-overwrite",
     "package": "npm run build && cd dist && npm pack",
-    "bump": "npm version patch --no-git-tag-version"
+    "bump": "npm version patch --no-git-tag-version",
+    "test": "vitest run"
   }
 }

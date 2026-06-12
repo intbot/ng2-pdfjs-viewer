@@ -58,36 +58,16 @@ pdfjs-document-properties-button =
 pdfjs-document-properties-button-label = Hujjat xossalari
 pdfjs-document-properties-file-name = Fayl nomi:
 pdfjs-document-properties-file-size = Fayl hajmi:
-# Variables:
-#   $size_kb (Number) - the PDF file size in kilobytes
-#   $size_b (Number) - the PDF file size in bytes
-pdfjs-document-properties-kb = { $size_kb } KB ({ $size_b } bytes)
-# Variables:
-#   $size_mb (Number) - the PDF file size in megabytes
-#   $size_b (Number) - the PDF file size in bytes
-pdfjs-document-properties-mb = { $size_mb } MB ({ $size_b } bytes)
 pdfjs-document-properties-title = Nomi:
 pdfjs-document-properties-author = Muallifi:
 pdfjs-document-properties-subject = Mavzusi:
 pdfjs-document-properties-keywords = Kalit so‘zlar
 pdfjs-document-properties-creation-date = Yaratilgan sanasi:
 pdfjs-document-properties-modification-date = O‘zgartirilgan sanasi
-# Variables:
-#   $date (Date) - the creation/modification date of the PDF file
-#   $time (Time) - the creation/modification time of the PDF file
-pdfjs-document-properties-date-string = { $date }, { $time }
 pdfjs-document-properties-creator = Yaratuvchi:
 pdfjs-document-properties-producer = PDF ishlab chiqaruvchi:
 pdfjs-document-properties-version = PDF versiyasi:
 pdfjs-document-properties-page-count = Sahifa soni:
-
-## Variables:
-##   $width (Number) - the width of the (current) page
-##   $height (Number) - the height of the (current) page
-##   $unit (String) - the unit of measurement of the (current) page
-##   $name (String) - the name of the (current) page
-##   $orientation (String) - the orientation of the (current) page
-
 
 ##
 
@@ -148,9 +128,6 @@ pdfjs-page-scale-actual = Haqiqiy hajmi
 #   $scale (Number) - percent value for page scale
 pdfjs-page-scale-percent = { $scale }%
 
-## PDF page
-
-
 ## Loading indicator messages
 
 pdfjs-loading-error = PDF yuklanayotganda xato yuz berdi.
@@ -175,63 +152,3 @@ pdfjs-password-label = PDF faylni ochish uchun parolni kiriting.
 pdfjs-password-invalid = Parol - notoʻgʻri. Qaytadan urinib koʻring.
 pdfjs-password-ok-button = OK
 pdfjs-web-fonts-disabled = Veb shriftlar oʻchirilgan: ichki PDF shriftlardan foydalanib boʻlmmaydi.
-
-## Editing
-
-
-## Default editor aria labels
-
-
-## Remove button for the various kind of editor.
-
-
-##
-
-
-## Alt-text dialog
-
-
-## Editor resizers
-## This is used in an aria label to help to understand the role of the resizer.
-
-
-## Color picker
-
-
-## Show all highlights
-## This is a toggle button to show/hide all the highlights.
-
-
-## New alt-text dialog
-## Group note for entire feature: Alternative text (alt text) helps when people can't see the image. This feature includes a tool to create alt text automatically using an AI model that works locally on the user's device to preserve privacy.
-
-
-## Image alt-text settings
-
-
-## "Annotations removed" bar
-
-
-## Add a signature dialog
-
-
-## Tab names
-
-
-## Tab panels
-
-
-## Controls
-
-
-## Dialog buttons
-
-
-## Main menu for adding/removing signatures
-
-
-## Editor toolbar
-
-
-## Edit signature description dialog
-
