@@ -209,6 +209,25 @@ Add PDF.js assets to your `angular.json`:
 - **Custom Security Templates** - Angular template support for security warnings
 - **Console Warnings** - Developer-friendly security notifications
 
+### 🗂️ Large Documents & Fast Web View
+
+PDF.js streams documents with HTTP range requests when the server allows it,
+so the first pages render before the whole file downloads. To get this for
+large PDFs:
+
+1. **Linearize your PDFs** ("fast web view") when producing them, e.g.
+   `qpdf --linearize input.pdf output.pdf`.
+2. **Serve with range support**: the server must send `Accept-Ranges: bytes`
+   and honor `Range` requests (standard on Nginx/IIS/S3/CDNs; verify proxies
+   don't strip it).
+3. Pages render lazily as you scroll (virtualized) — memory stays bounded even
+   for thousand-page documents.
+
+Note: when using the `httpHeaders`/`withCredentials` authenticated-fetch path,
+the component downloads the full document first (headers cannot be attached to
+the viewer's own streaming fetch) — prefer time-limited signed URLs for very
+large protected documents.
+
 ---
 
 ## 📦 Installation
