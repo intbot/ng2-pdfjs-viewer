@@ -60,7 +60,7 @@ Whether you need a simple embedded PDF viewer or a complex document management s
 | **Mobile-First Design**       | Responsive layout optimized for touch devices                      | ✅ New |
 | **TypeScript Strict Mode**    | Full type safety with comprehensive API coverage                   | ✅ New |
 | **URL Security Validation**   | Prevents unauthorized file parameter manipulation with custom templates | ✅ New |
-| **Leaner, Faster Package**    | ~29% smaller npm package (4.1 MB → 2.9 MB), viewer scripts now ship minified, 1,000+ lines of dead code removed | ✅ New |
+| **Leaner, Faster Package**    | ~22% smaller npm package (4.1 MB → 3.2 MB), viewer scripts now ship minified, 1,000+ lines of dead code removed | ✅ New |
 
 ### 🏆 Unique Advantages
 
@@ -93,6 +93,7 @@ Whether you need a simple embedded PDF viewer or a complex document management s
 - [Advanced Configuration](#advanced-configuration)
 - [API Reference](#-api-reference)
 - [Examples](#-examples)
+- [Accessibility](#-accessibility)
 - [Migration Guide](#-migration-guide)
 - [Deprecated Features](#deprecated-features)
 - [Contributing](#-contributing)
@@ -253,12 +254,12 @@ For production deployments using IIS, add to your `web.config`:
 
 | Angular Version | Support Level | Notes |
 |----------------|---------------|-------|
-| **20.0+** | ✅ **Recommended** | Fully tested and optimized |
+| **20.0 - 22.x** | ✅ **Recommended** | Fully tested and optimized; built and verified on Angular 22 |
 | **15.0 - 19.x** | ✅ **Supported** | Should work with minor testing |
 | **10.0 - 14.x** | ✅ **Supported** | Compatible with testing |
 | **2.0 - 9.x** | ⚠️ **Legacy** | May require additional testing |
 
-**Note**: While the library supports Angular 2.0+, it's primarily tested and optimized for Angular 20+. For production use with older versions, thorough testing is recommended. The library uses relaxed peer dependencies (Angular >=10.0.0) to ensure compatibility across different Angular versions.
+**Note**: While the library supports Angular 2.0+, it's primarily tested and optimized for Angular 20+ (currently built and verified on Angular 22). For production use with older versions, thorough testing is recommended. The library uses relaxed peer dependencies (Angular >=10.0.0) to ensure compatibility across different Angular versions.
 
 ### Install Package
 
@@ -558,7 +559,7 @@ export class MyComponent {
 | `showFind`                   | `boolean`                                 | `true`       | Show search button                    |
 | `showFullScreen`             | `boolean`                                 | `true`       | Show fullscreen button                |
 | `showViewBookmark`           | `boolean`                                 | `true`       | Show bookmark button                  |
-| `showAnnotations`            | `boolean`                                 | `false`      | Show annotations                      |
+| `showAnnotations`            | `boolean`                                 | `true`       | Show annotation editor toolbar        |
 | `showToolbarLeft`            | `boolean`                                 | `true`       | Show left toolbar section             |
 | `showToolbarMiddle`          | `boolean`                                 | `true`       | Show middle toolbar section           |
 | `showToolbarRight`           | `boolean`                                 | `true`       | Show right toolbar section            |
@@ -588,6 +589,26 @@ export class MyComponent {
 | `customSecurityTpl`          | `TemplateRef<any>`                        | -            | Custom security template              |
 | `securityWarning`            | `SecurityWarning \| null`                 | -            | Security warning data (read-only)     |
 | `iframeBorder`               | `string \| number`                        | `"0"`        | iframe border style                   |
+| `annotationEditor`           | `AnnotationEditorMode`                    | `'none'`     | Active annotation editor mode (two-way binding)                        |
+| `highlightEditorColors`      | `string`                                  | -            | Highlight color presets, e.g. `'yellow=#FFFF98,green=#53FFBC'`        |
+| `enableSignatureEditor`      | `boolean`                                 | `false`      | Opt-in signature editor (eSign-style stamps, not cryptographic; init-time) |
+| `enableCommentEditor`        | `boolean`                                 | `false`      | Opt-in threaded comment editor (init-time)                             |
+| `enablePageEditing`          | `boolean`                                 | `false`      | Opt-in page reorder/delete/extract/merge in the Manage pages panel (init-time) |
+| `formData`                   | `FormDataMap`                             | `{}`         | AcroForm field values (two-way binding)                                |
+| `contentProtection`          | `ContentProtectionConfig`                 | -            | Block print/download/text-selection + watermark (deterrence, not DRM)  |
+| `pageColors`                 | `{ background; foreground } \| null`      | -            | Re-render page content with custom colors (true dark pages; init-time) |
+| `pdfJsOptions`               | `Record<string, string\|number\|boolean>` | -            | Allowlisted PDF.js AppOptions passthrough (init-time)                  |
+| `customToolbarTpl`           | `TemplateRef<any>`                        | -            | Host-side replacement toolbar (context: the component instance)        |
+| `showToolbar`                | `boolean`                                 | `true`       | Show/hide the entire built-in viewer toolbar                           |
+| `pageOverlayTpl`             | `TemplateRef<any>`                        | -            | Angular template projected onto every rendered page (context: page number) |
+| `httpHeaders`                | `Record<string, string>`                  | -            | Headers for loading the document (component fetches, feeds a blob)     |
+| `withCredentials`            | `boolean`                                 | `false`      | Send cookies/credentials with the document request                      |
+| `rememberLastView`           | `boolean`                                 | `true`       | Restore previous reading position when the same document reloads        |
+| `externalLinkTarget`         | `ExternalLinkTarget`                      | `'blank'`    | Where external PDF links open                                           |
+| `iframeSandbox`              | `string`                                  | `''`         | Extra allowlisted iframe sandbox tokens (prefer `allow-top-navigation-by-user-activation`) |
+| `customSidebarTpl`           | `TemplateRef<any>`                        | -            | Host-side sidebar template beside the viewer (context: the component) |
+| `signatureStorage`           | `PdfSignatureStorage`                     | -            | Host persistence for saved signatures (server/per-user)               |
+| `aiAssistantConfig`          | `PdfAiPanelConfig \| null`                | -            | Built-in chat-with-document panel; your endpoint, clickable `[p.N]` citations |
 
 ### Output Events
 
@@ -617,6 +638,17 @@ export class MyComponent {
 | `scrollChange`              | `EventEmitter<string>`                     | Fired when scroll changes (two-way binding)    |
 | `spreadChange`              | `EventEmitter<string>`                     | Fired when spread changes (two-way binding)    |
 | `pageModeChange`            | `EventEmitter<string>`                     | Fired when page mode changes (two-way binding) |
+| `annotationEditorChange`    | `EventEmitter<AnnotationEditorMode>`       | Two-way companion of `[(annotationEditor)]` — user mode switches  |
+| `onAnnotationEditorStateChange` | `EventEmitter<AnnotationEditorState>`  | Editor undo/redo/dirty state — drive "unsaved changes" UX         |
+| `onPagesEdited`             | `EventEmitter<PagesEditedEvent>`           | Page reorder/delete/extract/merge (with `enablePageEditing`)      |
+| `formDataChange`            | `EventEmitter<FormDataMap>`                | Two-way companion of `[(formData)]` — user form edits             |
+| `onProgress`                | `EventEmitter<{loaded; total}>`            | Download progress during authenticated loading                     |
+| `onPasswordPrompt`          | `EventEmitter<void>`                       | PDF.js password dialog shown (spinner dropped automatically)       |
+| `onReadAloudStateChange`    | `EventEmitter<ReadAloudState>`             | Read-aloud progress (per-sentence; includes the sentence text)     |
+| `onSidebarViewChanged`      | `EventEmitter<SidebarViewChange>`          | Fired when the sidebar panel switches (thumbs/outline/attachments/layers) |
+| `onLayersChanged`           | `EventEmitter<LayersChange>`               | Fired when optional-content layers load or visibility toggles  |
+| `onNamedAction`             | `EventEmitter<NamedActionEvent>`           | Fired for named actions triggered inside the document          |
+| `onDocumentProperties`      | `EventEmitter<void>`                       | Fired when the document-properties dialog opens                |
 
 ### Methods
 
@@ -644,6 +676,18 @@ export class MyComponent {
 | `getErrorTemplateData()`                                 | -                                                           | `any`                                                | Get error template data           |
 | `setUrlValidation(enabled: boolean)`                     | `enabled: boolean`                                          | `Promise<ActionExecutionResult>`                     | Enable/disable URL validation     |
 | `dismissSecurityWarning()`                               | -                                                           | `void`                                               | Dismiss security warning          |
+| `getAnnotations()`                                       | -                                                           | `Promise<any[]>`                                     | Export editor annotations (serialized, JSON-safe) |
+| `setAnnotations(annotations: any[])`                     | `annotations: any[]` (from `getAnnotations()`)              | `Promise<{ restored; pending; rejected }>`           | Restore exported annotations into the editor; not-yet-rendered pages apply on render; invalid items rejected |
+| `getDocumentAsBlob()`                                    | -                                                           | `Promise<Blob>`                                      | Document bytes including annotation/form edits     |
+| `getDocumentText(from?, to?)`                            | `from?: number, to?: number`                                | `Promise<DocumentPageText[]>`                        | Extracted per-page text (BYO-AI, custom search UX) |
+| `search(query, options?)`                                | `query: string, options?: SearchOptions`                    | `Promise<SearchResult>`                              | Programmatic full-text search with totals + per-page counts |
+| `searchNext()` / `searchPrevious()`                      | -                                                           | `Promise<ActionExecutionResult>`                     | Step through matches                               |
+| `clearSearch()`                                          | -                                                           | `Promise<ActionExecutionResult>`                     | Clear search highlights                            |
+| `getFormData()`                                          | -                                                           | `Promise<FormDataMap>`                               | Current AcroForm field values                      |
+| `setFormField(name, value)`                              | `name: string, value: string\|boolean\|null`                | `Promise<ActionExecutionResult>`                     | Set one form field                                 |
+| `startReadAloud(options?)`                               | `options?: { fromPage?; rate? }`                            | `Promise<ActionExecutionResult>`                     | Read aloud with sentence highlighting              |
+| `pauseReadAloud()` / `resumeReadAloud()` / `stopReadAloud()` | -                                                       | `Promise<ActionExecutionResult>`                     | Read-aloud controls                                |
+| `aiAsk(question: string)`                                | `question: string`                                          | `Promise<void>`                                      | Ask the built-in AI panel a question (requires `[aiAssistantConfig]`) |
 
 ---
 
@@ -780,6 +824,30 @@ Each example includes proper Content-Type headers, error handling, CORS configur
 
 ---
 
+## ♿ Accessibility
+
+ng2-pdfjs-viewer embeds the full Mozilla PDF.js viewer — the same viewer that ships in
+Firefox — and inherits its accessibility architecture, making it a strong foundation for
+meeting WCAG 2.x and European Accessibility Act (EAA) obligations:
+
+- **Screen-reader text layer** — every page exposes real, selectable text to assistive technology
+- **Tagged-PDF structure** — headings, tables, lists, and alt text from PDF/UA documents are
+  mapped into the browser accessibility tree (`aria-owns`)
+- **Keyboard-operable chrome** — toolbar, sidebar, dialogs, and find bar with the standard
+  PDF.js shortcut set
+- **100+ locales**, right-to-left scripts, high-contrast palettes, and `prefers-reduced-motion` support
+- **Read-aloud built in** — `startReadAloud()` / `stopReadAloud()` with browser speech synthesis
+  and `(onReadAloudStateChange)` progress events
+
+The component adds an accessible iframe embedding (always-titled iframe), accessible
+loading/error states, and a fully keyboard-reachable API surface.
+
+📖 **Full guide: [ACCESSIBILITY.md](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/lib/ACCESSIBILITY.md)** —
+what's covered out of the box, what the component adds, and what remains your application's
+responsibility.
+
+---
+
 ## 🔄 Migration Guide
 
 ### From v20.x to v25.x
@@ -887,6 +955,7 @@ this.pdfViewer.setSpinnerHtml("<div>Loading...</div>");
 
 ## 📚 Additional Resources
 
+- **[Accessibility Guide](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/lib/ACCESSIBILITY.md)** - Screen readers, tagged PDFs, keyboard navigation, WCAG/EAA notes
 - **[Custom CSS Examples](Custom-CSS-Examples.md)** - Complete styling guide with theme customization examples
 - **[Error Display Examples](Error-Display-Examples.md)** - Custom error template examples and styling options
 - **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the project

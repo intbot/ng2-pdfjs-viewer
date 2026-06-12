@@ -614,6 +614,64 @@ Events for property changes:
 - `spreadChange` - Spread mode changes
 - `pageModeChange` - Page mode changes
 
+## Annotation & Editing Events
+
+### `onAnnotationEditorStateChange`
+- **Type**: `EventEmitter<AnnotationEditorState>` (`{ isEditing, isEmpty, hasSomethingToUndo, hasSomethingToRedo, hasSelectedEditor }`)
+- **Description**: Annotation editor undo/redo/dirty state — drive "unsaved changes" UX
+
+```typescript
+onEditorState(state: AnnotationEditorState) {
+  this.hasUnsavedAnnotations = !state.isEmpty;
+}
+```
+
+### `annotationEditorChange`
+- **Type**: `EventEmitter<AnnotationEditorMode>`
+- **Description**: Two-way companion of `[(annotationEditor)]` — fires when the user switches editor modes in the toolbar
+
+### `onPagesEdited`
+- **Type**: `EventEmitter<PagesEditedEvent>` (`{ operation, pagesCount }`)
+- **Description**: Page organization changes (reorder/delete/extract/merge) when `enablePageEditing` is on
+
+## Forms & Loading Events
+
+### `formDataChange`
+- **Type**: `EventEmitter<FormDataMap>`
+- **Description**: Two-way companion of `[(formData)]` — fires when the user edits form fields
+
+### `onProgress`
+- **Type**: `EventEmitter<{ loaded: number; total: number }>`
+- **Description**: Download progress while the component fetches an authenticated document (`httpHeaders`/`withCredentials`)
+
+### `onPasswordPrompt`
+- **Type**: `EventEmitter<void>`
+- **Description**: Fired when PDF.js shows its password dialog for a protected document (the built-in spinner is dropped automatically so the dialog is usable)
+
+## Read Aloud Events
+
+### `onReadAloudStateChange`
+- **Type**: `EventEmitter<ReadAloudState>` (`{ status: 'reading' | 'paused' | 'stopped' | 'finished' | 'error'; page; sentence? }`)
+- **Description**: Read-aloud progress. `'reading'` fires once per sentence with the sentence text; the viewer highlights that sentence in the page text layer
+
+## Viewer State Events
+
+### `onSidebarViewChanged`
+- **Type**: `EventEmitter<SidebarViewChange>` (`{ view: 'none' | 'thumbs' | 'outline' | 'attachments' | 'layers' | 'unknown' }`)
+- **Description**: Sidebar panel switches
+
+### `onLayersChanged`
+- **Type**: `EventEmitter<LayersChange>` (`{ reason: 'loaded' | 'changed'; layersCount? }`)
+- **Description**: Optional-content layers loaded for the document, or layer visibility toggled
+
+### `onNamedAction`
+- **Type**: `EventEmitter<NamedActionEvent>` (`{ action: string }`)
+- **Description**: Named actions triggered from inside the document (GoToPage, Print, …)
+
+### `onDocumentProperties`
+- **Type**: `EventEmitter<void>`
+- **Description**: User opened the document-properties dialog
+
 ## Next Steps
 
 - ⚙️ [**Component Inputs**](./component-inputs) - Configuration options

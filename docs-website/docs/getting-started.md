@@ -4,9 +4,13 @@ Get ng2-pdfjs-viewer up and running in your Angular application in just a few mi
 
 ## Prerequisites
 
-- **Angular**: 20.0+ (recommended) | 10.0+ (supported)
-- **Node.js**: 18.0+
+- **Angular**: 14.0+ (verified through Angular 22) — peer range allows `>=10`, but the published build links on Angular 14+
+- **Node.js**: 18.0+ (for your app's tooling; newer Angular versions require newer Node)
 - **TypeScript**: 5.0+
+
+:::note Browser support
+The bundled PDF.js 6.x modern build targets current evergreen browsers. Safari is supported by PDF.js only via its legacy build, which this package does not ship — test your Safari requirements before upgrading.
+:::
 
 ## Installation
 

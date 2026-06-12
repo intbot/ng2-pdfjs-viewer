@@ -7,13 +7,102 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+#### ✍️ Annotation Editing & eSign
+- Annotation editor exposure: two-way `[(annotationEditor)]` mode input
+  (`freetext`/`ink`/`highlight`/`stamp` + opt-in `signature`/`comment`),
+  `[highlightEditorColors]`, and `(onAnnotationEditorStateChange)` (undo/redo/dirty state).
+- Annotation persistence: `getAnnotations()` (serialized, JSON-safe export) and
+  `setAnnotations()` — restore exported annotations back into the editor (server-side
+  round-trip). Annotations for pages that haven't rendered yet apply automatically as those
+  pages render; invalid items are rejected with a count.
+- `getDocumentAsBlob()` — the document including annotation edits and filled form fields,
+  ready for upload.
+- Opt-in signature editor (`[enableSignatureEditor]` — draw/type/upload, saved as stamp-style
+  annotations; an eSign convenience, NOT cryptographic signing) and `[signatureStorage]` —
+  host-side persistence hook for saved signatures (server/per-user storage instead of the
+  viewer's localStorage).
+- Opt-in comment editor (`[enableCommentEditor]`) — threaded comment popups on highlights.
+
+#### 📄 Pages, Forms & Search
+- Page organization (`[enablePageEditing]`): drag-drop reorder, delete, cut/copy/paste,
+  extract and merge pages in the viewer's "Manage pages" panel; `(onPagesEdited)` relay.
+- Forms: two-way `[(formData)]` AcroForm binding, `getFormData()`, `setFormField()`.
+- Programmatic search: `search()` (totals, per-page counts, pages with matches),
+  `searchNext()`, `searchPrevious()`, `clearSearch()`.
+
+#### 🤖 AI & Read Aloud
+- Bring-your-own-endpoint AI: headless `PdfAiAssistant` (any OpenAI-compatible endpoint —
+  OpenAI, Azure, Ollama, vLLM…) plus a built-in chat panel via `[aiAssistantConfig]`;
+  answers cite pages as `[p.3]` and citations click-through to the page. The library never
+  calls any AI service on its own. `getDocumentText()` extracts per-page text for custom
+  integrations.
+- Read-aloud (`startReadAloud()`/`pauseReadAloud()`/`resumeReadAloud()`/`stopReadAloud()`)
+  with browser speech synthesis: reads sentence by sentence, highlights the sentence being
+  spoken in the page text layer, and reports progress via `(onReadAloudStateChange)`
+  (including the current `sentence`).
+
+#### 🎨 Custom UI & Display
+- `[customToolbarTpl]` (+ `[showToolbar]`) — replace the viewer toolbar with your own Angular
+  template; the template receives the component instance for full API access.
+- `[customSidebarTpl]` — host-side sidebar beside the viewer, same template context.
+- `[pageOverlayTpl]` — project an Angular template onto every rendered page (watermark
+  badges, stamps, review UI) with live bindings.
+- True dark page rendering via `[pageColors]` (re-renders page content, not just chrome).
+- Content protection bundle `[contentProtection]`: block print/download, disable text
+  selection, per-page watermarks — documented honestly as client-side deterrence, not DRM.
+
+#### 🔌 Loading, Events & Options
+- Authenticated document loading: `[httpHeaders]`, `[withCredentials]`, and `(onProgress)`
+  (the component fetches the PDF and feeds the viewer a blob).
+- `(onPasswordPrompt)` — fired when PDF.js shows its password dialog (the loading spinner is
+  dropped automatically so the dialog is usable; fixes #303).
+- `[rememberLastView]` — restore the previous reading position on reload (fixes #299).
+- `[externalLinkTarget]` (default `'blank'`) and `[iframeSandbox]` allowlisted tokens — PDF
+  links open reliably (fixes #304).
+- `[pdfJsOptions]` — allowlisted PDF.js AppOptions passthrough for init-time options.
+- Four new event relays: `(onSidebarViewChanged)`, `(onLayersChanged)`, `(onNamedAction)`,
+  `(onDocumentProperties)`.
+- README accessibility section linking the full `ACCESSIBILITY.md` guide (screen readers,
+  tagged PDFs, keyboard navigation, WCAG/EAA notes).
+
 ### Changed
+
+#### 🅰️ Angular 22
+
+- Library is now built and verified on **Angular 22** (ng-packagr 22, TypeScript 6.0).
+  Peer dependencies stay wide (`>=10`) — no action needed for existing consumers.
+
+#### 🔄 PDF.js 6.0.227
+
+- Bundled Mozilla PDF.js upgraded to **v6.0.227** (from the 5.x line). All component
+  inputs, outputs, and APIs work unchanged.
+- The sidebar toggle is now PDF.js's "Manage pages" panel (the upstream successor to the
+  classic sidebar); page-editing actions in it remain gated behind `enablePageEditing`.
+- Build tooling: viewer CSS is now minified with esbuild (csso could not parse PDF.js 6's
+  modern CSS).
+
+#### ⚠️ Behavior Changes
+
+- `showAnnotations` now defaults to `true` — the PDF.js annotation editor toolbar
+  (highlight, text, draw, stamp, and the opt-in signature/comment editors) is visible
+  out of the box. Set `[showAnnotations]="false"` to restore the previous hidden-by-default behavior.
+- The viewer iframe's `sandbox` now includes `allow-popups allow-popups-to-escape-sandbox`,
+  and external links inside PDFs open in a new tab by default (new `externalLinkTarget`
+  input, default `'blank'`) — previously such links were silently dead (issue #304).
+  A new `iframeSandbox` input can add further allowlisted tokens; review your embedding
+  policy if you relied on the stricter previous sandbox.
+- `zoomChange` now emits named presets (`page-fit`, `page-width`, `auto`) instead of raw
+  numeric scales for preset zooms — handlers that `parseFloat` the value should handle
+  the named cases.
 
 #### 📦 Leaner Package
 
-- npm tarball reduced ~29% (4.1 MB → 2.9 MB packed, 11.1 MB → 7.9 MB unpacked)
-- `viewer.mjs` (551 KB → 288 KB) and the postMessage bridge (72 KB → 19 KB) now ship minified
-- `viewer.css` now ships minified (223 KB → 185 KB)
+- npm tarball reduced ~22% (4.1 MB → 3.2 MB packed, 11.1 MB → 8.7 MB unpacked — measured
+  after the PDF.js 6 upgrade and this release's feature additions)
+- `viewer.mjs` (551 KB → 343 KB) and the postMessage bridge (72 KB → 34 KB) now ship minified
+- `viewer.css` now ships minified (197 KB → 147 KB)
 - Source maps and debug tooling no longer included in the package
 - 1,000+ lines of dead code removed from the library source
 

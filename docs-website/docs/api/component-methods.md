@@ -446,6 +446,75 @@ Methods for advanced functionality:
 - `getQueueStatus()` - Get queue info
 - `clearActionQueue()` - Clear queue
 
+## Annotation Persistence
+
+### `getAnnotations()`
+- **Type**: `Promise<any[]>`
+- **Description**: Serialized state of every annotation created or modified in the editor — JSON-safe, ready to persist server-side
+
+### `setAnnotations(annotations: any[])`
+- **Type**: `Promise<{ restored: number; pending: number; rejected: number }>`
+- **Description**: Restore annotations previously exported with `getAnnotations()`. Annotations for not-yet-rendered pages apply as those pages render (`pending`); items with an invalid `pageIndex` are skipped (`rejected`). Restore is additive — calling twice duplicates
+
+```typescript
+// Persist on save…
+const annotations = await this.pdfViewer.getAnnotations();
+await this.api.saveAnnotations(docId, annotations);
+
+// …restore on reload
+const saved = await this.api.loadAnnotations(docId);
+const result = await this.pdfViewer.setAnnotations(saved);
+console.log(`${result.restored} restored, ${result.pending} pending`);
+```
+
+### `getDocumentAsBlob()`
+- **Type**: `Promise<Blob>`
+- **Description**: The current document — including annotation edits and filled form fields — as a Blob, ready for upload or download
+
+## Search
+
+### `search(query: string, options?: SearchOptions)`
+- **Type**: `Promise<SearchResult>`
+- **Description**: Programmatic full-text search. Resolves with totals, per-page match counts and pages containing matches; matches highlight in the viewer
+
+### `searchNext()` / `searchPrevious()`
+- **Type**: `Promise<ActionExecutionResult>`
+- **Description**: Step through matches of the active search
+
+### `clearSearch()`
+- **Type**: `Promise<ActionExecutionResult>`
+- **Description**: Clear the active search and its highlights
+
+## Forms
+
+### `getFormData()`
+- **Type**: `Promise<FormDataMap>`
+- **Description**: Current AcroForm field values (field name → value), reflecting user edits
+
+### `setFormField(name: string, value: string | boolean | null)`
+- **Type**: `Promise<ActionExecutionResult>`
+- **Description**: Set a single form field programmatically
+
+## Text & AI
+
+### `getDocumentText(from?: number, to?: number)`
+- **Type**: `Promise<DocumentPageText[]>` (`{ page, text }[]`)
+- **Description**: Extracted text per page (1-based, clamped). The foundation for bring-your-own-AI integrations
+
+### `aiAsk(question: string)`
+- **Type**: `Promise<void>`
+- **Description**: Ask the built-in AI panel a question programmatically. Requires `[aiAssistantConfig]`
+
+## Read Aloud
+
+### `startReadAloud(options?: { fromPage?: number; rate?: number })`
+- **Type**: `Promise<ActionExecutionResult>`
+- **Description**: Read the document aloud with browser speech synthesis, sentence by sentence with in-page highlighting, from the given (or current) page
+
+### `pauseReadAloud()` / `resumeReadAloud()` / `stopReadAloud()`
+- **Type**: `Promise<ActionExecutionResult>`
+- **Description**: Pause, resume, or stop reading. Progress arrives via `(onReadAloudStateChange)`
+
 ## Next Steps
 
 - ⚙️ [**Component Inputs**](./component-inputs) - Configuration options

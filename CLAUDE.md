@@ -15,7 +15,8 @@ neutral — describe code changes, not plans.
 
 ## Tech Stack
 
-- **Library:** Angular (peer dep `>=10`, built/tested on Angular 20), TypeScript, packaged with
+- **Library:** Angular (peer dep `>=10`, built/tested on Angular 22 — requires Node ≥22.22/≥24.15
+  and TypeScript 6.0 for the toolchain), TypeScript, packaged with
   **ng-packagr** → FESM2022. Bundled Mozilla **PDF.js** assets under `lib/pdfjs/`.
 - **Local dev link:** **yalc** (`file:.yalc/ng2-pdfjs-viewer`) wires the built lib into the demo apps.
 - **Demo apps:** `SampleApp/` (Angular CLI app, Karma/Jasmine unit tests + Protractor/Puppeteer e2e)

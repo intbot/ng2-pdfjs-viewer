@@ -2,13 +2,19 @@
 
 Welcome to the comprehensive documentation for **ng2-pdfjs-viewer** - the most reliable and feature-rich Angular PDF viewer component powered by Mozilla's PDF.js.
 
-## What's New in v25.x 🎉
+## What's New 🎉
 
-Version 25.x represents a **complete rewrite** of the library with modern Angular patterns, strict TypeScript, and PDF.js v5.x integration. Here's what makes it special:
+The latest release bundles Mozilla **PDF.js 6.x**, is built and verified on **Angular 22** (peer range stays `>=10`), and turns the viewer into a full editing surface:
 
-### 🚀 Complete Rewrite Benefits
+- **Annotation editing & eSign**: highlight, text, draw, stamp + opt-in signature and comment editors — with `getAnnotations()`/`setAnnotations()` server round-trips and download-with-edits
+- **Forms**: `[(formData)]` two-way AcroForm binding and programmatic field access
+- **Programmatic search**, **page organization** (reorder/delete/extract/merge), **read aloud** with sentence highlighting
+- **AI assistant (bring your own endpoint)**: built-in chat panel with clickable page citations — the library never calls any AI service on its own
+- **Custom toolbar/sidebar/page-overlay templates**, **content protection + watermarks**, **authenticated loading** (`httpHeaders`/`withCredentials`), **true dark page rendering**
 
-- **Modern Architecture**: Built with Angular 20+ patterns and strict TypeScript
+### 🚀 Architecture (v25.x rewrite)
+
+- **Modern Architecture**: Built with modern Angular patterns (verified through Angular 22) and strict TypeScript
 - **Event-Driven**: Pure event-based system with universal action dispatcher
 - **Template-Based**: Use Angular templates for loading and error states
 - **Mobile-First**: Responsive design optimized for all screen sizes

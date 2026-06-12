@@ -116,7 +116,7 @@ themeConfig: ThemeConfig = {
 };
 ```
 
-See [Security Features](./security#content-security-policy-csp-compliance) for details.
+See [Security Features](./security) for details.
 
 ## CSS Custom Properties
 

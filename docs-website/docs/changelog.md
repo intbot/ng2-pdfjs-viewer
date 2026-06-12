@@ -1,6 +1,22 @@
-# What's New in v25.x 🎉
+# What's New 🎉
 
-## Release Highlights
+## Latest Release Highlights
+
+The latest release upgrades the engine and turns the viewer into a full editing surface:
+
+- **PDF.js 6.x** bundled (from the 5.x line) — all component APIs work unchanged. Note: the PDF.js 6 modern build raises the browser floor; Safari is only supported by PDF.js's legacy build, which this package does not ship
+- **Angular 22 verified** — library built on ng-packagr 22 / TypeScript 6; peer dependencies stay wide (`>=10`, links on Angular 14+)
+- **Annotation editing & eSign**: highlight, text, draw, stamp + opt-in signature and comment editors; persistence via [`getAnnotations()` / `setAnnotations()`](./features/annotation-editing) and download-with-edits (`getDocumentAsBlob()`)
+- **[Forms](./features/forms)**: `[(formData)]` two-way binding, programmatic field access
+- **[Programmatic search](./features/search)**, **[page organization](./features/page-organization)**, **[read aloud](./features/read-aloud)** with sentence highlighting
+- **[AI assistant](./features/ai-assistant)** — bring-your-own OpenAI-compatible endpoint with clickable page citations; the library never calls any AI service on its own
+- **[Custom toolbar, sidebar & page overlays](./features/custom-ui)**, **[content protection](./features/content-protection)** with watermarks, **[authenticated loading](./features/loading-documents)**, true dark page rendering, and four new viewer events (`onSidebarViewChanged`, `onLayersChanged`, `onNamedAction`, `onDocumentProperties`)
+
+Behavior changes to review when upgrading: `showAnnotations` now defaults to `true`; external PDF links open in a new tab by default (`externalLinkTarget`, with `allow-popups` added to the iframe sandbox); `zoomChange` emits named presets (`page-fit`, `page-width`, `auto`) instead of raw numbers for preset zooms.
+
+---
+
+## v25.x — The Complete Rewrite
 
 Version 25.x marks a **complete rewrite** of ng2-pdfjs-viewer with modern Angular patterns, enhanced performance, and a focus on developer experience.
 

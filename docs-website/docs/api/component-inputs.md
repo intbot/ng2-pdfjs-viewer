@@ -1159,6 +1159,128 @@ iframeBorder = "none";
 - `"3px solid #007acc"` - 3px solid blue border
 - Any valid CSS border value
 
+## Annotation Editing & eSign
+
+#### `annotationEditor`
+- **Type**: `AnnotationEditorMode` (`'none' | 'freetext' | 'ink' | 'highlight' | 'stamp' | 'signature' | 'comment'`)
+- **Default**: `'none'`
+- **Description**: Active annotation editor mode. Supports two-way binding — user toolbar clicks update it back
+
+```html
+<ng2-pdfjs-viewer pdfSrc="assets/sample.pdf" [(annotationEditor)]="mode">
+</ng2-pdfjs-viewer>
+```
+
+#### `highlightEditorColors`
+- **Type**: `string`
+- **Default**: PDF.js defaults
+- **Description**: Highlight color presets, e.g. `'yellow=#FFFF98,green=#53FFBC'`. Applied before the document opens
+
+#### `enableSignatureEditor`
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Opt-in signature editor (draw / type / upload). Saved as stamp-style annotations — an eSign convenience, **not** cryptographic signing. Init-time option: changing it after load reloads the viewer
+
+#### `signatureStorage`
+- **Type**: `PdfSignatureStorage` (`{ loadAll(): Promise<Record<string, unknown>>; save(uuid, data): Promise<void>; delete(uuid): Promise<void> }`)
+- **Default**: `undefined` (signatures persist in the viewer's localStorage)
+- **Description**: Host-side persistence for the signature editor's saved signatures (e.g. server-side, per user). Use with `enableSignatureEditor`
+
+#### `enableCommentEditor`
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Opt-in PDF.js comment editor (threaded comment popups on highlights). Init-time option
+
+#### `enablePageEditing`
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Opt-in page organization in the viewer's "Manage pages" panel: drag-drop reorder, delete, cut/copy/paste, extract, merge. Init-time option
+
+## Forms
+
+#### `formData`
+- **Type**: `FormDataMap` (`Record<string, string | boolean | null>`)
+- **Default**: `{}`
+- **Description**: AcroForm field values. Supports two-way binding — user edits flow back
+
+```html
+<ng2-pdfjs-viewer pdfSrc="assets/form.pdf" [(formData)]="fields">
+</ng2-pdfjs-viewer>
+```
+
+## AI Assistant
+
+#### `aiAssistantConfig`
+- **Type**: `PdfAiPanelConfig | null` (`{ endpoint, apiKey?, model?, headers?, maxContextChars?, temperature?, title?, placeholder? }`)
+- **Default**: `undefined` (no panel, no network activity)
+- **Description**: Enables the built-in chat-with-the-document panel against **your** OpenAI-compatible endpoint (OpenAI, Azure, Ollama, vLLM…). Answers cite pages as `[p.3]`; citations click through to the page. The library never calls any AI service on its own
+
+## Custom UI Templates
+
+#### `customToolbarTpl`
+- **Type**: `TemplateRef<any>`
+- **Default**: `undefined`
+- **Description**: Host-side replacement toolbar rendered above the viewer. Template context: `let-viewer` (the component instance — full API access). Pair with `[showToolbar]="false"`
+
+#### `showToolbar`
+- **Type**: `boolean`
+- **Default**: `true`
+- **Description**: Show/hide the entire built-in viewer toolbar
+
+#### `customSidebarTpl`
+- **Type**: `TemplateRef<any>`
+- **Default**: `undefined`
+- **Description**: Host-side sidebar rendered beside the viewer (left). Same `let-viewer` context. Pair with `[groupVisibility]="{ sidebar: false }"`
+
+#### `pageOverlayTpl`
+- **Type**: `TemplateRef<any>`
+- **Default**: `undefined`
+- **Description**: Angular template projected onto every rendered page (watermark badges, stamps, review UI). Context: `let-page` (1-based page number). The overlay wrapper is `pointer-events: none` — re-enable on your own elements for interactive overlays
+
+## Document Loading & Authentication
+
+#### `httpHeaders`
+- **Type**: `Record<string, string>`
+- **Default**: `undefined`
+- **Description**: Headers (e.g. `Authorization`) for loading the document. The component fetches the PDF itself and feeds the viewer a blob
+
+#### `withCredentials`
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Send cookies/credentials with the document request
+
+#### `rememberLastView`
+- **Type**: `boolean`
+- **Default**: `true`
+- **Description**: Restore the previous reading position (page/zoom/sidebar) when the same document reloads. Set `false` to always start at page 1
+
+#### `externalLinkTarget`
+- **Type**: `'blank' | 'self' | 'parent' | 'top' | 'none'`
+- **Default**: `'blank'`
+- **Description**: Where external links inside the PDF open. `'blank'` is the only target that works without granting the document navigation rights over the host page
+
+#### `iframeSandbox`
+- **Type**: `string`
+- **Default**: `''`
+- **Description**: Extra iframe sandbox tokens from an allowlist (`allow-top-navigation`, `allow-top-navigation-by-user-activation`, `allow-presentation`). Prefer the `-by-user-activation` variant; the stronger token lets a hostile document redirect the host page without a user gesture
+
+## Content Protection & Rendering
+
+#### `contentProtection`
+- **Type**: `ContentProtectionConfig` (`{ blockPrint?, blockDownload?, disableTextSelection?, watermark? }`)
+- **Default**: `undefined`
+- **Description**: Client-side content deterrence bundle (**not DRM** — the PDF remains retrievable by a determined user)
+
+#### `pageColors`
+- **Type**: `{ background: string; foreground: string } | null`
+- **Default**: `undefined`
+- **Description**: Re-render page **content** with custom colors (true dark mode for pages, not just chrome). Init-time option
+
+#### `pdfJsOptions`
+- **Type**: `Record<string, string | number | boolean>`
+- **Default**: `undefined`
+- **Description**: Raw allowlisted PDF.js `AppOptions` passthrough for init-time options (e.g. `{ printResolution: 300, sidebarViewOnLoad: 1 }`). Keys outside the allowlist are ignored with a console warning
+
 ## Next Steps
 
 - 📤 [**Component Outputs**](./component-outputs) - Event handling

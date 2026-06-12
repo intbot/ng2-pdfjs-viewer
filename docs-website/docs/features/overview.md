@@ -1,20 +1,37 @@
 # Features Overview
 
-ng2-pdfjs-viewer v25.x comes packed with powerful features designed for modern Angular applications. Here's what makes it special:
+ng2-pdfjs-viewer comes packed with powerful features designed for modern Angular applications — bundled Mozilla **PDF.js 6.x**, built and verified on **Angular 22** (peer range stays `>=10`). Here's what makes it special:
 
-## 🆕 Latest Features (v25.x)
+## 🆕 Latest Features
+
+| Feature | Description | Docs |
+| ------- | ----------- | ---- |
+| **Annotation Editing & eSign** | Highlight, text, draw, stamp + opt-in signature & comment editors, with save/restore (`getAnnotations()`/`setAnnotations()`) and download-with-edits | [Annotation Editing](./annotation-editing) |
+| **Forms & Data** | `[(formData)]` two-way AcroForm binding, programmatic read/write, save filled documents | [Forms](./forms) |
+| **Programmatic Search** | `search()` API with totals, per-page counts and next/prev stepping | [Search](./search) |
+| **Page Organization** | Reorder, delete, extract and merge pages in the viewer (opt-in) | [Page Organization](./page-organization) |
+| **AI Assistant (BYO endpoint)** | Built-in chat panel with clickable page citations against **your** OpenAI-compatible endpoint — zero vendor calls | [AI Assistant](./ai-assistant) |
+| **Read Aloud** | Sentence-by-sentence text-to-speech with in-page highlighting | [Read Aloud](./read-aloud) |
+| **Custom Toolbar, Sidebar & Overlays** | Replace viewer chrome with your Angular templates; project templates onto every page | [Custom UI](./custom-ui) |
+| **Content Protection** | Block print/download/text-selection + watermarks (honest client-side deterrence, not DRM) | [Content Protection](./content-protection) |
+| **Authenticated Loading** | `httpHeaders`/`withCredentials` + download progress + password-prompt events | [Loading Documents](./loading-documents) |
+| **Accessibility (WCAG/EAA)** | Screen-reader text layer, tagged-PDF structure, keyboard chrome, read-aloud | [Accessibility](./accessibility) |
+| **True Dark Pages** | Re-render page content with custom colors (`pageColors`) — dark mode beyond chrome | [Theming](./theming) |
+| **PDF.js Options Passthrough** | Allowlisted `pdfJsOptions` for init-time viewer preferences | [Component Inputs](../api/component-inputs) |
+
+## Foundation (v25.x rewrite)
 
 | Feature | Description | Status |
 | ------- | ----------- | ------ |
-| **Complete Rewrite** | Full library rewrite with PDF.js v5.x and modern Angular patterns | ✅ New |
-| **Advanced Theme System** | CSS custom properties for complete visual customization | ✅ New |
-| **Template-Based UI** | Custom loading spinners and error displays using Angular templates | ✅ New |
-| **Convenience Configuration** | Object-based configuration for cleaner, more maintainable code | ✅ New |
-| **Event-Driven Architecture** | Pure event-based system with universal action dispatcher | ✅ New |
-| **Enhanced Error Handling** | Multiple error display styles with custom templates | ✅ New |
-| **Mobile-First Design** | Responsive layout optimized for touch devices | ✅ New |
-| **TypeScript Strict Mode** | Full type safety with comprehensive API coverage | ✅ New |
-| **URL Security Validation** | Prevents unauthorized file parameter manipulation with custom templates | ✅ New |
+| **Complete Rewrite** | Full library rewrite with modern Angular patterns | ✅ |
+| **Advanced Theme System** | CSS custom properties for complete visual customization | ✅ |
+| **Template-Based UI** | Custom loading spinners and error displays using Angular templates | ✅ |
+| **Convenience Configuration** | Object-based configuration for cleaner, more maintainable code | ✅ |
+| **Event-Driven Architecture** | Pure event-based system with universal action dispatcher | ✅ |
+| **Enhanced Error Handling** | Multiple error display styles with custom templates | ✅ |
+| **Mobile-First Design** | Responsive layout optimized for touch devices | ✅ |
+| **TypeScript Strict Mode** | Full type safety with comprehensive API coverage | ✅ |
+| **URL Security Validation** | Prevents unauthorized file parameter manipulation with custom templates | ✅ |
 
 ## 🏆 Unique Advantages
 
