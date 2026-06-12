@@ -1,0 +1,46 @@
+<pg-page
+  title="Custom Toolbar & Page Overlays"
+  lead="Replace the viewer toolbar with your own Angular template — full access to the component API — and project Angular templates onto every rendered page."
+  [tags]="['[customToolbarTpl]','[showToolbar]','[pageOverlayTpl]']"
+  [code]="code()"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
+
+  <div preview>
+    <ng-template #hostToolbar let-viewer>
+      <div class="host-toolbar" data-testid="host-toolbar">
+        <span class="brand">MY VIEWER</span>
+        <button (click)="viewer.setPage((viewer.page || 1) - 1)" data-testid="ht-prev">‹ Prev</button>
+        <span data-testid="ht-page">p.{{ currentPage() }}</span>
+        <button (click)="viewer.setPage((viewer.page || 1) + 1)" data-testid="ht-next">Next ›</button>
+        <button (click)="viewer.setZoom('page-width')">Fit width</button>
+        <button (click)="viewer.triggerDownload()">Download</button>
+      </div>
+    </ng-template>
+
+    <ng-template #pageBadge let-page>
+      <span class="badge-overlay">PAGE {{ page }}</span>
+    </ng-template>
+
+    <ng2-pdfjs-viewer
+      [pdfSrc]="src()"
+      [customToolbarTpl]="useCustomToolbar() ? hostToolbar : undefined"
+      [showToolbar]="!useCustomToolbar()"
+      [pageOverlayTpl]="useOverlays() ? pageBadge : undefined"
+      (onPageChange)="onPage($event)">
+    </ng2-pdfjs-viewer>
+  </div>
+
+  <div controls>
+    <div class="ph">Custom chrome</div>
+    <div class="row">
+      <label><input type="checkbox" [checked]="useCustomToolbar()" (change)="useCustomToolbar.set(!useCustomToolbar())" data-testid="cui-toolbar" /> Replace toolbar with my template</label>
+    </div>
+    <p class="note">The template receives the component instance (let-viewer) — every public method and property is available.</p>
+
+    <div class="ph">Page overlays</div>
+    <div class="row">
+      <label><input type="checkbox" [checked]="useOverlays()" (change)="useOverlays.set(!useOverlays())" data-testid="cui-overlay" /> Project a badge onto every page</label>
+    </div>
+    <p class="note">Overlays are Angular embedded views — bindings stay live. The wrapper is pointer-events:none; opt back in per element for interactive overlays.</p>
+  </div>
+</pg-page>

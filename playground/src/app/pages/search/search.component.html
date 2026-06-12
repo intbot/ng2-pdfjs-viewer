@@ -1,0 +1,50 @@
+<pg-page
+  title="Programmatic Search"
+  lead="Drive the find engine from code: run a query with options, get totals and per-page match counts back as data, and step the selection through the document."
+  [tags]="['search()','searchNext()','searchPrevious()','clearSearch()','SearchResult']"
+  [code]="code()"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
+
+  <div preview>
+    <ng2-pdfjs-viewer #viewer [pdfSrc]="src()"></ng2-pdfjs-viewer>
+  </div>
+
+  <div controls>
+    <div class="ph">Query</div>
+    <div class="row">
+      <input class="ctl-input" style="width:100%" [value]="query()" (input)="setQuery($event)"
+             placeholder="Search text…" data-testid="search-input" />
+    </div>
+    <div class="row">
+      <label><input type="checkbox" [checked]="caseSensitive()" (change)="caseSensitive.set(!caseSensitive())" /> Case sensitive</label>
+    </div>
+    <div class="row">
+      <label><input type="checkbox" [checked]="entireWord()" (change)="entireWord.set(!entireWord())" /> Entire word</label>
+    </div>
+    <div class="row">
+      <label><input type="checkbox" [checked]="highlightAll()" (change)="highlightAll.set(!highlightAll())" /> Highlight all</label>
+    </div>
+    <div class="row">
+      <span class="seg">
+        <button (click)="run(viewer)" [disabled]="busy()" data-testid="search-run">Search</button>
+        <button (click)="step(viewer, -1)" [disabled]="!result()">◀ Prev</button>
+        <button (click)="step(viewer, 1)" [disabled]="!result()">Next ▶</button>
+        <button (click)="clear(viewer)" [disabled]="!result()">Clear</button>
+      </span>
+    </div>
+
+    @if (result(); as r) {
+      <div class="ph">Result</div>
+      <p class="total" data-testid="search-total">
+        <b>{{ r.total }}</b> matches
+        @if (r.current) { — at page {{ r.current.page }}, match {{ r.current.matchIndex + 1 }} }
+      </p>
+      <div class="hits">
+        @for (p of r.pagesWithMatches; track p) {
+          <span class="hit">p.{{ p }} ×{{ r.matchesPerPage[p - 1] }}</span>
+        }
+      </div>
+    }
+    @if (error()) { <p class="note">{{ error() }}</p> }
+  </div>
+</pg-page>

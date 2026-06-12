@@ -60,8 +60,12 @@ export class ActionQueueManager {
     };
 
     try {
-      const success = await this.executeActionViaPostMessage(action);
-      result.success = success;
+      const response = await this.executeActionViaPostMessage(action);
+      result.success = true;
+      // Query actions return a payload in the wrapper's control response
+      if (response && typeof response === "object" && "data" in response) {
+        result.data = (response as any).data;
+      }
       action.resolver?.(result);
     } catch (error) {
       result.error = error instanceof Error ? error.message : String(error);
@@ -99,13 +103,12 @@ export class ActionQueueManager {
 
   private async executeActionViaPostMessage(
     action: ViewerAction,
-  ): Promise<boolean> {
+  ): Promise<any> {
     if (!this.postMessageExecutor) {
       throw new Error("PostMessage executor not set");
     }
 
-    await this.postMessageExecutor(action);
-    return true;
+    return await this.postMessageExecutor(action);
   }
 
   setPostMessageExecutor(
@@ -126,6 +129,25 @@ export class ActionQueueManager {
     }
 
     return result.success ? "completed" : "failed";
+  }
+
+  // Settle document-gated (level-5) actions when a document load fails -
+  // they can never execute against the failed document, and without this
+  // consumer awaits (setAnnotations, search, getDocumentText, ...) hang
+  // forever. Lower-level actions stay queued: the viewer itself is alive.
+  failDocumentActions(reason: string): void {
+    this.actionQueue = this.actionQueue.filter((item) => {
+      if (item.readinessLevel < 5) {
+        return true;
+      }
+      item.action.resolver?.({
+        actionId: item.action.id,
+        success: false,
+        error: reason,
+        timestamp: Date.now(),
+      });
+      return false;
+    });
   }
 
   // Drop queued actions (settling their callers' promises) and clear history

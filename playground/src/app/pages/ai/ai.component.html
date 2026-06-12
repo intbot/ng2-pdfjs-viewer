@@ -1,0 +1,56 @@
+<pg-page
+  title="AI Assistant & Read Aloud"
+  lead="Chat with the open document using YOUR endpoint and key — OpenAI, Azure, Ollama, vLLM, anything OpenAI-compatible. The library ships text extraction and a tiny client; it never calls any AI service on its own. Plus: read the document aloud with browser speech."
+  [tags]="['getDocumentText()','PdfAiAssistant','startReadAloud()','(onReadAloudStateChange)']"
+  [code]="code()"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
+
+  <div preview>
+    <ng2-pdfjs-viewer #viewer [pdfSrc]="src()"
+      (onReadAloudStateChange)="onReadAloud($event)">
+    </ng2-pdfjs-viewer>
+  </div>
+
+  <div controls>
+    <div class="ph">Document text</div>
+    <div class="row">
+      <span class="seg"><button (click)="extract(viewer)" data-testid="ai-extract">getDocumentText(1, 2)</button></span>
+    </div>
+    @if (textPreview()) { <div class="dump" data-testid="ai-text">{{ textPreview() }}</div> }
+
+    <div class="ph">Bring-your-own AI</div>
+    <div class="row">
+      <label>Endpoint</label>
+      <input class="ctl-input" style="width:100%" [value]="endpoint()" (input)="set(endpoint, $event)" />
+    </div>
+    <div class="row">
+      <label>Model</label>
+      <input class="ctl-input" style="width:140px" [value]="model()" (input)="set(model, $event)" />
+    </div>
+    <div class="row">
+      <label>API key</label>
+      <input class="ctl-input" type="password" style="width:140px" [value]="apiKey()" (input)="set(apiKey, $event)" placeholder="optional" />
+    </div>
+    <div class="row">
+      <input class="ctl-input" style="width:100%" [value]="question()" (input)="set(question, $event)" placeholder="Ask the document…" />
+    </div>
+    <div class="row">
+      <span class="seg"><button (click)="ask(viewer)" [disabled]="aiBusy()" data-testid="ai-ask">{{ aiBusy() ? 'Thinking…' : 'Ask' }}</button></span>
+    </div>
+    @if (answer()) { <div class="answer" data-testid="ai-answer">{{ answer() }}</div> }
+    <p class="note">Keys stay in this page's memory and go only to the endpoint you typed.</p>
+
+    <div class="ph">Read aloud</div>
+    <div class="row">
+      <span class="seg">
+        <button (click)="viewer.startReadAloud()" data-testid="tts-start">▶ Start</button>
+        <button (click)="viewer.pauseReadAloud()">⏸ Pause</button>
+        <button (click)="viewer.resumeReadAloud()">⏵ Resume</button>
+        <button (click)="viewer.stopReadAloud()" data-testid="tts-stop">⏹ Stop</button>
+      </span>
+    </div>
+    @if (readAloud(); as ra) {
+      <p class="status" data-testid="tts-status">{{ ra.status }} — page {{ ra.page }}</p>
+    }
+  </div>
+</pg-page>

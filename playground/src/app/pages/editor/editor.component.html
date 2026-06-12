@@ -1,0 +1,58 @@
+<pg-page
+  title="Annotation Editor & eSign"
+  lead="Turn on PDF.js's full annotation editor from Angular: highlight, draw, type, stamp — plus the opt-in signature and comment editors. Serialize annotations to your server or download the edited document."
+  [tags]="['[(annotationEditor)]','[enableSignatureEditor]','[enableCommentEditor]','getAnnotations()','getDocumentAsBlob()','(onAnnotationEditorStateChange)']"
+  [code]="code()"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
+
+  <div preview>
+    <ng2-pdfjs-viewer #viewer
+      [pdfSrc]="src()"
+      [annotationEditor]="mode()" (annotationEditorChange)="mode.set($event)"
+      [enableSignatureEditor]="signatures()"
+      [enableCommentEditor]="comments()"
+      (onAnnotationEditorStateChange)="onState($event)">
+    </ng2-pdfjs-viewer>
+  </div>
+
+  <div controls>
+    <div class="ph">Editor mode</div>
+    <div class="row">
+      <span class="seg">
+        @for (m of modes; track m) {
+          <button [class.on]="mode() === m" (click)="mode.set(m)">{{ m }}</button>
+        }
+      </span>
+    </div>
+    <p class="note">Two-way bound — clicking the editor buttons in the viewer toolbar updates this control too.</p>
+
+    <div class="ph">Opt-in editors (reloads the viewer)</div>
+    <div class="row">
+      <label><input type="checkbox" [checked]="signatures()" (change)="signatures.set(!signatures())" /> Signature editor (draw / type / image)</label>
+    </div>
+    <div class="row">
+      <label><input type="checkbox" [checked]="comments()" (change)="comments.set(!comments())" /> Comment editor (threaded popups)</label>
+    </div>
+    <p class="note">Signatures are stamp-style eSign annotations, not cryptographic signing.</p>
+
+    <div class="ph">Editor state</div>
+    <div class="state">
+      <span class="chip" [class.on]="editorState()?.isEditing">editing</span>
+      <span class="chip" [class.on]="!editorState()?.isEmpty">has edits</span>
+      <span class="chip" [class.on]="editorState()?.hasSomethingToUndo">undo</span>
+      <span class="chip" [class.on]="editorState()?.hasSomethingToRedo">redo</span>
+      <span class="chip" [class.on]="editorState()?.hasSelectedEditor">selected</span>
+    </div>
+
+    <div class="ph">Persistence</div>
+    <div class="row">
+      <span class="seg">
+        <button (click)="dump(viewer)" [disabled]="busy()">getAnnotations()</button>
+        <button (click)="saveWithEdits(viewer)" [disabled]="busy()">Download with edits</button>
+      </span>
+    </div>
+    @if (annotationsJson()) {
+      <div class="dump" data-testid="annotations-dump">{{ annotationsJson() }}</div>
+    }
+  </div>
+</pg-page>

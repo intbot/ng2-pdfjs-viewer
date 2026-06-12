@@ -1,0 +1,45 @@
+<pg-page
+  title="Power Options"
+  lead="The deeper switches: in-viewer page organization, true dark-mode page rendering, session restore control, link targets, allowlisted PDF.js options, and authenticated document loading."
+  [tags]="['[enablePageEditing]','[pageColors]','[rememberLastView]','[externalLinkTarget]','[pdfJsOptions]','[httpHeaders]','(onPagesEdited)']"
+  [code]="code()"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
+
+  <div preview>
+    <ng2-pdfjs-viewer
+      [pdfSrc]="src()"
+      [enablePageEditing]="pageEditing()"
+      [pageColors]="pageColors()"
+      [rememberLastView]="rememberLastView()"
+      [externalLinkTarget]="linkTarget()"
+      (onPagesEdited)="onPagesEdited($event)">
+    </ng2-pdfjs-viewer>
+  </div>
+
+  <div controls>
+    <div class="ph">Document features (reload the viewer)</div>
+    <div class="row">
+      <label><input type="checkbox" [checked]="pageEditing()" (change)="pageEditing.set(!pageEditing())" data-testid="power-editing" /> Page editing (reorder / delete / extract / merge)</label>
+    </div>
+    <p class="note">Open the sidebar and try dragging thumbnails, or use the selection toolbar that appears.</p>
+    <div class="row">
+      <label><input type="checkbox" [checked]="darkPages()" (change)="darkPages.set(!darkPages())" data-testid="power-dark" /> True dark pages (re-rendered, not a CSS filter)</label>
+    </div>
+
+    <div class="ph">Session &amp; links</div>
+    <div class="row">
+      <label><input type="checkbox" [checked]="rememberLastView()" (change)="rememberLastView.set(!rememberLastView())" /> Remember last reading position</label>
+    </div>
+    <div class="row">
+      <label>External links open in</label>
+      <select class="ctl-input" [value]="linkTarget()" (change)="setTarget($event)">
+        @for (t of linkTargets; track t) { <option [value]="t">{{ t }}</option> }
+      </select>
+    </div>
+
+    @if (lastPagesEdit(); as pe) {
+      <div class="ph">Last page edit</div>
+      <p class="note" data-testid="power-pagesedited">{{ pe.operation }} — now {{ pe.pagesCount }} pages</p>
+    }
+  </div>
+</pg-page>

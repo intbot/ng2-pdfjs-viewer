@@ -1,7 +1,7 @@
 <pg-page
   title="Error Handling"
   lead="Customize what users see when a document fails to load: override the message, validate URLs before fetching, or render a fully custom error template."
-  [tags]="['errorOverride','errorAppend','errorMessage','urlValidation','customErrorTpl']"
+  [tags]="['errorOverride','errorAppend','errorMessage','urlValidation','customErrorTpl','(onPasswordPrompt)']"
   [code]="code()"
   docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
 
@@ -15,7 +15,8 @@
         [errorAppend]="errorAppend()"
         [errorMessage]="errorMessage()"
         [customErrorTpl]="selectedErrTpl()"
-        [urlValidation]="v">
+        [urlValidation]="v"
+        (onPasswordPrompt)="onPasswordPrompt()">
       </ng2-pdfjs-viewer>
     }
 
@@ -36,9 +37,21 @@
     <div class="ph">Simulate</div>
     <div class="row">
       <span>Load a broken URL</span>
-      <span class="switch" [class.on]="broken()" (click)="broken.set(!broken())"
-            role="switch" [attr.aria-checked]="broken()" tabindex="0" (keydown.enter)="broken.set(!broken())"></span>
+      <span class="switch" [class.on]="broken()" (click)="toggleBroken()"
+            role="switch" [attr.aria-checked]="broken()" tabindex="0" (keydown.enter)="toggleBroken()"></span>
     </div>
+    <div class="row">
+      <span>Password-protected PDF</span>
+      <span class="switch" [class.on]="protectedDoc()" (click)="toggleProtected()" data-testid="err-protected"
+            role="switch" [attr.aria-checked]="protectedDoc()" tabindex="0" (keydown.enter)="toggleProtected()"></span>
+    </div>
+    @if (protectedDoc()) {
+      <p class="note" data-testid="err-password-note">
+        PDF.js shows its password dialog and the component emits
+        <code>(onPasswordPrompt)</code> — fired {{ passwordPrompts() }}×.
+        The password for this sample is <b>abc</b>.
+      </p>
+    }
     <div class="ph">Handling</div>
     <div class="row">
       <span>Override message</span>

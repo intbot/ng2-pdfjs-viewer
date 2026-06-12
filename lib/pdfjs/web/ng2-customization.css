@@ -31,45 +31,43 @@ body #outerContainer.toolbar-bottom .doorHanger {
    SIDEBAR POSITIONING
    =================================================================== */
 
-/* Sidebar width - controlled via CSS variable */
-#sidebarContainer {
-  width: var(--sidebar-width, 200px);
+/* Sidebar width - controlled via CSS variable. PDF.js 5.4+ renders the sidebar
+   as the #viewsManager panel, which defines --sidebar-width locally; re-map it
+   from the inherited ng2 variable so set-sidebar-width still applies. */
+#viewsManager {
+  --sidebar-width: var(--ng2-sidebar-width, 230px);
 }
 
-/* Sidebar right positioning - handle all sidebar states */
-body #outerContainer.sidebar-right #sidebarContainer {
+/* Sidebar right positioning - the panel floats (visibility-toggled), so only
+   the open state needs mirroring */
+body #outerContainer.sidebar-right.viewsManagerOpen #viewsManager {
   inset-inline-start: auto;
-  inset-inline-end: calc(-1 * var(--sidebar-width, 200px));
+  inset-inline-end: 8px;
 }
 
-body #outerContainer.sidebar-right.sidebarOpen #sidebarContainer {
-  inset-inline-start: auto;
-  inset-inline-end: 0;
-}
-
-body #outerContainer.sidebar-right #sidebarResizer {
-  inset-inline-start: auto;
-  inset-inline-end: var(--sidebar-width, 200px);
-}
-
-body #outerContainer.sidebar-right.sidebarOpen #viewerContainer:not(.pdfPresentationMode) {
+body #outerContainer.sidebar-right #viewsManagerResizer {
   inset-inline-start: 0;
-  inset-inline-end: var(--sidebar-width, 200px);
+  inset-inline-end: auto;
 }
 
-body #outerContainer.sidebar-right.sidebarOpen #loadingBar {
+body #outerContainer.sidebar-right.viewsManagerOpen #viewerContainer:not(.pdfPresentationMode) {
   inset-inline-start: 0;
-  inset-inline-end: var(--sidebar-width, 200px);
+  inset-inline-end: var(--viewsManager-width, 0);
+}
+
+body #outerContainer.sidebar-right.viewsManagerOpen #loadingBar {
+  inset-inline-start: 0;
+  inset-inline-end: var(--viewsManager-width, 0);
 }
 
 /* ===================================================================
    RESPONSIVE BREAKPOINT
    =================================================================== */
 @media (max-width: var(--ng2-responsive-breakpoint, 840px)) {
-  #sidebarContainer {
+  #viewsManager {
     background-color: var(--sidebar-narrow-bg-color);
   }
-  #outerContainer.sidebarOpen #viewerContainer {
+  #outerContainer.viewsManagerOpen #viewerContainer {
     inset-inline-start: 0 !important;
   }
 }
@@ -110,6 +108,55 @@ body #outerContainer.sidebar-right.sidebarOpen #loadingBar {
 .ng2-hidden-section {
   visibility: hidden !important;
   pointer-events: none !important;
+}
+
+/* Whole toolbar hidden (custom host toolbars) - viewer reclaims the height */
+#outerContainer.ng2-toolbar-hidden #toolbarContainer {
+  display: none !important;
+}
+
+#outerContainer.ng2-toolbar-hidden #viewerContainer {
+  top: 0 !important;
+}
+
+/* ===================================================================
+   CONTENT PROTECTION
+   =================================================================== */
+
+/* Text selection disabled (content-protection option) */
+#viewerContainer.ng2-no-text-select .textLayer {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+/* Host-app per-page overlay templates (pageOverlayTpl) */
+.ng2-page-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+}
+
+/* Per-page watermark overlay */
+.ng2-watermark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 4;
+}
+
+.ng2-watermark span {
+  transform: rotate(var(--ng2-watermark-rotation, -35deg));
+  color: var(--ng2-watermark-color, #888888);
+  opacity: var(--ng2-watermark-opacity, 0.25);
+  font-size: var(--ng2-watermark-font-size, 48px);
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 /* ===================================================================
@@ -232,8 +279,8 @@ body #outerContainer.sidebar-right.sidebarOpen #loadingBar {
 /* ===================================================================
    THEME SYSTEM - Sidebar Styling
    =================================================================== */
-#sidebarContainer,
-#sidebarContent {
+#viewsManager,
+#viewsManagerContent {
   background-color: var(--ng2-toolbar-color, var(--ng2-default-toolbar)) !important;
   color: var(--ng2-text-color, var(--ng2-default-text)) !important;
 }
@@ -303,3 +350,10 @@ body .pdfViewer .page {
   border-radius: var(--ng2-border-radius, 0) !important;
 }
 
+
+/* Read-aloud: sentence currently being spoken (ng2 TTS karaoke highlight).
+   Spans keep their transparent text; only the backdrop tints. */
+.textLayer span.ng2-tts-current {
+  background-color: rgba(255, 200, 0, 0.4);
+  border-radius: 2px;
+}

@@ -12,6 +12,9 @@ import {
   SimpleChanges,
   AfterViewInit,
   ChangeDetectorRef,
+  ApplicationRef,
+  EmbeddedViewRef,
+  NgZone,
   isDevMode,
 } from "@angular/core";
 
@@ -45,9 +48,54 @@ import {
   // New high-value events
   AnnotationLayerRenderEvent,
   BookmarkClick,
+  ExternalLinkTarget,
+  AnnotationEditorMode,
+  AnnotationEditorState,
+  SearchOptions,
+  SearchResult,
+  FormDataMap,
+  ContentProtectionConfig,
+  PagesEditedEvent,
+  ReadAloudState,
+  SidebarViewChange,
+  LayersChange,
+  NamedActionEvent,
+  PdfSignatureStorage,
+  DocumentPageText,
 } from "./interfaces/ViewerTypes";
 import { ActionQueueManager } from "./managers/ActionQueueManager";
 import { PropertyTransformers } from "./utils/PropertyTransformers";
+import {
+  PdfAiAssistant,
+  PdfAiMessage,
+  PdfAiPanelConfig,
+  PdfAiPanelMessage,
+} from "./utils/PdfAiAssistant";
+
+// The iframe sandbox shipped on every viewer embed. allow-popups (+ escape)
+// lets external PDF links open in a new, unsandboxed tab - the only link
+// behavior that works without granting the document navigation rights over
+// the host page.
+//
+// Honest scope: because the viewer is same-origin and needs allow-scripts +
+// allow-same-origin, this sandbox is NOT a containment boundary against a
+// compromised PDF.js (same-origin content can reach the parent document).
+// It hardens link/navigation behavior of COOPERATIVE viewer code; defenses
+// against hostile documents are PDF.js's own parsing/rendering isolation.
+const BASE_IFRAME_SANDBOX =
+  "allow-forms allow-scripts allow-same-origin allow-modals allow-downloads " +
+  "allow-popups allow-popups-to-escape-sandbox";
+
+// Tokens consumers may add via [iframeSandbox]. Deliberately excludes anything
+// that would let viewer content reach outside a user-initiated navigation.
+// Prefer 'allow-top-navigation-by-user-activation' over 'allow-top-navigation':
+// the latter lets a hostile document redirect the whole host page without any
+// user gesture (frame-phishing) - only use it with fully trusted documents.
+const ALLOWED_EXTRA_SANDBOX_TOKENS: ReadonlySet<string> = new Set([
+  "allow-top-navigation",
+  "allow-top-navigation-by-user-activation",
+  "allow-presentation",
+]);
 
 // #region Property registry (single source of truth)
 // Maps every postMessage-backed input to its wrapper action, the minimum
@@ -84,6 +132,7 @@ const PROPERTY_REGISTRY: ReadonlyArray<PropertyRegistration> = [
   { prop: "showToolbarMiddle", action: "show-toolbar-middle", level: 3, init: "always" },
   { prop: "showToolbarRight", action: "show-toolbar-right", level: 3, init: "always" },
   { prop: "showSecondaryToolbarToggle", action: "show-secondary-toolbar-toggle", level: 3, init: "always" },
+  { prop: "showToolbar", action: "show-toolbar", level: 3, init: "always" },
   { prop: "showSidebar", action: "show-sidebar", level: 3, init: "always" },
   { prop: "showSidebarLeft", action: "show-sidebar-left", level: 3, init: "always" },
   { prop: "showSidebarRight", action: "show-sidebar-right", level: 3, init: "always" },
@@ -127,9 +176,29 @@ const PROPERTY_REGISTRY: ReadonlyArray<PropertyRegistration> = [
   // Misc configuration. downloadFileName is level 5 because PDF.js overwrites
   // its _contentDispositionFilename during document load.
   { prop: "useOnlyCssZoom", action: "set-css-zoom", level: 3, init: "defined" },
+  // 'always': the embedded PDF.js default ('top') is sandbox-blocked, so the
+  // component's 'blank' default must reach the viewer on every load.
+  { prop: "externalLinkTarget", action: "set-external-link-target", level: 3, init: "always" },
+  { prop: "rememberLastView", action: "set-remember-last-view", level: 3, init: "defined" },
   { prop: "downloadFileName", action: "set-download-filename", level: 5, init: "truthy" },
   { prop: "urlValidation", action: "set-url-validation", level: 3, init: false },
   { prop: "diagnosticLogs", action: "set-diagnostic-logs", level: 3, init: false },
+  { prop: "highlightEditorColors", action: "set-highlight-editor-colors", level: 3, init: "nonempty" },
+  // The hook object stays host-side; the wrapper only needs the on/off bit
+  { prop: "signatureStorage", action: "set-signature-storage", level: 3, init: "truthy", payload: (v) => !!v },
+  // Setter-dispatched at runtime; registry entry re-applies the active editor
+  // after iframe reloads (pdfSrc change / refresh). 'none' is the PDF.js
+  // default and never needs sending.
+  {
+    prop: "annotationEditor",
+    action: "set-annotation-editor-mode",
+    level: 5,
+    init: "truthy",
+    get: (c) =>
+      (c as any)._annotationEditor === "none"
+        ? undefined
+        : (c as any)._annotationEditor,
+  },
 ];
 
 const REGISTRY_BY_PROP: Record<string, PropertyRegistration> = {};
@@ -138,6 +207,25 @@ const ACTION_READINESS: Record<string, number> = {
   "trigger-download": 5,
   "trigger-print": 5,
   "go-to-last-page": 5,
+  // Annotation editing + document queries need a loaded document
+  "set-annotation-editor-mode": 5,
+  "get-annotations": 5,
+  "set-annotations": 5,
+  "save-document": 5,
+  "search": 5,
+  "search-next": 5,
+  "search-previous": 5,
+  "clear-search": 5,
+  // Forms need field objects from the loaded document
+  "get-form-data": 5,
+  "set-form-data": 5,
+  "set-form-field": 5,
+  // Content protection is DOM-level
+  "set-content-protection": 3,
+  "set-watermark": 3,
+  // Text extraction + read-aloud need the document
+  "get-document-text": 5,
+  "read-aloud": 5,
 };
 for (const entry of PROPERTY_REGISTRY) {
   REGISTRY_BY_PROP[entry.prop] = entry;
@@ -165,6 +253,10 @@ const ENABLE_EVENT_ACTIONS: ReadonlyArray<string> = [
   "enable-page-rendered",
   "enable-annotation-layer-rendered",
   "enable-bookmark-click",
+  "enable-sidebar-view-changed",
+  "enable-layers-changed",
+  "enable-named-action",
+  "enable-document-properties",
 ];
 
 // Properties whose setters dispatch on their own - skipped in ngOnChanges to
@@ -178,6 +270,9 @@ const SETTER_DISPATCHED_PROPS = new Set([
   "pageMode",
   "page",
   "diagnosticLogs",
+  "annotationEditor",
+  "formData",
+  "contentProtection",
 ]);
 
 // Auto-actions are read at the next document load; changing them mid-session
@@ -208,7 +303,7 @@ const CONFIG_FANOUT: Record<string, ReadonlyArray<string>> = {
     "theme", "primaryColor", "backgroundColor", "pageBorderColor",
     "pageSpacing", "toolbarColor", "textColor", "borderRadius", "customCSS",
   ],
-  viewerConfig: ["useOnlyCssZoom"],
+  viewerConfig: ["useOnlyCssZoom", "externalLinkTarget", "rememberLastView"],
   autoActions: ["rotateCW", "rotateCCW"],
   errorHandling: [],
 };
@@ -223,7 +318,8 @@ function hasObservers(emitter: EventEmitter<any>): boolean {
 // Config-object inputs are commonly bound to getters that return a FRESH
 // object every change-detection cycle. Reference identity then flags a
 // "change" each cycle - only the content matters.
-function shallowEquals(a: any, b: any): boolean {
+// (Exported for unit tests; not part of the public package API.)
+export function shallowEquals(a: any, b: any): boolean {
   if (a === b) return true;
   if (!a || !b || typeof a !== "object" || typeof b !== "object") return false;
   const aKeys = Object.keys(a);
@@ -244,6 +340,49 @@ function shallowEquals(a: any, b: any): boolean {
         position: relative;
         width: 100%;
         height: 100%;
+      }
+
+      /* Custom host toolbar stacks above the iframe */
+      .ng2-pdfjs-viewer-container.ng2-has-custom-toolbar {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .ng2-pdfjs-viewer-container.ng2-has-custom-toolbar iframe {
+        flex: 1 1 auto;
+        min-height: 0;
+      }
+
+      .ng2-pdfjs-custom-toolbar {
+        flex: 0 0 auto;
+      }
+
+      /* Custom host sidebar sits beside the iframe; with a custom toolbar
+         too, the toolbar spans the full width above both. Grid (not flex)
+         so the DOM stays flat and the iframe is never re-created. */
+      .ng2-pdfjs-viewer-container.ng2-has-custom-sidebar {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas:
+          'toolbar toolbar'
+          'sidebar viewer';
+      }
+
+      .ng2-pdfjs-viewer-container.ng2-has-custom-sidebar .ng2-pdfjs-custom-toolbar {
+        grid-area: toolbar;
+      }
+
+      .ng2-pdfjs-custom-sidebar {
+        grid-area: sidebar;
+        min-height: 0;
+        overflow: auto;
+      }
+
+      .ng2-pdfjs-viewer-container.ng2-has-custom-sidebar iframe {
+        grid-area: viewer;
+        min-width: 0;
+        min-height: 0;
       }
 
       /* Spinner overlay styling */
@@ -325,6 +464,140 @@ function shallowEquals(a: any, b: any): boolean {
         }
       }
 
+      /* Built-in AI panel (opt-in via [aiAssistantConfig]) */
+      .ng2-ai-fab {
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
+        z-index: 20;
+        width: 44px;
+        height: 44px;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 18px;
+        line-height: 1;
+        color: var(--ng2-ai-fab-color, #fff);
+        background: var(--ng2-ai-accent, #4436a1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+      }
+
+      .ng2-ai-panel {
+        position: absolute;
+        right: 16px;
+        bottom: 72px;
+        z-index: 20;
+        display: flex;
+        flex-direction: column;
+        width: min(340px, calc(100% - 32px));
+        max-height: min(480px, calc(100% - 96px));
+        border-radius: 10px;
+        overflow: hidden;
+        font-size: 13px;
+        color: var(--ng2-ai-text, #222);
+        background: var(--ng2-ai-bg, #fff);
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
+      }
+
+      .ng2-ai-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex: 0 0 auto;
+        padding: 10px 12px;
+        font-weight: 600;
+        color: #fff;
+        background: var(--ng2-ai-accent, #4436a1);
+      }
+
+      .ng2-ai-head button {
+        border: none;
+        background: transparent;
+        color: inherit;
+        font-size: 18px;
+        line-height: 1;
+        cursor: pointer;
+      }
+
+      .ng2-ai-msgs {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        padding: 10px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .ng2-ai-msg {
+        white-space: pre-wrap;
+        word-break: break-word;
+        padding: 8px 10px;
+        border-radius: 8px;
+        background: var(--ng2-ai-answer-bg, #f2f1f7);
+        align-self: stretch;
+      }
+
+      .ng2-ai-msg.ng2-ai-user {
+        background: var(--ng2-ai-question-bg, #e4f0fe);
+        align-self: flex-end;
+        max-width: 85%;
+      }
+
+      .ng2-ai-msg.ng2-ai-busy {
+        opacity: 0.7;
+        font-style: italic;
+      }
+
+      .ng2-ai-cite {
+        display: inline-block;
+        margin: 0 2px;
+        padding: 0 6px;
+        border: none;
+        border-radius: 9px;
+        cursor: pointer;
+        font: inherit;
+        font-size: 12px;
+        color: #fff;
+        background: var(--ng2-ai-accent, #4436a1);
+      }
+
+      .ng2-ai-error {
+        color: #b3261e;
+      }
+
+      .ng2-ai-input {
+        display: flex;
+        flex: 0 0 auto;
+        gap: 6px;
+        padding: 10px 12px;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+      }
+
+      .ng2-ai-input input {
+        flex: 1 1 auto;
+        min-width: 0;
+        padding: 6px 8px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 6px;
+        font: inherit;
+      }
+
+      .ng2-ai-input button {
+        flex: 0 0 auto;
+        padding: 6px 12px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font: inherit;
+        color: #fff;
+        background: var(--ng2-ai-accent, #4436a1);
+      }
+
+      .ng2-ai-input button:disabled {
+        opacity: 0.6;
+        cursor: default;
+      }
+
       /* Iframe border styling */
       .ng2-pdfjs-viewer-iframe {
         border: 0;
@@ -337,11 +610,33 @@ function shallowEquals(a: any, b: any): boolean {
     `,
   ],
   template: `
-    <div class="ng2-pdfjs-viewer-container">
+    <div
+      class="ng2-pdfjs-viewer-container"
+      [class.ng2-has-custom-toolbar]="customToolbarTpl && !externalWindow"
+      [class.ng2-has-custom-sidebar]="customSidebarTpl && !externalWindow"
+    >
+      <div
+        class="ng2-pdfjs-custom-toolbar"
+        *ngIf="customToolbarTpl && !externalWindow"
+      >
+        <ng-container
+          [ngTemplateOutlet]="customToolbarTpl"
+          [ngTemplateOutletContext]="{ $implicit: this }"
+        ></ng-container>
+      </div>
+      <div
+        class="ng2-pdfjs-custom-sidebar"
+        *ngIf="customSidebarTpl && !externalWindow"
+      >
+        <ng-container
+          [ngTemplateOutlet]="customSidebarTpl"
+          [ngTemplateOutletContext]="{ $implicit: this }"
+        ></ng-container>
+      </div>
       <iframe
         [title]="iframeTitle || 'PDF document viewer'"
         [hidden]="externalWindow || (!externalWindow && !pdfSrc)"
-        sandbox="allow-forms allow-scripts allow-same-origin allow-modals allow-downloads"
+        sandbox="allow-forms allow-scripts allow-same-origin allow-modals allow-downloads allow-popups allow-popups-to-escape-sandbox"
         [class]="getIframeClasses()"
         #iframe
         width="100%"
@@ -392,6 +687,73 @@ function shallowEquals(a: any, b: any): boolean {
         </ng-template>
       </div>
 
+      <button
+        type="button"
+        class="ng2-ai-fab"
+        *ngIf="aiAssistantConfig && !externalWindow"
+        (click)="aiPanelOpen = !aiPanelOpen"
+        [attr.aria-expanded]="aiPanelOpen"
+        aria-label="Ask AI about this document"
+      >
+        ✦
+      </button>
+
+      <div
+        class="ng2-ai-panel"
+        *ngIf="aiAssistantConfig && aiPanelOpen && !externalWindow"
+        role="complementary"
+        aria-label="AI assistant"
+      >
+        <div class="ng2-ai-head">
+          <span>{{ aiAssistantConfig.title || 'Ask this document' }}</span>
+          <button
+            type="button"
+            (click)="aiPanelOpen = false"
+            aria-label="Close AI panel"
+          >
+            ×
+          </button>
+        </div>
+        <div class="ng2-ai-msgs" aria-live="polite">
+          <div
+            class="ng2-ai-msg"
+            *ngFor="let m of aiMessages"
+            [class.ng2-ai-user]="m.role === 'user'"
+          >
+            <ng-container *ngFor="let part of m.parts">
+              <button
+                type="button"
+                class="ng2-ai-cite"
+                *ngIf="part.page; else plainPart"
+                (click)="setPage(part.page!)"
+              >
+                p.{{ part.page }}
+              </button>
+              <ng-template #plainPart>{{ part.text }}</ng-template>
+            </ng-container>
+            <span class="ng2-ai-error" *ngIf="m.error">{{ m.error }}</span>
+          </div>
+          <div class="ng2-ai-msg ng2-ai-busy" *ngIf="aiBusy">Thinking…</div>
+        </div>
+        <div class="ng2-ai-input">
+          <input
+            #aiq
+            type="text"
+            [placeholder]="aiAssistantConfig.placeholder || 'Ask the document…'"
+            [disabled]="aiBusy"
+            (keyup.enter)="aiAsk(aiq.value); aiq.value = ''"
+            aria-label="Question for the AI assistant"
+          />
+          <button
+            type="button"
+            [disabled]="aiBusy"
+            (click)="aiAsk(aiq.value); aiq.value = ''"
+          >
+            Ask
+          </button>
+        </div>
+      </div>
+
       <div
         class="ng2-pdfjs-error-overlay"
         *ngIf="securityWarning && !externalWindow"
@@ -423,7 +785,7 @@ export class PdfJsViewerComponent
   implements OnInit, OnDestroy, OnChanges, AfterViewInit
 {
   // #region Component Properties
-  @ViewChild("iframe", { static: true }) iframe: ElementRef;
+  @ViewChild("iframe", { static: true }) iframe!: ElementRef;
 
   static lastID = 0;
   @Input() public viewerId =
@@ -459,16 +821,275 @@ export class PdfJsViewerComponent
     new EventEmitter();
   @Output() onBookmarkClick: EventEmitter<BookmarkClick> = new EventEmitter();
   @Output() onIdle: EventEmitter<void> = new EventEmitter();
+  // Fired when PDF.js shows its password dialog for a protected document.
+  // The loading spinner is dropped automatically so the dialog is usable.
+  @Output() onPasswordPrompt: EventEmitter<void> = new EventEmitter();
+  // Annotation editor undo/redo/empty state - drives "unsaved changes" UX
+  @Output() onAnnotationEditorStateChange: EventEmitter<AnnotationEditorState> =
+    new EventEmitter();
+  // Page organization events (reorder/delete/extract/merge in the sidebar)
+  @Output() onPagesEdited: EventEmitter<PagesEditedEvent> = new EventEmitter();
+  // Read-aloud progress: reading | paused | stopped | finished | error
+  @Output() onReadAloudStateChange: EventEmitter<ReadAloudState> =
+    new EventEmitter();
+  // Sidebar panel switches (thumbnails/outline/attachments/layers)
+  @Output() onSidebarViewChanged: EventEmitter<SidebarViewChange> =
+    new EventEmitter();
+  // Optional-content layers: loaded for the document / visibility toggled
+  @Output() onLayersChanged: EventEmitter<LayersChange> = new EventEmitter();
+  // Named actions triggered from inside the document (GoToPage, Print, ...)
+  @Output() onNamedAction: EventEmitter<NamedActionEvent> = new EventEmitter();
+  // User opened the document-properties dialog
+  @Output() onDocumentProperties: EventEmitter<void> = new EventEmitter();
   // #endregion
 
   // #region Basic Configuration Properties
-  @Input() public viewerFolder: string;
+  @Input() public viewerFolder!: string;
   @Input() public externalWindow: boolean = false;
   @Input() public target: string = "_blank";
   @Input() public showSpinner: boolean = true;
-  @Input() public downloadFileName: string;
-  @Input() public locale: string;
+  @Input() public downloadFileName!: string;
+  @Input() public locale!: string;
   @Input() public useOnlyCssZoom: boolean = false;
+
+  // Where external PDF links open. The embedded PDF.js default ('top') is
+  // blocked by the iframe sandbox, leaving links dead (issue #304); 'blank'
+  // works with the sandbox's allow-popups and is the safe default.
+  @Input() public externalLinkTarget: ExternalLinkTarget = "blank";
+
+  // Restore the previous reading position (page/zoom/sidebar) on reload.
+  // Set false to always open documents at page 1 / initial view (issue #299).
+  @Input() public rememberLastView: boolean = true;
+
+  // Active annotation editor tool. Two-way bindable: user toolbar clicks emit
+  // annotationEditorChange. Editing requires a loaded document (level 5).
+  @Input() public set annotationEditor(mode: AnnotationEditorMode) {
+    if (mode === this._annotationEditor) {
+      return;
+    }
+    this._annotationEditor = mode ?? "none";
+    this.dispatchAction(
+      "set-annotation-editor-mode",
+      this._annotationEditor,
+      "property-change"
+    );
+  }
+
+  public get annotationEditor(): AnnotationEditorMode {
+    return this._annotationEditor;
+  }
+
+  private _annotationEditor: AnnotationEditorMode = "none";
+  @Output() annotationEditorChange: EventEmitter<AnnotationEditorMode> =
+    new EventEmitter();
+
+  // Highlight palette for the highlight editor, PDF.js format:
+  // 'yellow=#FFFF98,green=#53FFBC,...'. Applied before the document opens.
+  @Input() public highlightEditorColors?: string;
+
+  // Opt-in PDF.js signature editor (draw / type / upload image). Saved as
+  // stamp-style annotations - an eSign convenience, NOT cryptographic signing.
+  // Init-time option: changing it after load requires a reload.
+  @Input() public enableSignatureEditor: boolean = false;
+
+  // Host-side persistence for the signature editor's saved signatures.
+  // When set, the viewer's "save signature" feature round-trips through these
+  // callbacks (e.g. to a server, per user) instead of the iframe's
+  // localStorage. Use with [enableSignatureEditor].
+  @Input() public signatureStorage?: PdfSignatureStorage;
+
+  // Re-render page CONTENT with custom colors (true dark mode for pages, not
+  // just viewer chrome). Example: { background: '#1e1e1e', foreground: '#e8e8e8' }.
+  // Init-time option: changing it after load requires a reload.
+  @Input() public pageColors?: { background: string; foreground: string } | null;
+
+  // Raw allowlisted PDF.js AppOptions passthrough for init-time options
+  // (e.g. { printResolution: 300, sidebarViewOnLoad: 1, enableComment: true }).
+  // Keys outside the wrapper's allowlist are ignored with a console warning.
+  // Init-time: changing it after load requires a reload.
+  @Input() public pdfJsOptions?: Record<string, string | number | boolean>;
+
+  // Opt-in PDF.js comment editor: threaded comment popups on highlights with
+  // edit/delete and undo/redo. Init-time option: changing requires a reload.
+  @Input() public enableCommentEditor: boolean = false;
+
+  // Opt-in in-viewer page organization: drag-drop reorder, delete, cut/copy/
+  // paste, extract and merge pages from the sidebar's views manager.
+  // Init-time option: changing requires a reload.
+  @Input() public enablePageEditing: boolean = false;
+
+  // Show/hide the entire viewer toolbar (pair with customToolbarTpl to ship a
+  // fully custom host-side toolbar)
+  @Input() public showToolbar: boolean = true;
+
+  // Host-side replacement toolbar rendered ABOVE the viewer iframe. Template
+  // context: let-viewer (the component instance) for driving the public API,
+  // e.g. <ng-template #tb let-viewer><button (click)="viewer.setPage(1)">...
+  @Input() public customToolbarTpl?: TemplateRef<any>;
+
+  // Host-side sidebar panel rendered BESIDE the viewer iframe (left). Same
+  // template context as customToolbarTpl: let-viewer (the component
+  // instance). Pair with [groupVisibility]="{ sidebar: false }" to replace
+  // the built-in sidebar entirely. Size it with your own CSS width.
+  @Input() public customSidebarTpl?: TemplateRef<any>;
+
+  // Built-in chat-with-the-document panel (floating, bottom-right). The
+  // library only calls the endpoint configured here - never any AI service
+  // of its own. Answers cite pages as [p.3]; citations are clickable and
+  // jump the viewer to that page. For fully custom UI use PdfAiAssistant +
+  // getDocumentText() instead.
+  @Input() public aiAssistantConfig?: PdfAiPanelConfig | null;
+
+  // AI panel state (template-bound)
+  public aiPanelOpen = false;
+  public aiBusy = false;
+  public aiMessages: PdfAiPanelMessage[] = [];
+  private aiClient?: PdfAiAssistant;
+  private aiClientConfig?: PdfAiPanelConfig;
+  private aiDocText?: Array<{ page: number; text: string }>;
+  // Bumped whenever the document context changes; in-flight aiAsk
+  // continuations compare against it and abandon stale answers
+  private aiGeneration = 0;
+  private aiAbort?: AbortController;
+
+  // Drop AI panel state tied to the current document and abandon any
+  // in-flight request, so a slow answer about the OLD document can't land
+  // in (or re-enable) the new document's chat.
+  private invalidateAiState(clearChat: boolean): void {
+    this.aiGeneration++;
+    this.aiAbort?.abort();
+    this.aiAbort = undefined;
+    this.aiDocText = undefined;
+    if (clearChat) {
+      this.aiMessages = [];
+    }
+    this.aiBusy = false;
+  }
+
+  // Angular template rendered as an overlay on every page (watermark badges,
+  // stamps, review UI). Context: let-page (1-based page number). The overlay
+  // wrapper is pointer-events:none; re-enable on your own elements as needed.
+  // Setter so clearing/replacing the template also unmounts existing overlays.
+  private _pageOverlayTpl?: TemplateRef<any>;
+
+  @Input()
+  public set pageOverlayTpl(value: TemplateRef<any> | undefined) {
+    if (value === this._pageOverlayTpl) {
+      return;
+    }
+    this._pageOverlayTpl = value;
+    this.destroyPageOverlays();
+    if (value) {
+      this.mountOverlaysOnRenderedPages();
+    }
+  }
+  public get pageOverlayTpl(): TemplateRef<any> | undefined {
+    return this._pageOverlayTpl;
+  }
+
+  // Request headers sent when the component fetches a string pdfSrc URL
+  // (JWT bearer tokens, API keys). When set, the component downloads the
+  // document itself and hands the viewer a local blob - the URL never needs
+  // to be reachable by the viewer iframe directly.
+  @Input() public httpHeaders?: Record<string, string>;
+
+  // Send cookies/credentials with the component-side fetch of pdfSrc.
+  @Input() public withCredentials: boolean = false;
+
+  // Download progress while the component fetches pdfSrc (only emitted for
+  // the httpHeaders/withCredentials fetch path). total is 0 when the server
+  // sends no content-length.
+  @Output() onProgress: EventEmitter<{ loaded: number; total: number }> =
+    new EventEmitter();
+
+  // Monotonic token so a pdfSrc change mid-fetch abandons the stale download
+  private authLoadToken = 0;
+
+  // AcroForm field values, two-way bindable: [(formData)]. Setting writes the
+  // fields into the viewer; user edits in the viewer emit formDataChange.
+  @Input() public set formData(value: FormDataMap) {
+    this._formData = value ?? {};
+    this.dispatchAction("set-form-data", this._formData, "property-change");
+  }
+
+  public get formData(): FormDataMap {
+    return this._formData;
+  }
+
+  private _formData: FormDataMap = {};
+  @Output() formDataChange: EventEmitter<FormDataMap> = new EventEmitter();
+
+  // Client-side content protection (deterrence, not DRM): block print/save
+  // shortcuts, disable text selection, render a per-page watermark.
+  @Input() public set contentProtection(config: ContentProtectionConfig) {
+    this._contentProtection = config ?? {};
+    this.dispatchAction(
+      "set-content-protection",
+      {
+        blockPrint: this._contentProtection.blockPrint === true,
+        blockDownload: this._contentProtection.blockDownload === true,
+        disableTextSelection:
+          this._contentProtection.disableTextSelection === true,
+      },
+      "property-change"
+    );
+    if (this._contentProtection.blockPrint !== undefined) {
+      this.dispatchAction(
+        "show-print",
+        !this._contentProtection.blockPrint,
+        "property-change"
+      );
+    }
+    if (this._contentProtection.blockDownload !== undefined) {
+      this.dispatchAction(
+        "show-download",
+        !this._contentProtection.blockDownload,
+        "property-change"
+      );
+    }
+    this.dispatchAction(
+      "set-watermark",
+      this._contentProtection.watermark ?? null,
+      "property-change"
+    );
+  }
+
+  public get contentProtection(): ContentProtectionConfig {
+    return this._contentProtection;
+  }
+
+  private _contentProtection: ContentProtectionConfig = {};
+
+  // Additional iframe sandbox permissions, validated against a fixed
+  // allowlist; anything else is ignored (issue #304 asked for
+  // allow-top-navigation for trusted documents).
+  @Input() public set iframeSandbox(value: string) {
+    const requested = (value || "").split(/\s+/).filter(Boolean);
+    const accepted = requested.filter((token) =>
+      ALLOWED_EXTRA_SANDBOX_TOKENS.has(token)
+    );
+    const rejected = requested.filter(
+      (token) => !ALLOWED_EXTRA_SANDBOX_TOKENS.has(token)
+    );
+    if (rejected.length > 0) {
+      console.warn(
+        `ng2-pdfjs-viewer: ignoring sandbox tokens not in the allowlist: ${rejected.join(", ")}`
+      );
+    }
+    this._extraSandboxTokens = accepted;
+  }
+
+  public get iframeSandbox(): string {
+    return this._extraSandboxTokens.join(" ");
+  }
+
+  private _extraSandboxTokens: string[] = [];
+
+  public get effectiveSandbox(): string {
+    return this._extraSandboxTokens.length === 0
+      ? BASE_IFRAME_SANDBOX
+      : `${BASE_IFRAME_SANDBOX} ${this._extraSandboxTokens.join(" ")}`;
+  }
   @Input() public set diagnosticLogs(value: boolean) {
     this._diagnosticLogs = value;
     // Update action queue manager
@@ -486,7 +1107,10 @@ export class PdfJsViewerComponent
 
   // #region Control Visibility Properties
   @Input() public showOpenFile: boolean = true;
-  @Input() public showAnnotations: boolean = false;
+  // Default true since PDF.js 5.7: the editor toolbar (highlight/text/draw/
+  // stamp, plus the opt-in signature/comment editors) is core viewer UI.
+  // Set false to hide the editing buttons entirely.
+  @Input() public showAnnotations: boolean = true;
   @Input() public showDownload: boolean = true;
   @Input() public showViewBookmark: boolean = true;
   @Input() public showPrint: boolean = true;
@@ -503,15 +1127,15 @@ export class PdfJsViewerComponent
   // #endregion
 
   // #region Navigation Properties
-  @Input() public namedDest: string;
+  @Input() public namedDest!: string;
   // #endregion
 
   // #region Error Handling Properties
   @Input() public errorOverride: boolean = false;
   @Input() public errorAppend: boolean = true;
-  @Input() public errorMessage: string;
+  @Input() public errorMessage!: string;
   @Input() public urlValidation: boolean = true;
-  @Input() public customSecurityTpl: TemplateRef<any>;
+  @Input() public customSecurityTpl!: TemplateRef<any>;
   
   // Security warning state
   public securityWarning: { message: string; originalUrl: string; currentUrl: string } | null = null;
@@ -646,6 +1270,10 @@ export class PdfJsViewerComponent
     if (config.diagnosticLogs !== undefined)
       this.diagnosticLogs = config.diagnosticLogs;
     if (config.locale !== undefined) this.locale = config.locale;
+    if (config.externalLinkTarget !== undefined)
+      this.externalLinkTarget = config.externalLinkTarget;
+    if (config.rememberLastView !== undefined)
+      this.rememberLastView = config.rememberLastView;
   }
 
   @Input() public set themeConfig(config: ThemeConfig) {
@@ -763,7 +1391,7 @@ export class PdfJsViewerComponent
   // #endregion
 
   // #region External Window Properties
-  @Input() public externalWindowOptions: string;
+  @Input() public externalWindowOptions!: string;
   public viewerTab: any;
   // #endregion
 
@@ -776,16 +1404,20 @@ export class PdfJsViewerComponent
   // #endregion
 
   // #region Private Properties
-  private _src: string | Blob | Uint8Array;
-  private _page: number;
+  private _src!: string | Blob | Uint8Array;
+  private _page!: number;
   private isPostMessageReady = false;
   private postMessageReadiness = 0;
   private initialConfigQueued = false;
   private actionQueueManager: ActionQueueManager = new ActionQueueManager(this._diagnosticLogs);
   private cdr: ChangeDetectorRef;
+  private appRef?: ApplicationRef;
+  private ngZone?: NgZone;
 
-  constructor(cdr: ChangeDetectorRef) {
+  constructor(cdr: ChangeDetectorRef, appRef?: ApplicationRef, ngZone?: NgZone) {
     this.cdr = cdr;
+    this.appRef = appRef;
+    this.ngZone = ngZone;
   }
   private messageIdCounter = 0;
   // Monotonic suffix keeps action ids unique even within one millisecond
@@ -974,7 +1606,9 @@ export class PdfJsViewerComponent
         pdfViewerOptions = this.viewerTab.PDFViewerApplicationOptions;
       }
     } else {
-      if (this.iframe.nativeElement.contentWindow) {
+      // Optional-chained: a static `page="5"` attribute runs input setters
+      // before the static ViewChild is resolved
+      if (this.iframe?.nativeElement?.contentWindow) {
         pdfViewerOptions =
           this.iframe.nativeElement.contentWindow.PDFViewerApplicationOptions;
       }
@@ -989,7 +1623,7 @@ export class PdfJsViewerComponent
         pdfViewer = this.viewerTab.PDFViewerApplication;
       }
     } else {
-      if (this.iframe.nativeElement.contentWindow) {
+      if (this.iframe?.nativeElement?.contentWindow) {
         pdfViewer =
           this.iframe.nativeElement.contentWindow.PDFViewerApplication;
       }
@@ -1002,8 +1636,18 @@ export class PdfJsViewerComponent
   // #endregion
 
   // #region Lifecycle Methods
-  ngOnInit(): void {   
-    
+  // SSR guard: the viewer is browser-only (iframe + postMessage). During
+  // server rendering the lifecycle hooks no-op; the real load happens after
+  // hydration in the browser.
+  private get isBrowser(): boolean {
+    return typeof window !== "undefined" && typeof document !== "undefined";
+  }
+
+  ngOnInit(): void {
+    if (!this.isBrowser) {
+      return;
+    }
+
     // Connect action queue manager to PostMessage system
     // Wrap sendControlMessage to handle iframe unavailability by re-queuing actions
     this.actionQueueManager.setPostMessageExecutor((action) =>
@@ -1028,6 +1672,17 @@ export class PdfJsViewerComponent
   }
 
   ngAfterViewInit(): void {
+    if (!this.isBrowser) {
+      return;
+    }
+
+    // Angular only allows a static sandbox attribute in templates (NG0910), so
+    // extra allowlisted tokens are applied natively - safe here because the
+    // iframe has not navigated yet (sandbox applies to subsequent loads).
+    if (this._extraSandboxTokens.length > 0 && this.iframe?.nativeElement) {
+      this.iframe.nativeElement.setAttribute("sandbox", this.effectiveSandbox);
+    }
+
     // Load PDF after view is initialized - trust Angular's lifecycle guarantee
     // that iframe.nativeElement.contentWindow is now available
     if (!this.externalWindow) {
@@ -1045,6 +1700,15 @@ export class PdfJsViewerComponent
         this.isLoading = true;
         this.hasError = false;
         this.currentErrorMessage = "";
+
+        // Don't wait for the new document's documentInit relay (it is
+        // enablement-gated and can race a fast local load): the AI panel's
+        // text/chat refer to the outgoing document - drop them now
+        this.invalidateAiState(true);
+
+        // The new document renders unrotated; without this the stale value
+        // makes a consumer's [rotation] re-set a silent no-op
+        this._rotation = 0;
 
         // The iframe reloads fresh: discard in-flight messages and queued
         // actions, and reset readiness so configuration re-applies on the
@@ -1079,6 +1743,9 @@ export class PdfJsViewerComponent
   }
 
   ngOnDestroy(): void {
+    // Abort any in-flight AI request (potentially a 100k-char prompt)
+    this.aiAbort?.abort();
+
     // Remove the window message listener - without this every destroyed
     // instance stays rooted forever and keeps processing viewer messages
     window.removeEventListener("message", this.messageHandler);
@@ -1090,6 +1757,9 @@ export class PdfJsViewerComponent
     // hang forever
     this.rejectPendingMessages("Viewer destroyed");
     this.actionQueueManager.clearQueues();
+
+    // Release page-overlay embedded views
+    this.destroyPageOverlays();
 
     // Clean up URL
     this.releaseUrl?.();
@@ -1251,8 +1921,56 @@ export class PdfJsViewerComponent
       case "event-notification":
         this.handleEventNotification(event.data);
         return;
+
+      case "host-request":
+        // Wrapper-initiated round-trip (signature storage hooks)
+        void this.handleHostRequest(event.data);
+        return;
     }
   };
+
+  // Serve a wrapper-initiated request against the host-side hooks and post
+  // the result back. Errors are returned (not thrown) so the wrapper's
+  // pending promise always settles.
+  private async handleHostRequest(request: any): Promise<void> {
+    const respond = (data: unknown, error?: string) => {
+      this.iframe?.nativeElement?.contentWindow?.postMessage(
+        {
+          type: "host-response",
+          requestId: request.requestId,
+          data,
+          error: error ?? null,
+        },
+        "/",
+      );
+    };
+
+    const storage = this.signatureStorage;
+    if (!storage) {
+      respond(null, "No signatureStorage hook configured");
+      return;
+    }
+
+    try {
+      switch (request.action) {
+        case "signature-storage-get-all":
+          respond((await storage.loadAll()) ?? {});
+          return;
+        case "signature-storage-save":
+          await storage.save(request.payload?.uuid, request.payload?.data);
+          respond(true);
+          return;
+        case "signature-storage-delete":
+          await storage.delete(request.payload?.uuid);
+          respond(true);
+          return;
+        default:
+          respond(null, `Unknown host request: ${request.action}`);
+      }
+    } catch (e: any) {
+      respond(null, e?.message || "signatureStorage hook failed");
+    }
+  }
 
   private setupMessageListener(): void {
     window.addEventListener("message", this.messageHandler);
@@ -1276,6 +1994,18 @@ export class PdfJsViewerComponent
       }
       // Trigger change detection for OnPush scenarios (PostMessage runs outside Angular zone)
       this.cdr.markForCheck();
+      return;
+    }
+
+    // Two-way [(formData)] sync from user edits in form widgets. Synthetic
+    // events from our own set-form-data also land here - the equality check
+    // suppresses the echo.
+    if (property === "formData") {
+      if (!shallowEquals(value, this._formData)) {
+        this._formData = value ?? {};
+        this.formDataChange.emit(this._formData);
+        this.cdr.markForCheck();
+      }
       return;
     }
 
@@ -1350,6 +2080,60 @@ export class PdfJsViewerComponent
 
   private handleEventNotification(notification: any): void {
     const { eventName, eventData } = notification;
+    if (typeof eventName !== "string" || eventName.length === 0) {
+      return;
+    }
+
+    // New document: the AI panel's extracted text and chat refer to the old
+    // one - drop them. (Falls through to the generic emitter.)
+    if (eventName === "documentInit") {
+      this.invalidateAiState(true);
+      this.cdr.markForCheck();
+    }
+
+    // Page add/delete/reorder invalidates extracted text and its page
+    // numbers, but the chat history is still about this document.
+    if (eventName === "pagesEdited") {
+      this.aiDocText = undefined;
+    }
+
+    // A failed document load means queued document-gated actions can never
+    // run - settle them (and fail-fast later dispatches via the latch) so
+    // consumer awaits don't hang forever.
+    if (eventName === "documentError") {
+      this.documentLoadFailed = true;
+      this.actionQueueManager.failDocumentActions(
+        "Document failed to load: " + (eventData?.message || "unknown error"),
+      );
+    }
+    // Any sign of a (new) document coming up lifts the latch
+    if (eventName === "documentInit" || eventName === "pagesInit") {
+      this.documentLoadFailed = false;
+    }
+
+    // Mount the per-page overlay template as pages (re-)render. PDF.js may
+    // drop appended children on re-render; mounting is idempotent and moves
+    // the same embedded-view nodes back in.
+    if (eventName === "pageRendered" && this.pageOverlayTpl) {
+      const pageNumber = eventData?.pageNumber;
+      if (typeof pageNumber === "number") {
+        this.mountPageOverlay(pageNumber);
+      }
+      // fall through to the generic emitter below
+    }
+
+    // Two-way [(annotationEditor)] sync: the wrapper relays every editor mode
+    // switch, including echoes of our own dispatches - only real changes
+    // (user toolbar clicks) update the property and emit.
+    if (eventName === "annotationEditorModeChange") {
+      const mode = eventData?.mode as AnnotationEditorMode;
+      if (mode && mode !== this._annotationEditor) {
+        this._annotationEditor = mode;
+        this.annotationEditorChange.emit(mode);
+        this.cdr.markForCheck();
+      }
+      return;
+    }
 
     // 'documentError' -> this.onDocumentError, etc.
     const emitter = (this as any)[
@@ -1383,6 +2167,19 @@ export class PdfJsViewerComponent
         if (propertyName === "locale") {
           continue;
         }
+      }
+
+      // Init-time PDF.js options ride the viewer URL and are read before the
+      // postMessage channel exists - a change requires reloading the viewer
+      if (
+        propertyName === "pdfJsOptions" ||
+        propertyName === "enableSignatureEditor" ||
+        propertyName === "enableCommentEditor" ||
+        propertyName === "enablePageEditing" ||
+        propertyName === "pageColors"
+      ) {
+        needsRefresh = true;
+        continue;
       }
 
       if (
@@ -1455,7 +2252,17 @@ export class PdfJsViewerComponent
    */
   private bindToPdfJsEventBus() {
     // Store the event listener reference so we can remove it later
-    const webviewerLoadedHandler = () => {
+    const webviewerLoadedHandler = (event?: Event) => {
+      // For same-origin embeds PDF.js dispatches 'webviewerloaded' on the
+      // PARENT document, so this handler hears the event from EVERY viewer
+      // iframe on the page. Only react to our own iframe's dispatch -
+      // otherwise instance A re-binds (and duplicates) its eventBus handlers
+      // whenever instance B loads, multiplying every relayed event and
+      // auto-action.
+      const source = (event as CustomEvent | undefined)?.detail?.source;
+      if (source && source !== this.iframe?.nativeElement?.contentWindow) {
+        return;
+      }
       if (this.diagnosticLogs)
         console.debug("PdfJsViewer: webviewerloaded event received");
 
@@ -1554,9 +2361,27 @@ export class PdfJsViewerComponent
           },
         };
 
-        this.pdfEventHandlers = handlers;
+        // The eventBus invokes these from the iframe realm, outside the
+        // parent's NgZone - without re-entering the zone, consumer bindings
+        // driven by these outputs ((onPageChange), [(zoom)], ...) never
+        // schedule change detection in zone-based apps.
+        const zonedHandlers: Record<string, (event?: any) => void> = {};
         for (const eventName of Object.keys(handlers)) {
-          eventBus.on(eventName, handlers[eventName]);
+          const handler = handlers[eventName];
+          zonedHandlers[eventName] = (event?: any) => {
+            if (this.ngZone) {
+              this.ngZone.run(() => handler(event));
+            } else {
+              handler(event);
+            }
+          };
+        }
+
+        // Store the registered (zoned) functions so teardown removes the
+        // exact listeners that were added
+        this.pdfEventHandlers = zonedHandlers;
+        for (const eventName of Object.keys(zonedHandlers)) {
+          eventBus.on(eventName, zonedHandlers[eventName]);
         }
       });
     };
@@ -1653,6 +2478,10 @@ export class PdfJsViewerComponent
   public refresh(): void {
     // Needs to be invoked for external window or when needs to reload pdf
 
+    // The reload swaps the document out from under the AI panel - drop its
+    // extracted text/chat and abandon any in-flight request
+    this.invalidateAiState(true);
+
     // Remove stale PDF.js bindings, then re-arm webviewerloaded so the
     // reloaded viewer's events bind again (they used to die after refresh)
     this.teardownPdfJsEventBindings();
@@ -1732,6 +2561,322 @@ export class PdfJsViewerComponent
   }
   // #endregion
 
+  // #region Annotation & Search API
+  /**
+   * Serialized state of every annotation created or modified in the editor.
+   * Send this to a server to persist user annotations.
+   */
+  public async getAnnotations(): Promise<any[]> {
+    const result = await this.dispatchAction(
+      "get-annotations",
+      null,
+      "user-interaction"
+    );
+    if (!result.success) {
+      throw new Error(result.error || "getAnnotations failed");
+    }
+    return result.data ?? [];
+  }
+
+  /**
+   * Restore annotations previously exported with getAnnotations() back into
+   * the editor. Each annotation is rebuilt on its own page; annotations for
+   * pages that haven't rendered yet apply automatically as those pages
+   * render (counted in `pending`). Items with an invalid pageIndex for the
+   * current document are skipped (counted in `rejected`). Calling this twice
+   * with the same payload creates duplicates - restore is additive. Note:
+   * stamp images cannot round-trip (their bitmaps are not serializable).
+   */
+  public async setAnnotations(
+    annotations: any[]
+  ): Promise<{ restored: number; pending: number; rejected: number }> {
+    const result = await this.dispatchAction(
+      "set-annotations",
+      annotations ?? [],
+      "user-interaction"
+    );
+    if (!result.success) {
+      throw new Error(result.error || "setAnnotations failed");
+    }
+    return result.data ?? { restored: 0, pending: 0, rejected: 0 };
+  }
+
+  /**
+   * The current document - including annotation edits and filled form
+   * fields - as a Blob, ready for upload or download.
+   */
+  public async getDocumentAsBlob(): Promise<Blob> {
+    const result = await this.dispatchAction(
+      "save-document",
+      null,
+      "user-interaction"
+    );
+    if (!result.success || !result.data?.bytes) {
+      throw new Error(result.error || "getDocumentAsBlob failed");
+    }
+    return new Blob([result.data.bytes], { type: "application/pdf" });
+  }
+
+  /**
+   * Programmatic full-text search. Resolves with totals, per-page match
+   * counts and the pages containing matches; matches are highlighted in the
+   * viewer (highlightAll defaults to true).
+   */
+  public async search(
+    query: string,
+    options?: SearchOptions
+  ): Promise<SearchResult> {
+    const result = await this.dispatchAction(
+      "search",
+      { query, ...(options ?? {}) },
+      "user-interaction"
+    );
+    if (!result.success) {
+      throw new Error(result.error || "search failed");
+    }
+    return result.data as SearchResult;
+  }
+
+  /** Move the search selection to the next match. */
+  public async searchNext(): Promise<SearchResult> {
+    const result = await this.dispatchAction(
+      "search-next",
+      null,
+      "user-interaction"
+    );
+    if (!result.success) {
+      throw new Error(result.error || "searchNext failed");
+    }
+    return result.data as SearchResult;
+  }
+
+  /** Move the search selection to the previous match. */
+  public async searchPrevious(): Promise<SearchResult> {
+    const result = await this.dispatchAction(
+      "search-previous",
+      null,
+      "user-interaction"
+    );
+    if (!result.success) {
+      throw new Error(result.error || "searchPrevious failed");
+    }
+    return result.data as SearchResult;
+  }
+
+  /** Clear search highlights and forget the active query. */
+  public clearSearch(): Promise<ActionExecutionResult> {
+    return this.dispatchAction("clear-search", null, "user-interaction");
+  }
+
+  // Embedded views for pageOverlayTpl, keyed by page number. Views are
+  // attached to ApplicationRef so bindings inside stay live.
+  private overlayViews = new Map<number, EmbeddedViewRef<any>>();
+
+  private mountPageOverlay(pageNumber: number): void {
+    if (!this.pageOverlayTpl || this.externalWindow) return;
+    const doc = this.iframe?.nativeElement?.contentDocument;
+    const pageEl = doc?.querySelector(
+      `.pdfViewer .page[data-page-number="${pageNumber}"]`
+    );
+    if (!pageEl || pageEl.querySelector(":scope > .ng2-page-overlay")) {
+      return;
+    }
+    let view = this.overlayViews.get(pageNumber);
+    if (!view) {
+      view = this.pageOverlayTpl.createEmbeddedView({ $implicit: pageNumber });
+      this.appRef?.attachView(view);
+      view.detectChanges();
+      this.overlayViews.set(pageNumber, view);
+    }
+    const wrapper = doc!.createElement("div");
+    wrapper.className = "ng2-page-overlay";
+    for (const node of view.rootNodes) {
+      wrapper.appendChild(node);
+    }
+    pageEl.appendChild(wrapper);
+  }
+
+  private destroyPageOverlays(): void {
+    for (const view of this.overlayViews.values()) {
+      this.appRef?.detachView(view);
+      view.destroy();
+    }
+    this.overlayViews.clear();
+    // Destroying the views removes their nodes but not the wrapper divs;
+    // leftover wrappers would also block the remount guard in mountPageOverlay.
+    const doc = this.iframe?.nativeElement?.contentDocument;
+    doc
+      ?.querySelectorAll(".ng2-page-overlay")
+      .forEach((el: Element) => el.remove());
+  }
+
+  // Mount overlays on every page div that already exists (used when the
+  // template input is set after pages have rendered, e.g. a toggle).
+  private mountOverlaysOnRenderedPages(): void {
+    const doc = this.iframe?.nativeElement?.contentDocument;
+    if (!doc) return;
+    doc
+      .querySelectorAll(".pdfViewer .page[data-page-number]")
+      .forEach((el: Element) => {
+        const pageNumber = Number(el.getAttribute("data-page-number"));
+        if (pageNumber > 0) {
+          this.mountPageOverlay(pageNumber);
+        }
+      });
+  }
+
+  /**
+   * Plain text of the document (or a 1-based page range), extracted from the
+   * PDF.js text layer. The raw material for BYO-AI chat/summarize flows.
+   */
+  public async getDocumentText(
+    from?: number,
+    to?: number
+  ): Promise<DocumentPageText[]> {
+    const result = await this.dispatchAction(
+      "get-document-text",
+      { from, to },
+      "user-interaction"
+    );
+    if (!result.success) {
+      throw new Error(result.error || "getDocumentText failed");
+    }
+    return result.data ?? [];
+  }
+
+  /**
+   * Read the document aloud from the current (or given) page using the
+   * browser's speech synthesis. Progress arrives on onReadAloudStateChange.
+   */
+  public startReadAloud(options?: {
+    fromPage?: number;
+    rate?: number;
+  }): Promise<ActionExecutionResult> {
+    return this.dispatchAction(
+      "read-aloud",
+      { command: "start", ...(options ?? {}) },
+      "user-interaction"
+    );
+  }
+
+  public pauseReadAloud(): Promise<ActionExecutionResult> {
+    return this.dispatchAction("read-aloud", { command: "pause" }, "user-interaction");
+  }
+
+  public resumeReadAloud(): Promise<ActionExecutionResult> {
+    return this.dispatchAction("read-aloud", { command: "resume" }, "user-interaction");
+  }
+
+  public stopReadAloud(): Promise<ActionExecutionResult> {
+    return this.dispatchAction("read-aloud", { command: "stop" }, "user-interaction");
+  }
+
+  /**
+   * Ask the built-in AI panel a question programmatically (same path the
+   * panel's input uses). Requires [aiAssistantConfig]. Document text is
+   * extracted once per document and reused across questions.
+   */
+  public async aiAsk(question: string): Promise<void> {
+    const q = (question || "").trim();
+    const config = this.aiAssistantConfig;
+    if (!q || this.aiBusy || !config) {
+      return;
+    }
+    this.aiBusy = true;
+    const generation = this.aiGeneration;
+    this.aiAbort = new AbortController();
+    const signal = this.aiAbort.signal;
+    this.aiMessages.push({ role: "user", content: q, parts: [{ text: q }] });
+    this.cdr.markForCheck();
+    try {
+      if (!this.aiClient || this.aiClientConfig !== config) {
+        this.aiClient = new PdfAiAssistant(config);
+        this.aiClientConfig = config;
+      }
+      if (!this.aiDocText) {
+        this.aiDocText = await this.getDocumentText();
+      }
+      const history: PdfAiMessage[] = this.aiMessages
+        .slice(0, -1)
+        .filter((m) => !m.error)
+        .map((m) => ({ role: m.role, content: m.content }));
+      const answer = await this.aiClient.ask(q, this.aiDocText, history, signal);
+      if (generation !== this.aiGeneration) {
+        return; // document changed mid-flight - stale answer
+      }
+      this.aiMessages.push({
+        role: "assistant",
+        content: answer,
+        parts: this.parseAiCitations(answer),
+      });
+    } catch (e: any) {
+      if (generation !== this.aiGeneration) {
+        return; // aborted by invalidation - already cleaned up
+      }
+      this.aiMessages.push({
+        role: "assistant",
+        content: "",
+        error: e?.message || "AI request failed",
+        parts: [],
+      });
+    } finally {
+      if (generation === this.aiGeneration) {
+        this.aiBusy = false;
+      }
+      this.cdr.markForCheck();
+    }
+  }
+
+  // Split an answer into text runs and clickable [p.N] page citations
+  private parseAiCitations(
+    text: string,
+  ): Array<{ text?: string; page?: number }> {
+    const parts: Array<{ text?: string; page?: number }> = [];
+    const re = /\[p\.?\s*(\d+)\]/gi;
+    let last = 0;
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(text)) !== null) {
+      if (m.index > last) {
+        parts.push({ text: text.slice(last, m.index) });
+      }
+      parts.push({ page: parseInt(m[1], 10) });
+      last = m.index + m[0].length;
+    }
+    if (last < text.length) {
+      parts.push({ text: text.slice(last) });
+    }
+    return parts;
+  }
+
+  /**
+   * Current AcroForm field values (field name -> value), reflecting any
+   * user edits. Returns {} for documents without form fields.
+   */
+  public async getFormData(): Promise<FormDataMap> {
+    const result = await this.dispatchAction(
+      "get-form-data",
+      null,
+      "user-interaction"
+    );
+    if (!result.success) {
+      throw new Error(result.error || "getFormData failed");
+    }
+    return (result.data ?? {}) as FormDataMap;
+  }
+
+  /** Set a single form field by name. */
+  public setFormField(
+    name: string,
+    value: string | boolean | null
+  ): Promise<ActionExecutionResult> {
+    return this.dispatchAction(
+      "set-form-field",
+      { name, value },
+      "user-interaction"
+    );
+  }
+  // #endregion
+
   // Action queue management methods
   public getActionStatus(
     actionId: string,
@@ -1762,6 +2907,9 @@ export class PdfJsViewerComponent
    */
   public dismissSecurityWarning(): void {
     this.securityWarning = null;
+    // Public API called from outside this component's CD context - mark so
+    // the overlay clears under OnPush/zoneless consumers
+    this.cdr.markForCheck();
   }
   // #endregion
 
@@ -1769,17 +2917,97 @@ export class PdfJsViewerComponent
   private loadPdf(): void {
     if (!this._src) return;
 
-    // Show spinner immediately when PDF loading starts (Issue #275)
+    // Show spinner immediately when PDF loading starts (Issue #275).
+    // markForCheck: loadPdf is reachable from the public refresh() API, where
+    // no input-change CD pass marks this (possibly OnPush) view.
     this.isLoading = true;
     this.hasError = false;
     this.currentErrorMessage = "";
+    // A new load lifts the failed-document latch (the documentInit relay
+    // also clears it, but that is enablement-gated and can race fast loads)
+    this.documentLoadFailed = false;
+    this.cdr.markForCheck();
 
     if (!this.setupExternalWindow()) {
       return; // popup blocked - nothing to navigate
     }
+
+    // Authenticated fetch path: the viewer iframe cannot attach headers to
+    // its own request, so the component downloads the document and feeds the
+    // viewer a local blob instead.
+    if (
+      typeof this._src === "string" &&
+      (this.httpHeaders || this.withCredentials)
+    ) {
+      void this.fetchPdfWithAuth(this._src);
+      return;
+    }
+
     const fileUrl = this.createFileUrl();
     const viewerUrl = this.buildViewerUrl(fileUrl);
     this.navigateToViewer(viewerUrl);
+  }
+
+  private async fetchPdfWithAuth(url: string): Promise<void> {
+    const loadToken = ++this.authLoadToken;
+    try {
+      const response = await fetch(url, {
+        headers: this.httpHeaders ?? {},
+        credentials: this.withCredentials ? "include" : "same-origin",
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status} ${response.statusText}`);
+      }
+
+      let blob: Blob;
+      if (response.body && hasObservers(this.onProgress)) {
+        const total =
+          Number(response.headers.get("content-length")) || 0;
+        const reader = response.body.getReader();
+        const chunks: Uint8Array[] = [];
+        let loaded = 0;
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          chunks.push(value);
+          loaded += value.byteLength;
+          this.onProgress.emit({ loaded, total });
+        }
+        blob = new Blob(chunks as BlobPart[], { type: "application/pdf" });
+      } else {
+        blob = await response.blob();
+      }
+
+      if (loadToken !== this.authLoadToken) {
+        return; // pdfSrc changed while downloading - drop the stale result
+      }
+
+      // Hand the bytes to the normal blob path without touching the
+      // consumer's pdfSrc (it stays the original string URL).
+      this.releaseUrl?.();
+      const objectUrl = URL.createObjectURL(blob);
+      this.releaseUrl = () => URL.revokeObjectURL(objectUrl);
+      const viewerUrl = this.buildViewerUrl(encodeURIComponent(objectUrl));
+      this.navigateToViewer(viewerUrl);
+    } catch (error) {
+      if (loadToken !== this.authLoadToken) {
+        return;
+      }
+      const message =
+        error instanceof Error ? error.message : String(error);
+      this.isLoading = false;
+      this.hasError = true;
+      this.currentErrorMessage = this.composeErrorMessage(
+        `Failed to fetch PDF: ${message}`
+      );
+      this.updateErrorTemplateData();
+      this.onDocumentError.emit({
+        message: this.currentErrorMessage,
+        name: "FetchError",
+        source: url,
+      });
+      this.cdr.markForCheck();
+    }
   }
 
   // Returns false when an external window is required but could not be opened
@@ -1844,7 +3072,7 @@ export class PdfJsViewerComponent
     } else if (this._src instanceof Uint8Array) {
       // A typed-array view is a valid BlobPart; using it directly respects
       // byteOffset/byteLength (the raw .buffer of a subarray would not)
-      const blob = new Blob([this._src], { type: "application/pdf" });
+      const blob = new Blob([this._src as BlobPart], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       this.releaseUrl = () => URL.revokeObjectURL(url);
       return encodeURIComponent(url);
@@ -1862,6 +3090,17 @@ export class PdfJsViewerComponent
       viewerUrl += `&viewerId=${this.viewerId}`;
     }
     viewerUrl += `&urlValidation=${this.urlValidation === false ? 0 : 1}`;
+
+    // Init-time PDF.js options (signature editor, page colors, passthrough).
+    // These are read by PDF.js during initialize() - before the postMessage
+    // channel exists - so they ride the viewer URL and are applied by the
+    // wrapper at 'webviewerloaded' (after module eval, before run()). The
+    // wrapper validates every key against its allowlist.
+    const initOptions = this.collectInitTimeOptions();
+    if (Object.keys(initOptions).length > 0) {
+      viewerUrl += `&pjsOptions=${encodeURIComponent(JSON.stringify(initOptions))}`;
+    }
+
     // Cache-bust in Angular dev mode so editing pdfjs assets takes effect.
     // (Angular's own signal, not a hostname/port heuristic - production apps
     // served from localhost keep clean, cacheable viewer URLs.)
@@ -1869,6 +3108,31 @@ export class PdfJsViewerComponent
       viewerUrl += `&_t=${Date.now()}`;
     }
     return viewerUrl;
+  }
+
+  // Merge the dedicated convenience inputs with the raw pdfJsOptions
+  // passthrough (dedicated inputs win on conflict).
+  private collectInitTimeOptions(): Record<string, string | number | boolean> {
+    const options: Record<string, string | number | boolean> = {
+      ...(this.pdfJsOptions ?? {}),
+    };
+    if (this.enableSignatureEditor) {
+      options["enableSignatureEditor"] = true;
+    }
+    if (this.enableCommentEditor) {
+      options["enableComment"] = true;
+    }
+    if (this.enablePageEditing) {
+      options["enableMerge"] = true;
+      options["enableSplitMerge"] = true;
+      options["enableUpdatedAddImage"] = true;
+    }
+    if (this.pageColors) {
+      options["forcePageColors"] = true;
+      options["pageColorsBackground"] = this.pageColors.background;
+      options["pageColorsForeground"] = this.pageColors.foreground;
+    }
+    return options;
   }
 
   private navigateToViewer(viewerUrl: string): void {
@@ -1890,6 +3154,16 @@ export class PdfJsViewerComponent
   }
   // #endregion
 
+  // External-window mode has no postMessage channel (the wrapper runs in the
+  // popup, not the hidden iframe) - actions queue forever. Warn once instead
+  // of failing silently.
+  private externalWindowWarned = false;
+
+  // Set on documentError, cleared when a new load begins: document-gated
+  // actions dispatched against a failed load settle immediately instead of
+  // queueing forever.
+  private documentLoadFailed = false;
+
   // Universal Action Dispatcher - ALL actions go through readiness-based queuing
   private dispatchAction(
     action: string,
@@ -1900,6 +3174,14 @@ export class PdfJsViewerComponent
       | "user-interaction" = "property-change",
     level?: number,
   ): Promise<ActionExecutionResult> {
+    if (this.externalWindow && !this.externalWindowWarned) {
+      this.externalWindowWarned = true;
+      console.warn(
+        "PdfJsViewer: programmatic actions and event relays are not available " +
+          "in externalWindow mode - the postMessage channel only connects to " +
+          "the embedded iframe viewer.",
+      );
+    }
     const requiredReadiness = level ?? this.getRequiredReadinessLevel(action);
     const actionObj: ViewerAction = {
       id: `${source}-${action}-${++this.actionIdCounter}`,
@@ -1907,6 +3189,21 @@ export class PdfJsViewerComponent
       payload: payload,
       level: level,
     };
+
+    // Document-gated action against a load that already failed: it can never
+    // execute - settle now instead of queueing forever.
+    if (
+      requiredReadiness === 5 &&
+      this.documentLoadFailed &&
+      !this.actionQueueManager.isDocumentLoaded
+    ) {
+      return Promise.resolve({
+        actionId: actionObj.id,
+        success: false,
+        error: "Document failed to load",
+        timestamp: Date.now(),
+      });
+    }
 
     // Check if we have sufficient readiness to execute immediately
     if (this.hasRequiredReadiness(requiredReadiness)) {

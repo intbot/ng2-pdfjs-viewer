@@ -1,0 +1,38 @@
+<pg-page
+  title="Content Protection"
+  lead="Discourage casual copying: hide and block print/save, disable text selection, and watermark every page. Honest scope — this is client-side deterrence, not DRM."
+  [tags]="['[contentProtection]','watermark','blockPrint','blockDownload','disableTextSelection']"
+  [code]="code()"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
+
+  <div preview>
+    <ng2-pdfjs-viewer [pdfSrc]="src()" [contentProtection]="protection()"></ng2-pdfjs-viewer>
+  </div>
+
+  <div controls>
+    <div class="ph">Restrictions</div>
+    <div class="row">
+      <label><input type="checkbox" [checked]="blockPrint()" (change)="blockPrint.set(!blockPrint())" data-testid="prot-print" /> Block printing (button + Ctrl+P)</label>
+    </div>
+    <div class="row">
+      <label><input type="checkbox" [checked]="blockDownload()" (change)="blockDownload.set(!blockDownload())" /> Block download (button + Ctrl+S)</label>
+    </div>
+    <div class="row">
+      <label><input type="checkbox" [checked]="noSelect()" (change)="noSelect.set(!noSelect())" data-testid="prot-select" /> Disable text selection</label>
+    </div>
+
+    <div class="ph">Watermark</div>
+    <div class="row">
+      <label><input type="checkbox" [checked]="watermarkOn()" (change)="watermarkOn.set(!watermarkOn())" data-testid="prot-watermark" /> Show watermark</label>
+    </div>
+    <div class="row">
+      <label>Text</label>
+      <input class="ctl-input" style="width:150px" [value]="watermarkText()" (input)="setText($event)" />
+    </div>
+    <div class="row">
+      <label>Opacity</label>
+      <input type="range" min="0.05" max="0.8" step="0.05" [value]="opacity()" (input)="setOpacity($event)" />
+    </div>
+    <p class="note">A determined user can always fetch the bytes — pair with server-side controls for real protection.</p>
+  </div>
+</pg-page>

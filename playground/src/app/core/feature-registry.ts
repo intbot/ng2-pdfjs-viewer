@@ -45,7 +45,39 @@ export const FEATURES: FeaturePage[] = [
     load: () => import('../pages/theming/theming.component').then((m) => m.ThemingComponent),
   },
 
+  // ── Editing & AI ───────────────────────────────────────────────────
+  {
+    id: 'editor', route: 'editor', title: 'Annotation Editor & eSign', group: 'Editing & AI', icon: '✎', badge: 'new',
+    description: 'Highlight, draw, type, stamp and sign — then serialize annotations or download the edited PDF.',
+    tags: ['annotationEditor', 'enableSignatureEditor', 'enableCommentEditor', 'getAnnotations', 'getDocumentAsBlob', 'onAnnotationEditorStateChange'],
+    load: () => import('../pages/editor/editor.component').then((m) => m.EditorComponent),
+  },
+  {
+    id: 'search', route: 'search', title: 'Programmatic Search', group: 'Editing & AI', icon: '⌕', badge: 'new',
+    description: 'Run queries from code and get totals, per-page counts and the selection position back as data.',
+    tags: ['search', 'searchNext', 'searchPrevious', 'clearSearch', 'SearchResult'],
+    load: () => import('../pages/search/search.component').then((m) => m.SearchComponent),
+  },
+  {
+    id: 'forms', route: 'forms', title: 'Forms & Data', group: 'Editing & AI', icon: '⍞', badge: 'new',
+    description: 'Two-way AcroForm binding: fill fields from Angular, read user input back, save the filled PDF.',
+    tags: ['formData', 'getFormData', 'setFormField', 'AcroForm'],
+    load: () => import('../pages/forms/forms.component').then((m) => m.FormsComponent),
+  },
+  {
+    id: 'ai', route: 'ai', title: 'AI Assistant & Read Aloud', group: 'Editing & AI', icon: '✦', badge: 'new',
+    description: 'Chat with the document via your own OpenAI-compatible endpoint, and read it aloud with browser speech.',
+    tags: ['getDocumentText', 'PdfAiAssistant', 'startReadAloud', 'onReadAloudStateChange', 'AI', 'chat'],
+    load: () => import('../pages/ai/ai.component').then((m) => m.AiComponent),
+  },
+
   // ── Behavior ───────────────────────────────────────────────────────
+  {
+    id: 'protection', route: 'protection', title: 'Content Protection', group: 'Behavior', icon: '▣', badge: 'new',
+    description: 'Block print/save, disable text selection, and watermark every page (deterrence, not DRM).',
+    tags: ['contentProtection', 'watermark', 'blockPrint', 'blockDownload', 'disableTextSelection'],
+    load: () => import('../pages/protection/protection.component').then((m) => m.ProtectionComponent),
+  },
   {
     id: 'auto-actions', route: 'auto-actions', title: 'Auto Actions', group: 'Behavior', icon: '⚙',
     description: 'Auto download/print on load, rotate, jump to the last page, set the download filename.',
@@ -60,8 +92,8 @@ export const FEATURES: FeaturePage[] = [
   },
   {
     id: 'errors', route: 'errors', title: 'Error Handling', group: 'Behavior', icon: '⚠',
-    description: 'Override error messages, append context, validate URLs, and render custom error UI.',
-    tags: ['errorOverride', 'errorAppend', 'errorMessage', 'customErrorTpl', 'urlValidation'],
+    description: 'Override error messages, append context, validate URLs, render custom error UI, and handle password-protected documents.',
+    tags: ['errorOverride', 'errorAppend', 'errorMessage', 'customErrorTpl', 'urlValidation', 'onPasswordPrompt'],
     load: () => import('../pages/errors/errors.component').then((m) => m.ErrorsComponent),
   },
   {
@@ -89,6 +121,18 @@ export const FEATURES: FeaturePage[] = [
     description: 'Call imperative methods and watch a live property inspector of the viewer state.',
     tags: ['refresh', 'triggerDownload', 'goToPage', 'inspector', 'ViewChild'],
     load: () => import('../pages/api/api.component').then((m) => m.ApiComponent),
+  },
+  {
+    id: 'custom-ui', route: 'custom-ui', title: 'Custom Toolbar & Overlays', group: 'Viewer UI', icon: '⊞', badge: 'new',
+    description: 'Replace the toolbar with your own Angular template and project templates onto every page.',
+    tags: ['customToolbarTpl', 'pageOverlayTpl', 'showToolbar', 'headless'],
+    load: () => import('../pages/custom-ui/custom-ui.component').then((m) => m.CustomUiComponent),
+  },
+  {
+    id: 'power', route: 'power', title: 'Power Options', group: 'Integration', icon: '⚡', badge: 'new',
+    description: 'Page organization, true dark pages, session restore, link targets, PDF.js options, auth loading.',
+    tags: ['enablePageEditing', 'pageColors', 'rememberLastView', 'externalLinkTarget', 'pdfJsOptions', 'httpHeaders', 'onPagesEdited'],
+    load: () => import('../pages/power/power.component').then((m) => m.PowerComponent),
   },
 ];
 

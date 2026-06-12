@@ -21,6 +21,8 @@ export class ErrorsComponent {
   private readonly samples = inject(SamplePdfService);
 
   readonly broken = signal(false);
+  readonly protectedDoc = signal(false);
+  readonly passwordPrompts = signal(0);
   readonly errorOverride = signal(true);
   readonly errorAppend = signal(true);
   readonly errorMessage = signal('We couldn’t load this document. Please try again.');
@@ -40,7 +42,23 @@ export class ErrorsComponent {
 
   // a same-origin path that 404s — triggers the real document-load error path
   // (a cross-origin URL would instead trip the viewer's urlValidation guard).
-  readonly src = computed(() => (this.broken() ? '/assets/samples/missing-document.pdf' : this.samples.current().src));
+  readonly src = computed(() => {
+    if (this.broken()) return '/assets/samples/missing-document.pdf';
+    if (this.protectedDoc()) return '/assets/samples/password-sample.pdf';
+    return this.samples.current().src;
+  });
+
+  // The two simulations are mutually exclusive — turning one on clears the other.
+  toggleBroken(): void {
+    this.broken.update((v) => !v);
+    if (this.broken()) this.protectedDoc.set(false);
+  }
+  toggleProtected(): void {
+    this.protectedDoc.update((v) => !v);
+    if (this.protectedDoc()) this.broken.set(false);
+    this.passwordPrompts.set(0);
+  }
+  onPasswordPrompt(): void { this.passwordPrompts.update((n) => n + 1); }
 
   setMsg(e: Event): void { this.errorMessage.set((e.target as HTMLInputElement).value); }
   setTpl(e: Event): void { this.errTpl.set((e.target as HTMLSelectElement).value as ErrTpl); }
@@ -54,6 +72,14 @@ export class ErrorsComponent {
       { name: 'urlValidation', value: this.urlValidation(), kind: 'boolean', omitWhen: true },
     ];
     if (this.errTpl() !== 'none') b.push({ name: 'customErrorTpl', value: 'myErrorTpl', kind: 'expr' });
-    return this.codegen.generate(b);
+    let out = this.codegen.generate(b);
+    if (this.protectedDoc()) {
+      // event binding — outside CodeBinding's input-only vocabulary
+      out = out.replace(
+        '>\n</ng2-pdfjs-viewer>',
+        '\n  (onPasswordPrompt)="onPasswordPrompt()">\n</ng2-pdfjs-viewer>'
+      );
+    }
+    return out;
   });
 }

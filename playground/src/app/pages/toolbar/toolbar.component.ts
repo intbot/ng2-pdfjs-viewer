@@ -24,7 +24,7 @@ export class ToolbarComponent {
   readonly showFind = signal(true);
   readonly showFullScreen = signal(true);
   readonly showViewBookmark = signal(true);
-  readonly showAnnotations = signal(false);
+  readonly showAnnotations = signal(true);
 
   readonly showToolbarLeft = signal(true);
   readonly showToolbarMiddle = signal(true);
@@ -53,8 +53,8 @@ export class ToolbarComponent {
   readonly code = computed(() => {
     const b: CodeBinding[] = [{ name: 'pdfSrc', value: 'pdfSrc', kind: 'expr' }];
     for (const t of this.toggles) {
-      // defaults: showAnnotations=false, everything else=true — omit at default
-      b.push({ name: t.key, value: t.sig(), kind: 'boolean', omitWhen: t.key !== 'showAnnotations' });
+      // every visibility toggle defaults to true — omit at default
+      b.push({ name: t.key, value: t.sig(), kind: 'boolean', omitWhen: true });
     }
     for (const t of this.groupToggles) {
       b.push({ name: t.key, value: t.sig(), kind: 'boolean', omitWhen: true });

@@ -36,6 +36,128 @@ export interface ActionExecutionResult {
   success: boolean;
   error?: string;
   timestamp: number;
+  // Result payload for query actions (get-annotations, save-document, search)
+  data?: any;
+}
+
+// Annotation editor modes exposed by PDF.js. 'disable' tears the editing UI
+// down entirely; 'none' shows the toolbar buttons without an active tool.
+export type AnnotationEditorMode =
+  | "disable"
+  | "none"
+  | "freetext"
+  | "highlight"
+  | "stamp"
+  | "ink"
+  | "signature"
+  | "comment";
+
+// Editing/undo state of the annotation editor - drives save-button UX
+export interface AnnotationEditorState {
+  isEditing: boolean;
+  isEmpty: boolean;
+  hasSomethingToUndo: boolean;
+  hasSomethingToRedo: boolean;
+  hasSelectedEditor: boolean;
+}
+
+export interface AnnotationEditorModeChange {
+  mode: AnnotationEditorMode;
+}
+
+export interface SearchOptions {
+  caseSensitive?: boolean;
+  entireWord?: boolean;
+  // Highlight every match in the document (default true)
+  highlightAll?: boolean;
+  matchDiacritics?: boolean;
+}
+
+// Form field values keyed by field name. Text/choice fields are strings,
+// checkboxes booleans, radio groups the selected export value.
+export type FormDataMap = Record<string, string | boolean | null>;
+
+export interface WatermarkConfig {
+  text: string;
+  // CSS color (default #888888)
+  color?: string;
+  // 0..1 (default 0.25)
+  opacity?: number;
+  // CSS font-size (default '48px')
+  fontSize?: string;
+  // degrees (default -35)
+  rotation?: number;
+}
+
+// Client-side deterrence for casual copying - NOT DRM. A determined user can
+// always retrieve the bytes from the network layer.
+export interface ContentProtectionConfig {
+  blockPrint?: boolean;
+  blockDownload?: boolean;
+  disableTextSelection?: boolean;
+  watermark?: WatermarkConfig | null;
+}
+
+// Page-organization event (reorder/delete/extract/merge via the sidebar)
+export interface PagesEditedEvent {
+  operation: string;
+  pagesCount: number;
+}
+
+// Read-aloud progress events. 'reading' fires once per sentence with the
+// sentence text; the viewer highlights that sentence in the page text layer.
+export interface ReadAloudState {
+  status: "reading" | "paused" | "stopped" | "finished" | "error";
+  page: number;
+  sentence?: string;
+}
+
+// Per-page extracted text (BYO-AI integrations)
+export interface DocumentPageText {
+  page: number;
+  text: string;
+}
+
+// Sidebar panel switches (thumbnails/outline/attachments/layers)
+export type SidebarViewName =
+  | "none"
+  | "thumbs"
+  | "outline"
+  | "attachments"
+  | "layers"
+  | "unknown";
+export interface SidebarViewChange {
+  view: SidebarViewName;
+}
+
+// Optional-content (layers) lifecycle: 'loaded' once per layered document,
+// 'changed' on every visibility toggle
+export interface LayersChange {
+  reason: "loaded" | "changed";
+  layersCount?: number;
+}
+
+// Named action triggered from inside the document (GoToPage, Print, ...)
+export interface NamedActionEvent {
+  action: string;
+}
+
+// Host-side persistence for the signature editor's saved signatures
+// (server/per-user storage instead of the viewer iframe's localStorage).
+// `data` is PDF.js's serialized signature - treat it as an opaque JSON value.
+export interface PdfSignatureStorage {
+  loadAll(): Promise<Record<string, unknown>>;
+  save(uuid: string, data: unknown): Promise<void>;
+  delete(uuid: string): Promise<void>;
+}
+
+export interface SearchResult {
+  total: number;
+  current: { page: number; matchIndex: number } | null;
+  // Match count per page, index 0 = page 1
+  matchesPerPage: number[];
+  // 1-based page numbers that contain at least one match
+  pagesWithMatches: number[];
 }
 
 export type ChangedPage = number;
@@ -72,6 +194,10 @@ export type ToolbarDensity = "default" | "compact" | "comfortable";
 export type ToolbarPosition = "top" | "bottom";
 export type SidebarPosition = "left" | "right";
 
+// Where external links inside the PDF open. Mirrors PDF.js LinkTarget;
+// 'top'/'parent' additionally require the matching [iframeSandbox] grant.
+export type ExternalLinkTarget = "none" | "self" | "blank" | "parent" | "top";
+
 export interface LayoutConfig {
   toolbarDensity?: ToolbarDensity;
   sidebarWidth?: string; // e.g., '280px'
@@ -99,6 +225,8 @@ export interface ViewerConfig {
   useOnlyCssZoom?: boolean;
   diagnosticLogs?: boolean;
   locale?: string;
+  externalLinkTarget?: ExternalLinkTarget;
+  rememberLastView?: boolean;
 }
 
 // Theme & Visual Customization Configuration

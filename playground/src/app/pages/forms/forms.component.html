@@ -1,0 +1,39 @@
+<pg-page
+  title="Forms & Data"
+  lead="Fill AcroForm fields from Angular and read back what the user typed — two-way [(formData)] binding, single-field writes, and a save path that bakes values into the PDF."
+  [tags]="['[(formData)]','getFormData()','setFormField()','getDocumentAsBlob()']"
+  [code]="code"
+  docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
+
+  <div preview>
+    <ng2-pdfjs-viewer #viewer
+      [pdfSrc]="src"
+      [formData]="formData()" (formDataChange)="onFormDataChange($event)">
+    </ng2-pdfjs-viewer>
+  </div>
+
+  <div controls>
+    <div class="ph">Live form data</div>
+    <div class="row">
+      <span class="seg">
+        <button (click)="dump(viewer)" data-testid="form-dump">getFormData()</button>
+      </span>
+    </div>
+    <p class="count" data-testid="form-count">{{ fieldCount() }} fields · {{ changes() }} change events</p>
+    @if (dumpJson()) { <div class="dump" data-testid="form-json">{{ dumpJson() }}</div> }
+
+    <div class="ph">Write a field</div>
+    <div class="row">
+      <label>Field</label>
+      <input class="ctl-input" style="width:150px" [value]="fieldName()" (input)="setName($event)" placeholder="field name" />
+    </div>
+    <div class="row">
+      <label>Value</label>
+      <input class="ctl-input" style="width:150px" [value]="fieldValue()" (input)="setValue($event)" placeholder="value" />
+    </div>
+    <div class="row">
+      <span class="seg"><button (click)="setField(viewer)" data-testid="form-set">setFormField()</button></span>
+    </div>
+    <p class="note">Type into the PDF itself and watch the change counter — user edits stream back through [(formData)].</p>
+  </div>
+</pg-page>

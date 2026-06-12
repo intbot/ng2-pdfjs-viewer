@@ -15,12 +15,14 @@ export interface CodeBinding {
 export type FeatureGroup =
   | 'Getting Started'
   | 'Viewer UI'
+  | 'Editing & AI'
   | 'Behavior'
   | 'Integration';
 
 export const FEATURE_GROUPS: FeatureGroup[] = [
   'Getting Started',
   'Viewer UI',
+  'Editing & AI',
   'Behavior',
   'Integration',
 ];

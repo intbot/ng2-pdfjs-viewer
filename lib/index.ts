@@ -1,5 +1,7 @@
 export * from "./src/ng2-pdfjs-viewer.module";
-export * from "./src/ng2-pdfjs-viewer.component";
+// Named export: the component file also exports test-only helpers
+// (shallowEquals) that must not become public API
+export { PdfJsViewerComponent } from "./src/ng2-pdfjs-viewer.component";
 
 // Export types that are needed by consumer applications
 export {
@@ -17,6 +19,7 @@ export {
   ToolbarDensity,
   ToolbarPosition,
   SidebarPosition,
+  ExternalLinkTarget,
   // New event data interfaces
   DocumentError,
   PagesInfo,
@@ -29,4 +32,34 @@ export {
   // New high-value events
   AnnotationLayerRenderEvent,
   BookmarkClick,
+  // Annotation editing + programmatic search
+  AnnotationEditorMode,
+  AnnotationEditorState,
+  AnnotationEditorModeChange,
+  SearchOptions,
+  SearchResult,
+  // Forms + content protection
+  FormDataMap,
+  ContentProtectionConfig,
+  WatermarkConfig,
+  // Page organization, read-aloud, text extraction
+  PagesEditedEvent,
+  ReadAloudState,
+  DocumentPageText,
+  // Sidebar/layers/named-action/document-properties relays
+  SidebarViewName,
+  SidebarViewChange,
+  LayersChange,
+  NamedActionEvent,
+  // Signature persistence hook
+  PdfSignatureStorage,
 } from "./src/interfaces/ViewerTypes";
+
+// Bring-your-own-endpoint AI helper (no default network activity)
+export {
+  PdfAiAssistant,
+  PdfAiAssistantConfig,
+  PdfAiPanelConfig,
+  PdfAiPanelMessage,
+  PdfAiMessage,
+} from "./src/utils/PdfAiAssistant";
