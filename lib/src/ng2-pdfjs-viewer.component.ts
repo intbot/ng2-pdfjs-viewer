@@ -70,7 +70,7 @@ import {
   PdfAiMessage,
   PdfAiPanelConfig,
   PdfAiPanelMessage,
-} from "./utils/PdfAiAssistant";
+} from "ng2-pdfjs-viewer/ai";
 
 // The iframe sandbox shipped on every viewer embed. allow-popups (+ escape)
 // lets external PDF links open in a new, unsandboxed tab - the only link

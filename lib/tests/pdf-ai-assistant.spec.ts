@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { PdfAiAssistant } from "../src/utils/PdfAiAssistant";
+import { PdfAiAssistant } from "../ai";
 
 const PAGES = [
   { page: 1, text: "First page text." },

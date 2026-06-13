@@ -15,12 +15,6 @@
   },
   "module": "dist/fesm2022/ng2-pdfjs-viewer.mjs",
   "typings": "dist/types/ng2-pdfjs-viewer.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/types/ng2-pdfjs-viewer.d.ts",
-      "default": "./dist/fesm2022/ng2-pdfjs-viewer.mjs"
-    }
-  },
   "devDependencies": {
     "@angular/compiler-cli": "^22.0.0",
     "esbuild": "^0.28.0",

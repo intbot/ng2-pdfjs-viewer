@@ -1,4 +1,6 @@
-// Minimal bring-your-own-endpoint AI client for chat-with-PDF and
+// Secondary entry point: ng2-pdfjs-viewer/ai
+//
+// A minimal bring-your-own-endpoint AI client for chat-with-PDF and
 // summarization flows. The library NEVER talks to any AI service on its own:
 // this class only sends requests when the host application calls it, to the
 // endpoint the host application configured, with the host application's key.
@@ -6,15 +8,27 @@
 // Works with any OpenAI-compatible chat-completions endpoint: OpenAI, Azure
 // OpenAI, Anthropic-compatible gateways, Ollama, vLLM, LM Studio, etc.
 //
+// This is a headless, framework-free entry point — it imports nothing from
+// Angular, so it can be used outside an Angular context (a worker, a Node
+// service, a plain script). The full component re-exports these symbols from
+// the package root for backwards compatibility.
+//
 // Usage:
+//   import { PdfAiAssistant } from "ng2-pdfjs-viewer/ai";
 //   const text = await viewer.getDocumentText();
 //   const ai = new PdfAiAssistant({
-//     endpoint: 'http://localhost:11434/v1/chat/completions', // e.g. Ollama
-//     model: 'llama3.2',
+//     endpoint: "http://localhost:11434/v1/chat/completions", // e.g. Ollama
+//     model: "llama3.2",
 //   });
-//   const answer = await ai.ask('What is this document about?', text);
+//   const answer = await ai.ask("What is this document about?", text);
 
-import { DocumentPageText } from "../interfaces/ViewerTypes";
+// Per-page document text — the shape returned by
+// PdfJsViewerComponent.getDocumentText(). Declared locally so this entry point
+// has no dependency on the component's type module.
+export interface PdfPageText {
+  page: number;
+  text: string;
+}
 
 export interface PdfAiAssistantConfig {
   // Full URL of an OpenAI-compatible /chat/completions endpoint
@@ -70,7 +84,7 @@ export class PdfAiAssistant {
    */
   async ask(
     question: string,
-    documentText: DocumentPageText[],
+    documentText: PdfPageText[],
     history: PdfAiMessage[] = [],
     signal?: AbortSignal
   ): Promise<string> {
@@ -91,7 +105,7 @@ export class PdfAiAssistant {
   }
 
   /** One-shot document summary. */
-  async summarize(documentText: DocumentPageText[]): Promise<string> {
+  async summarize(documentText: PdfPageText[]): Promise<string> {
     return this.ask(
       "Summarize this document concisely. Lead with what it is, then the key points.",
       documentText
@@ -131,7 +145,7 @@ export class PdfAiAssistant {
     return content;
   }
 
-  private buildContext(documentText: DocumentPageText[]): string {
+  private buildContext(documentText: PdfPageText[]): string {
     const max = this.config.maxContextChars ?? 100_000;
     let out = "";
     for (const page of documentText ?? []) {

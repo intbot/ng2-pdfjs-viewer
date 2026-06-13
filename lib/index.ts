@@ -55,11 +55,16 @@ export {
   PdfSignatureStorage,
 } from "./src/interfaces/ViewerTypes";
 
-// Bring-your-own-endpoint AI helper (no default network activity)
+// Bring-your-own-endpoint AI helper (no default network activity). The
+// implementation lives in the `ng2-pdfjs-viewer/ai` secondary entry point
+// (headless, no Angular dependency); these are re-exported here for
+// backwards compatibility so existing `from "ng2-pdfjs-viewer"` imports keep
+// working.
 export {
   PdfAiAssistant,
   PdfAiAssistantConfig,
   PdfAiPanelConfig,
   PdfAiPanelMessage,
   PdfAiMessage,
-} from "./src/utils/PdfAiAssistant";
+  PdfPageText,
+} from "ng2-pdfjs-viewer/ai";
