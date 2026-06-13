@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [26.0.0] - 2026-06-13
+
 ### Added
 
 #### ✍️ Annotation Editing & eSign
@@ -38,6 +40,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   answers cite pages as `[p.3]` and citations click-through to the page. The library never
   calls any AI service on its own. `getDocumentText()` extracts per-page text for custom
   integrations.
+- The headless `PdfAiAssistant` is also published as a standalone secondary entry point —
+  `import { PdfAiAssistant } from "ng2-pdfjs-viewer/ai"` — so it can be used and tree-shaken
+  independently of the component, with no Angular dependency. It is still re-exported from the
+  package root (`ng2-pdfjs-viewer`) for backwards compatibility.
 - Read-aloud (`startReadAloud()`/`pauseReadAloud()`/`resumeReadAloud()`/`stopReadAloud()`)
   with browser speech synthesis: reads sentence by sentence, highlights the sentence being
   spoken in the page text layer, and reports progress via `(onReadAloudStateChange)`
