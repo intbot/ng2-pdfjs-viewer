@@ -1,1049 +1,214 @@
-# Angular PDF viewer powered by Mozilla's PDF.js
-
-The most reliable, feature-rich Angular PDF viewer component powered by Mozilla's PDF.js
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/intbot/ng2-pdfjs-viewer/master/lib/logo.svg" alt="ng2-pdfjs-viewer Logo" width="120" height="140" />
-</div>
-
 <div align="center">
 
-[![NPM Version](https://img.shields.io/npm/v/ng2-pdfjs-viewer?logo=npm&color=blue)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
-[![PDF.js Version](https://img.shields.io/badge/PDF.js%20v5.3.93-latest-green?logo=mozilla)](https://github.com/mozilla/pdf.js)
-[![Angular Support](https://img.shields.io/badge/Angular%2020+-supported-red?logo=angular)](https://angular.dev/overview)
-[![NPM Downloads](https://img.shields.io/npm/dm/ng2-pdfjs-viewer?label=downloads%2Fmonth&color=orange)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
-[![Total Downloads](https://img.shields.io/badge/total%20downloads-7M+-brightgreen?logo=npm)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
-[![Since 2018](https://img.shields.io/badge/since-2018-blue?logo=calendar)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
-[![License](https://img.shields.io/badge/license-Apache%202.0%20%2B%20Commons%20Clause-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![GitHub Stars](https://img.shields.io/github/stars/intbot/ng2-pdfjs-viewer?logo=github)](https://github.com/intbot/ng2-pdfjs-viewer)
-[![npm provenance](https://img.shields.io/badge/npm-provenance-blue?logo=npm)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+<img src="https://raw.githubusercontent.com/intbot/ng2-pdfjs-viewer/master/lib/logo.svg" alt="ng2-pdfjs-viewer" width="120" height="140" />
+
+# ng2-pdfjs-viewer
+
+**A complete PDF experience in one Angular component — view, annotate, sign, fill forms, search, and read aloud, powered by Mozilla PDF.js.**
+
+[![npm](https://img.shields.io/npm/v/ng2-pdfjs-viewer?logo=npm&color=blue)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+[![downloads / month](https://img.shields.io/npm/dm/ng2-pdfjs-viewer?color=orange)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+[![total downloads](https://img.shields.io/badge/total-7M%2B-brightgreen?logo=npm)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+[![PDF.js](https://img.shields.io/badge/PDF.js-6.0.227-green?logo=mozilla)](https://github.com/mozilla/pdf.js)
+[![Angular](https://img.shields.io/badge/Angular-%3E%3D10-red?logo=angular)](https://angular.dev)
+[![license](https://img.shields.io/badge/license-Apache--2.0%20%2B%20Commons%20Clause-blue.svg)](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/LICENSE)
+[![stars](https://img.shields.io/github/stars/intbot/ng2-pdfjs-viewer?logo=github)](https://github.com/intbot/ng2-pdfjs-viewer)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/intbot/ng2-pdfjs-viewer/badge)](https://scorecard.dev/viewer/?uri=github.com/intbot/ng2-pdfjs-viewer)
 
-</div>
-
-<div align="center">
-
-[**Live Demo**](https://angular-pdf-viewer-demo.vercel.app/) • [**Documentation**](https://angular-pdf-viewer-docs.vercel.app/) • [**API Reference**](#-api-reference) • [**Examples**](#-examples) • [**Server Examples**](../Server-Side-Examples.md) • [**Migration Guide**](#-migration-guide)
+[**Live demo**](https://angular-pdf-viewer-demo.vercel.app/) · [**Documentation**](https://angular-pdf-viewer-docs.vercel.app/) · [**API reference**](https://angular-pdf-viewer-docs.vercel.app/docs/api/component-inputs) · [**Changelog**](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CHANGELOG.md)
 
 </div>
 
 ---
 
-ng2-pdfjs-viewer is the most comprehensive and feature-rich Angular PDF viewer component available. **Born in 2018** and still going strong with over **7+ million downloads**, this battle-tested library has been trusted by developers worldwide for **over 8 years**, powering thousands of applications.
+Drop a production PDF viewer into any Angular app with a single tag. ng2-pdfjs-viewer wraps
+Mozilla **PDF.js 6** in one declarative `<ng2-pdfjs-viewer>` component: rendering, navigation,
+search, printing, theming, annotations, e-signatures, AcroForms, read-aloud, and a bring-your-own
+AI assistant — all driven by typed `@Input()`s and `@Output()` events, no iframe plumbing of your own.
 
-This powerful library enables developers to seamlessly integrate PDF viewing capabilities into Angular applications with enterprise-grade features, custom theming, and mobile-first responsive design. Built on Mozilla's PDF.js v5.3.93, ng2-pdfjs-viewer provides advanced PDF rendering, document navigation, search functionality, and extensive customization options.
-
-Whether you need a simple embedded PDF viewer or a complex document management system, this component delivers the performance and flexibility required for modern Angular applications. **The most mature and reliable Angular PDF viewer solution** with continuous updates and long-term support.
-
-### Why Choose ng2-pdfjs-viewer?
-
-- **🚀 Always Up-to-Date** - Continuously updated with the latest PDF.js versions and Angular compatibility
-- **🏗️ Enterprise-Ready** - Built for production with comprehensive error handling and performance optimization
-- **🎨 Highly Customizable** - Extensive theming options, custom templates, and flexible configuration
-- **📱 Mobile Optimized** - Touch-friendly interface with responsive design for all screen sizes
-- **🔧 Developer Friendly** - Full TypeScript support, comprehensive documentation, and easy integration
-- **⚡ High Performance** - Event-driven architecture with efficient memory management and lazy loading
-- **🌍 Global Support** - Multi-language support with automatic locale detection and RTL compatibility
-- **🛡️ Production Tested** - Trusted by thousands of applications with millions of downloads
-- **📈 Proven Track Record** - 8+ years of continuous development and community support
-- **🔒 Security Focused** - Regular security updates and vulnerability patches
-
-### 🆕 Latest Features (v25.x)
-
-| Feature                       | Description                                                        | Status |
-| ----------------------------- | ------------------------------------------------------------------ | ------ |
-| **Advanced Theme System**     | CSS custom properties for complete visual customization            | ✅ New |
-| **Template-Based UI**         | Custom loading spinners and error displays using Angular templates | ✅ New |
-| **Convenience Configuration** | Object-based configuration for cleaner, more maintainable code     | ✅ New |
-| **Event-Driven Architecture** | Pure event-based system with universal action dispatcher           | ✅ New |
-| **Enhanced Error Handling**   | Multiple error display styles with custom templates                | ✅ New |
-| **Mobile-First Design**       | Responsive layout optimized for touch devices                      | ✅ New |
-| **TypeScript Strict Mode**    | Full type safety with comprehensive API coverage                   | ✅ New |
-| **URL Security Validation**   | Prevents unauthorized file parameter manipulation with custom templates | ✅ New |
-| **Leaner, Faster Package**    | ~22% smaller npm package (4.1 MB → 3.2 MB), viewer scripts now ship minified, 1,000+ lines of dead code removed | ✅ New |
-
-### 🏆 Unique Advantages
-
-- **Universal Action Dispatcher** - Single pathway for all actions with readiness validation
-- **Template-Based Customization** - Use Angular templates for loading and error states
-- **Comprehensive Event System** - 24+ events covering all user interactions and state changes
-- **Advanced Configuration Objects** - Clean, object-based configuration for complex setups
-- **Production-Ready Architecture** - Event-driven design with no timeouts or polling
-- **Complete API Coverage** - 19+ methods with consistent Promise-based returns
-
-### 🎯 Perfect For
-
-- **Enterprise Applications** - Robust, scalable PDF viewing for business applications
-- **Document Management Systems** - Complete PDF handling with search and navigation
-- **E-Learning Platforms** - Interactive PDF viewing for educational content
-- **Financial Applications** - Secure PDF viewing for reports and statements
-- **Healthcare Systems** - Reliable PDF viewing for medical documents
-- **Government Portals** - Accessible PDF viewing for public services
-- **E-Commerce Platforms** - Product catalogs and documentation viewing
-- **Content Management Systems** - Integrated PDF viewing and management
-
----
-
-## 📋 Table of Contents
-
-- [Quick Start](#-quick-start)
-- [Features](#-features)
-- [Installation](#-installation)
-- [Basic Usage](#-basic-usage)
-- [Advanced Configuration](#advanced-configuration)
-- [API Reference](#-api-reference)
-- [Examples](#-examples)
-- [Accessibility](#-accessibility)
-- [Migration Guide](#-migration-guide)
-- [Deprecated Features](#deprecated-features)
-- [Contributing](#-contributing)
-- [License](#-license)
-
----
-
-## 🚀 Quick Start
-
-> **🎯 Live Demo**: [https://angular-pdf-viewer-demo.vercel.app/](https://angular-pdf-viewer-demo.vercel.app/)  
-> **📚 Documentation**: [https://angular-pdf-viewer-docs.vercel.app/](https://angular-pdf-viewer-docs.vercel.app/)  
-> **📁 Source Code**: [https://github.com/intbot/ng2-pdfjs-viewer/tree/main/SampleApp](https://github.com/intbot/ng2-pdfjs-viewer/tree/main/SampleApp)
-
-### 1. Install the Package
+Shipping since **2018**, **7M+ downloads**, mobile-first, and built & verified on **Angular 22**
+while keeping a wide `>=10` peer range so existing apps upgrade without churn.
 
 ```bash
-npm install ng2-pdfjs-viewer --save
+npm install ng2-pdfjs-viewer
 ```
 
-### 2. Import the Module
+```html
+<ng2-pdfjs-viewer pdfSrc="assets/sample.pdf"></ng2-pdfjs-viewer>
+```
+
+That's the whole integration. [Wire up the assets](#-quick-start) and you have a full viewer.
+
+## ✨ Highlights
+
+| | |
+|---|---|
+| 📄 **View anything** | Crisp PDF.js 6 rendering, zoom, navigation, thumbnails, outline, printing — embedded, in a new tab, or a popout window. |
+| ✍️ **Annotate & sign** | Highlight, draw, free-text, and stamp editors; opt-in draw/type/upload **signature** editor and threaded comments. Export and restore edits for a full server round-trip. |
+| 🧾 **Fill forms** | Two-way AcroForm binding — read and write field values from your component, save the filled document as a blob. |
+| 🔎 **Search in code** | Programmatic `search()` with totals, per-page counts, and next/previous navigation — build your own find UI. |
+| 🤖 **AI assistant (BYO)** | Point it at any OpenAI-compatible endpoint (OpenAI, Azure, Ollama, vLLM…). Answers cite pages and click through. **The library never calls an AI service on its own.** |
+| 🔊 **Read aloud** | Browser speech synthesis reads sentence by sentence, highlighting the spoken text and reporting progress. |
+| 🗂️ **Organize pages** | Reorder, delete, cut/copy/paste, extract, and merge pages in the viewer's "Manage pages" panel. |
+| 🎨 **Make it yours** | CSS-variable theming, true dark-mode page rendering, and your own Angular templates for the toolbar, sidebar, and per-page overlays. |
+| 🛡️ **Protect content** | Block print/download, disable selection, and stamp watermarks (honest client-side deterrence — not DRM). |
+| ♿ **Accessible** | Screen-reader friendly, tagged-PDF aware, keyboard navigable — with a [WCAG / EAA guide](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/ACCESSIBILITY.md). |
+
+→ Explore every feature with live code on the **[documentation site](https://angular-pdf-viewer-docs.vercel.app/)** and **[demo](https://angular-pdf-viewer-demo.vercel.app/)**.
+
+## 🚀 Quick start
+
+**1. Install**
+
+```bash
+npm install ng2-pdfjs-viewer
+```
+
+**2. Import the module** (or import the standalone component directly)
 
 ```typescript
-import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
 import { PdfJsViewerModule } from "ng2-pdfjs-viewer";
 
 @NgModule({
   imports: [BrowserModule, PdfJsViewerModule],
-  // ... rest of your module
 })
 export class AppModule {}
 ```
 
-### 3. Use in Your Component
+**3. Use the component**
 
 ```html
-<ng2-pdfjs-viewer
-  pdfSrc="assets/sample.pdf"
-  [showSpinner]="true"
-  [theme]="'light'"
->
-</ng2-pdfjs-viewer>
+<ng2-pdfjs-viewer pdfSrc="assets/sample.pdf" [theme]="'dark'"></ng2-pdfjs-viewer>
 ```
 
-### 4. Configure Assets (Required)
-
-Add PDF.js assets to your `angular.json`:
+**4. Serve the PDF.js assets** — add them to your `angular.json` `assets` array:
 
 ```json
 {
-  "projects": {
-    "your-app": {
-      "architect": {
-        "build": {
-          "options": {
-"assets": [
-              {
-                "glob": "**/*",
-                "input": "node_modules/ng2-pdfjs-viewer/pdfjs",
-                "output": "/assets/pdfjs"
-              }
-            ]
-          }
-        }
-      }
-    }
-  }
+  "glob": "**/*",
+  "input": "node_modules/ng2-pdfjs-viewer/pdfjs",
+  "output": "/assets/pdfjs"
 }
 ```
 
----
+> **Production note:** PDF.js 6 ships ES modules (`.mjs`), localization (`.ftl`), and WebAssembly
+> (`.wasm`) assets. Make sure your web server returns the correct MIME types for them — see the
+> [deployment guide](https://angular-pdf-viewer-docs.vercel.app/docs/getting-started) for the
+> nginx/IIS snippets.
 
-## ✨ Features
+## 🧩 What you can build
 
-**🎉 7+ Million Downloads & Counting!** - Trusted by developers worldwide for reliable PDF viewing in Angular applications since 2018.
+A few of the things the component makes one-liners. Full, runnable versions live in the
+[feature guides](https://angular-pdf-viewer-docs.vercel.app/docs/features/overview).
 
-### 🎯 Core PDF Viewing Features
-
-- **📄 High-Quality PDF Rendering** - Powered by Mozilla's PDF.js v5.3.93 for superior document display
-- **🔄 Multiple Display Modes** - Embedded viewer, new window, or external tab options
-- **📱 Mobile-First Responsive Design** - Touch-friendly controls optimized for all devices
-- **🌍 Complete Internationalization** - Support for 50+ languages with automatic locale detection
-- **⚡ Optimized Performance** - Lazy loading, memory management, and efficient rendering
-
-### 🎨 Visual Customization
-
-- **🎨 Theme System** - Light, dark, and auto themes with custom color schemes
-- **🎭 Custom Styling** - CSS custom properties for complete visual control
-- **🔄 Loading States** - Custom loading spinners with template support
-- **❌ Error Handling** - Multiple error display styles with custom templates
-- **📐 Layout Control** - Toolbar density, sidebar width, and positioning options
-
-### 🔧 Developer Features
-
-- **📝 TypeScript Support** - Full type safety with strict mode
-- **🔌 Event System** - Comprehensive event handling for all user interactions
-- **⚙️ Configuration Objects** - Convenience setters for cleaner code
-- **🛠️ API Methods** - Promise-based methods for programmatic control
-- **🐛 Debugging** - Built-in diagnostic logging and error tracking
-
-### 📊 Advanced Features
-
-- **🔍 Search & Navigation** - Full-text search with highlighting
-- **📖 Bookmarks & Attachments** - Document structure navigation
-- **🖨️ Print & Download** - Built-in print and download functionality
-- **🔄 Rotation & Zoom** - Document manipulation with smooth animations
-- **📱 Touch Gestures** - Mobile-optimized touch interactions
-
-### 🔒 Security Features
-
-- **CSP Compliant** - Works with strict Content Security Policy (`style-src 'self'`)
-- **URL Validation** - Prevents unauthorized file parameter manipulation in external viewer
-- **Custom Security Templates** - Angular template support for security warnings
-- **Console Warnings** - Developer-friendly security notifications
-
-### 🗂️ Large Documents & Fast Web View
-
-PDF.js streams documents with HTTP range requests when the server allows it,
-so the first pages render before the whole file downloads. To get this for
-large PDFs:
-
-1. **Linearize your PDFs** ("fast web view") when producing them, e.g.
-   `qpdf --linearize input.pdf output.pdf`.
-2. **Serve with range support**: the server must send `Accept-Ranges: bytes`
-   and honor `Range` requests (standard on Nginx/IIS/S3/CDNs; verify proxies
-   don't strip it).
-3. Pages render lazily as you scroll (virtualized) — memory stays bounded even
-   for thousand-page documents.
-
-Note: when using the `httpHeaders`/`withCredentials` authenticated-fetch path,
-the component downloads the full document first (headers cannot be attached to
-the viewer's own streaming fetch) — prefer time-limited signed URLs for very
-large protected documents.
-
----
-
-## 📦 Installation
-
-### Prerequisites
-
-- **Angular**: 20.0+ (recommended) | 2.0+ (supported)
-- **Node.js**: 18.0+
-- **TypeScript**: 5.0+
-
-### Production Deployment
-
-#### Nginx Configuration
-
-For production deployments using nginx, configure MIME types for PDF.js ES modules:
-
-```nginx
-# Add to your nginx.conf or site configuration
-types {
-    application/javascript  js mjs;
-    text/plain             ftl;
-}
-```
-
-#### IIS Configuration (Windows Server)
-
-For production deployments using IIS, add to your `web.config`:
-
-```xml
-<configuration>
-  <system.webServer>
-    <staticContent>
-      <mimeMap fileExtension=".mjs" mimeType="application/javascript" />
-      <mimeMap fileExtension=".ftl" mimeType="text/plain" />
-    </staticContent>
-  </system.webServer>
-</configuration>
-```
-
-**Why this is needed**: PDF.js v5+ uses `.mjs` files (ES modules) and `.ftl` files (localization). Without proper MIME type configuration, web servers serve these files with incorrect content-type headers, causing the PDF viewer to crash during loading in production environments.
-
-### Angular Version Support
-
-| Angular Version | Support Level | Notes |
-|----------------|---------------|-------|
-| **20.0 - 22.x** | ✅ **Recommended** | Fully tested and optimized; built and verified on Angular 22 |
-| **15.0 - 19.x** | ✅ **Supported** | Should work with minor testing |
-| **10.0 - 14.x** | ✅ **Supported** | Compatible with testing |
-| **2.0 - 9.x** | ⚠️ **Legacy** | May require additional testing |
-
-**Note**: While the library supports Angular 2.0+, it's primarily tested and optimized for Angular 20+ (currently built and verified on Angular 22). For production use with older versions, thorough testing is recommended. The library uses relaxed peer dependencies (Angular >=10.0.0) to ensure compatibility across different Angular versions.
-
-### Install Package
-
-```bash
-# Using npm
-npm install ng2-pdfjs-viewer --save
-
-# Using yarn
-yarn add ng2-pdfjs-viewer
-
-# Using pnpm
-pnpm add ng2-pdfjs-viewer
-```
-
-### Configure Assets
-
-Add PDF.js assets to your `angular.json`:
-
-```json
-{
-  "projects": {
-    "your-app": {
-      "architect": {
-        "build": {
-          "options": {
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "node_modules/ng2-pdfjs-viewer/pdfjs",
-                "output": "/assets/pdfjs"
-              }
-            ]
-          }
-        }
-      }
-    }
-  }
-}
-```
-
----
-
-## 🎯 Basic Usage
-
-### Simple PDF Viewer
-
-```html
-<ng2-pdfjs-viewer pdfSrc="assets/document.pdf" [showSpinner]="true">
-</ng2-pdfjs-viewer>
-```
-
-### Advanced Configuration
+**Annotate, sign, and save the result**
 
 ```html
 <ng2-pdfjs-viewer
-  pdfSrc="assets/document.pdf"
-  [theme]="'dark'"
-  [primaryColor]="'#007acc'"
-  [showSpinner]="true"
-  [customSpinnerTpl]="customSpinner"
-  [customErrorTpl]="customError"
-  (onDocumentLoad)="onDocumentLoaded($event)"
-  (onPageChange)="onPageChanged($event)"
->
+  #viewer
+  pdfSrc="assets/contract.pdf"
+  [(annotationEditor)]="mode"
+  [enableSignatureEditor]="true">
 </ng2-pdfjs-viewer>
 ```
-
-### Security Configuration
-
-```html
-<!-- Basic security (default enabled) -->
-<ng2-pdfjs-viewer 
-  pdfSrc="assets/document.pdf"
-  [urlValidation]="true">
-</ng2-pdfjs-viewer>
-
-<!-- Custom security template -->
-<ng2-pdfjs-viewer 
-  pdfSrc="assets/document.pdf"
-  [urlValidation]="true"
-  [customSecurityTpl]="securityTemplate">
-</ng2-pdfjs-viewer>
-
-<ng-template #securityTemplate let-warning="securityWarning">
-  <div class="alert alert-warning" *ngIf="warning">
-    <h4>⚠️ Security Warning</h4>
-    <p>{{ warning.message }}</p>
-    <button (click)="pdfViewer.dismissSecurityWarning()">Dismiss</button>
-  </div>
-</ng-template>
-```
-
-### Programmatic Control
-
 ```typescript
-import { Component, ViewChild } from "@angular/core";
-import { PdfJsViewerComponent } from "ng2-pdfjs-viewer";
-
-@Component({
-  template: `
-    <ng2-pdfjs-viewer #pdfViewer pdfSrc="document.pdf"></ng2-pdfjs-viewer>
-    <button (click)="goToPage(5)">Go to Page 5</button>
-  `,
-})
-export class MyComponent {
-  @ViewChild("pdfViewer") pdfViewer!: PdfJsViewerComponent;
-
-  async goToPage(page: number) {
-    await this.pdfViewer.goToPage(page);
-  }
-}
+// Later: hand the annotated + signed document to your upload
+const blob = await this.viewer.getDocumentAsBlob();
 ```
 
----
+**Bring your own AI assistant**
 
-## Advanced Configuration
-
-### Theme Customization
-
+```html
+<ng2-pdfjs-viewer pdfSrc="assets/report.pdf" [aiAssistantConfig]="ai"></ng2-pdfjs-viewer>
+```
 ```typescript
-// Component
-export class MyComponent {
-  themeConfig = {
-    theme: "light",
-    primaryColor: "#007acc",
-    backgroundColor: "#ffffff",
-    toolbarColor: "#f5f5f5",
-    textColor: "#333333",
-    borderRadius: "8px",
-  };
-}
+ai = { endpoint: "https://api.openai.com/v1/chat/completions", apiKey: "…", model: "gpt-4o" };
+// Answers cite pages as [p.3] and click through. Your endpoint, your keys.
 ```
 
-```html
-<!-- Template -->
-<ng2-pdfjs-viewer [themeConfig]="themeConfig" [customCSS]="customStyles">
-</ng2-pdfjs-viewer>
-```
-
-### Custom Loading Spinner
+**Replace the toolbar with your own**
 
 ```html
-<ng-template #customSpinner>
-  <div class="custom-spinner">
-    <div class="spinner"></div>
-    <p>Loading PDF...</p>
-  </div>
+<ng2-pdfjs-viewer pdfSrc="assets/doc.pdf" [customToolbarTpl]="myToolbar"></ng2-pdfjs-viewer>
+
+<ng-template #myToolbar let-viewer>
+  <button (click)="viewer.goToPage(1)">First page</button>
+  <button (click)="viewer.startReadAloud()">▶ Read aloud</button>
 </ng-template>
-
-<ng2-pdfjs-viewer
-  [customSpinnerTpl]="customSpinner"
-  [spinnerClass]="'my-spinner'"
->
-</ng2-pdfjs-viewer>
 ```
 
-### Custom Error Display
+## 📚 Documentation
 
-```html
-<ng-template #customError>
-  <div class="error-container">
-    <mat-icon>error</mat-icon>
-    <h3>Failed to Load PDF</h3>
-    <p>Please check your internet connection and try again.</p>
-    <button mat-button (click)="retry()">Retry</button>
-  </div>
-</ng-template>
+The README is the front door — the deep reference lives on the docs site and stays in sync with each release.
 
-<ng2-pdfjs-viewer [customErrorTpl]="customError" [errorClass]="'my-error'">
-</ng2-pdfjs-viewer>
-```
+| | |
+|---|---|
+| 🏁 [Getting started](https://angular-pdf-viewer-docs.vercel.app/docs/getting-started) | Install, assets, first viewer, production deployment |
+| 🧭 [Feature guides](https://angular-pdf-viewer-docs.vercel.app/docs/features/overview) | Annotation, forms, search, AI, read-aloud, custom UI, protection, and more |
+| 🔧 [API reference](https://angular-pdf-viewer-docs.vercel.app/docs/api/component-inputs) | Every `@Input()`, `@Output()`, and method, with types |
+| ♿ [Accessibility](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/ACCESSIBILITY.md) | Screen readers, tagged PDFs, keyboard nav, WCAG / EAA |
+| 🖥️ [Server-side examples](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/Server-Side-Examples.md) | Streaming, authenticated fetch, signed URLs |
+| 📝 [Changelog](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CHANGELOG.md) | What changed, and behavior notes when upgrading |
 
-### External Window Behavior
+The component exposes **30+ inputs**, **24+ events**, and **19+ Promise-returning methods**.
+The [API reference](https://angular-pdf-viewer-docs.vercel.app/docs/api/component-inputs) is the
+complete, typed list.
 
-```html
-<!-- Basic external window (reuses same tab) -->
-<ng2-pdfjs-viewer 
-  pdfSrc="document.pdf"
-  [externalWindow]="true">
-</ng2-pdfjs-viewer>
+## 🔌 Loading documents
 
-<!-- Custom window options -->
-<ng2-pdfjs-viewer 
-  pdfSrc="document.pdf"
-  [externalWindow]="true"
-  [externalWindowOptions]="'width=1200,height=800,scrollbars=yes,resizable=yes'">
-</ng2-pdfjs-viewer>
-
-<!-- Force new tab each time -->
-<ng2-pdfjs-viewer 
-  pdfSrc="document.pdf"
-  [externalWindow]="true"
-  [target]="'pdf-viewer-' + Date.now()">
-</ng2-pdfjs-viewer>
-```
-
-**Tab Reuse Behavior:**
-- **Same `target` name** → Reuses existing tab (default behavior)
-- **Unique `target` name** → Always opens new tab
-- **`target="_blank"`** → Browser decides (usually reuses)
-
-### iframe Security
-
-```html
-<!-- Built-in security (always enabled) -->
-<ng2-pdfjs-viewer 
-  pdfSrc="document.pdf">
-</ng2-pdfjs-viewer>
-```
-
-**Built-in Security Features:**
-- **Static Sandbox** - `allow-forms allow-scripts allow-same-origin allow-modals`
-- **XSS Prevention** - Prevents malicious scripts from affecting parent page
-- **CSP Compliance** - Meets Content Security Policy requirements
-- **Data Protection** - Limits iframe access to parent window context
-- **Enterprise Ready** - Suitable for corporate security environments
-
-**Sandbox Attributes (Fixed for Security):**
-- `allow-forms` - Required for PDF form functionality
-- `allow-scripts` - Required for PDF.js JavaScript execution
-- `allow-same-origin` - Required for loading PDF files and assets
-- `allow-modals` - Required for PDF.js dialogs (print, download)
-
-### iframe Styling
-
-```html
-<!-- Default (no border) -->
-<ng2-pdfjs-viewer 
-  pdfSrc="document.pdf">
-</ng2-pdfjs-viewer>
-
-<!-- Custom border -->
-<ng2-pdfjs-viewer 
-  pdfSrc="document.pdf"
-  iframeBorder="2px solid #ccc">
-</ng2-pdfjs-viewer>
-
-<!-- Numeric border -->
-<ng2-pdfjs-viewer 
-  pdfSrc="document.pdf"
-  [iframeBorder]="1">
-</ng2-pdfjs-viewer>
-
-<!-- No border (explicit) -->
-<ng2-pdfjs-viewer 
-  pdfSrc="document.pdf"
-  iframeBorder="0">
-</ng2-pdfjs-viewer>
-```
-
----
-
-## 📚 API Reference
-
-### Input Properties
-
-| Property                     | Type                                      | Default      | Description                           |
-| ---------------------------- | ----------------------------------------- | ------------ | ------------------------------------- |
-| `pdfSrc`                     | `string \| Blob \| Uint8Array`            | -            | PDF source (URL, Blob, or byte array) |
-| `viewerId`                   | `string`                                  | auto         | Unique viewer identifier              |
-| `viewerFolder`               | `string`                                  | `'assets'`   | Path to PDF.js assets                 |
-| `externalWindow`             | `boolean`                                 | `false`      | Open in new window                    |
-| `externalWindowOptions`      | `string`                                  | -            | External window options (size, position, etc.) |
-| `target`                     | `string`                                  | `'_blank'`   | Target for external window (controls tab reuse) |
-| `theme`                      | `'light' \| 'dark' \| 'auto'`             | `'light'`    | Theme selection                       |
-| `primaryColor`               | `string`                                  | `'#007acc'`  | Primary color for UI elements         |
-| `backgroundColor`            | `string`                                  | `'#ffffff'`  | Background color                      |
-| `pageBorderColor`            | `string`                                  | -            | Page border color                     |
-| `toolbarColor`               | `string`                                  | -            | Toolbar background color              |
-| `textColor`                  | `string`                                  | -            | Text color                            |
-| `borderRadius`               | `string`                                  | -            | Border radius                         |
-| `customCSS`                  | `string`                                  | -            | Custom CSS styles                     |
-| `cspNonce`                   | `string`                                  | -            | CSP nonce for customCSS (optional)    |
-| `iframeTitle`                | `string`                                  | -            | Accessible title for iframe (optional) |
-| `showSpinner`                | `boolean`                                 | `true`       | Show loading spinner                  |
-| `customSpinnerTpl`           | `TemplateRef`                             | -            | Custom spinner template               |
-| `spinnerClass`               | `string`                                  | -            | Custom spinner CSS class              |
-| `customErrorTpl`             | `TemplateRef`                             | -            | Custom error template                 |
-| `errorClass`                 | `string`                                  | -            | Custom error CSS class                |
-| `errorOverride`              | `boolean`                                 | `false`      | Override default error handling       |
-| `errorAppend`                | `boolean`                                 | `true`       | Append to default error messages      |
-| `errorMessage`               | `string`                                  | -            | Custom error message                  |
-| `locale`                     | `string`                                  | `'en-US'`    | UI language                           |
-| `useOnlyCssZoom`             | `boolean`                                 | `false`      | Use CSS-based zoom for mobile         |
-| `diagnosticLogs`             | `boolean`                                 | `false`      | Enable diagnostic logging             |
-| `zoom`                       | `string`                                  | `'auto'`     | Initial zoom level (two-way binding)  |
-| `page`                       | `number`                                  | `1`          | Initial page number                   |
-| `namedDest`                  | `string`                                  | -            | Named destination to navigate to      |
-| `cursor`                     | `string`                                  | `'select'`   | Cursor type (two-way binding)         |
-| `scroll`                     | `string`                                  | `'vertical'` | Scroll mode (two-way binding)         |
-| `spread`                     | `string`                                  | `'none'`     | Spread mode (two-way binding)         |
-| `pageMode`                   | `string`                                  | `'none'`     | Page mode (two-way binding)           |
-| `rotation`                   | `number`                                  | `0`          | Document rotation (two-way binding)   |
-| `showOpenFile`               | `boolean`                                 | `true`       | Show open file button                 |
-| `showDownload`               | `boolean`                                 | `true`       | Show download button                  |
-| `showPrint`                  | `boolean`                                 | `true`       | Show print button                     |
-| `showFind`                   | `boolean`                                 | `true`       | Show search button                    |
-| `showFullScreen`             | `boolean`                                 | `true`       | Show fullscreen button                |
-| `showViewBookmark`           | `boolean`                                 | `true`       | Show bookmark button                  |
-| `showAnnotations`            | `boolean`                                 | `true`       | Show annotation editor toolbar        |
-| `showToolbarLeft`            | `boolean`                                 | `true`       | Show left toolbar section             |
-| `showToolbarMiddle`          | `boolean`                                 | `true`       | Show middle toolbar section           |
-| `showToolbarRight`           | `boolean`                                 | `true`       | Show right toolbar section            |
-| `showSecondaryToolbarToggle` | `boolean`                                 | `true`       | Show secondary toolbar toggle         |
-| `showSidebar`                | `boolean`                                 | `true`       | Show sidebar                          |
-| `showSidebarLeft`            | `boolean`                                 | `true`       | Show left sidebar                     |
-| `showSidebarRight`           | `boolean`                                 | `true`       | Show right sidebar                    |
-| `toolbarDensity`             | `'compact' \| 'default' \| 'comfortable'` | `'default'`  | Toolbar density                       |
-| `sidebarWidth`               | `string`                                  | -            | Sidebar width (e.g., '280px')         |
-| `toolbarPosition`            | `'top' \| 'bottom'`                       | `'top'`      | Toolbar position                      |
-| `sidebarPosition`            | `'left' \| 'right'`                       | `'left'`     | Sidebar position                      |
-| `responsiveBreakpoint`       | `string \| number`                        | -            | Responsive breakpoint                 |
-| `downloadOnLoad`             | `boolean`                                 | `false`      | Auto-download on load                 |
-| `printOnLoad`                | `boolean`                                 | `false`      | Auto-print on load                    |
-| `rotateCW`                   | `boolean`                                 | `false`      | Rotate clockwise on load              |
-| `rotateCCW`                  | `boolean`                                 | `false`      | Rotate counter-clockwise on load      |
-| `showLastPageOnLoad`         | `boolean`                                 | `false`      | Go to last page on load               |
-| `downloadFileName`           | `string`                                  | -            | Custom download filename              |
-| `controlVisibility`          | `ControlVisibilityConfig`                 | -            | Control visibility configuration      |
-| `autoActions`                | `AutoActionConfig`                        | -            | Auto actions configuration            |
-| `errorHandling`              | `ErrorConfig`                             | -            | Error handling configuration          |
-| `viewerConfig`               | `ViewerConfig`                            | -            | Viewer configuration                  |
-| `themeConfig`                | `ThemeConfig`                             | -            | Theme configuration                   |
-| `groupVisibility`            | `GroupVisibilityConfig`                   | -            | Group visibility configuration        |
-| `layoutConfig`               | `LayoutConfig`                            | -            | Layout configuration                  |
-| `urlValidation`              | `boolean`                                 | `true`       | Enable URL validation                 |
-| `customSecurityTpl`          | `TemplateRef<any>`                        | -            | Custom security template              |
-| `securityWarning`            | `SecurityWarning \| null`                 | -            | Security warning data (read-only)     |
-| `iframeBorder`               | `string \| number`                        | `"0"`        | iframe border style                   |
-| `annotationEditor`           | `AnnotationEditorMode`                    | `'none'`     | Active annotation editor mode (two-way binding)                        |
-| `highlightEditorColors`      | `string`                                  | -            | Highlight color presets, e.g. `'yellow=#FFFF98,green=#53FFBC'`        |
-| `enableSignatureEditor`      | `boolean`                                 | `false`      | Opt-in signature editor (eSign-style stamps, not cryptographic; init-time) |
-| `enableCommentEditor`        | `boolean`                                 | `false`      | Opt-in threaded comment editor (init-time)                             |
-| `enablePageEditing`          | `boolean`                                 | `false`      | Opt-in page reorder/delete/extract/merge in the Manage pages panel (init-time) |
-| `formData`                   | `FormDataMap`                             | `{}`         | AcroForm field values (two-way binding)                                |
-| `contentProtection`          | `ContentProtectionConfig`                 | -            | Block print/download/text-selection + watermark (deterrence, not DRM)  |
-| `pageColors`                 | `{ background; foreground } \| null`      | -            | Re-render page content with custom colors (true dark pages; init-time) |
-| `pdfJsOptions`               | `Record<string, string\|number\|boolean>` | -            | Allowlisted PDF.js AppOptions passthrough (init-time)                  |
-| `customToolbarTpl`           | `TemplateRef<any>`                        | -            | Host-side replacement toolbar (context: the component instance)        |
-| `showToolbar`                | `boolean`                                 | `true`       | Show/hide the entire built-in viewer toolbar                           |
-| `pageOverlayTpl`             | `TemplateRef<any>`                        | -            | Angular template projected onto every rendered page (context: page number) |
-| `httpHeaders`                | `Record<string, string>`                  | -            | Headers for loading the document (component fetches, feeds a blob)     |
-| `withCredentials`            | `boolean`                                 | `false`      | Send cookies/credentials with the document request                      |
-| `rememberLastView`           | `boolean`                                 | `true`       | Restore previous reading position when the same document reloads        |
-| `externalLinkTarget`         | `ExternalLinkTarget`                      | `'blank'`    | Where external PDF links open                                           |
-| `iframeSandbox`              | `string`                                  | `''`         | Extra allowlisted iframe sandbox tokens (prefer `allow-top-navigation-by-user-activation`) |
-| `customSidebarTpl`           | `TemplateRef<any>`                        | -            | Host-side sidebar template beside the viewer (context: the component) |
-| `signatureStorage`           | `PdfSignatureStorage`                     | -            | Host persistence for saved signatures (server/per-user)               |
-| `aiAssistantConfig`          | `PdfAiPanelConfig \| null`                | -            | Built-in chat-with-document panel; your endpoint, clickable `[p.N]` citations |
-
-### Output Events
-
-| Event                       | Type                                       | Description                                    |
-| --------------------------- | ------------------------------------------ | ---------------------------------------------- |
-| `onDocumentLoad`            | `EventEmitter<void>`                       | Fired when document loads                      |
-| `onDocumentInit`            | `EventEmitter<void>`                       | Fired when document initializes                |
-| `onDocumentError`           | `EventEmitter<DocumentError>`              | Fired when document fails to load              |
-| `onPageChange`              | `EventEmitter<ChangedPage>`                | Fired when page changes                        |
-| `onPagesInit`               | `EventEmitter<PagesInfo>`                  | Fired when pages are initialized               |
-| `onPageRendered`            | `EventEmitter<PageRenderInfo>`             | Fired when a page is rendered                  |
-| `onScaleChange`             | `EventEmitter<ChangedScale>`               | Fired when zoom/scale changes                  |
-| `onRotationChange`          | `EventEmitter<ChangedRotation>`            | Fired when rotation changes                    |
-| `onPresentationModeChanged` | `EventEmitter<PresentationMode>`           | Fired when presentation mode changes           |
-| `onOpenFile`                | `EventEmitter<void>`                       | Fired when open file is clicked                |
-| `onFind`                    | `EventEmitter<FindOperation>`              | Fired when search is performed                 |
-| `onUpdateFindMatchesCount`  | `EventEmitter<FindMatchesCount>`           | Fired when search matches are updated          |
-| `onMetadataLoaded`          | `EventEmitter<DocumentMetadata>`           | Fired when document metadata loads             |
-| `onOutlineLoaded`           | `EventEmitter<DocumentOutline>`            | Fired when document outline loads              |
-| `onAnnotationLayerRendered` | `EventEmitter<AnnotationLayerRenderEvent>` | Fired when annotation layer renders            |
-| `onBookmarkClick`           | `EventEmitter<BookmarkClick>`              | Fired when bookmark is clicked                 |
-| `onIdle`                    | `EventEmitter<void>`                       | Fired when viewer becomes idle                 |
-| `onBeforePrint`             | `EventEmitter<void>`                       | Fired before printing                          |
-| `onAfterPrint`              | `EventEmitter<void>`                       | Fired after printing                           |
-| `zoomChange`                | `EventEmitter<string>`                     | Fired when zoom changes (two-way binding)      |
-| `cursorChange`              | `EventEmitter<string>`                     | Fired when cursor changes (two-way binding)    |
-| `scrollChange`              | `EventEmitter<string>`                     | Fired when scroll changes (two-way binding)    |
-| `spreadChange`              | `EventEmitter<string>`                     | Fired when spread changes (two-way binding)    |
-| `pageModeChange`            | `EventEmitter<string>`                     | Fired when page mode changes (two-way binding) |
-| `annotationEditorChange`    | `EventEmitter<AnnotationEditorMode>`       | Two-way companion of `[(annotationEditor)]` — user mode switches  |
-| `onAnnotationEditorStateChange` | `EventEmitter<AnnotationEditorState>`  | Editor undo/redo/dirty state — drive "unsaved changes" UX         |
-| `onPagesEdited`             | `EventEmitter<PagesEditedEvent>`           | Page reorder/delete/extract/merge (with `enablePageEditing`)      |
-| `formDataChange`            | `EventEmitter<FormDataMap>`                | Two-way companion of `[(formData)]` — user form edits             |
-| `onProgress`                | `EventEmitter<{loaded; total}>`            | Download progress during authenticated loading                     |
-| `onPasswordPrompt`          | `EventEmitter<void>`                       | PDF.js password dialog shown (spinner dropped automatically)       |
-| `onReadAloudStateChange`    | `EventEmitter<ReadAloudState>`             | Read-aloud progress (per-sentence; includes the sentence text)     |
-| `onSidebarViewChanged`      | `EventEmitter<SidebarViewChange>`          | Fired when the sidebar panel switches (thumbs/outline/attachments/layers) |
-| `onLayersChanged`           | `EventEmitter<LayersChange>`               | Fired when optional-content layers load or visibility toggles  |
-| `onNamedAction`             | `EventEmitter<NamedActionEvent>`           | Fired for named actions triggered inside the document          |
-| `onDocumentProperties`      | `EventEmitter<void>`                       | Fired when the document-properties dialog opens                |
-
-### Methods
-
-| Method                                                   | Parameters                                                  | Returns                                              | Description                       |
-| -------------------------------------------------------- | ----------------------------------------------------------- | ---------------------------------------------------- | --------------------------------- |
-| `refresh()`                                              | -                                                           | `void`                                               | Refresh viewer                    |
-| `goToPage(page: number)`                                 | `page: number`                                              | `Promise<ActionExecutionResult>`                     | Navigate to specific page         |
-| `setPage(page: number)`                                  | `page: number`                                              | `Promise<ActionExecutionResult>`                     | Set current page                  |
-| `setZoom(zoom: string)`                                  | `zoom: string`                                              | `Promise<ActionExecutionResult>`                     | Set zoom level                    |
-| `setCursor(cursor: string)`                              | `cursor: 'select' \| 'hand' \| 'zoom'`                      | `Promise<ActionExecutionResult>`                     | Set cursor type                   |
-| `setScroll(scroll: string)`                              | `scroll: 'vertical' \| 'horizontal' \| 'wrapped' \| 'page'` | `Promise<ActionExecutionResult>`                     | Set scroll mode                   |
-| `setSpread(spread: string)`                              | `spread: 'none' \| 'odd' \| 'even'`                         | `Promise<ActionExecutionResult>`                     | Set spread mode                   |
-| `setPageMode(mode: string)`                              | `mode: 'none' \| 'thumbs' \| 'bookmarks' \| 'attachments'`  | `Promise<ActionExecutionResult>`                     | Set page mode                     |
-| `triggerDownload()`                                      | -                                                           | `Promise<ActionExecutionResult>`                     | Trigger download                  |
-| `triggerPrint()`                                         | -                                                           | `Promise<ActionExecutionResult>`                     | Trigger print                     |
-| `triggerRotation(direction: string)`                     | `direction: 'cw' \| 'ccw'`                                  | `Promise<ActionExecutionResult>`                     | Rotate document                   |
-| `goToLastPage()`                                         | -                                                           | `Promise<ActionExecutionResult>`                     | Navigate to last page             |
-| `sendViewerControlMessage(action: string, payload: any)` | `action: string, payload: any`                              | `Promise<any>`                                       | Send custom control message       |
-| `getActionStatus(actionId: string)`                      | `actionId: string`                                          | `Promise<ActionExecutionResult \| null>`             | Get action status                 |
-| `getQueueStatus()`                                       | -                                                           | `{ queuedActions: number; executedActions: number }` | Get queue status                  |
-| `clearActionQueue()`                                     | -                                                           | `void`                                               | Clear action queue                |
-| `reloadViewer()`                                         | -                                                           | `void`                                               | Reload viewer (alias for refresh) |
-| `goBack()`                                               | -                                                           | `void`                                               | Go back in browser history        |
-| `closeViewer()`                                          | -                                                           | `void`                                               | Close viewer window               |
-| `getErrorTemplateData()`                                 | -                                                           | `any`                                                | Get error template data           |
-| `setUrlValidation(enabled: boolean)`                     | `enabled: boolean`                                          | `Promise<ActionExecutionResult>`                     | Enable/disable URL validation     |
-| `dismissSecurityWarning()`                               | -                                                           | `void`                                               | Dismiss security warning          |
-| `getAnnotations()`                                       | -                                                           | `Promise<any[]>`                                     | Export editor annotations (serialized, JSON-safe) |
-| `setAnnotations(annotations: any[])`                     | `annotations: any[]` (from `getAnnotations()`)              | `Promise<{ restored; pending; rejected }>`           | Restore exported annotations into the editor; not-yet-rendered pages apply on render; invalid items rejected |
-| `getDocumentAsBlob()`                                    | -                                                           | `Promise<Blob>`                                      | Document bytes including annotation/form edits     |
-| `getDocumentText(from?, to?)`                            | `from?: number, to?: number`                                | `Promise<DocumentPageText[]>`                        | Extracted per-page text (BYO-AI, custom search UX) |
-| `search(query, options?)`                                | `query: string, options?: SearchOptions`                    | `Promise<SearchResult>`                              | Programmatic full-text search with totals + per-page counts |
-| `searchNext()` / `searchPrevious()`                      | -                                                           | `Promise<ActionExecutionResult>`                     | Step through matches                               |
-| `clearSearch()`                                          | -                                                           | `Promise<ActionExecutionResult>`                     | Clear search highlights                            |
-| `getFormData()`                                          | -                                                           | `Promise<FormDataMap>`                               | Current AcroForm field values                      |
-| `setFormField(name, value)`                              | `name: string, value: string\|boolean\|null`                | `Promise<ActionExecutionResult>`                     | Set one form field                                 |
-| `startReadAloud(options?)`                               | `options?: { fromPage?; rate? }`                            | `Promise<ActionExecutionResult>`                     | Read aloud with sentence highlighting              |
-| `pauseReadAloud()` / `resumeReadAloud()` / `stopReadAloud()` | -                                                       | `Promise<ActionExecutionResult>`                     | Read-aloud controls                                |
-| `aiAsk(question: string)`                                | `question: string`                                          | `Promise<void>`                                      | Ask the built-in AI panel a question (requires `[aiAssistantConfig]`) |
-
----
-
-## 🎨 Examples
-
-> **🎯 Live Demo**: [https://angular-pdf-viewer-demo.vercel.app/](https://angular-pdf-viewer-demo.vercel.app/)  
-> **📚 Documentation**: [https://angular-pdf-viewer-docs.vercel.app/](https://angular-pdf-viewer-docs.vercel.app/)  
-> **📁 Source Code**: [https://github.com/intbot/ng2-pdfjs-viewer/tree/main/SampleApp](https://github.com/intbot/ng2-pdfjs-viewer/tree/main/SampleApp)
-
-### 1. Basic PDF Viewer
-
-```html
-<ng2-pdfjs-viewer pdfSrc="assets/sample.pdf" [showSpinner]="true">
-</ng2-pdfjs-viewer>
-```
-
-### 2. Themed PDF Viewer
+`pdfSrc` accepts a URL, a `Blob`, a `Uint8Array`, or an `ArrayBuffer`. For protected documents,
+attach credentials and track progress:
 
 ```html
 <ng2-pdfjs-viewer
-  pdfSrc="assets/sample.pdf"
-  [theme]="'dark'"
-  [primaryColor]="'#ff6b6b'"
-  [backgroundColor]="'#2c3e50'"
->
+  [pdfSrc]="url"
+  [httpHeaders]="{ Authorization: 'Bearer ' + token }"
+  [withCredentials]="true"
+  (onProgress)="loaded = $event"
+  (onPasswordPrompt)="onPasswordNeeded()">
 </ng2-pdfjs-viewer>
 ```
 
-### 3. Custom Loading & Error
+For large files, linearize ("fast web view") and serve with HTTP range support so the first pages
+render before the whole document downloads. Details in the
+[loading guide](https://angular-pdf-viewer-docs.vercel.app/docs/features/loading-documents).
 
-```html
-<ng-template #loadingTemplate>
-  <div class="loading">
-    <mat-spinner></mat-spinner>
-    <p>Loading your document...</p>
-</div>
-</ng-template>
+## 🛡️ Security
 
-<ng-template #errorTemplate>
-  <div class="error">
-    <mat-icon>error_outline</mat-icon>
-    <h3>Oops! Something went wrong</h3>
-    <p>We couldn't load your PDF. Please try again.</p>
-    <button mat-button (click)="retry()">Retry</button>
-</div>
-</ng-template>
-
-<ng2-pdfjs-viewer
-  pdfSrc="assets/sample.pdf"
-  [customSpinnerTpl]="loadingTemplate"
-  [customErrorTpl]="errorTemplate"
->
-  </ng2-pdfjs-viewer>
-```
-
-### 4. Convenience Setters (Object-Based Configuration)
-
-```typescript
-export class PdfController {
-  // Group visibility configuration
-  groupVisibility = {
-    "download": true,
-    "print": true,
-    "find": true,
-    "fullScreen": true,
-    "openFile": true,
-    "viewBookmark": true,
-    "annotations": false
-  };
-
-  // Auto actions configuration
-  autoActions = {
-    "downloadOnLoad": false,
-    "printOnLoad": false
-  };
-
-  // Control visibility configuration
-  controlVisibility = {
-    "showToolbarLeft": true,
-    "showToolbarMiddle": true,
-    "showToolbarRight": true,
-    "showSecondaryToolbarToggle": true,
-    "showSidebar": true,
-    "showSidebarLeft": true,
-    "showSidebarRight": true
-  };
-}
-```
-
-```html
-<ng2-pdfjs-viewer
-  pdfSrc="assets/sample.pdf"
-  [groupVisibility]="groupVisibility"
-  [autoActions]="autoActions"
-  [controlVisibility]="controlVisibility"
->
-</ng2-pdfjs-viewer>
-```
-
-### 5. Programmatic Control
-
-```typescript
-export class PdfController {
-  @ViewChild("pdfViewer") pdfViewer!: PdfJsViewerComponent;
-
-  async loadDocument(url: string) {
-    this.pdfViewer.pdfSrc = url;
-    await this.pdfViewer.refresh();
-  }
-
-  async goToPage(page: number) {
-    await this.pdfViewer.goToPage(page);
-  }
-
-  async setZoom(zoom: string) {
-    await this.pdfViewer.setZoom(zoom);
-  }
-}
-```
-
-### 6. Server-Side Integration
-
-For server-side developers, we provide comprehensive examples for integrating PDF APIs with ng2-pdfjs-viewer:
-
-**[📋 Server-Side Examples](../Server-Side-Examples.md)** - Complete examples for:
-- **ASP.NET Core (C#)** - RDLC reports, physical files, iTextSharp
-- **Node.js (Express)** - File serving, PDFKit, Puppeteer
-- **Python (FastAPI)** - ReportLab, WeasyPrint, file handling
-- **Java (Spring Boot)** - iText, JasperReports, file serving
-- **PHP (Laravel)** - TCPDF, DomPDF, file management
-- **Go (Gin)** - gofpdf, file serving, PDF generation
-
-Each example includes proper Content-Type headers, error handling, CORS configuration, and Angular integration patterns.
-
----
-
-## ♿ Accessibility
-
-ng2-pdfjs-viewer embeds the full Mozilla PDF.js viewer — the same viewer that ships in
-Firefox — and inherits its accessibility architecture, making it a strong foundation for
-meeting WCAG 2.x and European Accessibility Act (EAA) obligations:
-
-- **Screen-reader text layer** — every page exposes real, selectable text to assistive technology
-- **Tagged-PDF structure** — headings, tables, lists, and alt text from PDF/UA documents are
-  mapped into the browser accessibility tree (`aria-owns`)
-- **Keyboard-operable chrome** — toolbar, sidebar, dialogs, and find bar with the standard
-  PDF.js shortcut set
-- **100+ locales**, right-to-left scripts, high-contrast palettes, and `prefers-reduced-motion` support
-- **Read-aloud built in** — `startReadAloud()` / `stopReadAloud()` with browser speech synthesis
-  and `(onReadAloudStateChange)` progress events
-
-The component adds an accessible iframe embedding (always-titled iframe), accessible
-loading/error states, and a fully keyboard-reachable API surface.
-
-📖 **Full guide: [ACCESSIBILITY.md](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/lib/ACCESSIBILITY.md)** —
-what's covered out of the box, what the component adds, and what remains your application's
-responsibility.
-
----
-
-## 🔄 Migration Guide
-
-### From v20.x to v25.x
-
-#### Breaking Changes
-
-1. **PDF.js Upgrade**: Updated to v5.3.93 - some APIs may have changed
-2. **Theme System**: New theme properties replace old styling options
-3. **Error Handling**: Template-based error system replaces HTML strings
-
-#### Migration Steps
-
-1. **Update Dependencies**
-
-   ```bash
-   npm install ng2-pdfjs-viewer@latest
-   ```
-
-2. **Update Theme Configuration**
-
-   ```typescript
-   // Old way
-   [customCSS]="'body { background: red; }'"
-   
-   // New way
-   [theme]="'light'"
-   [primaryColor]="'#ff0000'"
-   [backgroundColor]="'#ffffff'"
-   ```
-
-3. **Update Error Handling**
-
-   ```html
-   <!-- Old way -->
-   [errorHtml]="'<div>Custom error</div>'"
-
-   <!-- New way -->
-   <ng-template #errorTemplate>
-     <div>Custom error</div>
-   </ng-template>
-   <ng2-pdfjs-viewer [customErrorTpl]="errorTemplate"></ng2-pdfjs-viewer>
-   ```
-
-4. **Update Spinner Handling**
-
-   ```html
-   <!-- Old way -->
-   [spinnerHtml]="'<div class=\"spinner\">Loading...</div>'"
-
-   <!-- New way -->
-   <ng-template #spinnerTemplate>
-     <div class="spinner">Loading...</div>
-   </ng-template>
-   <ng2-pdfjs-viewer [customSpinnerTpl]="spinnerTemplate"></ng2-pdfjs-viewer>
-   ```
-
-   ```typescript
-   // Old way
-   this.pdfViewer.setSpinnerHtml('<div>Loading...</div>');
-
-   // New way
-   // Use [customSpinnerTpl] with ng-template
-   ```
-
----
-
-## Deprecated Features
-
-The following features are deprecated and will be removed in future versions:
-
-### Deprecated Properties
-
-| Deprecated        | Replacement          | Description                                   |
-| ----------------- | -------------------- | --------------------------------------------- |
-| `[startDownload]` | `[downloadOnLoad]`   | Download document automatically when it opens |
-| `[startPrint]`    | `[printOnLoad]`      | Print document automatically when it opens    |
-| `[errorHtml]`     | `[customErrorTpl]`   | Custom error HTML (use template instead)      |
-| `[errorTemplate]` | `[customErrorTpl]`   | Custom error template (renamed)               |
-| `[spinnerHtml]`   | `[customSpinnerTpl]` | Custom spinner HTML (use template instead)    |
-
-### Deprecated Methods
-
-| Deprecated         | Replacement              | Description                                    |
-| ------------------ | ------------------------ | ---------------------------------------------- |
-| `setErrorHtml()`   | Use `[customErrorTpl]`   | Set custom error HTML (use template instead)   |
-| `setSpinnerHtml()` | Use `[customSpinnerTpl]` | Set custom spinner HTML (use template instead) |
-
-### Migration Help
-
-```typescript
-// Deprecated - Error Handling
-this.pdfViewer.setErrorHtml("<div>Error</div>");
-
-// New way - Error Handling
-// Use [customErrorTpl] with ng-template
-
-// Deprecated - Spinner Handling
-this.pdfViewer.setSpinnerHtml("<div>Loading...</div>");
-
-// New way - Spinner Handling
-// Use [customSpinnerTpl] with ng-template
-```
-
----
-
-## 📚 Additional Resources
-
-- **[Accessibility Guide](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/lib/ACCESSIBILITY.md)** - Screen readers, tagged PDFs, keyboard navigation, WCAG/EAA notes
-- **[Custom CSS Examples](Custom-CSS-Examples.md)** - Complete styling guide with theme customization examples
-- **[Error Display Examples](Error-Display-Examples.md)** - Custom error template examples and styling options
-- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the project
+The viewer runs in a **same-origin iframe** with an allowlisted `sandbox`, and the host↔viewer
+`postMessage` bridge checks `event.source` in both directions. PDF links open in a new tab by
+default (`externalLinkTarget`), and `pdfJsOptions` only forwards an allowlisted set of PDF.js
+options. The package ships with **npm provenance** and is tracked by an
+[OpenSSF Scorecard](https://scorecard.dev/viewer/?uri=github.com/intbot/ng2-pdfjs-viewer).
+Report vulnerabilities via [SECURITY.md](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/SECURITY.md).
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-### Development Setup
+Issues and PRs are welcome. To run the library against the demo app locally:
 
 ```bash
-# Clone the repository
 git clone https://github.com/intbot/ng2-pdfjs-viewer.git
-
-
-# Clear Angular cache (Windows)
-Remove-Item -Recurse -Force "SampleApp\.angular"
-
-
-# Build and test - All at once (Windows)
-@test.bat
+cd ng2-pdfjs-viewer
+test.bat          # build the lib, link it, and serve the demo on http://localhost:4200
 ```
 
-
----
+See [CONTRIBUTING.md](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CONTRIBUTING.md) for the full setup, and look for
+[`good first issue`](https://github.com/intbot/ng2-pdfjs-viewer/labels/good%20first%20issue) to get started.
 
 ## 📄 License
 
-This project is licensed under the **Apache License 2.0 + Commons Clause License Condition v1.0** - see the [LICENSE](LICENSE) file for details.
-
----
+[Apache-2.0 with the Commons Clause](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/LICENSE). Free to use, modify, and self-host; the Commons
+Clause restricts selling the software itself as a hosted/commercial product.
 
 ## 🙏 Acknowledgments
 
-
-
-- **Community Contributors** - For bug reports, feature requests, and contributions
-- **7+ Million Users** - For trusting us with your PDF viewing needs
-- **Mozilla PDF.js Team** - For the amazing PDF.js library
-
----
-
-## 📞 Support
-
-- 📖 **Documentation**: [GitHub Wiki](https://github.com/intbot/ng2-pdfjs-viewer/wiki)
-- 💬 **Community**: [GitHub Discussions](https://github.com/intbot/ng2-pdfjs-viewer/discussions)
-- 🐛 **Issues**: [GitHub Issues](https://github.com/intbot/ng2-pdfjs-viewer/issues)
-- 📧 **Email**: codehippie1@gmail.com
-- 👨‍💻 **Author**: [Aneesh Gopalakrishnan](http://github.com/codehippie1)
+Built on the excellent [Mozilla PDF.js](https://github.com/mozilla/pdf.js), and shaped over the
+years by a community of contributors and 7M+ downloads' worth of real-world use.
 
 ---
 
 <div align="center">
 
-
-## 🔒 Security
-
-I take security of this library seriously. If you discover a security vulnerability, please report it privately:
-
-- **🔒 Private Reporting**: [Security Policy](https://github.com/intbot/ng2-pdfjs-viewer/security/policy)
-- **📧 Email**: [codehippie1@gmail.com](mailto:codehippie1@gmail.com)
-- **⚠️ Please do NOT** report security issues through public GitHub issues
-
-For security best practices and vulnerability reporting guidelines, see our [Security Policy](https://github.com/intbot/ng2-pdfjs-viewer/security/policy).
-
----
-
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/intbot/ng2-pdfjs-viewer)
-[![NPM](https://img.shields.io/badge/NPM-Package-red?logo=npm)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
-[![Angular](https://img.shields.io/badge/Angular-Component-green?logo=angular)](https://angular.dev/overview)
+[Documentation](https://angular-pdf-viewer-docs.vercel.app/) · [Live demo](https://angular-pdf-viewer-demo.vercel.app/) · [npm](https://www.npmjs.com/package/ng2-pdfjs-viewer) · [Issues](https://github.com/intbot/ng2-pdfjs-viewer/issues)
 
 </div>
