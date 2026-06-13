@@ -3,6 +3,8 @@ on: [push]
 jobs:
   sync:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # git-auto-commit pushes the synced README/LICENSE
     steps:
       - uses: actions/checkout@v4
       - name: Sync README and LICENSE

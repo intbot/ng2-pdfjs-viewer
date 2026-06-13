@@ -10,6 +10,8 @@ jobs:
   build:
     name: Create Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # create-release creates the GitHub release for the tag
     steps:
       - name: Checkout code
         uses: actions/checkout@master
