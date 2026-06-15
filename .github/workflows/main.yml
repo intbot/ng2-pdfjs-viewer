@@ -8,6 +8,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Gated by the 'release' environment: a required reviewer must approve the
+    # run before it builds/publishes. Must match the Environment configured on
+    # the npm trusted publisher for this package.
+    environment: release
     permissions:
       # Required for npm trusted publishing (OIDC) and build provenance.
       # The short-lived OIDC token replaces the long-lived NPM_TOKEN secret.
