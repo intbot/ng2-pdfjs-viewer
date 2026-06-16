@@ -16,6 +16,46 @@ The most important thing to understand about this feature is what it does *not* 
 This means you can run fully private setups (a local Ollama model — the PDF text never
 leaves the machine) or production setups behind your own server-side proxy.
 
+## Where the request runs: choose local or a proxy
+
+`PdfAiAssistant` sends its `fetch` from wherever you construct it — in an Angular app, that is
+**the user's browser**. Pointing `endpoint` *directly* at a hosted cloud LLM (OpenAI, Azure
+OpenAI, …) from the browser has two problems:
+
+- **Your API key is exposed.** Anything shipped to the browser is readable by whoever opens
+  devtools. A long-lived cloud key in client code is a leak, not a secret.
+- **CORS will usually block the call anyway.** Hosted LLM APIs don't return the
+  `Access-Control-Allow-Origin` headers a browser requires for cross-origin requests, so the
+  `fetch` fails before it ever reaches the model. (Azure OpenAI and OpenAI both reject direct
+  browser calls.)
+
+So pick one of these — don't call a cloud provider straight from the browser:
+
+| Setup | `endpoint` points at | Key location | Best for |
+| --- | --- | --- | --- |
+| **Local model** | a local runtime — Ollama, LM Studio | none needed | private/offline use; the PDF text never leaves the machine. Start the runtime with browser origins allowed (e.g. Ollama's `OLLAMA_ORIGINS`). |
+| **Your backend proxy** *(recommended for cloud models)* | a small route on *your* server that forwards to the provider | server-side only, never in the browser | production with a hosted model. The proxy injects the secret key, adds CORS, and can authenticate/rate-limit per user. |
+
+A proxy is tiny — accept the request, attach your secret key, forward to the provider, return the
+response:
+
+```js
+// POST /api/pdf-chat  — your server, key stays here
+app.post('/api/pdf-chat', async (req, res) => {
+  const r = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.OPENAI_KEY}` },
+    body: JSON.stringify(req.body),
+  });
+  res.status(r.status).send(await r.text());
+});
+```
+
+```ts
+// browser — no key in sight
+new PdfAiAssistant({ endpoint: '/api/pdf-chat' });
+```
+
 ## Built-in Chat Panel
 
 Bind `[aiAssistantConfig]` to render a floating chat button in the bottom-right corner of
@@ -179,11 +219,11 @@ final call.
 **Text extraction has limits.** `getDocumentText()` reads the PDF.js text layer, so
 scanned/image-only PDFs yield little or no text — there is no OCR.
 
-**Key handling.** The `apiKey` is sent only as an `Authorization: Bearer` header to the
-endpoint *you* configured — nothing else sees it. But remember this is client-side code:
-any key shipped to the browser is visible to that browser's user. For production with a
-shared secret, put your key behind a server-side proxy and point `endpoint` at the proxy;
-for fully private use, point at a local model (Ollama, LM Studio).
+**Key handling and CORS.** The `apiKey` is sent only as an `Authorization: Bearer` header to
+the endpoint *you* configured — nothing else sees it. But this is client-side code: any key
+shipped to the browser is visible to that browser's user, and most hosted providers also block
+direct browser calls via CORS. Don't point `endpoint` straight at a cloud LLM from the browser —
+use a local model or a backend proxy. See [Where the request runs](#where-the-request-runs-choose-local-or-a-proxy).
 
 **Embedded mode only.** The built-in panel is not rendered when the viewer runs in
 external-window mode.
