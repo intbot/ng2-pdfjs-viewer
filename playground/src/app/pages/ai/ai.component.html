@@ -7,6 +7,7 @@
 
   <div preview>
     <ng2-pdfjs-viewer #viewer [pdfSrc]="src()"
+      (onDocumentLoad)="docReady.set(true)"
       (onReadAloudStateChange)="onReadAloud($event)">
     </ng2-pdfjs-viewer>
   </div>
@@ -14,7 +15,7 @@
   <div controls>
     <div class="ph">Document text</div>
     <div class="row">
-      <span class="seg"><button (click)="extract(viewer)" data-testid="ai-extract">getDocumentText(1, 2)</button></span>
+      <span class="seg"><button (click)="extract(viewer)" [disabled]="!docReady()" data-testid="ai-extract">getDocumentText(1, 2)</button></span>
     </div>
     @if (textPreview()) { <div class="dump" data-testid="ai-text">{{ textPreview() }}</div> }
 
@@ -35,7 +36,7 @@
       <input class="ctl-input" style="width:100%" [value]="question()" (input)="set(question, $event)" placeholder="Ask the document…" />
     </div>
     <div class="row">
-      <span class="seg"><button (click)="ask(viewer)" [disabled]="aiBusy()" data-testid="ai-ask">{{ aiBusy() ? 'Thinking…' : 'Ask' }}</button></span>
+      <span class="seg"><button (click)="ask(viewer)" [disabled]="aiBusy() || !docReady()" data-testid="ai-ask">{{ aiBusy() ? 'Thinking…' : (docReady() ? 'Ask' : 'Loading…') }}</button></span>
     </div>
     @if (answer()) { <div class="answer" data-testid="ai-answer">{{ answer() }}</div> }
     <p class="note">Keys stay in this page's memory and go only to the endpoint you typed.</p>

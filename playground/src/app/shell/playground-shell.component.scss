@@ -68,3 +68,13 @@
   :host { grid-template-columns: 1fr; grid-template-areas: 'top top' 'main main'; }
   .brand, .side { display: none; }
 }
+
+/* Phones: the sidebar is hidden (use the ⌕ command palette to navigate), so
+   keep the header compact and overflow-free. */
+@media (max-width: 600px) {
+  .top { padding: 0 12px; gap: 8px; }
+  .crumb { display: none; }
+  .kbtn { margin-left: 0; padding: 7px 10px; }
+  .kbtn .klabel { display: none; }
+  .srcpick select { max-width: 132px; }
+}

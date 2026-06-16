@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { PdfJsViewerComponent, PdfJsViewerModule, PdfAiAssistant, ReadAloudState } from 'ng2-pdfjs-viewer';
 import { SamplePdfService } from '../../core/services/sample-pdf.service';
 import { PlaygroundLayoutComponent } from '../../shared/playground-layout.component';
@@ -31,6 +31,14 @@ export class AiComponent {
   readonly aiBusy = signal(false);
   readonly textPreview = signal('');
   readonly readAloud = signal<ReadAloudState | null>(null);
+  // Gate extract/ask until the document has loaded, so getDocumentText() isn't
+  // called against an unrendered document (which returns empty context).
+  readonly docReady = signal(false);
+
+  constructor() {
+    // Switching samples reloads the viewer — re-gate until it loads again.
+    effect(() => { this.src(); this.docReady.set(false); });
+  }
 
   async extract(viewer: PdfJsViewerComponent): Promise<void> {
     const pages = await viewer.getDocumentText(1, 2);
@@ -43,7 +51,8 @@ export class AiComponent {
     this.aiBusy.set(true);
     this.answer.set('');
     try {
-      const text = await viewer.getDocumentText();
+      // First few pages keep the prompt small — snappy on local models.
+      const text = await viewer.getDocumentText(1, 3);
       const ai = new PdfAiAssistant({
         endpoint: this.endpoint(),
         model: this.model() || undefined,
@@ -65,7 +74,7 @@ export class AiComponent {
 
   readonly code = computed(() => [
     `// 1. extract the document text (stays in the browser)`,
-    `const text = await this.viewer.getDocumentText();`,
+    `const text = await this.viewer.getDocumentText(1, 3); // first pages — snappy on local models`,
     ``,
     `// 2. ask YOUR endpoint — any OpenAI-compatible API`,
     `const ai = new PdfAiAssistant({`,
