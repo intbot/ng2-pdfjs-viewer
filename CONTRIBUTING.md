@@ -39,8 +39,8 @@ cd ng2-pdfjs-viewer
 # Install dependencies
 npm install
 
-# Install SampleApp dependencies
-cd SampleApp
+# Install playground dependencies
+cd playground
 npm install
 cd ..
 ```
@@ -51,9 +51,9 @@ cd ..
 
 ```bash
 # Clear Angular cache (Windows PowerShell)
-Remove-Item -Recurse -Force "SampleApp\.angular"
+Remove-Item -Recurse -Force "playground\.angular"
 
-# Or manually delete the .angular folder in SampleApp directory
+# Or manually delete the .angular folder in playground directory
 ```
 
 ### Development Commands
@@ -84,9 +84,9 @@ The project uses a comprehensive test workflow via `test.bat`:
 
 1. **Build** the library
 2. **Publish** to local npm registry
-3. **Update** dependencies in SampleApp
-4. **Install** updated dependencies
-5. **Run** the SampleApp
+3. **Link** the build into the playground (yalc)
+4. **Install** dependencies
+5. **Run** the playground
 
 This ensures you're testing the actual built library, not just the source code.
 
@@ -147,15 +147,11 @@ ng2-pdfjs-viewer/
 │   │   └── web/
 │   │       └── postmessage-wrapper.js
 │   └── dist/                     # Built library
-├── SampleApp/                    # Demo application
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── features/         # Main demo features
-│   │   │   ├── big/              # Large PDF demo
-│   │   │   ├── dynamic/          # Dynamic loading demo
-│   │   │   └── inline/           # Inline viewer demo
-│   │   └── assets/
-│   └── dist/                     # Built demo app
+├── playground/                  # Demo app — feature explorer (Angular 22)
+│   └── src/app/
+│       ├── shell/               # App shell + command palette
+│       ├── pages/               # One page per feature
+│       └── core/                # Feature registry + services
 ├── README.md                     # Main documentation
 ├── CHANGELOG.md                  # Version history
 └── CONTRIBUTING.md               # This file
@@ -248,13 +244,13 @@ Provenance is generated automatically because this is a public repository.
 ### Repository security & Dependabot
 
 This repo ships only the `lib/` package — it has **zero runtime dependencies**. The playground and
-demo apps (`playground/`, `SampleApp/`, `sample-app-material/`) and the docs site (`docs-website/`)
+demo apps (`playground/`, `sample-app-material/`) and the docs site (`docs-website/`)
 are **not published**.
 
 To keep the repository's security signal honest, Dependabot **alerts** for those non-shipped
 projects are auto-dismissed by a repository-level **auto-triage rule** that matches their manifest
 paths. This is configured once in **Settings → Code security → Dependabot → Auto-triage rules**
-(action: auto-dismiss; manifest path: `playground/**`, `SampleApp/**`, `sample-app-material/**`, `docs-website/**`);
+(action: auto-dismiss; manifest path: `playground/**`, `sample-app-material/**`, `docs-website/**`);
 the built-in "dismiss low-impact dev-scoped" preset is also enabled. Dependabot **version-update**
 PRs are scoped to `/lib` and the GitHub Actions workflows via `.github/dependabot.yml`. See
 `SECURITY.md` for the rationale.

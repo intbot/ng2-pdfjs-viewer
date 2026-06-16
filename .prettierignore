@@ -1,6 +1,5 @@
 # Exclude PDF.js folders from formatting
 lib/pdfjs/**
-SampleApp/src/assets/**
 
 # Exclude build outputs
 dist/**
@@ -10,4 +9,4 @@ node_modules/**
 *.min.css
 
 # Exclude cache folders
-SampleApp/.angular/**
+playground/.angular/**

@@ -18,9 +18,9 @@ neutral — describe code changes, not plans.
 - **Library:** Angular (peer dep `>=10`, built/tested on Angular 22 — requires Node ≥22.22/≥24.15
   and TypeScript 6.0 for the toolchain), TypeScript, packaged with
   **ng-packagr** → FESM2022. Bundled Mozilla **PDF.js** assets under `lib/pdfjs/`.
-- **Local dev link:** **yalc** (`file:.yalc/ng2-pdfjs-viewer`) wires the built lib into the demo apps.
-- **Demo apps:** `SampleApp/` (Angular CLI app, Karma/Jasmine unit tests + Protractor/Puppeteer e2e)
-  and `sample-app-material/` (Angular Material variant).
+- **Local dev link:** **yalc** wires the built lib into the playground for local development.
+- **Demo app:** `playground/` (Angular 22 feature explorer; the deployed demo at
+  `angular-pdf-viewer-demo.vercel.app`). `sample-app-material/` is a legacy Angular Material variant.
 - **Docs site:** `docs-website/` (Docusaurus, deployed to Vercel).
 
 ## Repository Structure
@@ -42,8 +42,8 @@ lib/                         — the published npm package (ng2-pdfjs-viewer)
   pdfjs/                     — bundled PDF.js viewer + worker assets (shipped as package assets)
   README.md                  — public npm/GitHub readme (44k+ — the primary docs)
   v5-upgrade.md              — migration guide
-SampleApp/                   — primary demo + manual/e2e test harness (Angular CLI)
-sample-app-material/         — Angular Material demo
+playground/                  — primary demo + feature explorer (Angular 22; deployed to Vercel)
+sample-app-material/         — legacy Angular Material demo
 docs-website/                — Docusaurus documentation site
 *.md (root)                  — public docs: README, CHANGELOG, CONTRIBUTING, SECURITY,
                                Custom-CSS-Examples, Error-Display-Examples, Server-Side-Examples
@@ -69,13 +69,14 @@ npm run package        # build + npm pack (produces the publishable tarball)
 
 **Run the demo app against your local lib** (full loop, from repo root):
 ```
-test.bat                 # build lib → yalc publish → update SampleApp → copy pdfjs assets → ng serve
-test.bat --sample-only   # skip lib rebuild; just run SampleApp
+test.bat                 # build lib → yalc publish → link into playground → ng serve (port 4300)
+test.bat --play-only     # skip lib rebuild; just run the playground
 ```
-Or manually: build `lib/`, `yalc publish` in `lib/`, `yalc add ng2-pdfjs-viewer` in `SampleApp/`,
-then `cd SampleApp && npm install && npm start` (serves on http://localhost:4200).
+Or manually: build `lib/`, `yalc publish` in `lib/`, `yalc link ng2-pdfjs-viewer` in `playground/`,
+then `cd playground && npm install && npm start` (serves on http://localhost:4300).
 
-**Tests** (from `SampleApp/`): `npm test` (Karma/Jasmine unit), `npm run e2e` (Protractor/Puppeteer).
+**Tests** (from `playground/`): `npm run test:unit` (Vitest). The playground depends on the
+published `ng2-pdfjs-viewer` for Vercel builds; `yalc link` overrides it with your local build.
 
 **Docs site** (from `docs-website/`): `npm start` (local), `npm run build`.
 

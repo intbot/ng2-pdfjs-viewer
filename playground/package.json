@@ -1,7 +1,7 @@
 {
   "name": "ng2-pdfjs-viewer-playground",
   "version": "1.0.0",
-  "description": "Interactive feature explorer for ng2-pdfjs-viewer (Angular SampleApp v2).",
+  "description": "Interactive feature explorer for ng2-pdfjs-viewer (Angular 22).",
   "private": true,
   "engines": {
     "node": ">=22.12.0"

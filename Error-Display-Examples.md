@@ -446,7 +446,7 @@ Use the `errorClass` input to apply your custom CSS classes.
 
 ### 4. Test Your Implementation
 
-Use the SampleApp's error testing buttons to see your custom error display.
+Use the playground's Error Handling page to see your custom error display.
 
 ### 5. Customize for Your Brand
 
