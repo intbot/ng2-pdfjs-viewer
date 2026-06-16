@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [26.0.1] - 2026-06-16
+
 ### Fixed
 - `getDocumentText()` now waits for the document to finish loading before it
   extracts text (up to a timeout), so an AI `ask` — or any call — made the
