@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- `getDocumentText()` now waits for the document to finish loading before it
+  extracts text (up to a timeout), so an AI `ask` — or any call — made the
+  instant the viewer appears no longer returns an empty result.
+
+### Added
+- Unit coverage for the built-in AI panel's `[p.N]` page-citation parsing.
+
+### Changed
+- The `ng2-pdfjs-viewer/ai` entry point header now notes that requests run from
+  the browser — route cloud LLMs through a local model or a backend proxy
+  (avoids API-key exposure and CORS failures).
+
 ## [26.0.0] - 2026-06-13
 
 ### Added

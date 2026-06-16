@@ -13,6 +13,12 @@
 // service, a plain script). The full component re-exports these symbols from
 // the package root for backwards compatibility.
 //
+// SECURITY: this sends a fetch from wherever you construct it — in a browser
+// app, that is the user's browser. Don't point `endpoint` directly at a hosted
+// cloud LLM (OpenAI, Azure, …): the API key would be exposed to the client, and
+// most providers block direct browser calls via CORS. Use a local model
+// (Ollama, LM Studio) or your own backend proxy. See the AI Assistant guide.
+//
 // Usage:
 //   import { PdfAiAssistant } from "ng2-pdfjs-viewer/ai";
 //   const text = await viewer.getDocumentText();

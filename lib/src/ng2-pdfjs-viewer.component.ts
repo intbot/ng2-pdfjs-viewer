@@ -2306,6 +2306,7 @@ export class PdfJsViewerComponent
 
         const handlers: Record<string, (event?: any) => void> = {
           documentloaded: () => {
+            this.documentLoaded = true;
             if (this.diagnosticLogs)
               console.debug("PdfJsViewer: The document has now been loaded!");
             this.onDocumentLoad.emit();
@@ -2733,6 +2734,12 @@ export class PdfJsViewerComponent
     from?: number,
     to?: number
   ): Promise<DocumentPageText[]> {
+    // The document may not have finished loading the instant this is called
+    // (e.g. an AI 'ask' fired immediately after the viewer appears). Wait for
+    // 'documentloaded' so we don't extract empty text; fall back on timeout.
+    if (!this.documentLoaded) {
+      await this.waitForDocumentLoad(15000);
+    }
     const result = await this.dispatchAction(
       "get-document-text",
       { from, to },
@@ -2742,6 +2749,26 @@ export class PdfJsViewerComponent
       throw new Error(result.error || "getDocumentText failed");
     }
     return result.data ?? [];
+  }
+
+  /**
+   * Resolve once the current document has loaded, or after timeoutMs (in which
+   * case callers proceed with whatever the viewer can provide). Never rejects.
+   */
+  private waitForDocumentLoad(timeoutMs: number): Promise<void> {
+    if (this.documentLoaded) return Promise.resolve();
+    return new Promise<void>((resolve) => {
+      let settled = false;
+      const finish = () => {
+        if (settled) return;
+        settled = true;
+        sub.unsubscribe();
+        clearTimeout(timer);
+        resolve();
+      };
+      const sub = this.onDocumentLoad.subscribe(() => finish());
+      const timer = setTimeout(finish, timeoutMs);
+    });
   }
 
   /**
@@ -2926,6 +2953,8 @@ export class PdfJsViewerComponent
     // A new load lifts the failed-document latch (the documentInit relay
     // also clears it, but that is enablement-gated and can race fast loads)
     this.documentLoadFailed = false;
+    // Text isn't extractable until the new document finishes loading.
+    this.documentLoaded = false;
     this.cdr.markForCheck();
 
     if (!this.setupExternalWindow()) {
@@ -3163,6 +3192,9 @@ export class PdfJsViewerComponent
   // actions dispatched against a failed load settle immediately instead of
   // queueing forever.
   private documentLoadFailed = false;
+  // True once the current document fires 'documentloaded'. getDocumentText()
+  // awaits this so an AI 'ask' fired before render doesn't extract empty text.
+  private documentLoaded = false;
 
   // Universal Action Dispatcher - ALL actions go through readiness-based queuing
   private dispatchAction(
