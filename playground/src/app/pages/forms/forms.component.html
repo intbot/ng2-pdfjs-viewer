@@ -8,6 +8,7 @@
   <div preview>
     <ng2-pdfjs-viewer #viewer
       [pdfSrc]="src"
+      [theme]="theme.mode()"
       [formData]="formData()" (formDataChange)="onFormDataChange($event)">
     </ng2-pdfjs-viewer>
   </div>

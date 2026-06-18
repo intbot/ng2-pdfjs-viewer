@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { PdfJsViewerComponent, PdfJsViewerModule, FormDataMap } from 'ng2-pdfjs-viewer';
+import { ThemeService } from '../../core/services/theme.service';
 import { PlaygroundLayoutComponent } from '../../shared/playground-layout.component';
 
 @Component({
@@ -15,6 +16,7 @@ import { PlaygroundLayoutComponent } from '../../shared/playground-layout.compon
   `],
 })
 export class FormsComponent {
+  readonly theme = inject(ThemeService);
   // This page pins a real AcroForm document (US tax form from the PDF.js
   // test corpus) instead of the global sample picker.
   readonly src = '/assets/samples/form-sample.pdf';

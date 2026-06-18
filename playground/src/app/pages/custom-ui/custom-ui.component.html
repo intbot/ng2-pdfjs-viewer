@@ -23,6 +23,7 @@
 
     <ng2-pdfjs-viewer
       [pdfSrc]="src()"
+      [theme]="theme.mode()"
       [customToolbarTpl]="useCustomToolbar() ? hostToolbar : undefined"
       [showToolbar]="!useCustomToolbar()"
       [pageOverlayTpl]="useOverlays() ? pageBadge : undefined"

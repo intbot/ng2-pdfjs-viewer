@@ -3,6 +3,7 @@ import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 import { CodeBinding } from '../../core/models';
 import { CodeGenService } from '../../core/services/code-gen.service';
 import { SamplePdfService } from '../../core/services/sample-pdf.service';
+import { ThemeService } from '../../core/services/theme.service';
 import { PlaygroundLayoutComponent } from '../../shared/playground-layout.component';
 
 type TplKind = 'none' | 'dots' | 'bar' | 'pulse';
@@ -18,6 +19,7 @@ type TplKind = 'none' | 'dots' | 'bar' | 'pulse';
 export class LoadingComponent {
   private readonly codegen = inject(CodeGenService);
   private readonly samples = inject(SamplePdfService);
+  readonly theme = inject(ThemeService);
   readonly src = computed(() => this.samples.current().src);
 
   readonly showSpinner = signal(true);

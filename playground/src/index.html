@@ -1,7 +1,21 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
+  <script>
+    // Resolve the theme before first paint: saved choice > OS preference > dark.
+    (function () {
+      try {
+        var s = localStorage.getItem('pg-theme');
+        var m = (s === 'light' || s === 'dark')
+          ? s
+          : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', m);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
   <title>ng2-pdfjs-viewer · Playground</title>
   <base href="/" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />

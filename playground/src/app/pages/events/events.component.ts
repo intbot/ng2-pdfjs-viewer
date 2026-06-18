@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 import { CodeGenService } from '../../core/services/code-gen.service';
 import { SamplePdfService } from '../../core/services/sample-pdf.service';
+import { ThemeService } from '../../core/services/theme.service';
 import { PlaygroundLayoutComponent } from '../../shared/playground-layout.component';
 
 interface LogEntry { t: string; name: string; detail: string; }
@@ -16,6 +17,7 @@ interface LogEntry { t: string; name: string; detail: string; }
 export class EventsComponent {
   private readonly codegen = inject(CodeGenService);
   private readonly samples = inject(SamplePdfService);
+  readonly theme = inject(ThemeService);
   readonly src = computed(() => this.samples.current().src);
 
   readonly log = signal<LogEntry[]>([]);
