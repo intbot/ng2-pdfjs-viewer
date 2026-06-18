@@ -18,9 +18,9 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       # Setup .npmrc file to publish to npm
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           # Angular 22 / ng-packagr 22 / TypeScript 6.0 require Node >= 22.22 / 24.15
           node-version: '24.x'
