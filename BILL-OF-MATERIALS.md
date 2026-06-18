@@ -6,7 +6,7 @@ A component and license inventory of the **published npm package** `ng2-pdfjs-vi
 | --- | --- |
 | **Package** | `ng2-pdfjs-viewer` |
 | **Version** | 26.0.1 |
-| **License** | Apache-2.0 WITH Commons-Clause |
+| **License** | Apache-2.0 (Commons Clause) |
 | **Runtime npm dependencies** | **none** (zero) |
 | **Peer dependencies** | `@angular/common` `>=10`, `@angular/core` `>=10` |
 | **Distribution** | FESM2022 (ng-packagr) + bundled PDF.js assets under `pdfjs/` |

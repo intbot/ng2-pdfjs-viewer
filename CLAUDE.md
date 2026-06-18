@@ -4,8 +4,8 @@
 
 An Angular component library that wraps PDF.js in a single `<ng2-pdfjs-viewer>` component:
 viewing, printing, annotations, zoom, search, theming, and a large declarative input/event
-surface. 8.3M+ downloads. Published to npm as `ng2-pdfjs-viewer`. Open source (Apache-2.0 +
-Commons Clause).
+surface. 8.3M+ downloads. Published to npm as `ng2-pdfjs-viewer`. Open source under
+Apache-2.0 (Commons Clause).
 
 ## Positioning
 

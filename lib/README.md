@@ -12,7 +12,7 @@
 [![runtime dependencies](https://img.shields.io/badge/runtime%20deps-0-success?style=flat-square)](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/BILL-OF-MATERIALS.md)
 [![PDF.js](https://img.shields.io/badge/PDF.js-6.0.227-green?style=flat-square&logo=mozilla)](https://github.com/mozilla/pdf.js)
 [![Angular](https://img.shields.io/badge/Angular-%3E%3D10-red?style=flat-square&logo=angular)](https://angular.dev)
-[![license](https://img.shields.io/badge/license-Apache--2.0%20%2B%20Commons%20Clause-blue?style=flat-square)](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/LICENSE)
+[![license](https://img.shields.io/badge/license-Apache--2.0%20%28Commons%20Clause%29-blue?style=flat-square)](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/LICENSE)
 [![stars](https://img.shields.io/github/stars/intbot/ng2-pdfjs-viewer?style=flat-square&logo=github)](https://github.com/intbot/ng2-pdfjs-viewer)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/intbot/ng2-pdfjs-viewer/badge)](https://scorecard.dev/viewer/?uri=github.com/intbot/ng2-pdfjs-viewer)
 
@@ -198,7 +198,7 @@ See [CONTRIBUTING.md](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CON
 
 ## 📄 License
 
-[Apache-2.0 with the Commons Clause](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/LICENSE). Free to use, modify, and self-host; the Commons
+[Apache-2.0 (Commons Clause)](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/LICENSE). Free to use, modify, and self-host; the Commons
 Clause restricts selling the software itself as a hosted/commercial product.
 
 ## 🙏 Acknowledgments

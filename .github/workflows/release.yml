@@ -6,6 +6,9 @@ on:
 
 name: Create Release
 
+# Minimal default token scope; the job below escalates only what it needs.
+permissions: read-all
+
 jobs:
   release:
     name: Create Release
