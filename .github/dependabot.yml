@@ -4,8 +4,8 @@
 #   - /lib            the published npm package (its build tooling)
 #   - github-actions  the workflows that build, publish, and score the repo
 #
-# The non-shipped demo apps and docs site (playground/,
-# sample-app-material/, docs-website/) are deliberately NOT listed here. Their
+# The non-shipped demo app and docs site (playground/, docs-website/) are
+# deliberately NOT listed here. Their
 # security ALERTS are auto-dismissed by a repository-level Dependabot auto-triage
 # rule that matches their manifest paths (configured in repo Settings -> Code security ->
 # Dependabot -> Auto-triage rules). Opening version-update PRs for them would

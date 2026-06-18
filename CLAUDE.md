@@ -20,7 +20,7 @@ neutral — describe code changes, not plans.
   **ng-packagr** → FESM2022. Bundled Mozilla **PDF.js** assets under `lib/pdfjs/`.
 - **Local dev link:** **yalc** wires the built lib into the playground for local development.
 - **Demo app:** `playground/` (Angular 22 feature explorer; the deployed demo at
-  `angular-pdf-viewer-demo.vercel.app`). `sample-app-material/` is a legacy Angular Material variant.
+  `angular-pdf-viewer-demo.vercel.app`).
 - **Docs site:** `docs-website/` (Docusaurus, deployed to Vercel).
 
 ## Repository Structure
@@ -43,7 +43,6 @@ lib/                         — the published npm package (ng2-pdfjs-viewer)
   README.md                  — public npm/GitHub readme (44k+ — the primary docs)
   v5-upgrade.md              — migration guide
 playground/                  — primary demo + feature explorer (Angular 22; deployed to Vercel)
-sample-app-material/         — legacy Angular Material demo
 docs-website/                — Docusaurus documentation site
 *.md (root)                  — public docs: README, CHANGELOG, CONTRIBUTING, SECURITY,
                                Custom-CSS-Examples, Error-Display-Examples, Server-Side-Examples

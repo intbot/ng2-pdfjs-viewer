@@ -244,13 +244,13 @@ Provenance is generated automatically because this is a public repository.
 ### Repository security & Dependabot
 
 This repo ships only the `lib/` package — it has **zero runtime dependencies**. The playground and
-demo apps (`playground/`, `sample-app-material/`) and the docs site (`docs-website/`)
+demo app (`playground/`) and the docs site (`docs-website/`)
 are **not published**.
 
 To keep the repository's security signal honest, Dependabot **alerts** for those non-shipped
 projects are auto-dismissed by a repository-level **auto-triage rule** that matches their manifest
 paths. This is configured once in **Settings → Code security → Dependabot → Auto-triage rules**
-(action: auto-dismiss; manifest path: `playground/**`, `sample-app-material/**`, `docs-website/**`);
+(action: auto-dismiss; manifest path: `playground/**`, `docs-website/**`);
 the built-in "dismiss low-impact dev-scoped" preset is also enabled. Dependabot **version-update**
 PRs are scoped to `/lib` and the GitHub Actions workflows via `.github/dependabot.yml`. See
 `SECURITY.md` for the rationale.

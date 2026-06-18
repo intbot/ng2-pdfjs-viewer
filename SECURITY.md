@@ -86,7 +86,7 @@ We take supply-chain integrity seriously, and the published package is intention
   [npm provenance attestation](https://docs.npmjs.com/generating-provenance-statements). You can
   confirm on the npm package page that a given version was built from this repository's CI.
 - **About repository Dependabot alerts.** This repository also contains non-shipped projects — the
-  demo apps (`playground/`, `sample-app-material/`) and the documentation site (`docs-website/`).
+  demo app (`playground/`) and the documentation site (`docs-website/`).
   Any Dependabot alerts you see on the repository pertain to **that tooling, not the published
   library**, and their dependencies never reach consumers of the npm package. Alerts scoped to
   those paths are auto-triaged so they do not misrepresent the security of the shipped component.
