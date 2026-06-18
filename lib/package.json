@@ -16,14 +16,14 @@
   "module": "dist/fesm2022/ng2-pdfjs-viewer.mjs",
   "typings": "dist/types/ng2-pdfjs-viewer.d.ts",
   "devDependencies": {
-    "@angular/compiler-cli": "^22.0.0",
-    "esbuild": "^0.28.0",
+    "@angular/compiler-cli": "^22.0.2",
+    "esbuild": "^0.28.1",
     "jsdom": "^29.1.1",
     "ng-packagr": "^22.0.0",
-    "shx": "^0.3.4",
+    "shx": "^0.4.0",
     "terser": "^5.24.0",
     "typescript": "~6.0.0",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.9"
   },
   "peerDependencies": {
     "@angular/common": ">=10.0.0",
