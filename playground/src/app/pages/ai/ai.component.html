@@ -6,7 +6,7 @@
   docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
 
   <div preview>
-    <ng2-pdfjs-viewer #viewer [pdfSrc]="src()"
+    <ng2-pdfjs-viewer #viewer [pdfSrc]="src()" [theme]="theme.mode()"
       (onDocumentLoad)="docReady.set(true)"
       (onReadAloudStateChange)="onReadAloud($event)">
     </ng2-pdfjs-viewer>

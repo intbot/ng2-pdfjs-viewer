@@ -11,6 +11,7 @@
     @for (v of [urlValidation()]; track v) {
       <ng2-pdfjs-viewer
         [pdfSrc]="src()"
+        [theme]="theme.mode()"
         [errorOverride]="errorOverride()"
         [errorAppend]="errorAppend()"
         [errorMessage]="errorMessage()"

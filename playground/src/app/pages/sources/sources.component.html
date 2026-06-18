@@ -7,10 +7,10 @@
 
   <div preview>
     <!-- urlValidation off: this page legitimately swaps pdfSrc between URL / Blob / bytes -->
-    <ng2-pdfjs-viewer [pdfSrc]="src()" viewerId="sources" [urlValidation]="false"></ng2-pdfjs-viewer>
+    <ng2-pdfjs-viewer [pdfSrc]="src()" viewerId="sources" [urlValidation]="false" [theme]="theme.mode()"></ng2-pdfjs-viewer>
     <!-- renders nothing inline: externalWindow viewers open in their own tab on refresh() -->
     <ng2-pdfjs-viewer #ext class="pg-external" [externalWindow]="true" viewerId="sources-external"
-                      [urlValidation]="false"></ng2-pdfjs-viewer>
+                      [urlValidation]="false" [theme]="theme.mode()"></ng2-pdfjs-viewer>
   </div>
 
   <div controls>

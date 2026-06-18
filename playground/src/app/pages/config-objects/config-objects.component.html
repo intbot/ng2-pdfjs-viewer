@@ -11,6 +11,7 @@
     @for (k of [runKey()]; track k) {
       <ng2-pdfjs-viewer
         [pdfSrc]="src()"
+        [theme]="themeService.mode()"
         [controlVisibility]="controlVisibility()"
         [themeConfig]="themeConfig()"
         [autoActions]="autoActions()"

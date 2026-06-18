@@ -3,6 +3,7 @@ import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 import { CodeBinding } from '../../core/models';
 import { CodeGenService } from '../../core/services/code-gen.service';
 import { SamplePdfService } from '../../core/services/sample-pdf.service';
+import { ThemeService } from '../../core/services/theme.service';
 import { PlaygroundLayoutComponent } from '../../shared/playground-layout.component';
 
 type ErrTpl = 'none' | 'branded' | 'minimal';
@@ -19,6 +20,7 @@ type ErrTpl = 'none' | 'branded' | 'minimal';
 export class ErrorsComponent {
   private readonly codegen = inject(CodeGenService);
   private readonly samples = inject(SamplePdfService);
+  readonly theme = inject(ThemeService);
 
   readonly broken = signal(false);
   readonly protectedDoc = signal(false);

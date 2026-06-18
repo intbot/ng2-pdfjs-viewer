@@ -8,6 +8,7 @@
   <div preview>
     <ng2-pdfjs-viewer
       [pdfSrc]="src()"
+      [theme]="theme.mode()"
       (onDocumentInit)="push('onDocumentInit')"
       (onDocumentLoad)="push('onDocumentLoad')"
       (onPagesInit)="push('onPagesInit', $event)"

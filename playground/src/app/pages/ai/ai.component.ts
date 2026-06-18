@@ -1,6 +1,7 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { PdfJsViewerComponent, PdfJsViewerModule, PdfAiAssistant, ReadAloudState } from 'ng2-pdfjs-viewer';
 import { SamplePdfService } from '../../core/services/sample-pdf.service';
+import { ThemeService } from '../../core/services/theme.service';
 import { PlaygroundLayoutComponent } from '../../shared/playground-layout.component';
 
 @Component({
@@ -19,6 +20,7 @@ import { PlaygroundLayoutComponent } from '../../shared/playground-layout.compon
 })
 export class AiComponent {
   private readonly samples = inject(SamplePdfService);
+  readonly theme = inject(ThemeService);
   readonly src = computed(() => this.samples.current().src);
 
   // BYO endpoint — nothing is called until the user clicks. Defaults target a

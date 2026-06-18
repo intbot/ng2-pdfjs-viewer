@@ -9,7 +9,7 @@
     <!-- locale is applied before PDF.js initializes, so a locale change
          needs a fresh viewer — the keyed @for re-creates it. -->
     @for (l of [locale()]; track l) {
-      <ng2-pdfjs-viewer [pdfSrc]="src()" [locale]="l" viewerId="localization"></ng2-pdfjs-viewer>
+      <ng2-pdfjs-viewer [pdfSrc]="src()" [locale]="l" viewerId="localization" [theme]="theme.mode()"></ng2-pdfjs-viewer>
     }
   </div>
 

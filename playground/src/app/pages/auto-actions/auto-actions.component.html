@@ -11,6 +11,7 @@
     @for (k of [runKey()]; track k) {
       <ng2-pdfjs-viewer
         [pdfSrc]="src()"
+        [theme]="theme.mode()"
         [downloadFileName]="downloadFileName()"
         [downloadOnLoad]="downloadOnLoad()"
         [printOnLoad]="printOnLoad()"

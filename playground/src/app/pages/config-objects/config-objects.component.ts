@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 import { CodeGenService } from '../../core/services/code-gen.service';
 import { SamplePdfService } from '../../core/services/sample-pdf.service';
+import { ThemeService } from '../../core/services/theme.service';
 import { PlaygroundLayoutComponent } from '../../shared/playground-layout.component';
 
 @Component({
@@ -14,6 +15,9 @@ import { PlaygroundLayoutComponent } from '../../shared/playground-layout.compon
 export class ConfigObjectsComponent {
   private readonly codegen = inject(CodeGenService);
   private readonly samples = inject(SamplePdfService);
+  // This page already owns a `theme` signal for its themeConfig demo, so the
+  // playground's theme service is injected under a distinct name.
+  readonly themeService = inject(ThemeService);
   readonly src = computed(() => this.samples.current().src);
 
   // controlVisibility

@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { PdfJsViewerComponent, PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 import { CodeGenService } from '../../core/services/code-gen.service';
 import { SamplePdfService } from '../../core/services/sample-pdf.service';
+import { ThemeService } from '../../core/services/theme.service';
 import { PlaygroundLayoutComponent } from '../../shared/playground-layout.component';
 
 @Component({
@@ -18,6 +19,7 @@ import { PlaygroundLayoutComponent } from '../../shared/playground-layout.compon
 export class SourcesComponent {
   private readonly codegen = inject(CodeGenService);
   private readonly samples = inject(SamplePdfService);
+  readonly theme = inject(ThemeService);
 
   readonly kind = signal<'url' | 'blob' | 'bytes'>('url');
   readonly src = signal<string | Blob | Uint8Array>(this.samples.current().src);

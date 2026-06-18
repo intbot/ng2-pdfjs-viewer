@@ -9,6 +9,7 @@
     @for (k of [runKey()]; track k) {
       <ng2-pdfjs-viewer
         [pdfSrc]="src()"
+        [theme]="theme.mode()"
         [showSpinner]="showSpinner()"
         [spinnerClass]="spinnerClass() || undefined"
         [customSpinnerTpl]="selectedTpl()">
