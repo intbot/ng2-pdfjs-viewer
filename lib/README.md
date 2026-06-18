@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/intbot/ng2-pdfjs-viewer/master/lib/logo.svg" alt="ng2-pdfjs-viewer" width="120" height="140" />
+<img src="https://raw.githubusercontent.com/intbot/ng2-pdfjs-viewer/master/lib/pdf-viewer-banner.svg" alt="Angular PDF Viewer — ng2-pdfjs-viewer" width="560" />
 
 # ng2-pdfjs-viewer
 
