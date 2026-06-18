@@ -28,9 +28,10 @@ jobs:
           # Angular 22 / ng-packagr 22 / TypeScript 6.0 require Node >= 22.22 / 24.15
           node-version: '24.x'
           registry-url: 'https://registry.npmjs.org'
-      # Trusted publishing + provenance require npm >= 11.5.1.
+      # Trusted publishing + provenance require npm >= 11.5.1. Pinned to a fixed
+      # version (not @latest) for a reproducible toolchain (Scorecard Pinned-Dependencies).
       - name: Upgrade npm
-        run: npm install -g npm@latest
+        run: npm install -g npm@11.17.0
       - name: Install dependencies
         working-directory: ./lib
         run: npm ci
