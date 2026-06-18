@@ -67,6 +67,11 @@ const config: Config = {
   ],
 
   themeConfig: {
+    // Respect the visitor's OS theme; fall back to the dark brand canvas.
+    colorMode: {
+      defaultMode: 'dark',
+      respectPrefersColorScheme: true,
+    },
     // Replace with your project's social card
     image: 'img/ng2-pdfjs-viewer-social-card.png',
     navbar: {

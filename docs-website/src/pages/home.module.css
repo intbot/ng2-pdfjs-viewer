@@ -83,3 +83,40 @@
   .bento { grid-template-columns: 1fr 1fr; }
   .lg { grid-column: span 2; grid-row: span 1; }
 }
+
+/* Hero light/dark toggle (mirrors the Docusaurus color mode). */
+.themeToggle {
+  position: absolute; top: 16px; right: 20px; z-index: 3;
+  width: 38px; height: 38px; border-radius: 10px; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 16px; line-height: 1; padding: 0;
+  color: var(--ink); background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border); transition: 0.15s;
+}
+.themeToggle:hover { border-color: rgba(124, 92, 255, 0.5); }
+
+/* ---- Light variant: the landing follows the site color mode so it no longer
+   forces dark; Docusaurus sets data-theme on <html>. ---- */
+:global(html[data-theme='light']) .landing {
+  --ink: #161a23; --muted: #4a5363; --faint: #828b9b;
+  --border: rgba(20, 28, 56, 0.12);
+  background: #f6f7fb;
+}
+:global(html[data-theme='light']) .mesh {
+  background:
+    radial-gradient(50% 40% at 16% 6%, rgba(124, 92, 255, 0.14), transparent 60%),
+    radial-gradient(45% 45% at 88% 10%, rgba(34, 211, 238, 0.12), transparent 60%),
+    radial-gradient(40% 50% at 72% 92%, rgba(255, 138, 92, 0.08), transparent 60%);
+}
+:global(html[data-theme='light']) .eyebrow { background: rgba(20, 28, 56, 0.04); }
+:global(html[data-theme='light']) .btnG,
+:global(html[data-theme='light']) .themeToggle { background: rgba(20, 28, 56, 0.04); }
+:global(html[data-theme='light']) .card3d { background: #ffffff; box-shadow: 0 30px 70px rgba(30, 40, 80, 0.16); }
+:global(html[data-theme='light']) .vt { background: #eef1f7; }
+:global(html[data-theme='light']) .tb { background: #e4e8f0; }
+:global(html[data-theme='light']) .chip { background: #eef1f7; }
+:global(html[data-theme='light']) .vbody { background: linear-gradient(180deg, #eef1f7, #e4e8f1); }
+:global(html[data-theme='light']) .sheet { box-shadow: 0 18px 50px rgba(30, 40, 80, 0.18); }
+:global(html[data-theme='light']) .tile {
+  background: linear-gradient(180deg, rgba(20, 28, 56, 0.035), rgba(20, 28, 56, 0.012));
+}
