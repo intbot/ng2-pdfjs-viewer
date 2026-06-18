@@ -6,7 +6,7 @@ jobs:
     permissions:
       contents: write # git-auto-commit pushes the synced README/LICENSE
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Sync README and LICENSE
         run: |
           cp lib/README.md README.md
