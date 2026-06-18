@@ -166,6 +166,12 @@ body #outerContainer.sidebar-right.viewsManagerOpen #loadingBar {
 /* Light theme defaults */
 .ng2-theme-light,
 .ng2-theme-light-active {
+  /* Pin the UA color-scheme so PDF.js's light-dark() colours (toolbar/menu
+     icons, form controls, scrollbars) resolve to the SELECTED theme instead of
+     the OS preference. Without this, when the app theme differs from the OS
+     theme the icons inherit :root's `color-scheme: light dark` and become
+     invisible (e.g. light icons on a light toolbar). */
+  color-scheme: light;
   --ng2-default-bg: #d4d4d7; /* PDF.js original grey background */
   --ng2-default-text: #000000;
   --ng2-default-toolbar: #f9f9f9;
@@ -175,6 +181,7 @@ body #outerContainer.sidebar-right.viewsManagerOpen #loadingBar {
 /* Dark theme defaults */
 .ng2-theme-dark,
 .ng2-theme-dark-active {
+  color-scheme: dark;
   --ng2-default-bg: #1e1e1e;
   --ng2-default-text: #ffffff;
   --ng2-default-toolbar: #333333;
