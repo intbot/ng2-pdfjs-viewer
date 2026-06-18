@@ -40,8 +40,9 @@ lib/                         — the published npm package (ng2-pdfjs-viewer)
       ComponentUtils.ts             — shared helpers
       PropertyTransformers.ts       — input coercion/transforms
   pdfjs/                     — bundled PDF.js viewer + worker assets (shipped as package assets)
-  README.md                  — public npm/GitHub readme (44k+ — the primary docs)
+  logo.svg, pdf-viewer-banner.svg — brand assets (README banner, referenced by raw URL)
   v5-upgrade.md              — migration guide
+  (the README lives at the repo root; `npm run build` copies it into dist/ for npm)
 playground/                  — primary demo + feature explorer (Angular 22; deployed to Vercel)
 docs-website/                — Docusaurus documentation site
 *.md (root)                  — public docs: README, CHANGELOG, CONTRIBUTING, SECURITY,
@@ -115,7 +116,8 @@ To recreate the junction on another machine: `bash scripts/setup-private.sh`.
 
 ## Notes for Claude Code sessions
 
-- The public `README.md` (root and `lib/`) is the canonical feature reference — consult it before
-  changing or describing component behavior.
+- The public root `README.md` is the canonical feature reference (one source of truth; the lib
+  build copies it into the package for npm) — consult it before changing or describing component
+  behavior.
 - Treat everything outside `internal/` as public the moment it's pushed. When unsure whether
   something is sensitive, put it in `internal/` and let the `/push` leak-guard be the safety net.

@@ -1,6 +1,6 @@
 # OpenSSF Scorecard — supply-chain health checks for the repository.
 # Publishes results to the public OpenSSF dashboard and uploads SARIF to the
-# repo's code-scanning so the Scorecard badge (in lib/README.md) resolves.
+# repo's code-scanning so the Scorecard badge (in README.md) resolves.
 name: Scorecard supply-chain security
 on:
   branch_protection_rule:

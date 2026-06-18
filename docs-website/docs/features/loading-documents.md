@@ -171,7 +171,7 @@ PDF.js can stream documents with HTTP range requests, so the first pages render 
 1. **Linearize the PDF** ("fast web view") when producing it, e.g. `qpdf --linearize input.pdf output.pdf`.
 2. **Serve with range support** — the server must send `Accept-Ranges: bytes` and honor `Range` requests (standard on Nginx/IIS/S3/CDNs; check that proxies don't strip it).
 
-Pages render lazily as the user scrolls, so memory stays bounded even for thousand-page documents. Note that the `httpHeaders`/`withCredentials` path downloads the full document before display (headers can't be attached to the viewer's streaming fetch) — prefer time-limited signed URLs for very large protected documents. See the "Large Documents & Fast Web View" section of the [README](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/lib/README.md) for the full recipe.
+Pages render lazily as the user scrolls, so memory stays bounded even for thousand-page documents. Note that the `httpHeaders`/`withCredentials` path downloads the full document before display (headers can't be attached to the viewer's streaming fetch) — prefer time-limited signed URLs for very large protected documents. See the "Large Documents & Fast Web View" section of the [README](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/README.md) for the full recipe.
 
 ## Related
 
