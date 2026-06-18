@@ -103,3 +103,21 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---- Light variant: follow the site color mode so this section stays in
+   step with the hero (no dark block on a light page). ---- */
+:global(html[data-theme='light']) .features {
+  background: #f6f7fb;
+  color: #161a23;
+  border-top-color: rgba(20, 28, 56, 0.08);
+}
+:global(html[data-theme='light']) .kicker { color: #828b9b; }
+:global(html[data-theme='light']) .heading { color: #161a23; }
+:global(html[data-theme='light']) .card {
+  background: linear-gradient(180deg, rgba(20, 28, 56, 0.035), rgba(20, 28, 56, 0.012));
+  border-color: rgba(20, 28, 56, 0.1);
+}
+:global(html[data-theme='light']) .card:hover { border-color: rgba(124, 92, 255, 0.4); }
+:global(html[data-theme='light']) .cardTitle { color: #161a23; }
+:global(html[data-theme='light']) .cardDesc { color: #4a5363; }
+:global(html[data-theme='light']) .cardDesc strong { color: #161a23; }

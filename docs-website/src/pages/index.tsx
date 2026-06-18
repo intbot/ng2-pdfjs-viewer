@@ -2,6 +2,7 @@ import Link from '@docusaurus/Link';
 import Head from '@docusaurus/Head';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
+import { useColorMode } from '@docusaurus/theme-common';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 
 import styles from './home.module.css';
@@ -11,10 +12,19 @@ const PLAYGROUND = 'https://angular-pdf-viewer-demo.vercel.app/';
 const feat = (route: string) => `${PLAYGROUND}#/${route}`;
 
 function Hero() {
+  const { colorMode, setColorMode } = useColorMode();
   return (
     <section className={styles.landing}>
       <div className={styles.mesh} />
       <div className={styles.inner}>
+        <button
+          type="button"
+          className={styles.themeToggle}
+          onClick={() => setColorMode(colorMode === 'dark' ? 'light' : 'dark')}
+          aria-label={`Switch to ${colorMode === 'dark' ? 'light' : 'dark'} theme`}
+        >
+          {colorMode === 'dark' ? '☀' : '☾'}
+        </button>
         <div className={styles.hero}>
           <div>
             <span className={styles.eyebrow}>
