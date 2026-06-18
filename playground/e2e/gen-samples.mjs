@@ -86,9 +86,9 @@ const DOCS = {
         <div class="bar" style="height:100%"></div>
       </div>
       <div class="legend">
-        <span class="pill" style="background:#7c5cff">7M+ downloads</span>
+        <span class="pill" style="background:#7c5cff">8.3M+ downloads</span>
         <span class="pill" style="background:#22d3ee">since 2018</span>
-        <span class="pill" style="background:#ff8a5c">Angular 10–20</span>
+        <span class="pill" style="background:#ff8a5c">Angular 10–22</span>
       </div>
       <div class="donut"></div>
     </div>`,

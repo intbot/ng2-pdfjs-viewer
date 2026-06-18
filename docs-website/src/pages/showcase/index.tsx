@@ -170,7 +170,7 @@ export default function Showcase() {
               <br /><br />
               <div style={{ fontSize: '0.9rem', opacity: 0.9, lineHeight: '1.4' }}>
                 <strong>Why submit your project?</strong><br />
-                🚀 <strong>Free promotion</strong> - Showcase your work to 7M+ developers<br />
+                🚀 <strong>Free promotion</strong> - Showcase your work to 8.3M+ developers<br />
                 🔗 <strong>Quality backlinks</strong> - Boost your SEO with high-authority links<br />
                 👥 <strong>Community recognition</strong> - Get featured in our official showcase<br />
                 💼 <strong>Professional credibility</strong> - Demonstrate your technical skills<br />

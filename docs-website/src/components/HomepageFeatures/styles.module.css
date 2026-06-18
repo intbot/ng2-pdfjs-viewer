@@ -1,31 +1,105 @@
+/* "Why teams choose it" — a dark section that continues the hero's canvas
+   (same #07080c background and design tokens) so the landing reads as one
+   cohesive page instead of a dark hero followed by a white block. */
+
 .features {
-  display: flex;
-  align-items: center;
-  padding: 2rem 0;
-  width: 100%;
+  background: #07080c;
+  color: #eef1f7;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 8px 24px 80px;
+  --display: 'Space Grotesk', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
-.featureIcon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+.inner {
+  max-width: 1160px;
+  margin: 0 auto;
 }
 
-.feature {
-  padding: 1rem;
-  border-radius: 8px;
-  transition: transform 0.2s ease-in-out;
+.kicker {
+  font-family: var(--display);
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #6e7788;
+  margin: 0 0 10px;
 }
 
-.feature:hover {
-  transform: translateY(-2px);
+.heading {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: -0.022em;
+  color: #eef1f7;
+  margin: 0 0 32px;
 }
 
-@media screen and (max-width: 996px) {
-  .features {
-    padding: 1rem 0;
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.card {
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 18px;
+  padding: 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(124, 92, 255, 0.4);
+}
+
+.cardIcon {
+  font-size: 22px;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.cardTitle {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: #eef1f7;
+}
+
+.cardDesc {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #aab3c2;
+  margin: 0;
+}
+
+.cardDesc code {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: #22d3ee;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1px 5px;
+  border-radius: 5px;
+}
+
+.cardDesc strong {
+  color: #eef1f7;
+  font-weight: 600;
+}
+
+@media (max-width: 996px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
   }
-  
-  .feature {
-    margin-bottom: 2rem;
+  .heading {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
   }
 }

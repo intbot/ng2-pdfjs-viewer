@@ -6,13 +6,14 @@
 
 **A complete PDF experience in one Angular component — view, annotate, sign, fill forms, search, and read aloud, powered by Mozilla PDF.js.**
 
-[![npm](https://img.shields.io/npm/v/ng2-pdfjs-viewer?logo=npm&color=blue)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
-[![downloads / month](https://img.shields.io/npm/dm/ng2-pdfjs-viewer?color=orange)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
-[![total downloads](https://img.shields.io/badge/total-7M%2B-brightgreen?logo=npm)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
-[![PDF.js](https://img.shields.io/badge/PDF.js-6.0.227-green?logo=mozilla)](https://github.com/mozilla/pdf.js)
-[![Angular](https://img.shields.io/badge/Angular-%3E%3D10-red?logo=angular)](https://angular.dev)
-[![license](https://img.shields.io/badge/license-Apache--2.0%20%2B%20Commons%20Clause-blue.svg)](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/LICENSE)
-[![stars](https://img.shields.io/github/stars/intbot/ng2-pdfjs-viewer?logo=github)](https://github.com/intbot/ng2-pdfjs-viewer)
+[![npm version](https://img.shields.io/npm/v/ng2-pdfjs-viewer?style=flat-square&logo=npm&color=2563eb)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+[![downloads / month](https://img.shields.io/npm/dm/ng2-pdfjs-viewer?style=flat-square&color=f97316)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+[![total downloads](https://img.shields.io/badge/total%20downloads-8.3M%2B-22c55e?style=flat-square&logo=npm)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+[![runtime dependencies](https://img.shields.io/badge/runtime%20deps-0-success?style=flat-square)](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/BILL-OF-MATERIALS.md)
+[![PDF.js](https://img.shields.io/badge/PDF.js-6.0.227-green?style=flat-square&logo=mozilla)](https://github.com/mozilla/pdf.js)
+[![Angular](https://img.shields.io/badge/Angular-%3E%3D10-red?style=flat-square&logo=angular)](https://angular.dev)
+[![license](https://img.shields.io/badge/license-Apache--2.0%20%2B%20Commons%20Clause-blue?style=flat-square)](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/LICENSE)
+[![stars](https://img.shields.io/github/stars/intbot/ng2-pdfjs-viewer?style=flat-square&logo=github)](https://github.com/intbot/ng2-pdfjs-viewer)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/intbot/ng2-pdfjs-viewer/badge)](https://scorecard.dev/viewer/?uri=github.com/intbot/ng2-pdfjs-viewer)
 
 [**Live demo**](https://angular-pdf-viewer-demo.vercel.app/) · [**Documentation**](https://angular-pdf-viewer-docs.vercel.app/) · [**API reference**](https://angular-pdf-viewer-docs.vercel.app/docs/api/component-inputs) · [**Changelog**](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CHANGELOG.md)
@@ -22,11 +23,11 @@
 ---
 
 Drop a production PDF viewer into any Angular app with a single tag. ng2-pdfjs-viewer wraps
-Mozilla **PDF.js 6** in one declarative `<ng2-pdfjs-viewer>` component: rendering, navigation,
+**PDF.js 6** in one declarative `<ng2-pdfjs-viewer>` component: rendering, navigation,
 search, printing, theming, annotations, e-signatures, AcroForms, read-aloud, and a bring-your-own
 AI assistant — all driven by typed `@Input()`s and `@Output()` events, no iframe plumbing of your own.
 
-Shipping since **2018**, **7M+ downloads**, mobile-first, and built & verified on **Angular 22**
+Shipping since **2018**, **8.3+ million downloads**, mobile-first, and built & verified on **Angular 22**
 while keeping a wide `>=10` peer range so existing apps upgrade without churn.
 
 ```bash
@@ -43,7 +44,7 @@ That's the whole integration. [Wire up the assets](#-quick-start) and you have a
 
 | | |
 |---|---|
-| 📄 **View anything** | Crisp PDF.js 6 rendering, zoom, navigation, thumbnails, outline, printing — embedded, in a new tab, or a popout window. |
+| 📄 **View anything** | Crisp, high-fidelity rendering, zoom, navigation, thumbnails, outline, printing — embedded, in a new tab, or a popout window. |
 | ✍️ **Annotate & sign** | Highlight, draw, free-text, and stamp editors; opt-in draw/type/upload **signature** editor and threaded comments. Export and restore edits for a full server round-trip. |
 | 🧾 **Fill forms** | Two-way AcroForm binding — read and write field values from your component, save the filled document as a blob. |
 | 🔎 **Search in code** | Programmatic `search()` with totals, per-page counts, and next/previous navigation — build your own find UI. |
@@ -203,7 +204,7 @@ Clause restricts selling the software itself as a hosted/commercial product.
 ## 🙏 Acknowledgments
 
 Built on the excellent [Mozilla PDF.js](https://github.com/mozilla/pdf.js), and shaped over the
-years by a community of contributors and 7M+ downloads' worth of real-world use.
+years by a community of contributors and 8.3+ million downloads' worth of real-world use.
 
 ---
 

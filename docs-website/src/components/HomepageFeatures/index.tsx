@@ -1,83 +1,80 @@
-import clsx from 'clsx';
-import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 
 type FeatureItem = {
+  icon: string;
   title: string;
-  Svg?: React.ComponentType<React.ComponentProps<'svg'>>;
   description: JSX.Element;
-  icon?: string;
 };
 
 const FeatureList: FeatureItem[] = [
   {
-    title: '🚀 Always Up-to-Date',
+    icon: '🧩',
+    title: 'One component, the whole toolkit',
     description: (
       <>
-        Built on the latest <strong>PDF.js v5.3.93</strong> with continuous updates 
-        and <strong>Angular 20+</strong> compatibility. Stay current with modern web standards.
+        View, annotate, e-sign, fill forms, search, read aloud, and reorganize pages — all from a
+        single <code>&lt;ng2-pdfjs-viewer&gt;</code> tag. No separate plugins to wire together.
       </>
     ),
   },
   {
-    title: '🏗️ Enterprise-Ready',
+    icon: '📦',
+    title: 'Zero runtime dependencies',
     description: (
       <>
-        Production-tested architecture with comprehensive error handling, 
-        performance optimization, and <strong>strict TypeScript</strong> support.
+        Angular is the only peer dependency. Nothing else is added to your supply chain — the
+        rendering engine ships inside the package, not as a transitive npm tree.
       </>
     ),
   },
   {
-    title: '🎨 Highly Customizable',
+    icon: '🟢',
+    title: 'Current by design',
     description: (
       <>
-        Advanced theme system, custom templates, and flexible configuration. 
-        Use <strong>Angular templates</strong> for loading and error states.
+        Built on <strong>PDF.js 6.0.227</strong> and verified on <strong>Angular 22</strong>, with a
+        wide <code>&gt;=10</code> peer range so existing apps upgrade without churn.
       </>
     ),
   },
   {
-    title: '📱 Mobile Optimized',
+    icon: '🎛️',
+    title: 'Declarative & fully typed',
     description: (
       <>
-        Touch-friendly interface with responsive design for all screen sizes. 
-        <strong>Mobile-first</strong> approach ensures great UX everywhere.
+        40+ <code>@Input()</code>s and 19 <code>@Output()</code>s drive every feature. No iframe
+        plumbing, no <code>postMessage</code> wiring — just bindings and events.
       </>
     ),
   },
   {
-    title: '⚡ High Performance',
+    icon: '🤖',
+    title: 'Bring your own AI',
     description: (
       <>
-        <strong>Event-driven architecture</strong> with universal action dispatcher. 
-        No polling, timeouts, or defensive programming patterns.
+        Point the assistant at any OpenAI-compatible endpoint — OpenAI, Azure, Ollama, vLLM. The
+        library never calls an AI service on its own.
       </>
     ),
   },
   {
-    title: '🔧 Developer Friendly',
+    icon: '🛡️',
+    title: 'Secure & accountable',
     description: (
       <>
-        Complete API coverage, comprehensive documentation, and easy integration. 
-        <strong>19+ methods</strong> with consistent Promise-based returns.
+        A same-origin sandboxed iframe, an origin-checked host bridge, npm provenance, and a public
+        OpenSSF Scorecard — security you can verify, not just claim.
       </>
     ),
   },
 ];
 
-function Feature({title, description, icon}: FeatureItem) {
+function Feature({icon, title, description}: FeatureItem) {
   return (
-    <div className={clsx('col col--4')}>
-      <div className="text--center">
-        <div className={styles.featureIcon}>
-          {title.split(' ')[0]} {/* Extract emoji */}
-        </div>
-        <div className="text--center padding-horiz--md">
-          <Heading as="h3">{title.substring(2)}</Heading> {/* Remove emoji from title */}
-          <p>{description}</p>
-        </div>
-      </div>
+    <div className={styles.card}>
+      <span className={styles.cardIcon}>{icon}</span>
+      <h3 className={styles.cardTitle}>{title}</h3>
+      <p className={styles.cardDesc}>{description}</p>
     </div>
   );
 }
@@ -85,18 +82,10 @@ function Feature({title, description, icon}: FeatureItem) {
 export default function HomepageFeatures(): JSX.Element {
   return (
     <section className={styles.features}>
-      <div className="container">
-        <div className="row">
-          <div className="col col--12">
-            <div className="text--center margin-bottom--xl">
-              <Heading as="h2">Why Choose ng2-pdfjs-viewer?</Heading>
-              <p className="hero__subtitle">
-                The most mature and reliable Angular PDF viewer solution with continuous updates and long-term support
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="row">
+      <div className={styles.inner}>
+        <p className={styles.kicker}>Why teams choose it</p>
+        <h2 className={styles.heading}>A production PDF stack, not just a viewer.</h2>
+        <div className={styles.grid}>
           {FeatureList.map((props, idx) => (
             <Feature key={idx} {...props} />
           ))}

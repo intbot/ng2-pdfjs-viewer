@@ -67,7 +67,7 @@ For production deployments using IIS, add to your `web.config`:
 | **2.0 - 9.x** | ⚠️ **Legacy** | May require additional testing |
 
 :::note
-While the library supports Angular 2.0+, it's primarily tested and optimized for Angular 20+. For production use with older versions, thorough testing is recommended.
+While the library supports Angular 2.0+, it's primarily tested and optimized for Angular 22. For production use with older versions, thorough testing is recommended.
 :::
 
 ## Module Import

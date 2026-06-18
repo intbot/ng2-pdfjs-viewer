@@ -23,7 +23,7 @@ The latest release bundles Mozilla **PDF.js 6.x**, is built and verified on **An
 ### 📈 Battle-Tested Reliability
 
 - **Born in 2018** and still going strong
-- **7+ million downloads** and growing
+- **8.3+ million downloads** and growing
 - **8+ years** of continuous development
 - **Thousands** of applications powered worldwide
 

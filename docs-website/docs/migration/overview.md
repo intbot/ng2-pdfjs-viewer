@@ -34,7 +34,7 @@ Version 25.x represents a **complete rewrite** with significant improvements:
 - Plan the migration timeline
 
 ### 2. Preparation Phase
-- Update to Angular 20+ (recommended)
+- Update to Angular 22 (recommended)
 - Backup your current implementation
 - Review new features you want to adopt
 

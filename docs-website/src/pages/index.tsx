@@ -18,7 +18,7 @@ function Hero() {
         <div className={styles.hero}>
           <div>
             <span className={styles.eyebrow}>
-              <span className={styles.live} /> 7M+ downloads · since 2018 · Angular 10–20
+              <span className={styles.live} /> 8.3M+ downloads · since 2018 · Angular 10–22
             </span>
             <h1 className={styles.title}>
               The Angular PDF viewer,<br />
@@ -36,7 +36,7 @@ function Hero() {
               <div><b>40+</b><span>inputs</span></div>
               <div><b>19</b><span>events</span></div>
               <div><b>0</b><span>runtime deps</span></div>
-              <div><b>v10–20</b><span>Angular</span></div>
+              <div><b>v10–22</b><span>Angular</span></div>
             </div>
           </div>
 
@@ -104,7 +104,7 @@ export default function Home(): JSX.Element {
   return (
     <Layout
       title={`${siteConfig.title} - Angular PDF Viewer`}
-      description="The most comprehensive Angular PDF viewer powered by Mozilla PDF.js. 7M+ downloads, mobile-first, production-ready.">
+      description="The most comprehensive Angular PDF viewer powered by Mozilla PDF.js. 8.3M+ downloads, mobile-first, production-ready.">
       <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
