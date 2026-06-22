@@ -69,28 +69,43 @@ const DOCS = {
       </table>
     </div>`,
 
-  // CSS graphics / charts — image-heavy feel, good for zoom & rotation
+  // brand trust infographic — our own stats + identity; gradients/cards good for zoom & rotation
   'infographic.pdf': `<style>${base}
-      .bars { display:flex; align-items:flex-end; gap:18px; height:200px; margin:24px 0; }
-      .bar { width:54px; border-radius:10px 10px 0 0; background:linear-gradient(180deg,#7c5cff,#22d3ee); }
-      .legend { display:flex; gap:18px; flex-wrap:wrap; }
-      .pill { padding:8px 14px; border-radius:999px; color:#fff; font-size:12px; font-weight:600; }
-      .donut { width:160px; height:160px; border-radius:50%; background:conic-gradient(#7c5cff 0 45%,#22d3ee 45% 72%,#ff8a5c 72% 100%); margin:18px auto; }
+      .ig { padding: 60px 64px; }
+      .ighead { display:flex; align-items:center; gap:18px; }
+      .igmark { width:66px; height:66px; flex:none; }
+      .igtitle { font-size:32px; font-weight:850; letter-spacing:-.6px; color:#15181f; line-height:1.05; }
+      .igtitle .one { background:linear-gradient(120deg,#E40035,#9717E7); -webkit-background-clip:text; background-clip:text; color:transparent; }
+      .igsub { color:#6b7280; font-size:15px; margin-top:4px; }
+      .igchip { display:inline-block; margin-top:18px; background:#f7f5ff; border:1px solid #e7deff; border-radius:9px; padding:10px 16px; font-family:'JetBrains Mono',ui-monospace,Consolas,monospace; font-size:14px; }
+      .igchip .pkg { color:#6C00F5; font-weight:700; } .igchip .p { color:#b6a3e0; } .igchip .cmd { color:#6b7280; }
+      .ighero { font-size:108px; font-weight:850; letter-spacing:-3px; line-height:1; color:#15181f; margin:34px 0 0; }
+      .igherol { color:#475; font-size:16px; margin-top:6px; }
+      .igcards { display:flex; gap:16px; margin-top:34px; }
+      .igcard { flex:1; border:1px solid #eceef3; border-radius:16px; padding:18px 20px; }
+      .igcard .n { font-size:30px; font-weight:800; color:#15181f; }
+      .igcard .l { color:#6b7280; font-size:13px; margin-top:4px; }
+      .igfeat { margin-top:34px; color:#344; font-size:14px; line-height:1.75; }
+      .igfoot { margin-top:38px; color:#9aa3b2; font-size:11.5px; border-top:1px solid #eef0f4; padding-top:16px; }
     </style>
-    <div class="page">
-      <h1>Downloads — an infographic</h1>
-      <p class="lead">Colorful, image-heavy sample for testing zoom, rotation and rendering.</p>
-      <div class="bars">
-        <div class="bar" style="height:50%"></div><div class="bar" style="height:72%"></div>
-        <div class="bar" style="height:88%"></div><div class="bar" style="height:96%"></div>
-        <div class="bar" style="height:100%"></div>
+    <div class="ig">
+      <div class="ighead">
+        <svg class="igmark" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ig" x1="0" y1="0" x2=".55" y2="1"><stop offset="0" stop-color="#E40035"/><stop offset=".24" stop-color="#F60A48"/><stop offset=".352" stop-color="#F20755"/><stop offset=".494" stop-color="#DC087D"/><stop offset=".745" stop-color="#9717E7"/><stop offset="1" stop-color="#6C00F5"/></linearGradient></defs><g transform="translate(48 49) scale(1.26) translate(-48 -48)"><path d="M30 16 H55 L67 28 V49 C67 64 59 75 48 81 C37 75 29 64 29 49 V20 a4 4 0 0 1 1 -4 Z" fill="url(#ig)"/><path d="M55 16 V28 H67 Z" fill="#fff" fill-opacity=".4"/><path d="M42 16 h12 v24 l-6 -6 -6 6 Z" fill="#fff"/><g stroke="#fff" stroke-width="2.6" stroke-linecap="round" opacity=".85"><line x1="38" y1="50" x2="58" y2="50"/><line x1="40" y1="58" x2="56" y2="58"/></g></g></svg>
+        <div>
+          <div class="igtitle"><span class="one">#1</span> Angular PDF Viewer</div>
+          <div class="igsub">AI-enabled, feature-rich and comprehensive</div>
+        </div>
       </div>
-      <div class="legend">
-        <span class="pill" style="background:#7c5cff">8.3M+ downloads</span>
-        <span class="pill" style="background:#22d3ee">since 2018</span>
-        <span class="pill" style="background:#ff8a5c">Angular 10–22</span>
+      <span class="igchip"><span class="p">$</span> <span class="cmd">npm i</span> <span class="pkg">ng2-pdfjs-viewer</span></span>
+      <div class="ighero">8.3M+</div>
+      <div class="igherol">downloads and counting</div>
+      <div class="igcards">
+        <div class="igcard"><div class="n">0</div><div class="l">runtime dependencies</div></div>
+        <div class="igcard"><div class="n">8 yrs</div><div class="l">shipping since 2018</div></div>
+        <div class="igcard"><div class="n">10 &rarr; 22</div><div class="l">Angular versions</div></div>
       </div>
-      <div class="donut"></div>
+      <div class="igfeat"><b>Everything in one component:</b> view &middot; print &middot; search &middot; annotate &amp; sign &middot; fill forms &middot; read aloud &middot; organize pages &middot; zoom &middot; rotate &middot; theme &mdash; fully declarative, mobile-first, production-ready.</div>
+      <div class="igfoot">npmjs.com/package/ng2-pdfjs-viewer &middot; Apache-2.0 (Commons Clause) &middot; powered by Mozilla PDF.js</div>
     </div>`,
 };
 

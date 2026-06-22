@@ -40,7 +40,7 @@ lib/                         — the published npm package (ng2-pdfjs-viewer)
       ComponentUtils.ts             — shared helpers
       PropertyTransformers.ts       — input coercion/transforms
   pdfjs/                     — bundled PDF.js viewer + worker assets (shipped as package assets)
-  logo.svg, pdf-viewer-banner.svg — brand assets (README banner, referenced by raw URL)
+  logo.svg, pdf-viewer-banner.png — brand assets (F1 shield icon + README stats banner, referenced by raw URL)
   v5-upgrade.md              — migration guide
   (the README lives at the repo root; `npm run build` copies it into dist/ for npm)
 playground/                  — primary demo + feature explorer (Angular 22; deployed to Vercel)

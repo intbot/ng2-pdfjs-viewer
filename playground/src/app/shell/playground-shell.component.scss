@@ -13,10 +13,10 @@
   border-bottom: 1px solid var(--border); border-right: 1px solid var(--border);
 }
 .mk {
-  width: 28px; height: 28px; border-radius: 8px; flex: none;
-  background: conic-gradient(from 200deg, var(--v), var(--c), var(--pop), var(--v));
-  display: grid; place-items: center; color: #0a0a0a; font-weight: 800;
+  width: 28px; height: 28px; flex: none;
+  display: grid; place-items: center;
 }
+.mk svg { width: 100%; height: 100%; display: block; }
 .bt b { font-family: var(--display); font-size: 14px; display: block; line-height: 1.05; }
 .bt small { color: var(--faint); font-size: 11px; }
 
