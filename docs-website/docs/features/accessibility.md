@@ -1,6 +1,6 @@
 # Accessibility
 
-ng2-pdfjs-viewer embeds the full Mozilla PDF.js viewer — the same viewer that ships in Firefox — and inherits its accessibility architecture. This page summarizes what you get out of the box, what the component adds on top, and what remains your application's responsibility.
+ng2-pdfjs-viewer embeds the full Mozilla PDF.js viewer — the same viewer that ships in Firefox — and inherits its accessibility architecture. This page summarizes what you get by default, what the component adds on top, and what remains your application's responsibility.
 
 ## What the Viewer Provides
 
