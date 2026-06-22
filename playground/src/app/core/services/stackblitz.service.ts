@@ -3,6 +3,22 @@ import sdk from '@stackblitz/sdk';
 
 const SAMPLE_PDF = '/assets/samples/tracemonkey.pdf';
 
+// StackBlitz's `angular-cli` is an EngineBlock template: it resolves npm deps
+// from the project's top-level `dependencies` map, NOT from a package.json file
+// (that's WebContainers-only). We pass both — `dependencies` for EngineBlock
+// today, the package.json file as a fallback if the template ever moves to
+// WebContainers — so `import … from 'ng2-pdfjs-viewer'` always resolves.
+const DEPENDENCIES: Record<string, string> = {
+  '@angular/common': '^22.0.0',
+  '@angular/compiler': '^22.0.0',
+  '@angular/core': '^22.0.0',
+  '@angular/platform-browser': '^22.0.0',
+  'ng2-pdfjs-viewer': 'latest',
+  rxjs: '^7.8.1',
+  tslib: '^2.6.0',
+  'zone.js': '~0.15.0',
+};
+
 /** Opens a runnable Angular project on StackBlitz that embeds a page's snippet. */
 @Injectable({ providedIn: 'root' })
 export class StackblitzService {
@@ -13,6 +29,7 @@ export class StackblitzService {
         title: `ng2-pdfjs-viewer — ${title}`,
         description: 'Generated from the ng2-pdfjs-viewer playground.',
         template: 'angular-cli',
+        dependencies: DEPENDENCIES,
         files: this.files(snippet),
       },
       { openFile: 'src/app/app.component.ts', newWindow: true },
@@ -113,16 +130,7 @@ export class StackblitzService {
       'package.json': JSON.stringify(
         {
           name: 'ng2-pdfjs-viewer-example',
-          dependencies: {
-            '@angular/common': '^22.0.0',
-            '@angular/compiler': '^22.0.0',
-            '@angular/core': '^22.0.0',
-            '@angular/platform-browser': '^22.0.0',
-            'ng2-pdfjs-viewer': 'latest',
-            rxjs: '^7.8.1',
-            tslib: '^2.6.0',
-            'zone.js': '~0.15.0',
-          },
+          dependencies: DEPENDENCIES,
           devDependencies: {
             '@angular-devkit/build-angular': '^22.0.0',
             '@angular/cli': '^22.0.0',
