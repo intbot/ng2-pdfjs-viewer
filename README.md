@@ -6,15 +6,16 @@
 
 **A complete PDF experience in one Angular component — view, annotate, sign, fill forms, search, and read aloud, powered by Mozilla PDF.js.**
 
+[![total downloads](https://img.shields.io/badge/total%20downloads-8.3M%2B-22c55e?style=flat-square&logo=npm)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
 [![npm version](https://img.shields.io/npm/v/ng2-pdfjs-viewer?style=flat-square&logo=npm&color=2563eb)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
 [![downloads / month](https://img.shields.io/npm/dm/ng2-pdfjs-viewer?style=flat-square&color=f97316)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
-[![total downloads](https://img.shields.io/badge/total%20downloads-8.3M%2B-22c55e?style=flat-square&logo=npm)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
 [![runtime dependencies](https://img.shields.io/badge/runtime%20deps-0-success?style=flat-square)](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/BILL-OF-MATERIALS.md)
-[![PDF.js](https://img.shields.io/badge/PDF.js-6.0.227-green?style=flat-square&logo=mozilla)](https://github.com/mozilla/pdf.js)
+[![types](https://img.shields.io/npm/types/ng2-pdfjs-viewer?style=flat-square)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+[![CodeQL](https://github.com/intbot/ng2-pdfjs-viewer/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/intbot/ng2-pdfjs-viewer/security/code-scanning)
 [![Angular](https://img.shields.io/badge/Angular-%3E%3D10-red?style=flat-square&logo=angular)](https://angular.dev)
+[![PDF.js](https://img.shields.io/badge/PDF.js-6.0.227-green?style=flat-square&logo=mozilla)](https://github.com/mozilla/pdf.js)
 [![license](https://img.shields.io/badge/license-Apache--2.0%20%28Commons%20Clause%29-blue?style=flat-square)](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/LICENSE)
 [![stars](https://img.shields.io/github/stars/intbot/ng2-pdfjs-viewer?style=flat-square&logo=github)](https://github.com/intbot/ng2-pdfjs-viewer)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/intbot/ng2-pdfjs-viewer/badge)](https://scorecard.dev/viewer/?uri=github.com/intbot/ng2-pdfjs-viewer)
 
 [**Live demo**](https://angular-pdf-viewer-demo.vercel.app/) · [**Documentation**](https://angular-pdf-viewer-docs.vercel.app/) · [**API reference**](https://angular-pdf-viewer-docs.vercel.app/docs/api/component-inputs) · [**Changelog**](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CHANGELOG.md)
 
