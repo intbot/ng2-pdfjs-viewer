@@ -1,91 +1,46 @@
-# Welcome to ng2-pdfjs-viewer
+# ng2-pdfjs-viewer
 
-Welcome to the comprehensive documentation for **ng2-pdfjs-viewer** - the most reliable and feature-rich Angular PDF viewer component powered by Mozilla's PDF.js.
-
-## What's New 🎉
-
-The latest release bundles Mozilla **PDF.js 6.x**, is built and verified on **Angular 22** (peer range stays `>=10`), and turns the viewer into a full editing surface:
-
-- **Annotation editing & eSign**: highlight, text, draw, stamp + opt-in signature and comment editors — with `getAnnotations()`/`setAnnotations()` server round-trips and download-with-edits
-- **Forms**: `[(formData)]` two-way AcroForm binding and programmatic field access
-- **Programmatic search**, **page organization** (reorder/delete/extract/merge), **read aloud** with sentence highlighting
-- **AI assistant (bring your own endpoint)**: built-in chat panel with clickable page citations — the library never calls any AI service on its own
-- **Custom toolbar/sidebar/page-overlay templates**, **content protection + watermarks**, **authenticated loading** (`httpHeaders`/`withCredentials`), **true dark page rendering**
-
-### 🚀 Architecture (v25.x rewrite)
-
-- **Modern Architecture**: Built with modern Angular patterns (verified through Angular 22) and strict TypeScript
-- **Event-Driven**: Pure event-based system with universal action dispatcher
-- **Template-Based**: Use Angular templates for loading and error states
-- **Mobile-First**: Responsive design optimized for all screen sizes
-- **Production-Ready**: Comprehensive error handling and performance optimization
-
-### 📈 Battle-Tested Reliability
-
-- **Born in 2018** and still going strong
-- **8.3+ million downloads** and growing
-- **8+ years** of continuous development
-- **Thousands** of applications powered worldwide
-
-## Quick Links
-
-- 🚀 [**Getting Started**](./getting-started) - Set up in 5 minutes
-- 🎯 [**Live Demo**](https://angular-pdf-viewer-demo.vercel.app/) - See it in action
-- 📚 [**Examples**](./examples/basic-usage) - Copy-paste code examples
-- 🔄 [**Migration Guide**](./migration/overview) - Upgrade from v20.x
-- 📖 [**API Reference**](./api/component-inputs) - Complete API documentation
-
-## Installation
-
-Get started quickly with npm:
+ng2-pdfjs-viewer wraps Mozilla PDF.js in a single Angular component. It has been on npm since 2018, has passed more than 8.3 million downloads, and still supports Angular 10 through 22 with zero runtime dependencies. It's the same one-tag component it has always been, with annotations, forms, search, page editing, read-aloud, and a bring-your-own AI panel layered on in v26.
 
 ```bash
-npm install ng2-pdfjs-viewer --save
+npm install ng2-pdfjs-viewer
 ```
-
-## Basic Usage
 
 ```typescript
 import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 
-@NgModule({
-  imports: [PdfJsViewerModule],
-})
+@NgModule({ imports: [PdfJsViewerModule] })
 export class AppModule {}
 ```
 
 ```html
-<ng2-pdfjs-viewer 
-  pdfSrc="assets/sample.pdf" 
-  [showSpinner]="true">
-</ng2-pdfjs-viewer>
+<ng2-pdfjs-viewer pdfSrc="assets/sample.pdf" [showSpinner]="true"></ng2-pdfjs-viewer>
 ```
 
-The `pdfSrc` property accepts URLs (strings), Blob objects, or Uint8Array byte arrays.
+`pdfSrc` takes a URL, a `Blob`, a `Uint8Array`, or an `ArrayBuffer`. Point the component at a file, serve the bundled PDF.js assets (the [Getting Started](./getting-started) guide covers the one-time `angular.json` step), and you have a working viewer.
 
-That's it! Your PDF viewer is ready to use.
+## What's in v26
 
-## Why the Rewrite?
+PDF.js 6.x is bundled, and the component is built and tested on Angular 22 while the peer range stays `>=10`. Beyond plain viewing:
 
-The v25.x rewrite addresses key architectural challenges:
+- **Annotation editing and eSign.** Highlight, free-text, draw, and stamp editors, plus opt-in signature and comment editors. `getAnnotations()` and `setAnnotations()` round-trip edits through your server, and `getDocumentAsBlob()` hands back the document with edits baked in.
+- **Forms.** Two-way `[(formData)]` AcroForm binding and programmatic field access.
+- **Search, page organization, and read-aloud.** A `search()` API with per-page counts; reorder, delete, extract, and merge pages; sentence-by-sentence text-to-speech that highlights the words as it reads them.
+- **AI assistant.** A built-in chat panel that talks to *your* OpenAI-compatible endpoint and cites pages you can click through to. The library never calls an AI service on its own.
+- **And the rest.** Custom toolbar, sidebar, and per-page overlay templates; content protection with watermarks; authenticated loading via `httpHeaders` and `withCredentials`; true dark-mode page rendering.
 
-### Before (v20.x)
-- Mixed event/polling patterns
-- Defensive programming
-- Limited customization
-- Complex integration
+Each has its own guide under [Features](./features/overview).
 
-### After (v25.x)
-- Pure event-driven architecture
-- Trust-based execution
-- Template-based customization
-- Simple, clean API
+## About the v25 rewrite
 
-## Community & Support
+v25 replaced the old mix of events and polling with one event-driven path. Every action now waits for the viewer to report it's ready instead of guessing with a timeout, so a call made the instant the component appears no longer races the PDF load. Loading and error states became Angular templates rather than HTML strings, and the public surface is typed end to end. Coming from v20, the [migration guide](./migration/overview) lists the input renames; most apps need only a handful.
 
-- 🐛 **Issues**: [GitHub Issues](https://github.com/intbot/ng2-pdfjs-viewer/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/intbot/ng2-pdfjs-viewer/discussions)
-- 📚 **Documentation**: You're reading it!
-- 🎯 **Live Demo**: [Vercel Demo](https://angular-pdf-viewer-demo.vercel.app/)
+## Links
 
-Ready to get started? Head over to the [Getting Started](./getting-started) guide!
+- [Getting Started](./getting-started): install, assets, and your first viewer
+- [Live demo](https://angular-pdf-viewer-demo.vercel.app/)
+- [Examples](./examples/basic-usage): copy-paste starting points
+- [API reference](./api/component-inputs): every input, output, and method
+- [Migration from v20.x](./migration/overview)
+
+Bugs and questions go to [GitHub Issues](https://github.com/intbot/ng2-pdfjs-viewer/issues); design discussion to [GitHub Discussions](https://github.com/intbot/ng2-pdfjs-viewer/discussions).

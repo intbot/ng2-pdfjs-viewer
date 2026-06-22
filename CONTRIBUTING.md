@@ -206,6 +206,26 @@ ng2-pdfjs-viewer/
 - Document all public methods
 - Include type information
 
+### Writing voice
+
+Docs and README copy should read like a maintainer wrote them, not a content generator. A
+pre-commit hook enforces this — enable it once per clone:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+It runs `node scripts/check-docs-voice.mjs --staged` and blocks generator filler. The rules:
+
+- Lead with a concrete fact, number, or behavior, not an adjective.
+- Cut filler superlatives (`seamless`, `effortless`, `blazing-fast`, `cutting-edge`, `world-class`).
+  Brand words (`comprehensive`, `feature-rich`, `AI-enabled`, `mobile-first`) are fine to use.
+- Keep a real voice: name trade-offs, state honest limits, write in first person where it fits.
+- Vary sentence length and structure; don't repeat an identical title-then-one-sentence shape.
+- Skip generic openers like `Welcome to the …` or `In this guide we'll`. Keep the code examples.
+
+Run it on specific files anytime: `node scripts/check-docs-voice.mjs README.md docs-website/docs/intro.md`.
+
 ## 🚀 Release Process
 
 ### Version Bumping
