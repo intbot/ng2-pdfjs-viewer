@@ -11,7 +11,6 @@
 [![downloads / month](https://img.shields.io/npm/dm/ng2-pdfjs-viewer?style=flat-square&color=f97316)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
 [![runtime dependencies](https://img.shields.io/badge/runtime%20deps-0-success?style=flat-square)](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/BILL-OF-MATERIALS.md)
 [![types](https://img.shields.io/npm/types/ng2-pdfjs-viewer?style=flat-square)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/intbot/ng2-pdfjs-viewer/badge)](https://scorecard.dev/viewer/?uri=github.com/intbot/ng2-pdfjs-viewer)
 [![CodeQL](https://github.com/intbot/ng2-pdfjs-viewer/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/intbot/ng2-pdfjs-viewer/security/code-scanning)
 [![Angular](https://img.shields.io/badge/Angular-%3E%3D10-red?style=flat-square&logo=angular)](https://angular.dev)
 [![PDF.js](https://img.shields.io/badge/PDF.js-6.0.227-green?style=flat-square&logo=mozilla)](https://github.com/mozilla/pdf.js)
