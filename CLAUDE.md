@@ -95,6 +95,22 @@ published `ng2-pdfjs-viewer` for Vercel builds; `yalc link` overrides it with yo
   additive, backward-compatible changes and document breaking ones in `CHANGELOG.md` / an
   upgrade guide.
 
+## Writing voice (README, docs-website, CHANGELOG, examples)
+
+Public prose must read like a maintainer wrote it, not a content generator. The
+`.githooks/pre-commit` hook runs `node scripts/check-docs-voice.mjs --staged` on staged Markdown
+and blocks generator filler; run it yourself before committing docs (enable the hook once per
+clone with `git config core.hooksPath .githooks`).
+
+- Lead with a specific fact, number, or behavior, not an adjective. Cut filler superlatives
+  (`seamless`, `effortless`, `blazing-fast`, `cutting-edge`, `world-class`). `comprehensive`,
+  `feature-rich`, `AI-enabled`, and `mobile-first` are deliberate positioning — keep those.
+- Keep a real voice: first person where it fits, name trade-offs, state honest limits and constraints.
+- Vary sentence length and shape. Several sections in an identical title-then-one-sentence pattern
+  is the machine's fingerprint; break it up.
+- Don't open with `Welcome to the comprehensive documentation`, `In this guide we'll`, or
+  `Let's dive in`. Keep code examples and concrete constraints; they are what earn a reader's trust.
+
 ## Private working area (`internal/`)
 
 `internal/` is a directory **junction** to a folder in a separate, private sibling repo
