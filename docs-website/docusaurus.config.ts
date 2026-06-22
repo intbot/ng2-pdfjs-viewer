@@ -11,7 +11,7 @@ dotenv.config();
 const config: Config = {
   title: 'ng2-pdfjs-viewer',
   tagline: 'The most comprehensive Angular PDF viewer powered by Mozilla PDF.js',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.svg',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {

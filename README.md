@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/intbot/ng2-pdfjs-viewer/master/lib/pdf-viewer-banner.svg" alt="Angular PDF Viewer — ng2-pdfjs-viewer" width="560" />
+<img src="https://raw.githubusercontent.com/intbot/ng2-pdfjs-viewer/master/lib/pdf-viewer-banner.png" alt="#1 Angular PDF Viewer — ng2-pdfjs-viewer: AI-enabled, feature-rich and comprehensive. 8.3M+ downloads, 0 runtime dependencies, 8 years (since 2018), Angular 10–22." width="880" />
 
 # ng2-pdfjs-viewer
 

@@ -1,11 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 160" width="144" height="160">
-  <!-- Icon -->
-  <g transform="translate(12,8)">
-    <rect x="0" y="0" width="120" height="144" rx="8" fill="#ffffff" stroke="#E5E7EB" stroke-width="2"/>
-    <path d="M96 0 H120 V24 Z" fill="#F3F4F6" />
-    <path d="M0 104 L120 104 L96 144 L0 144 Z" fill="#2563EB"/>
-    <text x="14" y="132" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="20" fill="#ffffff" font-weight="700">PDF</text>
-    <path d="M70 18 L90 54 L50 54 Z" fill="#3B82F6"/>
-    <path d="M70 36 L90 72 L50 72 Z" fill="#1D4ED8"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" role="img" aria-label="ng2-pdfjs-viewer">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2=".55" y2="1">
+      <stop offset="0" stop-color="#E40035"/>
+      <stop offset=".24" stop-color="#F60A48"/>
+      <stop offset=".352" stop-color="#F20755"/>
+      <stop offset=".494" stop-color="#DC087D"/>
+      <stop offset=".745" stop-color="#9717E7"/>
+      <stop offset="1" stop-color="#6C00F5"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(48 49) scale(1.26) translate(-48 -48)">
+    <path d="M30 16 H55 L67 28 V49 C67 64 59 75 48 81 C37 75 29 64 29 49 V20 a4 4 0 0 1 1 -4 Z" fill="url(#g)"/>
+    <path d="M55 16 V28 H67 Z" fill="#fff" fill-opacity=".4"/>
+    <path d="M42 16 h12 v24 l-6 -6 -6 6 Z" fill="#fff"/>
+    <g stroke="#fff" stroke-width="2.6" stroke-linecap="round" opacity=".85">
+      <line x1="38" y1="50" x2="58" y2="50"/>
+      <line x1="40" y1="58" x2="56" y2="58"/>
+    </g>
   </g>
 </svg>
