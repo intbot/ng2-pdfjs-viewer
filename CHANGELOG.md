@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [26.0.2] - 2026-06-22
+
+### Fixed
+- Toolbar and menu icons no longer go invisible when the viewer `[theme]`
+  differs from the operating-system color scheme (e.g. `[theme]="'light'"` on a
+  dark-mode OS, or the reverse). The theme classes now pin `color-scheme` to the
+  selected theme, so PDF.js 6's `light-dark()` icon colors resolve to the chosen
+  theme instead of following the OS. (#307)
+
 ## [26.0.1] - 2026-06-16
 
 ### Fixed
