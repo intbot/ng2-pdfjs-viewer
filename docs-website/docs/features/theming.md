@@ -1,10 +1,10 @@
 # Theming & Customization
 
-Learn how to customize the appearance of ng2-pdfjs-viewer to match your application's design.
+ng2-pdfjs-viewer styles the viewer with CSS custom properties, so you can match it to your app without forking PDF.js.
 
-## Theme System Overview
+## Theme system overview
 
-ng2-pdfjs-viewer v25.x introduces a powerful theme system based on CSS custom properties, allowing complete visual customization while maintaining performance and accessibility.
+Theming runs on CSS custom properties. Pick a built-in `theme` (light, dark, or auto), override individual colors through a config object, or set the variables directly. Dark mode can re-color the page content itself, not just the toolbar.
 
 ## Basic Theming
 

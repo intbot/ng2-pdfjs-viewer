@@ -268,7 +268,7 @@ ng2-pdfjs-viewer is fully compliant with strict Content Security Policy (`style-
 
 ### Using with Strict CSP
 
-The viewer works out-of-the-box with strict CSP policies:
+The viewer works with strict CSP policies:
 
 ```html
 <!-- Your index.html -->
