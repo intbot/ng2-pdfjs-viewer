@@ -14,7 +14,7 @@ PDF.js 6.x is bundled, and the component is built and tested on Angular 22 (peer
 | **Page organization** | Reorder, delete, extract, and merge pages in the viewer (opt-in). | [Page organization](./page-organization) |
 | **AI assistant (your endpoint)** | Chat panel with clickable page citations against your OpenAI-compatible endpoint. The library makes no vendor calls of its own. | [AI assistant](./ai-assistant) |
 | **Read aloud** | Sentence-by-sentence text-to-speech with in-page highlighting. | [Read aloud](./read-aloud) |
-| **Custom toolbar, sidebar & overlays** | Replace the viewer chrome with your Angular templates; project templates onto every page. | [Custom UI](./custom-ui) |
+| **Custom toolbar, sidebar & overlays** | Replace the viewer chrome with your Angular templates, project templates onto every page, or drop the chrome entirely with `chromeless` for an embedded pages-only view. | [Custom UI](./custom-ui) |
 | **Content protection** | Block print, download, and text selection; stamp watermarks. Client-side deterrence, not DRM. | [Content protection](./content-protection) |
 | **Authenticated loading** | `httpHeaders`/`withCredentials`, download progress, password-prompt events. | [Loading documents](./loading-documents) |
 | **Localization** | Locale detection, RTL, and overridable UI strings via `locale`. | [Component inputs](../api/component-inputs) |
