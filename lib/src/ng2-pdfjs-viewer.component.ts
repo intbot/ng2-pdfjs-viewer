@@ -3114,11 +3114,16 @@ export class PdfJsViewerComponent
     const base = this.viewerFolder
       ? `${this.viewerFolder}/web/viewer.html`
       : `assets/pdfjs/web/viewer.html`;
-    let viewerUrl = `${base}?file=${fileUrl}`;
+    // Control params go in the query string first; the file URL is appended
+    // LAST. A consumer's file URL may end in a hash fragment that PDF.js reads
+    // for navigation (e.g. doc.pdf#search=foo, #page=2). Anything appended
+    // after the file param would land inside that fragment instead of the
+    // query string - so file trails the whole URL, leaving the hash where
+    // PDF.js looks for it. (#305)
+    let viewerUrl = `${base}?urlValidation=${this.urlValidation === false ? 0 : 1}`;
     if (typeof this.viewerId !== "undefined") {
       viewerUrl += `&viewerId=${this.viewerId}`;
     }
-    viewerUrl += `&urlValidation=${this.urlValidation === false ? 0 : 1}`;
 
     // Init-time PDF.js options (signature editor, page colors, passthrough).
     // These are read by PDF.js during initialize() - before the postMessage
@@ -3136,6 +3141,9 @@ export class PdfJsViewerComponent
     if (isDevMode()) {
       viewerUrl += `&_t=${Date.now()}`;
     }
+
+    // File last (see above): its optional #hash fragment must trail the URL.
+    viewerUrl += `&file=${fileUrl}`;
     return viewerUrl;
   }
 
