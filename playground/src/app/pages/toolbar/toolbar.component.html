@@ -1,7 +1,7 @@
 <pg-page
   title="Toolbar & Controls"
-  lead="Show or hide individual toolbar buttons — or whole toolbar and sidebar groups. Flip a switch and the toolbar, and the generated code, update instantly."
-  [tags]="['showDownload','showPrint','showFind','showAnnotations','showToolbarLeft','showSecondaryToolbarToggle','showSidebar']"
+  lead="Show or hide individual toolbar buttons — or whole toolbar and sidebar groups. Or flip chromeless to hide both at once for an embedded, pages-only view. Every switch updates the viewer and the generated code instantly."
+  [tags]="['chromeless','showDownload','showPrint','showFind','showAnnotations','showToolbarLeft','showSecondaryToolbarToggle','showSidebar']"
   [code]="code()"
   docHref="https://github.com/intbot/ng2-pdfjs-viewer#readme">
 
@@ -9,6 +9,7 @@
     <ng2-pdfjs-viewer
       [pdfSrc]="src()"
       [theme]="theme.mode()"
+      [chromeless]="chromeless()"
       [showOpenFile]="showOpenFile()"
       [showDownload]="showDownload()"
       [showPrint]="showPrint()"
@@ -25,6 +26,20 @@
   </div>
 
   <div controls>
+    <div class="ph">Preset</div>
+    <div class="row">
+      <span>Chromeless <small style="opacity:.6">(hide toolbar + sidebar)</small></span>
+      <span class="switch" [class.on]="chromeless()" (click)="chromeless.set(!chromeless())"
+            role="switch" [attr.aria-checked]="chromeless()" tabindex="0"
+            (keydown.enter)="chromeless.set(!chromeless())" (keydown.space)="chromeless.set(!chromeless())"></span>
+    </div>
+    @if (chromeless()) {
+      <p style="margin:.25rem 0 0; font-size:.8rem; opacity:.65">
+        Embedded mode: just the scrolling pages. The button and group switches below
+        are overridden while this is on.
+      </p>
+    }
+
     <div class="ph">Buttons</div>
     @for (t of toggles; track t.key) {
       <div class="row">

@@ -16,6 +16,22 @@ These hooks render in embedded mode only — they are not available when the vie
 with `[externalWindow]="true"`.
 :::
 
+## Embedded (chromeless) mode
+
+Sometimes you don't want to replace the chrome, just remove it. Set `[chromeless]="true"`
+to hide the toolbar and sidebar together so the iframe shows only the scrolling pages —
+handy for inline previews and thumbnails where the controls would get in the way.
+
+```html
+<ng2-pdfjs-viewer pdfSrc="assets/doc.pdf" [chromeless]="true"></ng2-pdfjs-viewer>
+```
+
+It's shorthand for `[showToolbar]="false"` + `[showSidebar]="false"`, and it overrides
+those inputs without overwriting them: bind it to a signal, flip it off, and the
+individual switches return to whatever you had set. The pages still render inside an
+iframe with its own scroll container — when you need host-app DOM on top of each page,
+reach for [`pageOverlayTpl`](#page-overlays) instead.
+
 ## Custom Toolbar
 
 `[customToolbarTpl]` renders your template in a bar above the viewer iframe. The template
