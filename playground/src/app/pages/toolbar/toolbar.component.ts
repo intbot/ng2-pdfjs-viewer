@@ -34,6 +34,10 @@ export class ToolbarComponent {
   readonly showSecondaryToolbarToggle = signal(true);
   readonly showSidebar = signal(true);
 
+  // Preset: hides toolbar + sidebar together (embedded / pages-only view).
+  // When on, it overrides the individual toggles above without changing them.
+  readonly chromeless = signal(false);
+
   readonly toggles: Toggle[] = [
     { key: 'showOpenFile', sig: this.showOpenFile, label: 'Open file' },
     { key: 'showDownload', sig: this.showDownload, label: 'Download' },
@@ -54,6 +58,8 @@ export class ToolbarComponent {
 
   readonly code = computed(() => {
     const b: CodeBinding[] = [{ name: 'pdfSrc', value: 'pdfSrc', kind: 'expr' }];
+    // chromeless is the headline preset — show it first, only when enabled
+    b.push({ name: 'chromeless', value: this.chromeless(), kind: 'boolean', omitWhen: false });
     for (const t of this.toggles) {
       // every visibility toggle defaults to true — omit at default
       b.push({ name: t.key, value: t.sig(), kind: 'boolean', omitWhen: true });

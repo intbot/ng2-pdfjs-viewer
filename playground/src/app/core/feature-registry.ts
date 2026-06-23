@@ -28,8 +28,8 @@ export const FEATURES: FeaturePage[] = [
   // ── Viewer UI ──────────────────────────────────────────────────────
   {
     id: 'toolbar', route: 'toolbar', title: 'Toolbar & Controls', group: 'Viewer UI', icon: '▦',
-    description: 'Toggle individual buttons and whole toolbar/sidebar groups.',
-    tags: ['showDownload', 'showPrint', 'showFind', 'showFullScreen', 'showSidebar', 'showToolbarLeft'],
+    description: 'Toggle individual buttons and whole toolbar/sidebar groups, or go chromeless for an embedded pages-only view.',
+    tags: ['chromeless', 'embedded', 'showDownload', 'showPrint', 'showFind', 'showFullScreen', 'showSidebar', 'showToolbarLeft'],
     load: () => import('../pages/toolbar/toolbar.component').then((m) => m.ToolbarComponent),
   },
   {
