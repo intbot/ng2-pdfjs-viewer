@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- The `file` parameter is now appended last on the viewer URL, so a hash
+  fragment carried on the PDF URL (e.g. `doc.pdf#search=foo`, `#page=2`) reaches
+  PDF.js intact instead of swallowing the viewer's own query parameters. Thanks
+  to @THCavaciuti for the report and fix. (#305)
+
 ## [26.0.2] - 2026-06-22
 
 ### Fixed

@@ -69,6 +69,24 @@ describe("iframeSandbox allowlist", () => {
   });
 });
 
+describe("viewer URL parameter order (#305)", () => {
+  it("appends file last so a hash fragment in the file URL is preserved", () => {
+    const comp = makeComponent();
+    const url = (comp as any).buildViewerUrl("doc.pdf#search=foo") as string;
+    const [query, hash] = url.split("#");
+
+    // The consumer's hash trails the whole URL, untouched - PDF.js reads it.
+    expect(hash).toBe("search=foo");
+    // Control params stay in the query string (before the hash), not the
+    // fragment - so the wrapper's URLSearchParams(location.search) still sees
+    // them. file is the final query param.
+    const params = new URLSearchParams(query.slice(query.indexOf("?")));
+    expect(params.get("urlValidation")).toBe("1");
+    expect(params.get("file")).toBe("doc.pdf");
+    expect(query.endsWith("&file=doc.pdf")).toBe(true);
+  });
+});
+
 describe("init-time PDF.js options on the viewer URL", () => {
   function urlOptions(comp: PdfJsViewerComponent): Record<string, unknown> {
     const url = (comp as any).buildViewerUrl("test.pdf") as string;
