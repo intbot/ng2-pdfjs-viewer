@@ -139,6 +139,18 @@ ai = { endpoint: "https://api.openai.com/v1/chat/completions", apiKey: "…", mo
 </ng-template>
 ```
 
+**Embed just the pages (chromeless)**
+
+```html
+<ng2-pdfjs-viewer pdfSrc="assets/doc.pdf" [chromeless]="true"></ng2-pdfjs-viewer>
+```
+
+One switch hides the toolbar and sidebar so the iframe shows only the scrolling
+pages — handy for inline previews. It's shorthand for `[showToolbar]="false"` +
+`[showSidebar]="false"` and overrides them without touching those bindings, so
+flip it off and your toolbar comes back. (There's still an iframe; reach for
+`pageOverlayTpl` when you need per-page host DOM.)
+
 ## 📚 Documentation
 
 The README is the front door — the deep reference lives on the docs site and stays in sync with each release.
