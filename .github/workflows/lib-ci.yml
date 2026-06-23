@@ -1,0 +1,50 @@
+name: lib CI
+
+# Builds and tests the published library on every PR (and on master) that
+# touches lib/. This mirrors the tag-driven publish workflow's `npm ci` +
+# `npm run build` on the SAME runner (ubuntu-latest, Node 24), so lockfile and
+# peer-dependency breaks — e.g. a Dependabot bump that leaves package-lock.json
+# inconsistent, or a Windows-regenerated lock missing other platforms' optional
+# binaries — fail here on the PR instead of at release time.
+on:
+  pull_request:
+    paths:
+      - 'lib/**'
+      - '.github/workflows/lib-ci.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'lib/**'
+      - '.github/workflows/lib-ci.yml'
+
+# Cancel superseded runs on the same ref to save runner minutes.
+concurrency:
+  group: lib-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Read-only: this job builds and tests, it never writes.
+permissions: read-all
+
+jobs:
+  build:
+    name: Build & test (lib)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        with:
+          # Match the publish workflow: the Angular 22 toolchain needs Node >= 24.15.
+          node-version: '24.x'
+          cache: 'npm'
+          cache-dependency-path: lib/package-lock.json
+      # `npm ci` is the exact command the tag publish runs; running it here on
+      # Linux is what would have caught the 26.0.3 lockfile breaks on the PR.
+      - name: Install dependencies
+        working-directory: ./lib
+        run: npm ci
+      - name: Build
+        working-directory: ./lib
+        run: npm run build
+      - name: Test
+        working-directory: ./lib
+        run: npm test
