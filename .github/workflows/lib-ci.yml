@@ -1,21 +1,18 @@
 name: lib CI
 
-# Builds and tests the published library on every PR (and on master) that
-# touches lib/. This mirrors the tag-driven publish workflow's `npm ci` +
-# `npm run build` on the SAME runner (ubuntu-latest, Node 24), so lockfile and
-# peer-dependency breaks — e.g. a Dependabot bump that leaves package-lock.json
-# inconsistent, or a Windows-regenerated lock missing other platforms' optional
-# binaries — fail here on the PR instead of at release time.
+# Builds and tests the published library on every PR. This mirrors the
+# tag-driven publish workflow's `npm ci` + `npm run build` on the SAME runner
+# (ubuntu-latest, Node 24), so lockfile and peer-dependency breaks — e.g. a
+# Dependabot bump that leaves package-lock.json inconsistent, or a
+# Windows-regenerated lock missing other platforms' optional binaries — fail
+# here on the PR instead of at release time.
 on:
+  # Not path-filtered: a required status check that gets skipped by a path
+  # filter leaves the PR stuck waiting on it, so this runs on every PR. npm
+  # caching keeps the docs-only case cheap.
   pull_request:
-    paths:
-      - 'lib/**'
-      - '.github/workflows/lib-ci.yml'
   push:
     branches: [master]
-    paths:
-      - 'lib/**'
-      - '.github/workflows/lib-ci.yml'
 
 # Cancel superseded runs on the same ref to save runner minutes.
 concurrency:

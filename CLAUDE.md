@@ -95,10 +95,10 @@ published `ng2-pdfjs-viewer` for Vercel builds; `yalc link` overrides it with yo
   additive, backward-compatible changes and document breaking ones in `CHANGELOG.md` / an
   upgrade guide.
 
-## Writing voice (README, docs-website, CHANGELOG, examples)
+## Writing style (README, docs-website, CHANGELOG, examples)
 
-Public prose must read like a maintainer wrote it, not a content generator. CI enforces this on
-every PR — `scripts/check-docs-voice.mjs` scans the Markdown/MDX a PR adds and the PR title/body.
+Public prose should read like a maintainer wrote it — concrete, specific, and varied. CI enforces
+this house style on every PR: `scripts/check-docs-voice.mjs` scans the Markdown/MDX a PR adds and the PR title/body.
 The `.githooks/pre-commit` hook runs the same check on staged Markdown/MDX locally; run it before
 committing docs (enable once per clone with `git config core.hooksPath .githooks`).
 
@@ -107,7 +107,7 @@ committing docs (enable once per clone with `git config core.hooksPath .githooks
   `feature-rich`, `AI-enabled`, and `mobile-first` are deliberate positioning — keep those.
 - Keep a real voice: first person where it fits, name trade-offs, state honest limits and constraints.
 - Vary sentence length and shape. Several sections in an identical title-then-one-sentence pattern
-  is the machine's fingerprint; break it up.
+  read as monotonous; break it up.
 - Don't open with `Welcome to the comprehensive documentation`, `In this guide we'll`, or
   `Let's dive in`. Keep code examples and concrete constraints; they are what earn a reader's trust.
 

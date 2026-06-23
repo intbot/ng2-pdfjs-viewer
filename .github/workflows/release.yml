@@ -18,8 +18,8 @@ jobs:
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
       # Use the hand-written CHANGELOG section for this version as the release
-      # notes (it goes through the docs-voice check, so it reads human), and
-      # fall back to auto-generated notes only if the version has no entry.
+      # notes (it passes the docs-style check), falling back to auto-generated
+      # notes only if the version has no entry.
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

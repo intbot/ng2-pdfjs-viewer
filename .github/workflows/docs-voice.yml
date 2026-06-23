@@ -1,16 +1,16 @@
-name: docs voice
+name: docs style
 
-# Enforce the human-voice writing rule on every PR: scan the Markdown/MDX the
-# PR adds AND the PR's own title + body for generator filler (the BLOCK tier in
-# scripts/check-docs-voice.mjs). This is the server-side backstop for the local
-# pre-commit hook, and the only gate that sees PR prose — which never reaches a
-# commit, so the hook can't catch it.
+# Enforce the house writing style on every PR: scan the Markdown/MDX the PR adds
+# AND the PR's own title + body for filler and marketing-speak (the BLOCK tier
+# in scripts/check-docs-voice.mjs). This is the server-side backstop for the
+# local pre-commit hook, and the only gate that sees PR prose — which never
+# reaches a commit, so the hook can't catch it.
 on:
   pull_request:
     types: [opened, edited, synchronize, reopened]
 
 concurrency:
-  group: docs-voice-${{ github.ref }}
+  group: docs-style-${{ github.ref }}
   cancel-in-progress: true
 
 # Read-only, no secrets used: safe for fork PRs (this is `pull_request`, not
@@ -18,8 +18,8 @@ concurrency:
 permissions: read-all
 
 jobs:
-  voice:
-    name: Docs voice
+  style:
+    name: Docs style
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
