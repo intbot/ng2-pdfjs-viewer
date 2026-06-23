@@ -16,13 +16,22 @@ jobs:
     permissions:
       contents: write # create the GitHub release for the pushed tag
     steps:
-      # Uses the runner's built-in GitHub CLI — no third-party action, no
-      # checkout needed (the release is created from the tag via the API).
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      # Use the hand-written CHANGELOG section for this version as the release
+      # notes (it goes through the docs-voice check, so it reads human), and
+      # fall back to auto-generated notes only if the version has no entry.
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: >
-          gh release create "${{ github.ref_name }}"
-          --repo "${{ github.repository }}"
-          --title "Release ${{ github.ref_name }}"
-          --generate-notes
+        run: |
+          ver="${GITHUB_REF_NAME#v}"
+          awk -v start="## [${ver}]" \
+            'index($0,start)==1{c=1;next} c&&index($0,"## [")==1{exit} c{print}' \
+            CHANGELOG.md > notes.md
+          if [ -s notes.md ]; then
+            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" \
+              --title "Release $GITHUB_REF_NAME" --notes-file notes.md
+          else
+            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" \
+              --title "Release $GITHUB_REF_NAME" --generate-notes
+          fi

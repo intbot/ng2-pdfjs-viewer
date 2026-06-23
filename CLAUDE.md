@@ -97,10 +97,10 @@ published `ng2-pdfjs-viewer` for Vercel builds; `yalc link` overrides it with yo
 
 ## Writing voice (README, docs-website, CHANGELOG, examples)
 
-Public prose must read like a maintainer wrote it, not a content generator. The
-`.githooks/pre-commit` hook runs `node scripts/check-docs-voice.mjs --staged` on staged Markdown
-and blocks generator filler; run it yourself before committing docs (enable the hook once per
-clone with `git config core.hooksPath .githooks`).
+Public prose must read like a maintainer wrote it, not a content generator. CI enforces this on
+every PR — `scripts/check-docs-voice.mjs` scans the Markdown/MDX a PR adds and the PR title/body.
+The `.githooks/pre-commit` hook runs the same check on staged Markdown/MDX locally; run it before
+committing docs (enable once per clone with `git config core.hooksPath .githooks`).
 
 - Lead with a specific fact, number, or behavior, not an adjective. Cut filler superlatives
   (`seamless`, `effortless`, `blazing-fast`, `cutting-edge`, `world-class`). `comprehensive`,

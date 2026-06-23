@@ -208,14 +208,16 @@ ng2-pdfjs-viewer/
 
 ### Writing voice
 
-Docs and README copy should read like a maintainer wrote them, not a content generator. A
-pre-commit hook enforces this — enable it once per clone:
+Docs and README copy should read like a maintainer wrote them, not a content generator. CI
+enforces this on every PR: `check-docs-voice.mjs` scans the Markdown/MDX a PR adds and the PR's
+own title and body, and blocks generator filler. A pre-commit hook runs the same check locally so
+you catch it before pushing — enable it once per clone:
 
 ```bash
 git config core.hooksPath .githooks
 ```
 
-It runs `node scripts/check-docs-voice.mjs --staged` and blocks generator filler. The rules:
+It runs `node scripts/check-docs-voice.mjs --staged` on staged Markdown/MDX. The rules:
 
 - Lead with a concrete fact, number, or behavior, not an adjective.
 - Cut filler superlatives (`seamless`, `effortless`, `blazing-fast`, `cutting-edge`, `world-class`).
