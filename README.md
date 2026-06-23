@@ -52,7 +52,7 @@ That's the whole integration. [Wire up the assets](#-quick-start) and you have a
 | 🤖 **AI assistant (BYO)** | Point it at any OpenAI-compatible endpoint (OpenAI, Azure, Ollama, vLLM…). Answers cite pages and click through. **The library never calls an AI service on its own.** |
 | 🔊 **Read aloud** | Browser speech synthesis reads sentence by sentence, highlighting the spoken text and reporting progress. |
 | 🗂️ **Organize pages** | Reorder, delete, cut/copy/paste, extract, and merge pages in the viewer's "Manage pages" panel. |
-| 🎨 **Make it yours** | CSS-variable theming, true dark-mode page rendering, and your own Angular templates for the toolbar, sidebar, and per-page overlays. |
+| 🎨 **Make it yours** | CSS-variable theming, true dark-mode page rendering, and your own Angular templates for the toolbar, sidebar, and per-page overlays — or go `chromeless` to hide the chrome for an embedded, pages-only view. |
 | 🛡️ **Protect content** | Block print/download, disable selection, and stamp watermarks (honest client-side deterrence — not DRM). |
 | ♿ **Accessible** | Screen-reader friendly, tagged-PDF aware, keyboard navigable — with a [WCAG / EAA guide](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/ACCESSIBILITY.md). |
 
