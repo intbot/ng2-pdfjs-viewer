@@ -17,7 +17,7 @@
 [![license](https://img.shields.io/badge/license-Apache--2.0%20%28Commons%20Clause%29-blue?style=flat-square)](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/LICENSE)
 [![stars](https://img.shields.io/github/stars/intbot/ng2-pdfjs-viewer?style=flat-square&logo=github)](https://github.com/intbot/ng2-pdfjs-viewer)
 
-[**Live demo**](https://demo.angularpdf.com/) · [**Documentation**](https://angularpdf.com/) · [**API reference**](https://angularpdf.com/docs/api/component-inputs) · [**Changelog**](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CHANGELOG.md)
+[**Documentation**](https://angularpdf.com/) · [**API reference**](https://angularpdf.com/docs/api/component-inputs) · [**Live demo**](https://demo.angularpdf.com/) · [**Changelog**](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CHANGELOG.md)
 
 </div>
 
