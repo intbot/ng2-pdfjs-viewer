@@ -1,3 +1,8 @@
+---
+description: "Accessibility in ng2-pdfjs-viewer: screen-reader text layer, tagged-PDF structure, keyboard-navigable chrome, and read-aloud for WCAG and the European Accessibility Act."
+keywords: [accessible pdf viewer angular, wcag pdf angular, eaa pdf, screen reader pdf angular]
+---
+
 # Accessibility
 
 ng2-pdfjs-viewer embeds the full Mozilla PDF.js viewer — the same viewer that ships in Firefox — and inherits its accessibility architecture. This page summarizes what you get by default, what the component adds on top, and what remains your application's responsibility.

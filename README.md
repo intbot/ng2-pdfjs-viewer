@@ -17,7 +17,7 @@
 [![license](https://img.shields.io/badge/license-Apache--2.0%20%28Commons%20Clause%29-blue?style=flat-square)](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/LICENSE)
 [![stars](https://img.shields.io/github/stars/intbot/ng2-pdfjs-viewer?style=flat-square&logo=github)](https://github.com/intbot/ng2-pdfjs-viewer)
 
-[**Live demo**](https://angular-pdf-viewer-demo.vercel.app/) · [**Documentation**](https://angular-pdf-viewer-docs.vercel.app/) · [**API reference**](https://angular-pdf-viewer-docs.vercel.app/docs/api/component-inputs) · [**Changelog**](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CHANGELOG.md)
+[**Live demo**](https://demo.angularpdf.com/) · [**Documentation**](https://angularpdf.com/) · [**API reference**](https://angularpdf.com/docs/api/component-inputs) · [**Changelog**](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CHANGELOG.md)
 
 </div>
 
@@ -56,7 +56,7 @@ That's the whole integration. [Wire up the assets](#-quick-start) and you have a
 | 🛡️ **Protect content** | Block print/download, disable selection, and stamp watermarks (honest client-side deterrence — not DRM). |
 | ♿ **Accessible** | Screen-reader friendly, tagged-PDF aware, keyboard navigable — with a [WCAG / EAA guide](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/ACCESSIBILITY.md). |
 
-→ Explore every feature with live code on the **[documentation site](https://angular-pdf-viewer-docs.vercel.app/)** and **[demo](https://angular-pdf-viewer-demo.vercel.app/)**.
+→ Explore every feature with live code on the **[documentation site](https://angularpdf.com/)** and **[demo](https://demo.angularpdf.com/)**.
 
 ## 🚀 Quick start
 
@@ -95,13 +95,13 @@ export class AppModule {}
 
 > **Production note:** PDF.js 6 ships ES modules (`.mjs`), localization (`.ftl`), and WebAssembly
 > (`.wasm`) assets. Make sure your web server returns the correct MIME types for them — see the
-> [deployment guide](https://angular-pdf-viewer-docs.vercel.app/docs/getting-started) for the
+> [deployment guide](https://angularpdf.com/docs/getting-started) for the
 > nginx/IIS snippets.
 
 ## 🧩 What you can build
 
 A few of the things the component makes one-liners. Full, runnable versions live in the
-[feature guides](https://angular-pdf-viewer-docs.vercel.app/docs/features/overview).
+[feature guides](https://angularpdf.com/docs/features/overview).
 
 **Annotate, sign, and save the result**
 
@@ -157,15 +157,15 @@ The README is the front door — the deep reference lives on the docs site and s
 
 | | |
 |---|---|
-| 🏁 [Getting started](https://angular-pdf-viewer-docs.vercel.app/docs/getting-started) | Install, assets, first viewer, production deployment |
-| 🧭 [Feature guides](https://angular-pdf-viewer-docs.vercel.app/docs/features/overview) | Annotation, forms, search, AI, read-aloud, custom UI, protection, and more |
-| 🔧 [API reference](https://angular-pdf-viewer-docs.vercel.app/docs/api/component-inputs) | Every `@Input()`, `@Output()`, and method, with types |
+| 🏁 [Getting started](https://angularpdf.com/docs/getting-started) | Install, assets, first viewer, production deployment |
+| 🧭 [Feature guides](https://angularpdf.com/docs/features/overview) | Annotation, forms, search, AI, read-aloud, custom UI, protection, and more |
+| 🔧 [API reference](https://angularpdf.com/docs/api/component-inputs) | Every `@Input()`, `@Output()`, and method, with types |
 | ♿ [Accessibility](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/ACCESSIBILITY.md) | Screen readers, tagged PDFs, keyboard nav, WCAG / EAA |
 | 🖥️ [Server-side examples](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/Server-Side-Examples.md) | Streaming, authenticated fetch, signed URLs |
 | 📝 [Changelog](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CHANGELOG.md) | What changed, and behavior notes when upgrading |
 
 The component exposes **30+ inputs**, **24+ events**, and **19+ Promise-returning methods**.
-The [API reference](https://angular-pdf-viewer-docs.vercel.app/docs/api/component-inputs) is the
+The [API reference](https://angularpdf.com/docs/api/component-inputs) is the
 complete, typed list.
 
 ## 🔌 Loading documents
@@ -185,7 +185,7 @@ attach credentials and track progress:
 
 For large files, linearize ("fast web view") and serve with HTTP range support so the first pages
 render before the whole document downloads. Details in the
-[loading guide](https://angular-pdf-viewer-docs.vercel.app/docs/features/loading-documents).
+[loading guide](https://angularpdf.com/docs/features/loading-documents).
 
 ## 🛡️ Security
 
@@ -209,6 +209,12 @@ test.bat          # build the lib, link it, and serve the demo on http://localho
 See [CONTRIBUTING.md](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CONTRIBUTING.md) for the full setup, and look for
 [`good first issue`](https://github.com/intbot/ng2-pdfjs-viewer/labels/good%20first%20issue) to get started.
 
+## ⭐ Star history
+
+<a href="https://star-history.com/#intbot/ng2-pdfjs-viewer&Date">
+  <img src="https://api.star-history.com/svg?repos=intbot/ng2-pdfjs-viewer&type=Date" alt="Star history chart for ng2-pdfjs-viewer" width="640" />
+</a>
+
 ## 📄 License
 
 [Apache-2.0 (Commons Clause)](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/LICENSE). Free to use, modify, and self-host; the Commons
@@ -223,6 +229,6 @@ years by a community of contributors and 8.3+ million downloads' worth of real-w
 
 <div align="center">
 
-[Documentation](https://angular-pdf-viewer-docs.vercel.app/) · [Live demo](https://angular-pdf-viewer-demo.vercel.app/) · [npm](https://www.npmjs.com/package/ng2-pdfjs-viewer) · [Issues](https://github.com/intbot/ng2-pdfjs-viewer/issues)
+[Documentation](https://angularpdf.com/) · [Live demo](https://demo.angularpdf.com/) · [npm](https://www.npmjs.com/package/ng2-pdfjs-viewer) · [Issues](https://github.com/intbot/ng2-pdfjs-viewer/issues)
 
 </div>

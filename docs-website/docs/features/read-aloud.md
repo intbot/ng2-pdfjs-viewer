@@ -1,3 +1,8 @@
+---
+description: "Read PDFs aloud in Angular with sentence-by-sentence text-to-speech and in-page word highlighting."
+keywords: [angular pdf text to speech, read pdf aloud angular, pdf tts angular, accessibility read aloud]
+---
+
 # Read Aloud (Text-to-Speech)
 
 Have the browser read the open PDF out loud — an accessibility win for low-vision and

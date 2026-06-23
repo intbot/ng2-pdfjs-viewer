@@ -15,6 +15,7 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 const sidebars: SidebarsConfig = {
   tutorialSidebar: [
     'intro',
+    'angular-pdf-viewer',
     'getting-started',
     'installation',
     {
@@ -49,6 +50,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Migration Guide',
       items: [
+        'migration/from-ng2-pdf-viewer',
         'migration/overview',
       ],
     },
@@ -61,6 +63,7 @@ const sidebars: SidebarsConfig = {
         'api/component-methods',
       ],
     },
+    'by-the-numbers',
     'changelog',
     'faq',
   ],

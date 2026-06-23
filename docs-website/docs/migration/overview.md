@@ -212,7 +212,7 @@ it('should display PDF correctly', () => {
 ### Resources
 - 🚀 [**Getting Started**](../getting-started) - Set up v25.x quickly
 - 📚 [**Examples**](../examples/basic-usage) - Practical code examples
-- 🎯 [**Live Demo**](https://angular-pdf-viewer-demo.vercel.app/) - See v25.x in action
+- 🎯 [**Live Demo**](https://demo.angularpdf.com/) - See v25.x in action
 
 ### Community Support
 - 💬 [**GitHub Discussions**](https://github.com/intbot/ng2-pdfjs-viewer/discussions) - Ask questions

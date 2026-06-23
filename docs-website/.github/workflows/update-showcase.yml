@@ -52,7 +52,7 @@ jobs:
       - name: Request more info if invalid
         if: steps.parse.outputs.VALID == 'false' && !contains(github.event.issue.labels.*.name, 'approved')
         run: |
-          gh issue comment ${{ github.event.issue.number }} --body "❌ Missing required fields. Please include: Name, Description, URL, Category, Developer, and Email. You can use the [submission form](https://angular-pdf-viewer-docs.vercel.app/showcase/submit) for easier submission."
+          gh issue comment ${{ github.event.issue.number }} --body "❌ Missing required fields. Please include: Name, Description, URL, Category, Developer, and Email. You can use the [submission form](https://angularpdf.com/showcase/submit) for easier submission."
       
       - name: Update showcase
         if: contains(github.event.issue.labels.*.name, 'approved')
@@ -77,4 +77,4 @@ jobs:
       - name: Notify completion
         if: contains(github.event.issue.labels.*.name, 'approved')
         run: |
-          gh issue comment ${{ github.event.issue.number }} --body "🎉 Your project has been added to the showcase! Check it out at https://angular-pdf-viewer-docs.vercel.app/showcase"
+          gh issue comment ${{ github.event.issue.number }} --body "🎉 Your project has been added to the showcase! Check it out at https://angularpdf.com/showcase"

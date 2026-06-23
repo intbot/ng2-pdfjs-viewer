@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "ng-add-ng2-pdfjs-viewer",
+  "title": "ng2-pdfjs-viewer ng-add schema",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "The name of the Angular project to add the viewer to.",
+      "$default": {
+        "$source": "projectName"
+      }
+    }
+  }
+}

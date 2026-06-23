@@ -763,6 +763,6 @@ Ready for more advanced usage?
 
 ## Need Help?
 
-- 🎯 [**Live Demo**](https://angular-pdf-viewer-demo.vercel.app/) - See examples in action
+- 🎯 [**Live Demo**](https://demo.angularpdf.com/) - See examples in action
 - 💬 [**Discussions**](https://github.com/intbot/ng2-pdfjs-viewer/discussions) - Ask questions
 - 🐛 [**Issues**](https://github.com/intbot/ng2-pdfjs-viewer/issues) - Report problems

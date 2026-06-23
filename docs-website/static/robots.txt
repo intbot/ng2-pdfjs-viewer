@@ -1,0 +1,33 @@
+# ng2-pdfjs-viewer documentation — robots policy
+# We want this content indexed by both search and AI crawlers; that discovery
+# is the point. Everything is allowed. AI crawlers are listed explicitly so the
+# intent is unambiguous and survives any host default that blocks them.
+
+User-agent: *
+Allow: /
+
+# Search + AI assistants (explicit allow)
+User-agent: Googlebot
+Allow: /
+User-agent: Bingbot
+Allow: /
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://angularpdf.com/sitemap.xml

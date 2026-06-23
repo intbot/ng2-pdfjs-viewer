@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [26.1.1] - 2026-06-23
+
+### Changed
+- npm `keywords` refreshed for search relevance, and `homepage` now points at the documentation
+  site's domain, `angularpdf.com`.
+
+### Documentation
+- Docs site moved to `angularpdf.com` (the live demo moved to `demo.angularpdf.com`). Added an
+  "Angular PDF viewer" overview page and a "Coming from ng2-pdf-viewer" migration guide, added
+  per-page metadata, `robots.txt`, and `llms.txt`, and updated README and docs links to the new
+  domains.
+
 ## [26.1.0] - 2026-06-22
 
 ### Added

@@ -795,7 +795,7 @@ http {
 - 🐛 [Report Issues](https://github.com/intbot/ng2-pdfjs-viewer/issues)
 - 💬 [GitHub Discussions](https://github.com/intbot/ng2-pdfjs-viewer/discussions)
 - 📖 [Full Documentation](./intro)
-- 🎯 [Live Demo](https://angular-pdf-viewer-demo.vercel.app/)
+- 🎯 [Live Demo](https://demo.angularpdf.com/)
 - 📚 [PDF.js Documentation](https://mozilla.github.io/pdf.js/)
 
 ---

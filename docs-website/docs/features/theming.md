@@ -1,3 +1,8 @@
+---
+description: "Theme an Angular PDF viewer with a config object or CSS variables, and render true dark-mode pages with pageColors, not just the toolbar."
+keywords: [angular pdf viewer theming, pdf dark mode angular, custom pdf viewer angular, pdf css variables]
+---
+
 # Theming & Customization
 
 ng2-pdfjs-viewer styles the viewer with CSS custom properties, so you can match it to your app without forking PDF.js.

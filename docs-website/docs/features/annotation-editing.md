@@ -1,3 +1,8 @@
+---
+description: "Add, edit, save, and restore PDF annotations in Angular: highlight, text, draw, and stamp, plus signature and comment editors, with getAnnotations() and setAnnotations()."
+keywords: [angular pdf annotation, angular pdf annotation editor, angular pdf signature, esign angular, pdf annotations save restore]
+---
+
 # Annotation Editing & eSign
 
 Let your users draw, highlight, add text, stamp images, and sign documents directly in the viewer — then persist their work to your server and restore it later. The annotation editor is the bundled PDF.js editor; ng2-pdfjs-viewer exposes it through Angular inputs, outputs, and promise-based methods.

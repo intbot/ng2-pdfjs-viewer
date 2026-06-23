@@ -136,7 +136,7 @@ Security updates are typically released as:
 
 - **Security Issues**: [security@example.com](mailto:codehippie1@gmail.com)
 - **General Support**: [GitHub Issues](https://github.com/intbot/ng2-pdfjs-viewer/issues)
-- **Documentation**: [Documentation Site](https://angular-pdf-viewer-docs.vercel.app/)
+- **Documentation**: [Documentation Site](https://angularpdf.com/)
 
 ## Acknowledgments
 
