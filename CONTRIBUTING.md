@@ -206,11 +206,11 @@ ng2-pdfjs-viewer/
 - Document all public methods
 - Include type information
 
-### Writing voice
+### Writing style
 
-Docs and README copy should read like a maintainer wrote them, not a content generator. CI
-enforces this on every PR: `check-docs-voice.mjs` scans the Markdown/MDX a PR adds and the PR's
-own title and body, and blocks generator filler. A pre-commit hook runs the same check locally so
+Docs and README copy should read like a maintainer wrote them — concrete and specific. CI
+enforces a house style on every PR: `check-docs-voice.mjs` scans the Markdown/MDX a PR adds and the
+PR's own title and body, and blocks filler and marketing-speak. A pre-commit hook runs the same check locally so
 you catch it before pushing — enable it once per clone:
 
 ```bash

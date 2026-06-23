@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// check-docs-voice.mjs — flags "reads as AI-generated" tells in Markdown.
+// check-docs-voice.mjs — flags filler and marketing-speak in Markdown/MDX prose.
 //
 // Usage:
 //   node scripts/check-docs-voice.mjs --staged         # added lines of staged *.md/*.mdx (pre-commit)
@@ -11,8 +11,8 @@
 //   WARN  — softer or brand-adjacent tells. Printed, never blocks.
 //
 // Brand language is intentional and NOT flagged: "comprehensive", "feature-rich",
-// "AI-enabled", "mobile-first", "#1". Keep those. The point is to kill generator
-// filler, not our positioning. Tune the lists below as the docs evolve.
+// "AI-enabled", "mobile-first", "#1". Keep those. The point is to cut filler and
+// marketing-speak, not our positioning. Tune the lists below as the docs evolve.
 import { execSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 
@@ -118,18 +118,18 @@ for (const { file, line, text } of rows) {
 }
 
 const fmt = (f) => `  ${f.file}:${f.line}  ${f.label}\n      ${f.text.slice(0, 100)}`;
-if (!rows.length) { console.log('docs-voice: nothing to scan.'); process.exit(0); }
+if (!rows.length) { console.log('docs-style: nothing to scan.'); process.exit(0); }
 
 if (warns.length || [...emdash.values()].some((n) => n >= EMDASH_WARN)) {
-  console.log('\n⚠ docs-voice WARN (review, not blocking):');
+  console.log('\n⚠ docs-style WARN (review, not blocking):');
   warns.forEach((w) => console.log(fmt(w)));
   for (const [f, n] of emdash) if (n >= EMDASH_WARN) console.log(`  ${f}  em-dash density: ${n} — prefer periods/commas`);
 }
 if (blocks.length) {
-  console.log('\n✗ docs-voice BLOCK (generator filler — rewrite before committing):');
+  console.log('\n✗ docs-style BLOCK (filler — rewrite before committing):');
   blocks.forEach((b) => console.log(fmt(b)));
   console.log('\nSee the writing rule in CONTRIBUTING.md / CLAUDE.md. Bypass once with `git commit --no-verify`.\n');
   process.exit(1);
 }
-console.log(`docs-voice: clean${warns.length ? ' (warnings above)' : ''}.`);
+console.log(`docs-style: clean${warns.length ? ' (warnings above)' : ''}.`);
 process.exit(0);

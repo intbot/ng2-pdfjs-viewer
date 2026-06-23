@@ -1,9 +1,9 @@
 #!/bin/sh
-# Keep the docs human: flag AI-generator filler in staged Markdown/MDX.
+# Flag filler and marketing-speak in staged Markdown/MDX (house style).
 # Enable once per clone:  git config core.hooksPath .githooks
 # Bypass once (rare):     git commit --no-verify
 # (CI enforces the same check on every PR, so a missing hook is a backstop, not a gap.)
 if git diff --cached --name-only --diff-filter=ACM | grep -qE '\.mdx?$'; then
-  command -v node >/dev/null 2>&1 || { echo "pre-commit: node not found, skipping docs-voice check"; exit 0; }
+  command -v node >/dev/null 2>&1 || { echo "pre-commit: node not found, skipping docs-style check"; exit 0; }
   node scripts/check-docs-voice.mjs --staged || exit 1
 fi
