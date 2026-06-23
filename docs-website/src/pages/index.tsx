@@ -31,8 +31,8 @@ function Hero() {
               <span className={styles.live} /> 8.3M+ downloads · since 2018 · Angular 10–22
             </span>
             <h1 className={styles.title}>
-              The Angular PDF viewer,<br />
-              <em>finally</em> fun to explore.
+              The Angular PDF viewer you can<br />
+              <em>try</em> before you npm i.
             </h1>
             <p className={styles.sub}>
               40+ inputs, 19 events, zero runtime dependencies. Flip a control, watch the real{' '}
