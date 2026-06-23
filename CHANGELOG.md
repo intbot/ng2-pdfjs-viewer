@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [26.1.0] - 2026-06-22
+
+### Added
+- `chromeless` input: a single switch that hides the toolbar and sidebar so the
+  viewer shows just the scrolling pages — an embedded/inline preview mode. It is
+  shorthand for `showToolbar=false` + `showSidebar=false` and overrides them
+  without mutating those bindings, so toggling it off restores them. Reach for
+  `pageOverlayTpl` when you need per-page DOM in the host app.
+
 ## [26.0.3] - 2026-06-22
 
 ### Fixed

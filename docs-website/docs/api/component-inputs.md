@@ -274,6 +274,26 @@ errorMessage = 'Failed to load document. Please try again.';
 
 ## Display Configuration
 
+#### `chromeless`
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Hide the toolbar and sidebar together so the iframe shows only
+  the scrolling pages — an embedded/inline preview mode. Shorthand for
+  `showToolbar=false` + `showSidebar=false`; it overrides both without mutating
+  those bindings, so setting it back to `false` restores whatever they were. The
+  pages still render inside an iframe with its own scroll container; use
+  [`pageOverlayTpl`](#pageoverlaytpl) when you need per-page DOM in the host app.
+
+```html
+<ng2-pdfjs-viewer pdfSrc="assets/doc.pdf" [chromeless]="true"></ng2-pdfjs-viewer>
+```
+
+#### `showToolbar`
+- **Type**: `boolean`
+- **Default**: `true`
+- **Description**: Show/hide the entire viewer toolbar. Pair with
+  `customToolbarTpl` to render your own toolbar above the iframe.
+
 ### Toolbar Controls
 
 

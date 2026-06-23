@@ -1,6 +1,6 @@
 {
   "name": "ng2-pdfjs-viewer",
-  "version": "26.0.3",
+  "version": "26.1.0",
   "description": "The most comprehensive Angular PDF viewer, powered by Mozilla PDF.js 6 — view, annotate, sign, fill forms, search, and read aloud from one component. 8.3M+ downloads, mobile-first, production-ready.",
   "author": {
     "name": "Aneesh Goapalakrishnan",

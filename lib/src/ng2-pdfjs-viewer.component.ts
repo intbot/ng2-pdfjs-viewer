@@ -132,8 +132,10 @@ const PROPERTY_REGISTRY: ReadonlyArray<PropertyRegistration> = [
   { prop: "showToolbarMiddle", action: "show-toolbar-middle", level: 3, init: "always" },
   { prop: "showToolbarRight", action: "show-toolbar-right", level: 3, init: "always" },
   { prop: "showSecondaryToolbarToggle", action: "show-secondary-toolbar-toggle", level: 3, init: "always" },
-  { prop: "showToolbar", action: "show-toolbar", level: 3, init: "always" },
-  { prop: "showSidebar", action: "show-sidebar", level: 3, init: "always" },
+  // chromeless forces both hidden while leaving the consumer's own
+  // showToolbar/showSidebar bindings untouched (see the chromeless @Input).
+  { prop: "showToolbar", action: "show-toolbar", level: 3, init: "always", get: (c) => c.showToolbar && !c.chromeless },
+  { prop: "showSidebar", action: "show-sidebar", level: 3, init: "always", get: (c) => c.showSidebar && !c.chromeless },
   { prop: "showSidebarLeft", action: "show-sidebar-left", level: 3, init: "always" },
   { prop: "showSidebarRight", action: "show-sidebar-right", level: 3, init: "always" },
 
@@ -306,6 +308,9 @@ const CONFIG_FANOUT: Record<string, ReadonlyArray<string>> = {
   viewerConfig: ["useOnlyCssZoom", "externalLinkTarget", "rememberLastView"],
   autoActions: ["rotateCW", "rotateCCW"],
   errorHandling: [],
+  // chromeless is a preset, not a config object, but it reuses the fanout so a
+  // runtime toggle re-dispatches the (get-overridden) toolbar/sidebar actions.
+  chromeless: ["showToolbar", "showSidebar"],
 };
 
 function hasObservers(emitter: EventEmitter<any>): boolean {
@@ -921,6 +926,13 @@ export class PdfJsViewerComponent
   // Show/hide the entire viewer toolbar (pair with customToolbarTpl to ship a
   // fully custom host-side toolbar)
   @Input() public showToolbar: boolean = true;
+
+  // Chromeless / embedded mode: hide the toolbar and sidebar in one switch so
+  // the iframe shows just the scrolling pages. Shorthand for showToolbar=false
+  // + showSidebar=false; it overrides them without mutating those bindings, so
+  // flipping it back restores whatever they were. There is still an iframe and
+  // its own scroll container - use pageOverlayTpl if you need per-page host DOM.
+  @Input() public chromeless: boolean = false;
 
   // Host-side replacement toolbar rendered ABOVE the viewer iframe. Template
   // context: let-viewer (the component instance) for driving the public API,

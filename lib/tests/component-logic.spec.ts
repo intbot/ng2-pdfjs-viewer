@@ -189,6 +189,45 @@ describe("viewerConfig fan-out", () => {
   });
 });
 
+describe("chromeless preset", () => {
+  // Run the real init snapshot and collect the steps of every batched
+  // 'configure' message, so we assert the toolbar/sidebar payloads the
+  // registry's get-overrides actually emit.
+  function configureSteps(comp: PdfJsViewerComponent): any[] {
+    const steps: any[] = [];
+    vi.spyOn(comp as any, "dispatchAction").mockImplementation(
+      (action: string, payload: any) => {
+        if (action === "configure") steps.push(...payload);
+        return Promise.resolve();
+      },
+    );
+    (comp as any).queueAllConfigurations();
+    return steps;
+  }
+  const payloadOf = (steps: any[], action: string) =>
+    steps.find((s) => s.action === action)?.payload;
+
+  it("forces toolbar and sidebar hidden when chromeless is on", () => {
+    const comp = makeComponent();
+    comp.chromeless = true;
+    const steps = configureSteps(comp);
+    expect(payloadOf(steps, "show-toolbar")).toBe(false);
+    expect(payloadOf(steps, "show-sidebar")).toBe(false);
+  });
+
+  it("leaves them visible by default", () => {
+    const steps = configureSteps(makeComponent());
+    expect(payloadOf(steps, "show-toolbar")).toBe(true);
+    expect(payloadOf(steps, "show-sidebar")).toBe(true);
+  });
+
+  it("still honors an explicit showToolbar=false on its own", () => {
+    const comp = makeComponent();
+    comp.showToolbar = false; // chromeless off: the && must keep this hiding
+    expect(payloadOf(configureSteps(comp), "show-toolbar")).toBe(false);
+  });
+});
+
 describe("wrapper event names map to component outputs", () => {
   // The component resolves emitters by reflection ("on" + eventName), so a
   // wrapper-side event whose name has no matching @Output silently drops.
