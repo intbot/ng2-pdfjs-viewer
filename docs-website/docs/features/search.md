@@ -1,3 +1,8 @@
+---
+description: "Search inside a PDF in Angular with the search() API: total matches, per-page counts, and next/previous stepping."
+keywords: [angular pdf search, search pdf text angular, pdf.js search angular]
+---
+
 # Programmatic Search
 
 Drive the viewer's full-text search from your own Angular UI. The `search()` family of methods wraps the PDF.js find controller in promises that resolve with structured results — totals, per-page match counts, and the current match position — so you can build an external search box, result badges, or page navigation without touching the built-in find bar.

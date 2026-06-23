@@ -1,3 +1,8 @@
+---
+description: "The full feature surface of ng2-pdfjs-viewer: annotations, eSign, AcroForm forms, search, page organization, AI assistant, read-aloud, theming, and accessibility."
+keywords: [angular pdf viewer features, angular pdf annotations, angular pdf forms, angular pdf search]
+---
+
 # Features Overview
 
 Most of what you reach for in a PDF viewer is a declarative input or output here. Point `pdfSrc` at a file and the component renders, navigates, searches, prints, and zooms with no extra wiring. The table below is the whole feature surface; each row links to a guide with runnable code.

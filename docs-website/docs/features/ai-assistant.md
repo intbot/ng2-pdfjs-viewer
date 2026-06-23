@@ -1,3 +1,8 @@
+---
+description: "A built-in PDF AI assistant for Angular that calls your own OpenAI-compatible endpoint with clickable page citations. No backend to run; the library makes no vendor calls."
+keywords: [angular pdf ai assistant, chat with pdf angular, pdf ai angular, openai pdf angular]
+---
+
 # AI Assistant (Bring Your Own Endpoint)
 
 Chat with the open PDF — using **your** AI endpoint, **your** key, and **no vendor backend**.

@@ -20,7 +20,7 @@ neutral — describe code changes, not plans.
   **ng-packagr** → FESM2022. Bundled Mozilla **PDF.js** assets under `lib/pdfjs/`.
 - **Local dev link:** **yalc** wires the built lib into the playground for local development.
 - **Demo app:** `playground/` (Angular 22 feature explorer; the deployed demo at
-  `angular-pdf-viewer-demo.vercel.app`).
+  `demo.angularpdf.com`).
 - **Docs site:** `docs-website/` (Docusaurus, deployed to Vercel).
 
 ## Repository Structure

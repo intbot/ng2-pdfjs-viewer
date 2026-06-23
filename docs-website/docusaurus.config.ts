@@ -20,7 +20,7 @@ const config: Config = {
 
   // Set the production url of your site here (the deployed docs host).
   // Used for canonical, og:url, og:image and the sitemap.
-  url: 'https://angular-pdf-viewer-docs.vercel.app',
+  url: 'https://angularpdf.com',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -59,15 +59,18 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/intbot/ng2-pdfjs-viewer/tree/main/docs-website/',
+            'https://github.com/intbot/ng2-pdfjs-viewer/tree/master/docs-website/',
         },
         blog: false, // Disable blog
         theme: {
           customCss: './src/css/custom.css',
         },
-        googleAnalytics: {
-          trackingID: 'G-XXXXXXXXXX', // Placeholder - will be set via env var
-        },
+        // GA4 via gtag (the v3 way; the old `googleAnalytics` UA option is gone).
+        // Only wired when a real measurement ID is present, so a build without
+        // the env var doesn't inject a broken gtag tag.
+        ...(process.env.GA_MEASUREMENT_ID
+          ? { gtag: { trackingID: process.env.GA_MEASUREMENT_ID } }
+          : {}),
       } satisfies Preset.Options,
     ],
   ],
@@ -98,7 +101,7 @@ const config: Config = {
         {to: '/docs/migration/overview', label: 'Migration', position: 'left'},
         {to: '/docs/api/component-inputs', label: 'API', position: 'left'},
         {
-          href: 'https://angular-pdf-viewer-demo.vercel.app/',
+          href: 'https://demo.angularpdf.com/',
           label: 'Live Demo',
           position: 'right',
         },
@@ -160,7 +163,7 @@ const config: Config = {
           items: [
             {
               label: 'Live Demo',
-              href: 'https://angular-pdf-viewer-demo.vercel.app/',
+              href: 'https://demo.angularpdf.com/',
             },
             {
               label: 'npm Package',
@@ -181,11 +184,12 @@ const config: Config = {
       additionalLanguages: ['typescript', 'javascript', 'bash', 'json'],
     },
     metadata: [
-      { name: 'keywords', content: 'angular, angular-pdf-viewer, pdf-viewer, pdf-reader, PDF, PDF Viewer, pdfjs, pdf.js, viewer, viewerjs, ng2, angular-component, angular-pdf, ng2-pdf, angular 2 - 20, angular 20, angular-library, typescript, javascript,  pdf-rendering, pdf-annotations, pdf-zoom, pdf-printing, responsive-ui, custom PDF Viewer, accessibility, open-source, component, library'},
-      {name: 'description', content: 'The most comprehensive Angular PDF viewer powered by Mozilla PDF.js. 8.3M+ downloads, mobile-first, production-ready.'},
-      { property: 'og:image', content: 'img/ng2-pdfjs-viewer-social-card.png'},
-      {property: 'og:description', content: 'The most comprehensive Angular PDF viewer powered by Mozilla PDF.js'},
-      { name: 'twitter:card', content: 'img/ng2-pdfjs-viewer-social-card.png'},
+      { name: 'keywords', content: 'angular pdf viewer, angular-pdf-viewer, pdf-viewer, pdf-reader, PDF, pdfjs, pdf.js, ng2-pdfjs-viewer, angular-component, angular-pdf, angular 2 - 22, angular 22, angular-library, typescript, javascript, pdf-rendering, pdf-annotations, pdf-forms, pdf-signature, pdf-search, pdf-zoom, pdf-printing, text-to-speech, mobile-first, accessibility, open-source'},
+      {name: 'description', content: 'The most comprehensive Angular PDF viewer, powered by Mozilla PDF.js 6 — view, annotate, sign, fill forms, search, and read aloud from one component. Supports Angular 10 through 22.'},
+      {property: 'og:description', content: 'The most comprehensive Angular PDF viewer, powered by Mozilla PDF.js 6. Annotations, forms, signatures, search, and read-aloud from one Angular component.'},
+      // og:image / twitter:image are emitted from themeConfig.image above.
+      // twitter:card must be a card TYPE, not an image path.
+      { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'algolia-site-verification', content: '2EB837F87D9AEC8E' },
     ],
     algolia: {

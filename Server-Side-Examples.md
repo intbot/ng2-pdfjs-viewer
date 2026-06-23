@@ -523,5 +523,5 @@ Always implement proper error handling for:
 ## Related Resources
 
 - [ng2-pdfjs-viewer Documentation](../lib/README.MD)
-- [Live Demo](https://angular-pdf-viewer-demo.vercel.app/)
+- [Live Demo](https://demo.angularpdf.com/)
 - [Source Code](https://github.com/intbot/ng2-pdfjs-viewer/tree/master/playground)

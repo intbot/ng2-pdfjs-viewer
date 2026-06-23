@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "lib": ["es2019", "dom"],
+    "declaration": false,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "outDir": "../dist/schematics",
+    "rootDir": ".",
+    "target": "es2019",
+    "types": ["node"],
+    "skipLibCheck": true,
+    "strict": true
+  },
+  "include": ["**/*.ts"]
+}

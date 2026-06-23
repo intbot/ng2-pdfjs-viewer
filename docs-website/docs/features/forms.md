@@ -1,3 +1,8 @@
+---
+description: "Fill and read PDF AcroForm fields in Angular with two-way [(formData)] binding, programmatic field access, and save of the completed document."
+keywords: [angular pdf forms, acroform angular, fill pdf form angular, pdf form data binding]
+---
+
 # Forms & Data
 
 Fill, read, and submit PDF form (AcroForm) fields from Angular — no digging into the viewer iframe. Bind form values two-way, prefill them from your API, and upload the filled document as a single PDF.

@@ -1,3 +1,8 @@
+---
+description: "Add an Angular PDF viewer in minutes: install ng2-pdfjs-viewer, serve the bundled PDF.js assets via angular.json, and render your first document with one tag."
+keywords: [angular pdf viewer setup, ng2-pdfjs-viewer install, pdf.js angular assets, angular pdf example]
+---
+
 # Getting Started
 
 Get ng2-pdfjs-viewer up and running in your Angular application in just a few minutes.
@@ -153,4 +158,4 @@ types {
 
 - 🐛 [**Report Issues**](https://github.com/intbot/ng2-pdfjs-viewer/issues)
 - 💬 [**Ask Questions**](https://github.com/intbot/ng2-pdfjs-viewer/discussions)
-- 🎯 [**Live Demo**](https://angular-pdf-viewer-demo.vercel.app/)
+- 🎯 [**Live Demo**](https://demo.angularpdf.com/)

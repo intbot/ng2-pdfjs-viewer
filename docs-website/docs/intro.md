@@ -1,3 +1,8 @@
+---
+description: "ng2-pdfjs-viewer is a comprehensive Angular PDF viewer built on Mozilla PDF.js 6: one component for viewing, annotating, signing, forms, search, and read-aloud. Angular 10 through 22."
+keywords: [angular pdf viewer, ng2-pdfjs-viewer, pdf.js angular, angular pdf component, angular pdf library]
+---
+
 # ng2-pdfjs-viewer
 
 ng2-pdfjs-viewer wraps Mozilla PDF.js in a single Angular component. It has been on npm since 2018, has passed more than 8.3 million downloads, and still supports Angular 10 through 22 with zero runtime dependencies. It's the same one-tag component it has always been, with annotations, forms, search, page editing, read-aloud, and a bring-your-own AI panel layered on in v26.
@@ -38,7 +43,7 @@ v25 replaced the old mix of events and polling with one event-driven path. Every
 ## Links
 
 - [Getting Started](./getting-started): install, assets, and your first viewer
-- [Live demo](https://angular-pdf-viewer-demo.vercel.app/)
+- [Live demo](https://demo.angularpdf.com/)
 - [Examples](./examples/basic-usage): copy-paste starting points
 - [API reference](./api/component-inputs): every input, output, and method
 - [Migration from v20.x](./migration/overview)

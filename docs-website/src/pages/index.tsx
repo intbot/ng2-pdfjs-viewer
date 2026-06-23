@@ -8,7 +8,7 @@ import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import styles from './home.module.css';
 
 // The interactive playground (the Angular app). Deep-links use hash routes.
-const PLAYGROUND = 'https://angular-pdf-viewer-demo.vercel.app/';
+const PLAYGROUND = 'https://demo.angularpdf.com/';
 const feat = (route: string) => `${PLAYGROUND}#/${route}`;
 
 function Hero() {
