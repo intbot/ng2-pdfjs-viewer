@@ -2,8 +2,9 @@
 // check-docs-voice.mjs — flags "reads as AI-generated" tells in Markdown.
 //
 // Usage:
-//   node scripts/check-docs-voice.mjs --staged        # scan added lines of staged *.md (pre-commit)
-//   node scripts/check-docs-voice.mjs <file.md> ...    # scan whole files (manual / leak-guard)
+//   node scripts/check-docs-voice.mjs --staged         # added lines of staged *.md/*.mdx (pre-commit)
+//   node scripts/check-docs-voice.mjs --base=<ref>     # added lines of *.md/*.mdx vs <ref> (CI on a PR)
+//   node scripts/check-docs-voice.mjs <file> ...       # whole files (PR body temp file / manual)
 //
 // Two tiers:
 //   BLOCK — hype/filler with ~no place in honest docs. Exit 1 (fails the commit).
@@ -50,13 +51,9 @@ const WARN = [
 
 const EMDASH_WARN = 4; // per file's scanned content
 
-function stagedAddedLines() {
-  let out = '';
-  try {
-    out = execSync('git diff --cached --unified=0 --no-color -- "*.md"', { encoding: 'utf8' });
-  } catch {
-    return [];
-  }
+// Parse `git diff --unified=0` output into { file, line, text } rows for each
+// ADDED line, so we only flag what a change introduces, not pre-existing prose.
+function parseAddedLines(out) {
   const rows = [];
   let file = null;
   let newLine = 0;
@@ -70,6 +67,18 @@ function stagedAddedLines() {
   return rows;
 }
 
+// Added Markdown/MDX lines for a `git diff` selector: '--cached' for the
+// pre-commit hook, '<base>...HEAD' for CI against the PR base.
+function addedLines(selector) {
+  let out = '';
+  try {
+    out = execSync(`git diff ${selector} --unified=0 --no-color -- "*.md" "*.mdx"`, { encoding: 'utf8' });
+  } catch {
+    return [];
+  }
+  return parseAddedLines(out);
+}
+
 function wholeFileLines(files) {
   const rows = [];
   for (const f of files) {
@@ -81,9 +90,15 @@ function wholeFileLines(files) {
 }
 
 const args = process.argv.slice(2);
-const rows = args.includes('--staged')
-  ? stagedAddedLines()
-  : wholeFileLines(args.filter((a) => !a.startsWith('--')));
+const baseArg = args.find((a) => a.startsWith('--base='));
+let rows;
+if (args.includes('--staged')) {
+  rows = addedLines('--cached');                                   // pre-commit hook
+} else if (baseArg) {
+  rows = addedLines(`${baseArg.slice('--base='.length)}...HEAD`);  // CI: added lines vs PR base
+} else {
+  rows = wholeFileLines(args.filter((a) => !a.startsWith('--')));  // whole files (PR body, manual)
+}
 
 const blocks = [];
 const warns = [];

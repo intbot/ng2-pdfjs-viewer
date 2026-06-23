@@ -1,0 +1,40 @@
+name: docs voice
+
+# Enforce the human-voice writing rule on every PR: scan the Markdown/MDX the
+# PR adds AND the PR's own title + body for generator filler (the BLOCK tier in
+# scripts/check-docs-voice.mjs). This is the server-side backstop for the local
+# pre-commit hook, and the only gate that sees PR prose — which never reaches a
+# commit, so the hook can't catch it.
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+concurrency:
+  group: docs-voice-${{ github.ref }}
+  cancel-in-progress: true
+
+# Read-only, no secrets used: safe for fork PRs (this is `pull_request`, not
+# `pull_request_target`).
+permissions: read-all
+
+jobs:
+  voice:
+    name: Docs voice
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          fetch-depth: 0 # need history to diff the PR against its base
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        with:
+          node-version: '24.x'
+      - name: Markdown/MDX added by this PR
+        run: node scripts/check-docs-voice.mjs --base=${{ github.event.pull_request.base.sha }}
+      - name: PR title and body
+        # Passed via env (not inlined into the script) so PR text can't inject shell.
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          printf '%s\n\n%s\n' "$PR_TITLE" "$PR_BODY" > .pr-text.md
+          node scripts/check-docs-voice.mjs .pr-text.md
