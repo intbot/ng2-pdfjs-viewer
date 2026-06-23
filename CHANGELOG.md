@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [26.1.1] - 2026-06-23
+
 ### Changed
 - npm `keywords` refreshed for search relevance, and `homepage` now points at the documentation
   site's domain, `angularpdf.com`.
