@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 import { CodeGenService } from '../../core/services/code-gen.service';
 import { SamplePdfService } from '../../core/services/sample-pdf.service';
@@ -22,10 +22,14 @@ export class QuickStartComponent {
   readonly theme = inject(ThemeService);
   readonly src = computed(() => this.samples.current().src);
 
+  // Embed style: chromeless drops the toolbar + sidebar for an inline preview.
+  readonly chromeless = signal(false);
+
   readonly code = computed(() =>
     this.codegen.generate([
       { name: 'pdfSrc', value: 'pdfSrc', kind: 'expr' },
       { name: 'viewerId', value: 'quickstart', kind: 'string' },
+      { name: 'chromeless', value: this.chromeless(), kind: 'boolean', omitWhen: false },
     ]),
   );
 }

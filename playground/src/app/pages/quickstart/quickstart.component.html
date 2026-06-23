@@ -1,15 +1,22 @@
 <pg-page
   title="Quick Start & Embed"
-  lead="Add the module, drop in one element, point it at a PDF. The viewer fills its container, so sizing is just CSS — embed it full-page or inline within your content."
-  [tags]="['pdfSrc','viewerId','container sizing']"
+  lead="Add the module, drop in one element, point it at a PDF. The viewer fills its container, so sizing is just CSS — embed it full-page or inline within your content. Flip chromeless for a toolbar-less, pages-only inline preview."
+  [tags]="['pdfSrc','viewerId','container sizing','chromeless']"
   [code]="code()"
   docHref="https://github.com/intbot/ng2-pdfjs-viewer#installation">
 
   <div preview>
-    <ng2-pdfjs-viewer [pdfSrc]="src()" viewerId="quickstart" [theme]="theme.mode()"></ng2-pdfjs-viewer>
+    <ng2-pdfjs-viewer [pdfSrc]="src()" viewerId="quickstart" [theme]="theme.mode()" [chromeless]="chromeless()"></ng2-pdfjs-viewer>
   </div>
 
   <div controls>
+    <div class="ph">Embed style</div>
+    <div class="row">
+      <span>Chromeless <small style="opacity:.6">(pages only)</small></span>
+      <span class="switch" [class.on]="chromeless()" (click)="chromeless.set(!chromeless())"
+            role="switch" [attr.aria-checked]="chromeless()" tabindex="0"
+            (keydown.enter)="chromeless.set(!chromeless())" (keydown.space)="chromeless.set(!chromeless())"></span>
+    </div>
     <div class="ph">Install</div>
     <p class="hint">npm i ng2-pdfjs-viewer</p>
     <div class="ph">Steps</div>
