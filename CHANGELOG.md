@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [26.0.3] - 2026-06-22
+
 ### Fixed
 - The `file` parameter is now appended last on the viewer URL, so a hash
   fragment carried on the PDF URL (e.g. `doc.pdf#search=foo`, `#page=2`) reaches
