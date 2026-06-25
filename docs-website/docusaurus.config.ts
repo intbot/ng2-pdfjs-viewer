@@ -156,11 +156,19 @@ const config: Config = {
               label: 'Stack Overflow',
               href: 'https://stackoverflow.com/questions/tagged/ng2-pdfjs-viewer',
             },
+            {
+              label: 'Submit your project',
+              to: '/showcase/submit',
+            },
           ],
         },
         {
           title: 'More',
           items: [
+            {
+              label: 'Press Kit',
+              to: '/press',
+            },
             {
               label: 'Live Demo',
               href: 'https://demo.angularpdf.com/',

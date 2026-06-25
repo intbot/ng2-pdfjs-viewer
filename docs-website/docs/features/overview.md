@@ -7,7 +7,7 @@ keywords: [angular pdf viewer features, angular pdf annotations, angular pdf for
 
 Most of what you reach for in a PDF viewer is a declarative input or output here. Point `pdfSrc` at a file and the component renders, navigates, searches, prints, and zooms with no extra wiring. The table below is the whole feature surface; each row links to a guide with runnable code.
 
-PDF.js 6.x is bundled, and the component is built and tested on Angular 22 (peer range stays `>=10`).
+[PDF.js](https://github.com/mozilla/pdf.js) 6.x is bundled, and the component is built and tested on [Angular](https://angular.dev) 22 (peer range stays `>=10`).
 
 ## Features
 
