@@ -104,10 +104,18 @@ WCAG and the European Accessibility Act. See [Accessibility](./features/accessib
 
 ## How heavy is it, and how is it built?
 
-There are no runtime dependencies beyond Angular itself. The bundled PDF.js viewer runs in a
-sandboxed, same-origin iframe, and the host-to-viewer bridge checks `event.source` in both
+There are no runtime dependencies beyond Angular itself. The bundled [PDF.js](https://github.com/mozilla/pdf.js)
+viewer runs in a sandboxed, same-origin iframe, and the host-to-viewer bridge checks `event.source` in both
 directions. Every method is queued until the viewer reports ready, so a call made before the PDF
 finishes loading is not dropped. See [iframe security](./features/iframe-security).
+
+## Who uses it in production?
+
+It runs in live public-sector and education software, including the French data-protection
+authority's [CNIL PIA](https://github.com/LINCnil/pia) tool, the Finnish National Agency for
+Education's [AOE library](https://aoe.fi), and Orange County's
+[stormwater compliance tools](https://ocstormwatertools.org). More on the
+[showcase](https://angularpdf.com/showcase).
 
 ## Where to next
 

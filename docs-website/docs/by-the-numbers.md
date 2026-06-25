@@ -14,7 +14,7 @@ counts come from the npm registry.
 | Total downloads | 8.3M+ |
 | Weekly downloads | ~52,000 (June 2026) |
 | Angular versions supported | 10 through 22, from one package (peer range `>=10`) |
-| PDF.js engine | 6.x, bundled (no separate `pdfjs-dist` to manage) |
+| PDF.js engine | [PDF.js](https://github.com/mozilla/pdf.js) 6.x, bundled (no separate `pdfjs-dist` to manage) |
 | Runtime dependencies | 0 (beyond Angular itself) |
 | Public API | 30+ inputs, 24+ outputs, 19+ Promise-returning methods, all typed |
 | License | Apache-2.0 (Commons Clause) |
@@ -41,6 +41,16 @@ A single `<ng2-pdfjs-viewer>` tag provides:
 - The host-to-viewer `postMessage` bridge checks `event.source` in both directions.
 - Every method call is queued until the viewer reports ready, so calls made before the PDF finishes
   loading are not dropped.
+
+## In production
+
+Public-sector and education teams run ng2-pdfjs-viewer in live software:
+
+- [CNIL PIA](https://github.com/LINCnil/pia): the French data-protection authority's Privacy Impact Assessment tool, published in 20+ languages.
+- [AOE (aoe.fi)](https://aoe.fi): the Finnish National Agency for Education's open educational resources library.
+- [OC Stormwater Tools](https://ocstormwatertools.org): Orange County, California compliance tracking.
+
+More on the [showcase](https://angularpdf.com/showcase).
 
 ## Sources
 

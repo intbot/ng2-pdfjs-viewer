@@ -153,33 +153,6 @@ export default function Showcase() {
       description="Discover amazing projects built with ng2-pdfjs-viewer"
     >
       <div className={styles.showcaseContainer}>
-        {/* Construction Notice */}
-        <div className={styles.constructionNotice}>
-          <div className={styles.constructionIcon}>🚧</div>
-          <div className={styles.constructionContent}>
-            <h3 className={styles.constructionTitle}>Showcase Under Construction</h3>
-            <p className={styles.constructionDescription}>
-              We're currently evaluating submitted projects and they will appear here soon. 
-              Thank you for your patience as we curate the best examples for our community!
-              <br /><br />
-              <strong>Have you built something amazing with ng2-pdfjs-viewer?</strong>
-              <br />
-              <a href="/showcase/submit" style={{ color: '#d68910', textDecoration: 'underline', fontWeight: '600' }}>
-                Submit your project
-              </a> and inspire other developers!
-              <br /><br />
-              <div style={{ fontSize: '0.9rem', opacity: 0.9, lineHeight: '1.4' }}>
-                <strong>Why submit your project?</strong><br />
-                🚀 <strong>Free promotion</strong> - Showcase your work to 8.3M+ developers<br />
-                🔗 <strong>Quality backlinks</strong> - Boost your SEO with high-authority links<br />
-                👥 <strong>Community recognition</strong> - Get featured in our official showcase<br />
-                💼 <strong>Professional credibility</strong> - Demonstrate your technical skills<br />
-                🌟 <strong>Inspire others</strong> - Help fellow developers learn and grow
-              </div>
-            </p>
-          </div>
-        </div>
-
         <div className={styles.showcaseHeader}>
           <h1 className={styles.showcaseTitle}>Projects Built with ng2-pdfjs-viewer</h1>
           <p className={styles.showcaseDescription}>

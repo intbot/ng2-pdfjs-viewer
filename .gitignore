@@ -12,6 +12,10 @@ private/
 # Local Claude Code state (per-machine commands, permissions, skills).
 # CLAUDE.md IS committed (public contributor guidance); .claude/ is not.
 .claude/
+# Agent-skills install dir (`npx skills add` drops skills here, symlinked into .claude/skills).
+.agents/
+# npx skills lock file (dropped in cwd by `npx skills add`)
+skills-lock.json
 # Local MCP server config (per-machine tooling, e.g. Playwright MCP).
 .mcp.json
 # Playwright MCP session workspace (page snapshots, console logs) and stray
