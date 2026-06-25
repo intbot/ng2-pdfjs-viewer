@@ -104,6 +104,19 @@ function Hero() {
             </Link>
           </div>
         </div>
+
+        <div className={styles.usedBy}>
+          <p className={styles.usedByLabel}>In production on five continents</p>
+          <div className={styles.usedByNames}>
+            <span>EPFL</span>
+            <span>CNIL</span>
+            <span>Finnish National Agency for Education</span>
+            <span>AuScope</span>
+            <span>Spanish Ministry of Culture</span>
+            <span>UVA</span>
+            <Link className={styles.usedByMore} to="/showcase">See who's using it →</Link>
+          </div>
+        </div>
       </div>
     </section>
   );

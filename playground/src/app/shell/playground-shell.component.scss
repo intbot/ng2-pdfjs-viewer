@@ -61,6 +61,7 @@
 .n .ic { width: 17px; text-align: center; opacity: 0.85; }
 .n .nt { flex: 1; }
 .n .badge { font-size: 10px; color: var(--faint); border: 1px solid var(--border); border-radius: 6px; padding: 0 6px; }
+.usedby { padding: 4px 10px 14px; margin: 0; font-size: 11px; line-height: 1.55; color: var(--faint); }
 
 .main { grid-area: main; overflow: auto; position: relative; }
 
