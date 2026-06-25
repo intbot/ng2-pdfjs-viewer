@@ -20,6 +20,13 @@
 }
 .inner { position: relative; z-index: 1; max-width: 1160px; margin: 0 auto; padding: 64px 24px 28px; }
 
+.usedBy { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--border); }
+.usedByLabel { font-family: var(--mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); margin: 0 0 14px; }
+.usedByNames { display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center; }
+.usedByNames span { font-family: var(--display); font-weight: 600; font-size: 14px; color: var(--ink); opacity: 0.86; }
+.usedByMore { font-family: var(--display); font-weight: 600; font-size: 14px; color: var(--c); text-decoration: none; }
+.usedByMore:hover { color: var(--ink); }
+
 .hero { display: grid; grid-template-columns: 1.04fr 0.96fr; gap: 48px; align-items: center; }
 .eyebrow {
   display: inline-flex; align-items: center; gap: 9px; font-size: 12.5px; font-weight: 600;

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '@theme/Layout';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './showcase.module.css';
 
 interface Project {
@@ -15,9 +14,9 @@ interface Project {
   featuresUsed: string[];
   versionUsed: string;
   developerName: string;
-  companyName?: string;
-  twitterHandle?: string;
-  linkedinProfile?: string;
+  accent?: string;
+  flag?: string;
+  country?: string;
   screenshot?: string;
   logo?: string;
   submittedAt: string;
@@ -25,280 +24,140 @@ interface Project {
   status: 'approved' | 'pending' | 'rejected';
 }
 
-const CATEGORIES = [
-  'all',
-  'enterprise',
-  'startup', 
-  'open-source',
-  'personal',
-  'educational'
-];
+const DEPENDENTS_URL = 'https://github.com/intbot/ng2-pdfjs-viewer/network/dependents';
 
-const INDUSTRIES = [
-  'all',
-  'Healthcare',
-  'Finance',
-  'Education',
-  'E-commerce',
-  'Government',
-  'Technology',
-  'Media',
-  'Legal',
-  'Real Estate',
-  'Other'
-];
+const monogram = (name: string) =>
+  name.replace(/[^A-Za-z0-9 ]/g, '').trim().split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
 
 export default function Showcase() {
-  const { siteConfig } = useDocusaurusContext();
   const [projects, setProjects] = useState<Project[]>([]);
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedIndustry, setSelectedIndustry] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [filter, setFilter] = useState('all');
 
   useEffect(() => {
-    loadProjects();
+    fetch('/data/projects.json')
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data: Project[]) => setProjects(data.filter((p) => p.status === 'approved')))
+      .catch(() => setProjects([]))
+      .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    filterProjects();
-  }, [projects, selectedCategory, selectedIndustry, searchTerm]);
-
-  const loadProjects = async () => {
-    try {
-      // Load projects from the data file
-      const response = await fetch('/data/projects.json');
-      if (response.ok) {
-        const projectsData = await response.json();
-        setProjects(projectsData);
-      } else {
-        console.error('Failed to load projects data');
-        // Fallback to empty array
-        setProjects([]);
-      }
-    } catch (error) {
-      console.error('Error loading projects:', error);
-      // Fallback to empty array
-      setProjects([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filterProjects = () => {
-    let filtered = projects.filter(project => project.status === 'approved');
-
-    if (selectedCategory !== 'all') {
-      filtered = filtered.filter(project => project.category === selectedCategory);
-    }
-
-    if (selectedIndustry !== 'all') {
-      filtered = filtered.filter(project => project.industry === selectedIndustry);
-    }
-
-    if (searchTerm) {
-      const term = searchTerm.toLowerCase();
-      filtered = filtered.filter(project => 
-        project.name.toLowerCase().includes(term) ||
-        project.description.toLowerCase().includes(term) ||
-        project.techStack.some(tech => tech.toLowerCase().includes(term)) ||
-        project.featuresUsed.some(feature => feature.toLowerCase().includes(term))
-      );
-    }
-
-    setFilteredProjects(filtered);
-  };
-
-  const getCategoryIcon = (category: string) => {
-    const icons = {
-      enterprise: '🏢',
-      startup: '🚀',
-      'open-source': '🔓',
-      personal: '👤',
-      educational: '🎓'
-    };
-    return icons[category] || '📁';
-  };
-
-  const getIndustryColor = (industry: string) => {
-    const colors = {
-      'Healthcare': '#e3f2fd',
-      'Finance': '#f3e5f5',
-      'Education': '#e8f5e8',
-      'E-commerce': '#fff3e0',
-      'Government': '#fce4ec',
-      'Technology': '#e0f2f1',
-      'Media': '#f1f8e9',
-      'Legal': '#fff8e1',
-      'Real Estate': '#e8eaf6',
-      'Other': '#f5f5f5'
-    };
-    return colors[industry] || '#f5f5f5';
-  };
-
-  if (loading) {
-    return (
-      <Layout title="Showcase" description="Projects built with ng2-pdfjs-viewer">
-        <div className={styles.showcaseContainer}>
-          <div className={styles.loadingSpinner}>Loading projects...</div>
-        </div>
-      </Layout>
-    );
-  }
+  const industries = ['all', ...Array.from(new Set(projects.map((p) => p.industry)))];
+  const countryCount = new Set(projects.map((p) => p.country).filter(Boolean)).size;
+  const shown = filter === 'all' ? projects : projects.filter((p) => p.industry === filter);
 
   return (
     <Layout
       title="Showcase"
-      description="Discover amazing projects built with ng2-pdfjs-viewer"
+      description="Production apps and open-source projects built with ng2-pdfjs-viewer — from national agencies to AI tools."
     >
-      <div className={styles.showcaseContainer}>
-        <div className={styles.showcaseHeader}>
-          <h1 className={styles.showcaseTitle}>Projects Built with ng2-pdfjs-viewer</h1>
-          <p className={styles.showcaseDescription}>
-            Discover amazing applications powered by our library. 
-            From enterprise solutions to personal projects, see how developers are using ng2-pdfjs-viewer.
+      <div className={styles.page}>
+        <div className={styles.mesh} />
+        <div className={styles.inner}>
+          <span className={styles.eyebrow}>
+            <span className={styles.live} /> built with ng2-pdfjs-viewer
+          </span>
+          <h1 className={styles.title}>
+            Teams shipping PDFs <em>in Angular</em>
+          </h1>
+          <p className={styles.sub}>
+            From a national data-protection authority to AI apps — real software running the viewer
+            in production. Curated from public usage; add yours below.
           </p>
-        </div>
 
-        {/* Stats */}
-        <div className={styles.statsGrid}>
-          <div className={styles.statCard}>
-            <span className={styles.statNumber}>{projects.length}+</span>
-            <span className={styles.statLabel}>Projects</span>
-          </div>
-          <div className={styles.statCard}>
-            <span className={styles.statNumber}>{new Set(projects.map(p => p.industry)).size}+</span>
-            <span className={styles.statLabel}>Industries</span>
-          </div>
-          <div className={styles.statCard}>
-            <span className={styles.statNumber}>{new Set(projects.map(p => p.developerName)).size}+</span>
-            <span className={styles.statLabel}>Developers</span>
-          </div>
-        </div>
-
-        {/* Filters */}
-        <div className={styles.filtersSection}>
-          <h3 className={styles.filtersTitle}>Filter Projects</h3>
-          <div className={styles.filtersGrid}>
-            <div className={styles.filterGroup}>
-              <label htmlFor="category-filter" className={styles.filterLabel}>Category</label>
-              <select
-                id="category-filter"
-                className={styles.filterSelect}
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-              >
-                {CATEGORIES.map(cat => (
-                  <option key={cat} value={cat}>
-                    {cat === 'all' ? 'All Categories' : cat.charAt(0).toUpperCase() + cat.slice(1).replace('-', ' ')}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className={styles.filterGroup}>
-              <label htmlFor="industry-filter" className={`${styles.filterLabel} ${styles.industryLabel}`}>Industry</label>
-              <select
-                id="industry-filter"
-                className={styles.filterSelect}
-                value={selectedIndustry}
-                onChange={(e) => setSelectedIndustry(e.target.value)}
-              >
-                {INDUSTRIES.map(industry => (
-                  <option key={industry} value={industry}>
-                    {industry === 'all' ? 'All Industries' : industry}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className={styles.filterGroup}>
-              <label htmlFor="search" className={`${styles.filterLabel} ${styles.searchLabel}`}>Search</label>
-              <input
-                type="text"
-                id="search"
-                className={styles.filterInput}
-                placeholder="Search projects..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <button
-              className={styles.clearFilters}
-              onClick={() => {
-                setSelectedCategory('all');
-                setSelectedIndustry('all');
-                setSearchTerm('');
-              }}
-            >
-              🗑️ Clear Filters
-            </button>
-          </div>
-        </div>
-
-        {/* Projects Grid */}
-        {filteredProjects.length === 0 ? (
-          <div className={styles.emptyState}>
-            <div className={styles.emptyStateIcon}>📁</div>
-            <h3 className={styles.emptyStateTitle}>No projects found</h3>
-            <p className={styles.emptyStateDescription}>
-              Try adjusting your filters or search terms to discover amazing projects.
-            </p>
-          </div>
-        ) : (
-          <div className={styles.projectsGrid}>
-            {filteredProjects.map(project => (
-              <div key={project.id} className={styles.projectCard}>
-                <h4 className={styles.projectTitle}>{project.name}</h4>
-                <p className={styles.projectDescription}>{project.description}</p>
-                <div className={styles.projectMeta}>
-                  <span className={`${styles.projectBadge} ${styles['projectBadge--category']}`}>
-                    {getCategoryIcon(project.category)} {project.category}
-                  </span>
-                  <span className={`${styles.projectBadge} ${styles['projectBadge--industry']}`}>
-                    {project.industry}
-                  </span>
-                  <span className={`${styles.projectBadge} ${styles['projectBadge--version']}`}>
-                    v{project.versionUsed}
-                  </span>
-                </div>
-                <div className={styles.projectLinks}>
-                  <a href={project.url} target="_blank" rel="noopener noreferrer" className={`${styles.projectLink} ${styles['projectLink--primary']}`}>
-                    🌐 View Project
-                  </a>
-                  {project.githubUrl && (
-                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className={`${styles.projectLink} ${styles['projectLink--secondary']}`}>
-                      💻 GitHub
-                    </a>
-                  )}
-                </div>
+          {!loading && projects.length > 0 && (
+            <div className={styles.stats}>
+              <div>
+                <b>{projects.length}</b>
+                <span>projects</span>
               </div>
-            ))}
-          </div>
-        )}
+              <div>
+                <b>{new Set(projects.map((p) => p.industry)).size}</b>
+                <span>industries</span>
+              </div>
+              <div>
+                <b>{countryCount}</b>
+                <span>countries</span>
+              </div>
+              <div>
+                <b>8.3M+</b>
+                <span>downloads</span>
+              </div>
+            </div>
+          )}
 
-        {/* CTA Section */}
-        <div className={styles.ctaSection}>
-          <h2 className={styles.ctaTitle}>Built something amazing?</h2>
-          <p className={styles.ctaDescription}>
-            Share your project with the community and inspire other developers.
-          </p>
-          <div className={styles.ctaButtons}>
-            <a
-              href="/showcase/submit"
-              className={`${styles.ctaButton} ${styles['ctaButton--primary']}`}
-            >
-              🚀 Submit Your Project
-            </a>
-            <a
-              href="https://github.com/intbot/ng2-pdfjs-viewer/issues?q=is:issue+label:showcase+is:open"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${styles.ctaButton} ${styles['ctaButton--secondary']}`}
-            >
-              📋 View All Submissions
-            </a>
+          {industries.length > 1 && (
+            <div className={styles.filters}>
+              {industries.map((ind) => (
+                <button
+                  key={ind}
+                  className={`${styles.pill} ${filter === ind ? styles.pillActive : ''}`}
+                  onClick={() => setFilter(ind)}
+                >
+                  {ind === 'all' ? 'All' : ind}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {loading ? (
+            <p className={styles.empty}>Loading projects…</p>
+          ) : shown.length === 0 ? (
+            <p className={styles.empty}>No projects in this category yet.</p>
+          ) : (
+            <div className={styles.grid}>
+              {shown.map((p) => (
+                <a
+                  key={p.id}
+                  href={p.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.card}
+                >
+                  {p.screenshot ? (
+                    <img className={styles.shot} src={p.screenshot} alt={`${p.name} screenshot`} loading="lazy" />
+                  ) : (
+                    <div className={styles.shotLogo}>
+                      <div
+                        className={styles.mono}
+                        style={{ background: `linear-gradient(135deg, ${p.accent || '#7c5cff'}, ${(p.accent || '#7c5cff')}bb)` }}
+                      >
+                        {monogram(p.name)}
+                      </div>
+                    </div>
+                  )}
+                  <div className={styles.body}>
+                    <div className={styles.name}>
+                      <span className={styles.dot} style={{ background: p.accent || '#7c5cff' }} />
+                      {p.name} {p.flag || ''}
+                    </div>
+                    <div className={styles.desc}>{p.description}</div>
+                    <div className={styles.meta}>
+                      <span className={styles.tag}>{p.techStack.slice(0, 2).join(' · ')}</span>
+                      <span className={styles.metaLink}>v{p.versionUsed} ↗</span>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          )}
+
+          <div className={styles.cta}>
+            <h2>Shipped something with it?</h2>
+            <p>Add your project — send the URL, we'll do the rest.</p>
+            <div className={styles.btnRow}>
+              <a href="/showcase/submit" className={`${styles.btn} ${styles.btnP}`}>
+                Add your project →
+              </a>
+              <a
+                href={DEPENDENTS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${styles.btn} ${styles.btnG}`}
+              >
+                Browse all dependents on GitHub
+              </a>
+            </div>
           </div>
         </div>
       </div>

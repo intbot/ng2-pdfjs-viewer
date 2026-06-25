@@ -33,6 +33,9 @@ AI assistant — all driven by typed `@Input()`s and `@Output()` events, no ifra
 Shipping since **2018**, **8.3+ million downloads**, mobile-first, and built & verified on **Angular 22**
 while keeping a wide `>=10` peer range so existing apps upgrade without churn.
 
+From France's data-protection regulator to Switzerland's federal tech institute, it's in
+production on five continents — [see who's using it ↓](#-used-in-production).
+
 ```bash
 npm install ng2-pdfjs-viewer
 ```
@@ -42,6 +45,24 @@ npm install ng2-pdfjs-viewer
 ```
 
 That's the whole integration. [Wire up the assets](#-quick-start) and you have a full viewer.
+
+## 🌍 Used in production
+
+National regulators, public universities, research infrastructure, and fintech platforms render
+PDFs with ng2-pdfjs-viewer — on five continents. A few of the teams we can name:
+
+| | |
+|---|---|
+| 🇨🇭 **EPFL** | Switzerland's federal institute of technology — the Infoscience research portal |
+| 🇫🇷 **CNIL** | France's national data-protection authority |
+| 🇫🇮 **Finnish National Agency for Education** | the country's open learning-materials library (AOE) |
+| 🇦🇺 **AuScope** | Australia's national geoscience research infrastructure |
+| 🇪🇸 **Spain's Ministry of Culture** | the Travesía cultural-heritage platform |
+| 🇺🇸 **University of Virginia** | the Supporting Transformative Autism Research (DRIVE) program |
+
+Those are the adopters we can point to by name. They sit inside **8.3M+ installs** worldwide — the
+named users we've confirmed so far span **13+ countries**, and that's the floor, not the ceiling.
+[See the full showcase →](https://angularpdf.com/showcase)
 
 ## ✨ Highlights
 
@@ -214,6 +235,8 @@ See [CONTRIBUTING.md](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CON
 ## 🏗️ Showcase
 
 Shipped something with ng2-pdfjs-viewer? [Add it to the showcase](https://angularpdf.com/showcase) — submitted projects are listed next to other production apps using the viewer.
+
+Using it somewhere that won't show up in public code — an internal tool, a hospital system, a government portal? I'd like to hear about it: email **codehippie1@gmail.com** with a line about what you're building. Teams in healthcare, finance, education, and public-sector software already have. (Bugs and feature requests are best filed as [an issue](https://github.com/intbot/ng2-pdfjs-viewer/issues).)
 
 ## 📄 License
 
