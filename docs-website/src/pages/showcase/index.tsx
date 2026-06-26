@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Layout from '@theme/Layout';
+import projectsData from '@site/data/projects.json';
 import styles from './showcase.module.css';
 
 interface Project {
@@ -29,19 +30,20 @@ const DEPENDENTS_URL = 'https://github.com/intbot/ng2-pdfjs-viewer/network/depen
 const monogram = (name: string) =>
   name.replace(/[^A-Za-z0-9 ]/g, '').trim().split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
 
+// Flag emoji → ISO 3166 alpha-2 (regional-indicator pair → letters), for flagcdn images.
+// Returns '' for anything that isn't a flag emoji, so the caller can skip rendering.
+const flagToCC = (flag?: string): string => {
+  if (!flag) return '';
+  const cps = [...flag].map((c) => c.codePointAt(0) || 0);
+  if (!cps.length || cps.some((cp) => cp < 0x1f1e6 || cp > 0x1f1ff)) return '';
+  return cps.map((cp) => String.fromCharCode(cp - 0x1f1e6 + 97)).join('');
+};
+
 export default function Showcase() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
 
-  useEffect(() => {
-    fetch('/data/projects.json')
-      .then((r) => (r.ok ? r.json() : []))
-      .then((data: Project[]) => setProjects(data.filter((p) => p.status === 'approved')))
-      .catch(() => setProjects([]))
-      .finally(() => setLoading(false));
-  }, []);
-
+  // projects.json is bundled at build time (a runtime fetch of /data/ 404s — it isn't a static asset).
+  const projects = (projectsData as unknown as Project[]).filter((p) => p.status === 'approved');
   const industries = ['all', ...Array.from(new Set(projects.map((p) => p.industry)))];
   const countryCount = new Set(projects.map((p) => p.country).filter(Boolean)).size;
   const shown = filter === 'all' ? projects : projects.filter((p) => p.industry === filter);
@@ -65,7 +67,7 @@ export default function Showcase() {
             in production. Curated from public usage; add yours below.
           </p>
 
-          {!loading && projects.length > 0 && (
+          {projects.length > 0 && (
             <div className={styles.stats}>
               <div>
                 <b>{projects.length}</b>
@@ -100,9 +102,7 @@ export default function Showcase() {
             </div>
           )}
 
-          {loading ? (
-            <p className={styles.empty}>Loading projects…</p>
-          ) : shown.length === 0 ? (
+          {shown.length === 0 ? (
             <p className={styles.empty}>No projects in this category yet.</p>
           ) : (
             <div className={styles.grid}>
@@ -129,7 +129,10 @@ export default function Showcase() {
                   <div className={styles.body}>
                     <div className={styles.name}>
                       <span className={styles.dot} style={{ background: p.accent || '#7c5cff' }} />
-                      {p.name} {p.flag || ''}
+                      {p.name}
+                      {flagToCC(p.flag) && (
+                        <img className={styles.flag} src={`https://flagcdn.com/20x15/${flagToCC(p.flag)}.png`} width={20} height={15} alt="" loading="lazy" />
+                      )}
                     </div>
                     <div className={styles.desc}>{p.description}</div>
                     <div className={styles.meta}>
