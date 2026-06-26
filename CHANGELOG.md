@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `ng2-pdfjs-viewer/signals`: a new entry point that projects viewer state — current
+  page, zoom, total pages, search matches, read-aloud progress, annotation-editor
+  state, sidebar, metadata, form data, and the view-mode strings — as read-only
+  Angular signals. Call `pdfViewerSignals(viewer, { injector })` and read
+  `signals.page()`, `signals.totalPages()`, `signals.loaded()` in a template, or
+  build `computed`/`effect` on top. Aimed at zoneless / OnPush apps. Requires
+  Angular 16+; the base package's `>=10` peer range is unchanged.
+- AI assistant streaming: `PdfAiAssistant.ask()` and `complete()` take an optional
+  `onToken` callback and stream the answer token-by-token over Server-Sent Events,
+  falling back to a single response when the endpoint doesn't stream. The built-in
+  chat panel renders the answer as it arrives.
+
 ## [26.1.1] - 2026-06-23
 
 ### Changed

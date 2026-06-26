@@ -31,6 +31,7 @@ const sidebars: SidebarsConfig = {
         'features/ai-assistant',
         'features/read-aloud',
         'features/custom-ui',
+        'features/signals',
         'features/content-protection',
         'features/accessibility',
         'features/theming',
