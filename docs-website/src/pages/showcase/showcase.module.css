@@ -42,6 +42,7 @@
 .body { padding: 18px; }
 .name { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 17px; letter-spacing: -0.01em; }
 .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.flag { width: 20px; height: 15px; border-radius: 2px; flex: none; }
 .desc { color: var(--muted); font-size: 14px; margin: 8px 0 14px; line-height: 1.5; }
 .meta { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12px; color: var(--faint); }
 .tag { font-family: var(--mono); font-size: 11px; color: var(--muted); border: 1px solid var(--border); padding: 2px 8px; border-radius: 6px; white-space: nowrap; }

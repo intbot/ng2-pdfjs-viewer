@@ -13,12 +13,12 @@ const feat = (route: string) => `${PLAYGROUND}#/${route}`;
 
 // Marquee adopters for the homepage "used by" strip (a subset of /showcase).
 const ADOPTERS = [
-  { mono: 'EP', name: 'EPFL', flag: '🇨🇭', desc: 'Federal institute of technology', accent: '#b91c1c', url: 'https://infoscience.epfl.ch' },
-  { mono: 'CN', name: 'CNIL', flag: '🇫🇷', desc: 'Data-protection authority', accent: '#3b5bdb', url: 'https://github.com/LINCnil/pia' },
-  { mono: 'AOE', name: 'Finnish Agency for Education', flag: '🇫🇮', desc: 'National learning library', accent: '#0ea5b7', url: 'https://aoe.fi' },
-  { mono: 'AU', name: 'AuScope', flag: '🇦🇺', desc: 'Geoscience infrastructure', accent: '#16a34a', url: 'https://www.auscope.org.au/avre' },
-  { mono: 'MC', name: 'Spanish Ministry of Culture', flag: '🇪🇸', desc: 'Heritage digital library', accent: '#dc2626', url: 'https://travesia.mcu.es' },
-  { mono: 'UV', name: 'University of Virginia', flag: '🇺🇸', desc: 'Autism research registry', accent: '#e57200', url: 'https://autismdrive.virginia.edu' },
+  { mono: 'EP', name: 'EPFL', cc: 'ch', desc: 'Federal institute of technology', accent: '#b91c1c', url: 'https://infoscience.epfl.ch' },
+  { mono: 'CN', name: 'CNIL', cc: 'fr', desc: 'Data-protection authority', accent: '#3b5bdb', url: 'https://github.com/LINCnil/pia' },
+  { mono: 'AOE', name: 'Finnish Agency for Education', cc: 'fi', desc: 'National learning library', accent: '#0ea5b7', url: 'https://aoe.fi' },
+  { mono: 'AU', name: 'AuScope', cc: 'au', desc: 'Geoscience infrastructure', accent: '#16a34a', url: 'https://www.auscope.org.au/avre' },
+  { mono: 'MC', name: 'Spanish Ministry of Culture', cc: 'es', desc: 'Heritage digital library', accent: '#dc2626', url: 'https://travesia.mcu.es' },
+  { mono: 'UV', name: 'University of Virginia', cc: 'us', desc: 'Autism research registry', accent: '#e57200', url: 'https://autismdrive.virginia.edu' },
 ];
 
 function Hero() {
@@ -122,7 +122,7 @@ function Hero() {
               <a key={a.name} className={styles.usedByCard} href={a.url} target="_blank" rel="noopener noreferrer">
                 <span className={styles.usedBySq} style={{ background: `linear-gradient(135deg, ${a.accent}, ${a.accent}bb)` }}>{a.mono}</span>
                 <span className={styles.usedByText}>
-                  <span className={styles.usedByName}>{a.name} <span className={styles.usedByFlag}>{a.flag}</span></span>
+                  <span className={styles.usedByName}>{a.name} <img className={styles.usedByFlag} src={`https://flagcdn.com/20x15/${a.cc}.png`} width={18} height={14} alt="" loading="lazy" /></span>
                   <span className={styles.usedByDesc}>{a.desc}</span>
                 </span>
               </a>

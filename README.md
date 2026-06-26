@@ -49,20 +49,18 @@ That's the whole integration. [Wire up the assets](#-quick-start) and you have a
 ## 🌍 Used in production
 
 National regulators, public universities, research infrastructure, and fintech platforms render
-PDFs with ng2-pdfjs-viewer — on five continents. A few of the teams we can name:
+PDFs with ng2-pdfjs-viewer — on five continents. Among them:
 
 | | |
 |---|---|
-| 🇨🇭 **EPFL** | Switzerland's federal institute of technology — the Infoscience research portal |
-| 🇫🇷 **CNIL** | France's national data-protection authority |
-| 🇫🇮 **Finnish National Agency for Education** | the country's open learning-materials library (AOE) |
-| 🇦🇺 **AuScope** | Australia's national geoscience research infrastructure |
-| 🇪🇸 **Spain's Ministry of Culture** | the Travesía cultural-heritage platform |
-| 🇺🇸 **University of Virginia** | the Supporting Transformative Autism Research (DRIVE) program |
+| <img src="https://flagcdn.com/20x15/ch.png" width="20" alt="Switzerland"> **EPFL** | Switzerland's federal institute of technology — the Infoscience research portal |
+| <img src="https://flagcdn.com/20x15/fr.png" width="20" alt="France"> **CNIL** | France's national data-protection authority |
+| <img src="https://flagcdn.com/20x15/fi.png" width="20" alt="Finland"> **Finnish National Agency for Education** | the country's open learning-materials library (AOE) |
+| <img src="https://flagcdn.com/20x15/au.png" width="20" alt="Australia"> **AuScope** | Australia's national geoscience research infrastructure |
+| <img src="https://flagcdn.com/20x15/es.png" width="20" alt="Spain"> **Spain's Ministry of Culture** | the Travesía cultural-heritage platform |
+| <img src="https://flagcdn.com/20x15/us.png" width="20" alt="United States"> **University of Virginia** | the Supporting Transformative Autism Research (DRIVE) program |
 
-Those are the adopters we can point to by name. They sit inside **8.3M+ installs** worldwide — the
-named users we've confirmed so far span **13+ countries**, and that's the floor, not the ceiling.
-[See the full showcase →](https://angularpdf.com/showcase)
+Part of **8.3M+ installs** worldwide. [See the full showcase →](https://angularpdf.com/showcase)
 
 ## ✨ Highlights
 
