@@ -11,6 +11,16 @@ import styles from './home.module.css';
 const PLAYGROUND = 'https://demo.angularpdf.com/';
 const feat = (route: string) => `${PLAYGROUND}#/${route}`;
 
+// Marquee adopters for the homepage "used by" strip (a subset of /showcase).
+const ADOPTERS = [
+  { mono: 'EP', name: 'EPFL', flag: '🇨🇭', desc: 'Federal institute of technology', accent: '#b91c1c', url: 'https://infoscience.epfl.ch' },
+  { mono: 'CN', name: 'CNIL', flag: '🇫🇷', desc: 'Data-protection authority', accent: '#3b5bdb', url: 'https://github.com/LINCnil/pia' },
+  { mono: 'AOE', name: 'Finnish Agency for Education', flag: '🇫🇮', desc: 'National learning library', accent: '#0ea5b7', url: 'https://aoe.fi' },
+  { mono: 'AU', name: 'AuScope', flag: '🇦🇺', desc: 'Geoscience infrastructure', accent: '#16a34a', url: 'https://www.auscope.org.au/avre' },
+  { mono: 'MC', name: 'Spanish Ministry of Culture', flag: '🇪🇸', desc: 'Heritage digital library', accent: '#dc2626', url: 'https://travesia.mcu.es' },
+  { mono: 'UV', name: 'University of Virginia', flag: '🇺🇸', desc: 'Autism research registry', accent: '#e57200', url: 'https://autismdrive.virginia.edu' },
+];
+
 function Hero() {
   const { colorMode, setColorMode } = useColorMode();
   return (
@@ -107,15 +117,18 @@ function Hero() {
 
         <div className={styles.usedBy}>
           <p className={styles.usedByLabel}>In production on five continents</p>
-          <div className={styles.usedByNames}>
-            <span>EPFL</span>
-            <span>CNIL</span>
-            <span>Finnish National Agency for Education</span>
-            <span>AuScope</span>
-            <span>Spanish Ministry of Culture</span>
-            <span>UVA</span>
-            <Link className={styles.usedByMore} to="/showcase">See who's using it →</Link>
+          <div className={styles.usedByGrid}>
+            {ADOPTERS.map((a) => (
+              <a key={a.name} className={styles.usedByCard} href={a.url} target="_blank" rel="noopener noreferrer">
+                <span className={styles.usedBySq} style={{ background: `linear-gradient(135deg, ${a.accent}, ${a.accent}bb)` }}>{a.mono}</span>
+                <span className={styles.usedByText}>
+                  <span className={styles.usedByName}>{a.name} <span className={styles.usedByFlag}>{a.flag}</span></span>
+                  <span className={styles.usedByDesc}>{a.desc}</span>
+                </span>
+              </a>
+            ))}
           </div>
+          <Link className={styles.usedByMore} to="/showcase">See all 18 teams using it →</Link>
         </div>
       </div>
     </section>
