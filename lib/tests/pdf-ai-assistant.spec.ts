@@ -13,6 +13,28 @@ function okResponse(content: string) {
   } as Response;
 }
 
+// A fake OpenAI-style Server-Sent Events response. `frames` are raw wire chunks
+// (a single SSE line may be split across two frames to exercise buffering).
+function sseResponse(frames: string[]): Response {
+  const encoder = new TextEncoder();
+  let i = 0;
+  return {
+    ok: true,
+    headers: { get: (h: string) => (/content-type/i.test(h) ? "text/event-stream" : null) },
+    body: {
+      getReader() {
+        return {
+          read: async () =>
+            i < frames.length
+              ? { done: false, value: encoder.encode(frames[i++]) }
+              : { done: true, value: undefined },
+          releaseLock() {},
+        };
+      },
+    },
+  } as unknown as Response;
+}
+
 describe("PdfAiAssistant", () => {
   const fetchMock = vi.fn();
 
@@ -125,5 +147,50 @@ describe("PdfAiAssistant", () => {
     await ai.complete([{ role: "user", content: "hi" }]);
 
     expect(fetchMock.mock.calls[0][1].headers["api-key"]).toBe("azure-key");
+  });
+
+  it("streams tokens via onToken and returns the full text", async () => {
+    // The second frame's `data:` line is split across two reads to exercise buffering.
+    fetchMock.mockResolvedValue(
+      sseResponse([
+        'data: {"choices":[{"delta":{"content":"Hello"}}]}\n\ndata: {"choices":[{"delta":{"content":" wo',
+        'rld"}}]}\n\n',
+        "data: [DONE]\n\n",
+      ])
+    );
+    const ai = new PdfAiAssistant({ endpoint: "https://e.test/c" });
+
+    const deltas: string[] = [];
+    const answer = await ai.ask("q", PAGES, [], undefined, (_full, delta) =>
+      deltas.push(delta)
+    );
+
+    expect(answer).toBe("Hello world");
+    expect(deltas).toEqual(["Hello", " world"]);
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body).stream).toBe(true);
+  });
+
+  it("falls back to a single response when the endpoint does not stream", async () => {
+    fetchMock.mockResolvedValue({
+      ok: true,
+      headers: { get: () => "application/json" },
+      json: async () => ({ choices: [{ message: { content: "Full answer." } }] }),
+    } as unknown as Response);
+    const ai = new PdfAiAssistant({ endpoint: "https://e.test/c" });
+
+    const fulls: string[] = [];
+    const answer = await ai.ask("q", PAGES, [], undefined, (full) => fulls.push(full));
+
+    expect(answer).toBe("Full answer.");
+    expect(fulls).toEqual(["Full answer."]); // emitted once so streaming UIs still update
+  });
+
+  it("does not request streaming without an onToken callback", async () => {
+    fetchMock.mockResolvedValue(okResponse("ok"));
+    const ai = new PdfAiAssistant({ endpoint: "https://e.test/c" });
+
+    await ai.ask("q", PAGES);
+
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body).stream).toBeUndefined();
   });
 });

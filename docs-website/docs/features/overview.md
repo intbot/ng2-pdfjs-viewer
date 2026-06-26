@@ -35,6 +35,7 @@ A few design choices worth knowing before you wire it up:
 - **Templates, not HTML strings.** Loading spinners, error states, the toolbar, the sidebar, and per-page overlays are `<ng-template>`s you supply, so they keep your bindings and pass through Angular's sanitizer.
 - **A typed surface.** 30+ inputs, 24+ outputs, and 19+ Promise-returning methods, all typed. The [API reference](../api/component-inputs) is the full list.
 - **One same-origin iframe.** The bundled PDF.js viewer runs in a sandboxed, same-origin iframe, and the host-to-viewer `postMessage` bridge checks `event.source` in both directions. See [iframe security](./iframe-security).
+- **Mobile & touch.** Two-finger pinch-to-zoom and touch scrolling work on phones and tablets with no extra wiring — they're handled by the bundled PDF.js viewer. (Behaviour varies a little between iOS Safari and Android Chrome, so spot-check on your target devices.)
 
 ## Theming
 

@@ -60,7 +60,12 @@ export class AiComponent {
         model: this.model() || undefined,
         apiKey: this.apiKey() || undefined,
       });
-      this.answer.set(await ai.ask(this.question(), text));
+      // Stream the answer token-by-token; the final set also covers older lib
+      // versions (pre-streaming) where the onToken callback never fires.
+      const answer = await ai.ask(this.question(), text, [], undefined, (full) =>
+        this.answer.set(full)
+      );
+      this.answer.set(answer);
     } catch (e) {
       this.answer.set(`⚠ ${e instanceof Error ? e.message : e}`);
     } finally {
@@ -78,12 +83,14 @@ export class AiComponent {
     `// 1. extract the document text (stays in the browser)`,
     `const text = await this.viewer.getDocumentText(1, 3); // first pages — snappy on local models`,
     ``,
-    `// 2. ask YOUR endpoint — any OpenAI-compatible API`,
+    `// 2. ask YOUR endpoint — any OpenAI-compatible API. Pass an onToken`,
+    `//    callback (5th arg) to stream the answer token-by-token.`,
     `const ai = new PdfAiAssistant({`,
     `  endpoint: ${JSON.stringify(this.endpoint())},`,
     `  model: ${JSON.stringify(this.model())},`,
     `});`,
-    `const answer = await ai.ask(${JSON.stringify(this.question())}, text);`,
+    `const answer = await ai.ask(${JSON.stringify(this.question())}, text, [], undefined,`,
+    `  (full) => this.answer = full); // live tokens`,
     ``,
     `// read-aloud (browser speech synthesis)`,
     `await this.viewer.startReadAloud();`,
