@@ -36,9 +36,8 @@ lib/                         — the published npm package (ng2-pdfjs-viewer)
     interfaces/ViewerTypes.ts       — all exported public types/event interfaces
     managers/ActionQueueManager.ts  — queues viewer actions until the iframe is ready
     utils/
-      ChangeOriginTracker.ts        — distinguishes user-driven vs programmatic changes
-      ComponentUtils.ts             — shared helpers
       PropertyTransformers.ts       — input coercion/transforms
+  ai/index.ts                — secondary entry point (ng2-pdfjs-viewer/ai): headless BYO AI client
   pdfjs/                     — bundled PDF.js viewer + worker assets (shipped as package assets)
   logo.svg, pdf-viewer-banner.png — brand assets (F1 shield icon + README stats banner, referenced by raw URL)
   v5-upgrade.md              — migration guide
@@ -87,7 +86,8 @@ published `ng2-pdfjs-viewer` for Vercel builds; `yalc link` overrides it with yo
   re-exported from `lib/index.ts` so consumers can import them.
 - Viewer actions that may run before the PDF.js iframe is ready go through
   `ActionQueueManager` — don't poke the iframe directly from the component.
-- Use `ChangeOriginTracker` to avoid feedback loops between user actions and `@Input()` writes.
+- Guard against feedback loops between user actions and `@Input()` writes — the component already
+  distinguishes user-driven vs programmatic changes internally; preserve that when adding two-way state.
 - Keep the public `peerDependencies` range wide (`>=10`) — don't add hard Angular-version deps.
 - PDF.js assets are shipped as package assets via `ng-package.json`; keep `lib/pdfjs/` and the
   build's minify/copy steps in sync when upgrading PDF.js.
@@ -137,3 +137,7 @@ To recreate the junction on another machine: `bash scripts/setup-private.sh`.
   behavior.
 - Treat everything outside `internal/` as public the moment it's pushed. When unsure whether
   something is sensitive, put it in `internal/` and let the `/push` leak-guard be the safety net.
+- **Keep the board current.** This repo tracks task state in `internal/board.md` (rendered by
+  `/board`). When a board task completes or a follow-up emerges during work, update that file before
+  ending the turn — flip the Status, or add a `↳ Parent.N` sub-task under the item it came from. It's a
+  quick edit, not a separate pass. Run `board sync` for a full session reconcile.

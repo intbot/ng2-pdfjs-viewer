@@ -51,6 +51,7 @@ function Hero() {
             <div className={styles.ctaRow}>
               <Link className={styles.btnP} to={feat('navigation')}>Launch the playground →</Link>
               <Link className={styles.btnG} to="/docs/getting-started">Read the docs</Link>
+              <a className={styles.btnG} href="https://github.com/intbot/ng2-pdfjs-viewer" target="_blank" rel="noopener">★ Star on GitHub</a>
             </div>
             <div className={styles.stats}>
               <div><b>40+</b><span>inputs</span></div>

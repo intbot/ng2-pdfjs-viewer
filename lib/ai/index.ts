@@ -47,6 +47,10 @@ export interface PdfAiAssistantConfig {
   // Cap on document characters included in the prompt (default 100k)
   maxContextChars?: number;
   temperature?: number;
+  // When false, never request streaming even if an onToken callback is passed
+  // (some OpenAI-compatible endpoints don't support Server-Sent Events). The
+  // default is to stream whenever an onToken callback is provided.
+  stream?: boolean;
 }
 
 export interface PdfAiMessage {
@@ -92,7 +96,8 @@ export class PdfAiAssistant {
     question: string,
     documentText: PdfPageText[],
     history: PdfAiMessage[] = [],
-    signal?: AbortSignal
+    signal?: AbortSignal,
+    onToken?: (full: string, delta: string) => void
   ): Promise<string> {
     const context = this.buildContext(documentText);
     const messages: PdfAiMessage[] = [
@@ -107,7 +112,7 @@ export class PdfAiAssistant {
       ...history,
       { role: "user", content: question },
     ];
-    return this.complete(messages, signal);
+    return this.complete(messages, signal, onToken);
   }
 
   /** One-shot document summary. */
@@ -118,8 +123,18 @@ export class PdfAiAssistant {
     );
   }
 
-  /** Raw chat-completions call for custom prompting. */
-  async complete(messages: PdfAiMessage[], signal?: AbortSignal): Promise<string> {
+  /**
+   * Raw chat-completions call for custom prompting. Pass `onToken` to stream the
+   * answer token-by-token (the callback receives the running full text and the
+   * latest delta); the Promise still resolves to the complete text. Streaming is
+   * requested only when `onToken` is given and `config.stream !== false`, and it
+   * falls back to a single JSON response if the endpoint doesn't stream.
+   */
+  async complete(
+    messages: PdfAiMessage[],
+    signal?: AbortSignal,
+    onToken?: (full: string, delta: string) => void
+  ): Promise<string> {
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
       ...(this.config.headers ?? {}),
@@ -127,6 +142,7 @@ export class PdfAiAssistant {
     if (this.config.apiKey) {
       headers["Authorization"] = `Bearer ${this.config.apiKey}`;
     }
+    const wantStream = !!onToken && this.config.stream !== false;
     const response = await fetch(this.config.endpoint, {
       method: "POST",
       headers,
@@ -135,6 +151,7 @@ export class PdfAiAssistant {
         model: this.config.model,
         temperature: this.config.temperature ?? 0.2,
         messages,
+        ...(wantStream ? { stream: true } : {}),
       }),
     });
     if (!response.ok) {
@@ -143,12 +160,69 @@ export class PdfAiAssistant {
         `AI endpoint returned ${response.status}: ${body.slice(0, 300)}`
       );
     }
+    const contentType = response.headers?.get?.("Content-Type") ?? "";
+    if (wantStream && response.body && contentType.includes("text/event-stream")) {
+      return this.readStream(response, onToken!);
+    }
+    // Non-streaming response, or the endpoint ignored `stream`: one JSON body.
     const json = await response.json();
     const content = json?.choices?.[0]?.message?.content;
     if (typeof content !== "string") {
       throw new Error("AI endpoint returned an unexpected response shape");
     }
+    // Emit once so callers wired for streaming still receive their update.
+    if (onToken) onToken(content, content);
     return content;
+  }
+
+  /**
+   * Read an OpenAI-style Server-Sent Events stream, accumulating
+   * choices[0].delta.content and emitting each delta through onToken. Returns the
+   * full concatenated text. Tolerates chunk boundaries that split SSE lines, and
+   * skips frames it can't parse (keep-alive comments, non-`data:` lines) rather
+   * than failing the whole stream.
+   */
+  private async readStream(
+    response: Response,
+    onToken: (full: string, delta: string) => void
+  ): Promise<string> {
+    const reader = response.body!.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    let full = "";
+    const handleLine = (raw: string): boolean => {
+      const line = raw.trim();
+      if (!line.startsWith("data:")) return false;
+      const data = line.slice(5).trim();
+      if (data === "[DONE]") return true;
+      try {
+        const delta = JSON.parse(data)?.choices?.[0]?.delta?.content;
+        if (typeof delta === "string" && delta) {
+          full += delta;
+          onToken(full, delta);
+        }
+      } catch {
+        // Ignore an unparseable frame rather than aborting the stream.
+      }
+      return false;
+    };
+    try {
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        let nl: number;
+        while ((nl = buffer.indexOf("\n")) !== -1) {
+          const line = buffer.slice(0, nl);
+          buffer = buffer.slice(nl + 1);
+          if (handleLine(line)) return full; // [DONE]
+        }
+      }
+      if (buffer.trim()) handleLine(buffer); // trailing line without a newline
+    } finally {
+      reader.releaseLock();
+    }
+    return full;
   }
 
   private buildContext(documentText: PdfPageText[]): string {

@@ -2826,6 +2826,9 @@ export class PdfJsViewerComponent
     this.aiAbort = new AbortController();
     const signal = this.aiAbort.signal;
     this.aiMessages.push({ role: "user", content: q, parts: [{ text: q }] });
+    // Placeholder assistant turn we stream tokens into as they arrive.
+    const assistant: PdfAiPanelMessage = { role: "assistant", content: "", parts: [] };
+    this.aiMessages.push(assistant);
     this.cdr.markForCheck();
     try {
       if (!this.aiClient || this.aiClientConfig !== config) {
@@ -2836,28 +2839,33 @@ export class PdfJsViewerComponent
         this.aiDocText = await this.getDocumentText();
       }
       const history: PdfAiMessage[] = this.aiMessages
-        .slice(0, -1)
+        .slice(0, -2)
         .filter((m) => !m.error)
         .map((m) => ({ role: m.role, content: m.content }));
-      const answer = await this.aiClient.ask(q, this.aiDocText, history, signal);
+      const answer = await this.aiClient.ask(
+        q,
+        this.aiDocText,
+        history,
+        signal,
+        (full) => {
+          if (generation !== this.aiGeneration) {
+            return; // stale stream - ignore late tokens
+          }
+          assistant.content = full;
+          assistant.parts = this.parseAiCitations(full);
+          this.cdr.markForCheck();
+        },
+      );
       if (generation !== this.aiGeneration) {
         return; // document changed mid-flight - stale answer
       }
-      this.aiMessages.push({
-        role: "assistant",
-        content: answer,
-        parts: this.parseAiCitations(answer),
-      });
+      assistant.content = answer;
+      assistant.parts = this.parseAiCitations(answer);
     } catch (e: any) {
       if (generation !== this.aiGeneration) {
         return; // aborted by invalidation - already cleaned up
       }
-      this.aiMessages.push({
-        role: "assistant",
-        content: "",
-        error: e?.message || "AI request failed",
-        parts: [],
-      });
+      assistant.error = e?.message || "AI request failed";
     } finally {
       if (generation === this.aiGeneration) {
         this.aiBusy = false;

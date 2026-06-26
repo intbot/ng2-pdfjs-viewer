@@ -157,11 +157,13 @@ If you want your own chat UI (or no chat at all — just a "Summarize" button), 
   package:
   - `constructor(config: PdfAiAssistantConfig)` — same options as the panel config,
     minus `title`/`placeholder`; throws if `endpoint` is missing
-  - `ask(question, documentText, history?, signal?)` — answers a question about the
-    document; `history` carries prior `PdfAiMessage` turns for multi-turn chat,
-    `signal` is an `AbortSignal` for cancellation
+  - `ask(question, documentText, history?, signal?, onToken?)` — answers a question
+    about the document; `history` carries prior `PdfAiMessage` turns for multi-turn
+    chat, `signal` is an `AbortSignal` for cancellation, and `onToken(full, delta)`
+    streams the answer token-by-token (see [Streaming the answer](#streaming-the-answer))
   - `summarize(documentText)` — one-shot document summary
-  - `complete(messages, signal?)` — raw chat-completions call for fully custom prompting
+  - `complete(messages, signal?, onToken?)` — raw chat-completions call for fully
+    custom prompting; also accepts `onToken` for streaming
 
 ### Example: Local Ollama + a Custom Summarize Button
 
@@ -211,6 +213,28 @@ export class ReportComponent {
 
 The same `PdfAiAssistant` config shape works for vLLM, LM Studio, and OpenAI-compatible
 gateways — only the `endpoint` (and credentials) change.
+
+### Streaming the answer
+
+Pass an `onToken` callback (the last argument of `ask()` / `complete()`) to render the
+answer as it arrives instead of waiting for the whole response. It fires once per token
+with the running text and the latest delta; the Promise still resolves to the full answer:
+
+```typescript
+this.answer = '';
+const full = await this.ai.ask(question, text, [], undefined, (running) => {
+  this.answer = running; // re-renders on each token
+});
+// `full` is the complete answer; `this.answer` already holds it
+```
+
+Streaming is requested only when you pass `onToken`, and only if the endpoint supports
+Server-Sent Events. If a provider ignores `stream`, the client falls back to a single
+response and calls `onToken` once with the full text — the same code path works either
+way. To force non-streaming even with a callback, set `stream: false` in the config.
+
+The built-in chat panel (`[aiAssistantConfig]`) streams automatically: answers fill in
+token-by-token with no extra setup.
 
 ## Honest Caveats
 

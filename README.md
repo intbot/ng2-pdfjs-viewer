@@ -21,6 +21,8 @@
 
 [**Documentation**](https://angularpdf.com/) · [**API reference**](https://angularpdf.com/docs/api/component-inputs) · [**Live demo**](https://demo.angularpdf.com/) · [**Showcase**](https://angularpdf.com/showcase) · [**Changelog**](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CHANGELOG.md)
 
+⭐ **Find it useful? [Star it on GitHub](https://github.com/intbot/ng2-pdfjs-viewer)** — it helps more Angular developers discover it.
+
 </div>
 
 ---
