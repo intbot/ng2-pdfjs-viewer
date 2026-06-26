@@ -19,7 +19,7 @@
 [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-1389FD?style=flat-square&logo=stackblitz&logoColor=white)](https://stackblitz.com/github/intbot/ng2-pdfjs-viewer/tree/master/examples/quickstart)
 [![Edit on CodeSandbox](https://img.shields.io/badge/Edit%20on-CodeSandbox-151515?style=flat-square&logo=codesandbox&logoColor=white)](https://codesandbox.io/p/sandbox/github/intbot/ng2-pdfjs-viewer/tree/master/examples/quickstart)
 
-[**Documentation**](https://angularpdf.com/) · [**API reference**](https://angularpdf.com/docs/api/component-inputs) · [**Live demo**](https://demo.angularpdf.com/) · [**Changelog**](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CHANGELOG.md)
+[**Documentation**](https://angularpdf.com/) · [**API reference**](https://angularpdf.com/docs/api/component-inputs) · [**Live demo**](https://demo.angularpdf.com/) · [**Showcase**](https://angularpdf.com/showcase) · [**Changelog**](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CHANGELOG.md)
 
 </div>
 
