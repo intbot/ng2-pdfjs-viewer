@@ -1,0 +1,39 @@
+<pg-page
+  title="Signals (zoneless / OnPush)"
+  lead="Read viewer state as read-only Angular signals from the ng2-pdfjs-viewer/signals entry point — no (event) bindings, no markForCheck. Page through the document or use the toolbar (zoom, search, rotate, sidebar) and watch the inspector update straight from the signals."
+  [tags]="['signals','pdfViewerSignals','zoneless','OnPush','computed']"
+  [code]="code()"
+  docHref="https://angularpdf.com/docs/features/signals">
+
+  <div preview>
+    <ng2-pdfjs-viewer #viewer
+      [pdfSrc]="src()"
+      [theme]="theme.mode()"
+      [page]="page()">
+    </ng2-pdfjs-viewer>
+  </div>
+
+  <div controls>
+    <div class="ph">Drive the viewer</div>
+    <div class="row">
+      <span>Page (input)</span>
+      <span class="seg">
+        <button type="button" (click)="go(-1)">‹ Prev</button>
+        <button type="button" data-testid="page-input">{{ page() }}</button>
+        <button type="button" (click)="go(1)">Next ›</button>
+      </span>
+    </div>
+
+    <div class="ph">Derived (computed)</div>
+    <div class="summary" data-testid="match-summary">{{ matchSummary() }}</div>
+
+    <div class="ph">Live signals inspector</div>
+    <table class="inspect">
+      <tbody>
+        @for (r of rows(); track r.k) {
+          <tr><td>{{ r.k }}</td><td [attr.data-signal]="r.k">{{ r.v }}</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</pg-page>

@@ -123,6 +123,12 @@ export const FEATURES: FeaturePage[] = [
     load: () => import('../pages/api/api.component').then((m) => m.ApiComponent),
   },
   {
+    id: 'signals', route: 'signals', title: 'Signals (zoneless / OnPush)', group: 'Integration', icon: '∿', badge: 'new',
+    description: 'Read viewer state as read-only Angular signals — page, zoom, totals, search matches — for zoneless and OnPush apps.',
+    tags: ['signals', 'pdfViewerSignals', 'zoneless', 'OnPush', 'computed', 'toSignal'],
+    load: () => import('../pages/signals/signals.component').then((m) => m.SignalsComponent),
+  },
+  {
     id: 'custom-ui', route: 'custom-ui', title: 'Custom Toolbar & Overlays', group: 'Viewer UI', icon: '⊞', badge: 'new',
     description: 'Replace the toolbar with your own Angular template and project templates onto every page.',
     tags: ['customToolbarTpl', 'pageOverlayTpl', 'showToolbar', 'headless'],
