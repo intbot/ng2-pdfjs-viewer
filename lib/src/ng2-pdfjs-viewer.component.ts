@@ -2323,6 +2323,19 @@ export class PdfJsViewerComponent
               console.debug("PdfJsViewer: The document has now been loaded!");
             this.onDocumentLoad.emit();
 
+            // Project onPagesInit here. PDF.js fires the real 'pagesinit' once,
+            // BEFORE this handler map finishes registering (it lands between
+            // 'pagesinit' and 'scalechanging'), and the postMessage wrapper's own
+            // pagesInit relay is wired on 'documentloaded' too late for the
+            // one-shot - so onPagesInit never fired and the signals entry point's
+            // loaded()/totalPages() stayed empty. 'documentloaded' is reliably
+            // caught (it drives onDocumentLoad) and pagesCount is set by now.
+            const app = this.PDFViewerApplication;
+            const pagesCount = app?.pagesCount ?? app?.pdfDocument?.numPages;
+            if (typeof pagesCount === "number" && pagesCount > 0) {
+              this.onPagesInit.emit({ pagesCount });
+            }
+
             // Queue auto-actions with the property values current at THIS load
             this.queueAutoActionsForDocumentLoad();
 

@@ -20,6 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   falling back to a single response when the endpoint doesn't stream. The built-in
   chat panel renders the answer as it arrives.
 
+### Fixed
+- `onPagesInit` now fires once the document's pages initialize - it carries the
+  page count and was declared but never emitted. This is what makes the new
+  signals entry point's `loaded()` and `totalPages()` populate.
+
 ## [26.1.1] - 2026-06-23
 
 ### Changed
