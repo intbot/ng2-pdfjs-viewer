@@ -14,7 +14,7 @@
 [![CodeQL](https://github.com/intbot/ng2-pdfjs-viewer/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/intbot/ng2-pdfjs-viewer/security/code-scanning)
 [![Angular](https://img.shields.io/badge/Angular-%3E%3D10-red?style=flat-square&logo=angular)](https://angular.dev)
 [![PDF.js](https://img.shields.io/badge/PDF.js-6.0.227-green?style=flat-square&logo=mozilla)](https://github.com/mozilla/pdf.js)
-[![license](https://img.shields.io/badge/license-Apache--2.0%20%28Commons%20Clause%29-blue?style=flat-square)](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/LICENSE)
+[![license](https://img.shields.io/badge/license-Apache--2.0-blue?style=flat-square)](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/LICENSE)
 [![stars](https://img.shields.io/github/stars/intbot/ng2-pdfjs-viewer?style=flat-square&logo=github)](https://github.com/intbot/ng2-pdfjs-viewer)
 [![Open in StackBlitz](https://img.shields.io/badge/Open%20in-StackBlitz-1389FD?style=flat-square&logo=stackblitz&logoColor=white)](https://stackblitz.com/github/intbot/ng2-pdfjs-viewer/tree/master/examples/quickstart)
 [![Edit on CodeSandbox](https://img.shields.io/badge/Edit%20on-CodeSandbox-151515?style=flat-square&logo=codesandbox&logoColor=white)](https://codesandbox.io/p/sandbox/github/intbot/ng2-pdfjs-viewer/tree/master/examples/quickstart)
@@ -240,8 +240,7 @@ Using it somewhere that won't show up in public code — an internal tool, a hos
 
 ## 📄 License
 
-[Apache-2.0 (Commons Clause)](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/LICENSE). Free to use, modify, and self-host; the Commons
-Clause restricts selling the software itself as a hosted/commercial product.
+[Apache-2.0](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/LICENSE). Use, modify, self-host, or ship it inside a commercial product — the Apache 2.0 grant is perpetual, irrevocable, and carries an express patent license.
 
 ## 🙏 Acknowledgments
 

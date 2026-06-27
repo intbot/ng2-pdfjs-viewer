@@ -1,5 +1,32 @@
 // Property normalization between component inputs and PDF.js viewer values
 
+// Mode/name lists shared by the to- and from-viewer transforms. PDF.js encodes
+// scroll and spread modes as integer enums, so for those the array index is the
+// enum value and the order here doubles as the numeric->name map (keep it in
+// sync with PDF.js). Declaring each list once keeps the input whitelist and the
+// index map from drifting apart, and hoisting them to module scope avoids
+// re-allocating the array on every viewer state-sync event.
+const ZOOM_NAMES: readonly string[] = [
+  "auto",
+  "page-fit",
+  "page-width",
+  "page-actual",
+];
+const CURSOR_MODES: readonly string[] = ["select", "hand", "zoom"];
+const SCROLL_MODES: readonly string[] = [
+  "vertical",
+  "horizontal",
+  "wrapped",
+  "page",
+];
+const SPREAD_MODES: readonly string[] = ["none", "odd", "even"];
+const PAGE_MODES: readonly string[] = [
+  "none",
+  "thumbs",
+  "bookmarks",
+  "attachments",
+];
+
 // Lowercase + whitelist with fallback
 const pick = (
   value: string | null | undefined,
@@ -16,9 +43,7 @@ export class PropertyTransformers {
       if (!zoom) return "auto";
       const v = zoom.toLowerCase();
       // Named zooms normalize to lowercase; numeric strings pass through
-      return ["auto", "page-fit", "page-width", "page-actual"].includes(v)
-        ? v
-        : zoom;
+      return ZOOM_NAMES.includes(v) ? v : zoom;
     },
 
     fromViewer: (viewerZoom: any): string => {
@@ -37,42 +62,36 @@ export class PropertyTransformers {
   };
 
   static transformCursor = {
-    toViewer: (cursor: string): string =>
-      pick(cursor, ["select", "hand", "zoom"], "select"),
+    toViewer: (cursor: string): string => pick(cursor, CURSOR_MODES, "select"),
 
     fromViewer: (viewerCursor: any): string =>
       typeof viewerCursor === "string" ? viewerCursor : "select",
   };
 
   static transformScroll = {
-    toViewer: (scroll: string): string =>
-      pick(scroll, ["vertical", "horizontal", "wrapped", "page"], "vertical"),
+    toViewer: (scroll: string): string => pick(scroll, SCROLL_MODES, "vertical"),
 
     fromViewer: (viewerScroll: any): string => {
-      const modes = ["vertical", "horizontal", "wrapped", "page"];
       if (typeof viewerScroll === "number") {
-        return modes[viewerScroll] || "vertical";
+        return SCROLL_MODES[viewerScroll] || "vertical";
       }
       return typeof viewerScroll === "string" ? viewerScroll : "vertical";
     },
   };
 
   static transformSpread = {
-    toViewer: (spread: string): string =>
-      pick(spread, ["none", "odd", "even"], "none"),
+    toViewer: (spread: string): string => pick(spread, SPREAD_MODES, "none"),
 
     fromViewer: (viewerSpread: any): string => {
-      const modes = ["none", "odd", "even"];
       if (typeof viewerSpread === "number") {
-        return modes[viewerSpread] || "none";
+        return SPREAD_MODES[viewerSpread] || "none";
       }
       return typeof viewerSpread === "string" ? viewerSpread : "none";
     },
   };
 
   static transformPageMode = {
-    toViewer: (pageMode: string): string =>
-      pick(pageMode, ["none", "thumbs", "bookmarks", "attachments"], "none"),
+    toViewer: (pageMode: string): string => pick(pageMode, PAGE_MODES, "none"),
 
     fromViewer: (viewerPageMode: any): string =>
       typeof viewerPageMode === "string" ? viewerPageMode : "none",

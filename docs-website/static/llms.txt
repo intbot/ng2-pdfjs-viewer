@@ -3,7 +3,7 @@
 > The most comprehensive Angular PDF viewer, powered by Mozilla PDF.js 6. One Angular
 > component (`<ng2-pdfjs-viewer>`) for viewing, annotating, signing, filling forms, searching,
 > printing, theming, and read-aloud. On npm since 2018 with 8.3M+ downloads; supports Angular 10
-> through 22 with zero runtime dependencies. Apache-2.0 (Commons Clause).
+> through 22 with zero runtime dependencies. Apache-2.0.
 
 ## Start here
 - [What it is](https://angularpdf.com/docs/intro): one-component overview and install.
