@@ -26,7 +26,7 @@ ng2-pdfjs-viewer is an open-source Angular component that wraps Mozilla PDF.js i
 | Angular support | 10 through 22, one package (peer range `>=10`) |
 | PDF.js | 6.x, bundled |
 | Runtime dependencies | 0 |
-| License | Apache-2.0 (Commons Clause) |
+| License | Apache-2.0 |
 | Repository | https://github.com/intbot/ng2-pdfjs-viewer |
 | npm | https://www.npmjs.com/package/ng2-pdfjs-viewer |
 | Docs | https://angularpdf.com |

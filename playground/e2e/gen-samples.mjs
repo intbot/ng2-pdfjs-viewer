@@ -105,7 +105,7 @@ const DOCS = {
         <div class="igcard"><div class="n">10 &rarr; 22</div><div class="l">Angular versions</div></div>
       </div>
       <div class="igfeat"><b>Everything in one component:</b> view &middot; print &middot; search &middot; annotate &amp; sign &middot; fill forms &middot; read aloud &middot; organize pages &middot; zoom &middot; rotate &middot; theme &mdash; fully declarative, mobile-first, production-ready.</div>
-      <div class="igfoot">npmjs.com/package/ng2-pdfjs-viewer &middot; Apache-2.0 (Commons Clause) &middot; powered by Mozilla PDF.js</div>
+      <div class="igfoot">npmjs.com/package/ng2-pdfjs-viewer &middot; Apache-2.0 &middot; powered by Mozilla PDF.js</div>
     </div>`,
 };
 

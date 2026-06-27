@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [26.3.0] - 2026-06-27
+
+### Performance
+- Viewer state-sync transforms (zoom, scroll, spread, cursor, page mode) no longer
+  allocate their lookup arrays on every call — the mode lists are hoisted to module
+  constants. These transforms run on each scroll-mode, spread-mode, and zoom change the
+  viewer emits back to the component.
+- Remounting page overlays (`pageOverlayTpl`) across already-rendered pages now reuses
+  the page element already in hand instead of re-finding it by selector, dropping one
+  DOM query per page on long documents.
+
+### Internal
+- The scroll and spread mode lists now have a single source of truth, so the input
+  whitelist and the numeric-to-name index map can no longer drift apart.
+
 ## [26.2.0] - 2026-06-27
 
 ### Added

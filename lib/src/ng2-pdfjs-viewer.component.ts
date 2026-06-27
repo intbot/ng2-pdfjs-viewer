@@ -2698,12 +2698,18 @@ export class PdfJsViewerComponent
   // attached to ApplicationRef so bindings inside stay live.
   private overlayViews = new Map<number, EmbeddedViewRef<any>>();
 
-  private mountPageOverlay(pageNumber: number): void {
+  private mountPageOverlay(
+    pageNumber: number,
+    knownPageEl?: Element | null
+  ): void {
     if (!this.pageOverlayTpl || this.externalWindow) return;
     const doc = this.iframe?.nativeElement?.contentDocument;
-    const pageEl = doc?.querySelector(
-      `.pdfViewer .page[data-page-number="${pageNumber}"]`
-    );
+    // Callers iterating already-rendered pages pass the element they hold, so
+    // we skip re-finding it by selector (saves one DOM query per page on large
+    // documents); the per-page render path passes nothing and looks it up.
+    const pageEl =
+      knownPageEl ??
+      doc?.querySelector(`.pdfViewer .page[data-page-number="${pageNumber}"]`);
     if (!pageEl || pageEl.querySelector(":scope > .ng2-page-overlay")) {
       return;
     }
@@ -2746,7 +2752,7 @@ export class PdfJsViewerComponent
       .forEach((el: Element) => {
         const pageNumber = Number(el.getAttribute("data-page-number"));
         if (pageNumber > 0) {
-          this.mountPageOverlay(pageNumber);
+          this.mountPageOverlay(pageNumber, el);
         }
       });
   }

@@ -17,7 +17,7 @@ counts come from the npm registry.
 | PDF.js engine | [PDF.js](https://github.com/mozilla/pdf.js) 6.x, bundled (no separate `pdfjs-dist` to manage) |
 | Runtime dependencies | 0 (beyond Angular itself) |
 | Public API | 30+ inputs, 24+ outputs, 19+ Promise-returning methods, all typed |
-| License | Apache-2.0 (Commons Clause) |
+| License | Apache-2.0 |
 | Bundled assets | PDF.js viewer + worker, served from your app |
 
 ## What one component covers
