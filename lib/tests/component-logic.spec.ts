@@ -267,6 +267,38 @@ describe("wrapper event names map to component outputs", () => {
   });
 });
 
+describe("toolbar button hide survives PDF.js (#373)", () => {
+  // PDF.js re-asserts its own `hidden` class on the print button on every
+  // document load (its `printingallowed` handler), which wiped a plain
+  // `hidden`-only hide - the print icon reappeared, notably with the fast
+  // local load of a Blob source. The wrapper must hide buttons with the
+  // dedicated `ng2-btn-hidden` class (PDF.js never touches it) so the
+  // consumer's [controlVisibility] choice sticks. This pins that.
+  it("toggleButtonVisibility uses ng2-btn-hidden, not only PDF.js 'hidden'", async () => {
+    const { readFileSync } = await import("node:fs");
+    const { resolve } = await import("node:path");
+    const src = readFileSync(
+      resolve(process.cwd(), "pdfjs/web/postmessage-wrapper.js"),
+      "utf8",
+    );
+    const fn = src.slice(
+      src.indexOf("function toggleButtonVisibility"),
+      src.indexOf("function toggleElementVisibilityById"),
+    );
+    expect(fn).toContain("ng2-btn-hidden");
+  });
+
+  it("ng2-customization.css defines ng2-btn-hidden as display:none !important", async () => {
+    const { readFileSync } = await import("node:fs");
+    const { resolve } = await import("node:path");
+    const css = readFileSync(
+      resolve(process.cwd(), "pdfjs/web/ng2-customization.css"),
+      "utf8",
+    ).replace(/\s+/g, " ");
+    expect(css).toMatch(/\.ng2-btn-hidden\s*\{[^}]*display:\s*none\s*!important/);
+  });
+});
+
 describe("sidebar/layers/named-action/document-properties relays", () => {
   it("routes the four new event notifications to their @Output emitters", () => {
     const comp = makeComponent();
