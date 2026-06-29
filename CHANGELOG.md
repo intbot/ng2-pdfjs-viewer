@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [26.3.1] - 2026-06-29
+
+### Fixed
+- `[controlVisibility]="{ print: false }"` (and the standalone `[showPrint]="false"`)
+  now keeps the print button hidden after the document loads. PDF.js re-asserts its
+  own `hidden` class on the print button on every load via its `printingallowed`
+  handler, which wiped our hide and brought the icon back — most visibly with a Blob
+  `pdfSrc`, whose fast local load lands after the hide. The viewer now hides buttons
+  with a dedicated class PDF.js never touches, so the choice sticks. Thanks to
+  @leominaudo for the report. (#373)
+
 ## [26.3.0] - 2026-06-27
 
 ### Performance

@@ -110,6 +110,14 @@ body #outerContainer.sidebar-right.viewsManagerOpen #loadingBar {
   pointer-events: none !important;
 }
 
+/* A toolbar button forced hidden by [controlVisibility]. Uses our own class,
+   not PDF.js's `hidden`, so that PDF.js re-asserting `hidden` on document load
+   (the print button via its `printingallowed` handler - Issue #373, seen with
+   fast Blob loads) can't bring a hidden button back. */
+.ng2-btn-hidden {
+  display: none !important;
+}
+
 /* Whole toolbar hidden (custom host toolbars) - viewer reclaims the height */
 #outerContainer.ng2-toolbar-hidden #toolbarContainer {
   display: none !important;
