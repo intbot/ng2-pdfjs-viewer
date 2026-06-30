@@ -221,16 +221,21 @@ Report vulnerabilities via [SECURITY.md](https://github.com/intbot/ng2-pdfjs-vie
 
 ## 🤝 Contributing
 
-Issues and PRs are welcome. To run the library against the demo app locally:
+First open-source PR? This is a reasonable place to start. A docs fix, a new demo page, an extra
+example, or a small bug fix all land real value — the
+[`good first issue`](https://github.com/intbot/ng2-pdfjs-viewer/labels/good%20first%20issue) label
+marks scoped tasks with enough context to pick up cold, and [`help wanted`](https://github.com/intbot/ng2-pdfjs-viewer/labels/help%20wanted)
+flags the rest.
+
+To run the library against the demo app locally:
 
 ```bash
 git clone https://github.com/intbot/ng2-pdfjs-viewer.git
 cd ng2-pdfjs-viewer
-test.bat          # build the lib, link it, and serve the demo on http://localhost:4200
+test.bat          # build the lib, link it, and serve the demo on http://localhost:4300
 ```
 
-See [CONTRIBUTING.md](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CONTRIBUTING.md) for the full setup, and look for
-[`good first issue`](https://github.com/intbot/ng2-pdfjs-viewer/labels/good%20first%20issue) to get started.
+See [CONTRIBUTING.md](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CONTRIBUTING.md) for the full setup.
 
 ## 🏗️ Showcase
 
