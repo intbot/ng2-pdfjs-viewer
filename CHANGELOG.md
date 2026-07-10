@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [26.4.0] - 2026-07-10
+
+### Added
+- The bundled PDF.js (`pdf.mjs` and `pdf.worker.mjs`) now ships with `core-js`
+  polyfills for five newer JavaScript APIs the PDF.js 6 build relies on —
+  `Map.prototype.getOrInsertComputed`, `Promise.try`, `Promise.withResolvers`,
+  `Uint8Array.prototype.toHex`, and `URL.parse`. Without them the viewer threw on
+  startup in browsers that predate those APIs; it now runs on those older engines.
+  The polyfills are injected into the two bundles at build time with esbuild, so
+  consumers pull in nothing new at runtime — `core-js` stays a build-only
+  dependency. Thanks to @delagen for the contribution. (#379)
+
 ## [26.3.1] - 2026-06-29
 
 ### Fixed
