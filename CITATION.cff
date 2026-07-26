@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "ng2-pdfjs-viewer"
+abstract: >-
+  An Angular component library that embeds Mozilla PDF.js as a fully
+  configurable viewer: declarative inputs and events for viewing, printing,
+  annotation, zoom, search, theming, and a headless BYO-AI entry point.
+authors:
+  - family-names: Gopalakrishnan
+    given-names: Aneesh
+    email: codehippie1@gmail.com
+    alias: intbot
+repository-code: "https://github.com/intbot/ng2-pdfjs-viewer"
+url: "https://angularpdf.com"
+license: Apache-2.0
+version: 26.4.0
+date-released: "2026-07-10"
+keywords:
+  - angular
+  - pdf
+  - pdf-viewer
+  - pdfjs
+  - pdf.js
+  - typescript
+  - annotations
+  - accessibility
+  - open-source
+references:
+  - type: software
+    title: "PDF.js"
+    abstract: "The PDF rendering engine this library embeds and extends."
+    authors:
+      - name: "Mozilla Foundation"
+    repository-code: "https://github.com/mozilla/pdf.js"
+    license: Apache-2.0

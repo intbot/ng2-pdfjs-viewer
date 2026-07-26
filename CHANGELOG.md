@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [26.4.1] - 2026-07-14
+
+### Added
+- `CITATION.cff` and `.zenodo.json`, so the library can be cited formally and each
+  release is archived with a DOI. GitHub renders a "Cite this repository" button
+  from the former; Zenodo reads the latter when it archives a release.
+
+### Fixed
+- The author's surname was misspelled ("Goapalakrishnan") in the package metadata
+  and in both `LICENSE` files. Because build tools copy that string into the
+  attribution files they generate, the typo had propagated into the open-source
+  notices published by downstream products. Corrected to "Gopalakrishnan".
+
 ## [26.4.0] - 2026-07-10
 
 ### Added
