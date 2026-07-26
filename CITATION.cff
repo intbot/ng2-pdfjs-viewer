@@ -14,8 +14,9 @@ authors:
 repository-code: "https://github.com/intbot/ng2-pdfjs-viewer"
 url: "https://angularpdf.com"
 license: Apache-2.0
+doi: 10.5281/zenodo.21584053
 version: 26.4.2
-date-released: "2026-07-14"
+date-released: "2026-07-25"
 keywords:
   - angular
   - pdf
@@ -34,3 +35,4 @@ references:
       - name: "Mozilla Foundation"
     repository-code: "https://github.com/mozilla/pdf.js"
     license: Apache-2.0
+doi: 10.5281/zenodo.21584053
