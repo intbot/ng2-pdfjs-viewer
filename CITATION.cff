@@ -35,4 +35,3 @@ references:
       - name: "Mozilla Foundation"
     repository-code: "https://github.com/mozilla/pdf.js"
     license: Apache-2.0
-doi: 10.5281/zenodo.21584053
