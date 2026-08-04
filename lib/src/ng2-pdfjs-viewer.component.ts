@@ -62,6 +62,7 @@ import {
   NamedActionEvent,
   PdfSignatureStorage,
   DocumentPageText,
+  PdfJsBuild,
 } from "./interfaces/ViewerTypes";
 import { ActionQueueManager } from "./managers/ActionQueueManager";
 import { PropertyTransformers } from "./utils/PropertyTransformers";
@@ -850,6 +851,7 @@ export class PdfJsViewerComponent
 
   // #region Basic Configuration Properties
   @Input() public viewerFolder!: string;
+  @Input() public pdfJsBuild: PdfJsBuild = "modern";
   @Input() public externalWindow: boolean = false;
   @Input() public target: string = "_blank";
   @Input() public showSpinner: boolean = true;
@@ -3163,6 +3165,9 @@ export class PdfJsViewerComponent
     if (typeof this.viewerId !== "undefined") {
       viewerUrl += `&viewerId=${this.viewerId}`;
     }
+    if (this.pdfJsBuild === "legacy") {
+      viewerUrl += "&pdfJsBuild=legacy";
+    }
 
     // Init-time PDF.js options (signature editor, page colors, passthrough).
     // These are read by PDF.js during initialize() - before the postMessage
@@ -3224,6 +3229,7 @@ export class PdfJsViewerComponent
         pdfSrc: this.pdfSrc,
         externalWindow: this.externalWindow,
         viewerFolder: this.viewerFolder,
+        pdfJsBuild: this.pdfJsBuild,
         viewerId: this.viewerId,
       });
     }

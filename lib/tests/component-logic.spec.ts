@@ -85,6 +85,19 @@ describe("viewer URL parameter order (#305)", () => {
     expect(params.get("file")).toBe("doc.pdf");
     expect(query.endsWith("&file=doc.pdf")).toBe(true);
   });
+
+  it("selects the legacy build without changing the asset folder", () => {
+    const comp = makeComponent();
+    comp.viewerFolder = "assets/custom-pdfjs";
+    comp.pdfJsBuild = "legacy";
+
+    const url = (comp as any).buildViewerUrl("test.pdf") as string;
+    expect(url).toContain("assets/custom-pdfjs/web/viewer.html?");
+    expect(new URL(url, "https://example.test").searchParams.get("pdfJsBuild")).toBe("legacy");
+
+    comp.pdfJsBuild = "modern";
+    expect((comp as any).buildViewerUrl("test.pdf")).not.toContain("pdfJsBuild");
+  });
 });
 
 describe("init-time PDF.js options on the viewer URL", () => {

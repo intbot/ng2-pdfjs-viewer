@@ -6,7 +6,7 @@ This page highlights what's new. The full, version-by-version record (including 
 
 The current line upgrades the engine and turns the viewer into a full editing surface:
 
-- **PDF.js 6.x bundled** (up from the 5.x line); existing component APIs are unchanged. The PDF.js 6 modern build raises the browser floor: Safari needs PDF.js's legacy build, which this package doesn't ship.
+- **PDF.js 6.x modern and legacy builds bundled** (up from the 5.x line). Modern remains the default; set `pdfJsBuild="legacy"` for broader browser compatibility without changing the asset setup.
 - **Built and tested on Angular 22** (ng-packagr 22 / TypeScript 6); the peer range stays wide at `>=10`.
 - **[Annotation editing & eSign](./features/annotation-editing)**: highlight, text, draw, stamp, plus opt-in signature and comment editors. `getAnnotations()`/`setAnnotations()` persistence and download-with-edits via `getDocumentAsBlob()`.
 - **[Forms](./features/forms)**: `[(formData)]` two-way binding and programmatic field access.

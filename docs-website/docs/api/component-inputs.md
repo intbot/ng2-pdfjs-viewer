@@ -49,6 +49,15 @@ viewerId = 'my-custom-viewer-id';
 viewerFolder = 'assets/custom-pdfjs';
 ```
 
+#### `pdfJsBuild`
+- **Type**: `'modern' | 'legacy'`
+- **Default**: `'modern'`
+- **Description**: Selects the bundled PDF.js build. Use `legacy` for broader browser compatibility. Both builds use the same `viewerFolder` and asset setup.
+
+```html
+<ng2-pdfjs-viewer pdfJsBuild="legacy"></ng2-pdfjs-viewer>
+```
+
 #### `externalWindow`
 - **Type**: `boolean`
 - **Default**: `false`

@@ -9,7 +9,7 @@ A component and license inventory of the **published npm package** `ng2-pdfjs-vi
 | **License** | Apache-2.0 |
 | **Runtime npm dependencies** | **none** (zero) |
 | **Peer dependencies** | `@angular/common` `>=10`, `@angular/core` `>=10` |
-| **Distribution** | FESM2022 (ng-packagr) + bundled PDF.js assets under `pdfjs/` |
+| **Distribution** | FESM2022 (ng-packagr) + bundled PDF.js modern and legacy assets under `pdfjs/` |
 
 > Generated from `lib/` on the `master` branch. The machine-readable CycloneDX 1.5 SBOM
 > (full dependency graph, 236 components incl. build-time deps) can be regenerated at any time
@@ -17,7 +17,7 @@ A component and license inventory of the **published npm package** `ng2-pdfjs-vi
 
 ## 1. Bundled third-party components (ship inside the package)
 
-The package vendors Mozilla **PDF.js** and its native sub-components under `pdfjs/`. These are
+The package vendors Mozilla **PDF.js** (both modern and legacy builds) and its native sub-components under `pdfjs/`. These are
 *not* npm dependencies — they ship as package assets. License texts are included alongside them
 (`pdfjs/LICENSE`, `pdfjs/web/**/LICENSE_*`).
 

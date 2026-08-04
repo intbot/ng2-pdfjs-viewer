@@ -1,4 +1,6 @@
 // #region Interfaces and Types
+export type PdfJsBuild = "modern" | "legacy";
+
 // PostMessage interface for control updates
 export interface ControlMessage {
   type: "control-update";

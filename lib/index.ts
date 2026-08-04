@@ -20,6 +20,7 @@ export {
   ToolbarPosition,
   SidebarPosition,
   ExternalLinkTarget,
+  PdfJsBuild,
   // New event data interfaces
   DocumentError,
   PagesInfo,

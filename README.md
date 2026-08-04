@@ -116,6 +116,15 @@ export class AppModule {}
 }
 ```
 
+The asset folder includes both PDF.js builds. The modern build is the default; use the
+legacy build when you need PDF.js's broader browser compatibility:
+
+```html
+<ng2-pdfjs-viewer pdfSrc="assets/sample.pdf" pdfJsBuild="legacy"></ng2-pdfjs-viewer>
+```
+
+No second asset entry or custom `viewerFolder` is needed.
+
 > **Production note:** PDF.js 6 ships ES modules (`.mjs`), localization (`.ftl`), and WebAssembly
 > (`.wasm`) assets. Make sure your web server returns the correct MIME types for them — see the
 > [deployment guide](https://angularpdf.com/docs/getting-started) for the

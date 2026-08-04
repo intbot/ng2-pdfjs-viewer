@@ -14,7 +14,7 @@ Get ng2-pdfjs-viewer up and running in your Angular application in just a few mi
 - **TypeScript**: 5.0+
 
 :::note Browser support
-The bundled PDF.js 6.x modern build targets current evergreen browsers. Safari is supported by PDF.js only via its legacy build, which this package does not ship — test your Safari requirements before upgrading.
+The PDF.js 6.x modern build is used by default. Set `pdfJsBuild="legacy"` for PDF.js's broader browser compatibility; both builds ship in the same asset folder.
 :::
 
 ## Installation
@@ -25,7 +25,21 @@ The bundled PDF.js 6.x modern build targets current evergreen browsers. Safari i
 npm install ng2-pdfjs-viewer --save
 ```
 
-### Step 2: Import the Module
+### Step 2: Serve the PDF.js Assets
+
+Add the bundled viewer assets to your build target's `assets` array in `angular.json`:
+
+```json
+{
+  "glob": "**/*",
+  "input": "node_modules/ng2-pdfjs-viewer/pdfjs",
+  "output": "/assets/pdfjs"
+}
+```
+
+This copies both builds. No extra asset entry is needed for legacy mode.
+
+### Step 3: Import the Module
 
 Add `PdfJsViewerModule` to your Angular module:
 
@@ -48,7 +62,7 @@ import { AppComponent } from './app.component';
 export class AppModule { }
 ```
 
-### Step 3: Use in Your Component
+### Step 4: Use in Your Component
 
 ```html title="app.component.html"
 <ng2-pdfjs-viewer 
@@ -59,7 +73,16 @@ export class AppModule { }
 
 The `pdfSrc` property accepts URLs (strings), Blob objects, or Uint8Array byte arrays.
 
-### Step 4: Add a PDF File
+For the legacy build, add one input:
+
+```html title="app.component.html"
+<ng2-pdfjs-viewer
+  pdfSrc="assets/sample.pdf"
+  pdfJsBuild="legacy">
+</ng2-pdfjs-viewer>
+```
+
+### Step 5: Add a PDF File
 
 Place a PDF file in your `src/assets/` folder (e.g., `sample.pdf`).
 
