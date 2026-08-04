@@ -57,3 +57,4 @@ More on the [showcase](https://angularpdf.com/showcase).
 - Downloads and version history: [npm](https://www.npmjs.com/package/ng2-pdfjs-viewer)
 - Source and releases: [GitHub](https://github.com/intbot/ng2-pdfjs-viewer)
 - Full API: [Component inputs](./api/component-inputs), [outputs](./api/component-outputs), [methods](./api/component-methods)
+- The engine underneath: [The state of PDF.js](./state-of-pdfjs)
