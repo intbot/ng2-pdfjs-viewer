@@ -13,6 +13,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   asset copy serves both builds, so no second asset entry or custom viewer path
   is required.
 
+## [26.4.2] - 2026-07-25
+
+### Added
+- The project is now registered with Zenodo, which archives each GitHub release
+  and mints a DOI for it. This release is the first one archived; `CITATION.cff`
+  is updated to match. No library changes.
+
+## [26.4.1] - 2026-07-25
+
+### Added
+- `CITATION.cff` and `.zenodo.json`, so the library can be cited formally and each
+  release is archived with a DOI. GitHub renders a "Cite this repository" button
+  from the former; Zenodo reads the latter when it archives a release.
+
+### Fixed
+- The author's surname was misspelled ("Goapalakrishnan") in the package metadata
+  and in both `LICENSE` files. Because build tools copy that string into the
+  attribution files they generate, the typo had propagated into the open-source
+  notices published by downstream products. Corrected to "Gopalakrishnan".
+
 ## [26.4.0] - 2026-07-10
 
 ### Added

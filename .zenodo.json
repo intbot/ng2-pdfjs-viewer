@@ -1,0 +1,41 @@
+{
+  "title": "ng2-pdfjs-viewer: an Angular component library for embedding and controlling Mozilla PDF.js",
+  "description": "<p>An Angular component library that wraps Mozilla PDF.js in a single <code>&lt;ng2-pdfjs-viewer&gt;</code> element, exposing viewing, printing, annotation, zoom, search, theming and accessibility through a declarative input and event surface. It ships a modified PDF.js viewer with its own event protocol, a headless signals store, and a bring-your-own-model AI entry point that requires no backend service.</p><p>Published on npm as <code>ng2-pdfjs-viewer</code>. Documentation at https://angularpdf.com.</p>",
+  "upload_type": "software",
+  "license": "Apache-2.0",
+  "access_right": "open",
+  "creators": [
+    {
+      "name": "Gopalakrishnan, Aneesh"
+    }
+  ],
+  "keywords": [
+    "angular",
+    "pdf",
+    "pdf viewer",
+    "pdfjs",
+    "typescript",
+    "web components",
+    "document viewer",
+    "annotations",
+    "accessibility",
+    "open source"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://www.npmjs.com/package/ng2-pdfjs-viewer",
+      "relation": "isIdenticalTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://angularpdf.com",
+      "relation": "isDocumentedBy",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/mozilla/pdf.js",
+      "relation": "isDerivedFrom",
+      "scheme": "url"
+    }
+  ]
+}
