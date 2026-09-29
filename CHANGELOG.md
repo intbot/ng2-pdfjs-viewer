@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [26.4.3] - 2026-09-29
+
+### Fixed
+- The bundled PDF.js now polyfills `Math.sumPrecise` (Chrome 147). PDF.js 6 calls it
+  when it rebuilds fonts, lays out XFA tables and saves a document, so on older engines
+  those paths failed with `Math.sumPrecise is not a function`. Thanks to @delagen for
+  tracking it down. (#422)
+- Text search threw `RegExp.escape is not a function` on Chrome 125 to 135. The find
+  controller in `viewer.mjs` needs it; it now picks it up from the polyfills that
+  `pdf.mjs` installs, since `pdf.mjs` runs first.
+- `Uint8Array.prototype.toBase64` and `Uint8Array.fromBase64` (Chrome 140) are
+  polyfilled too. Saved signatures, base64 images in XFA forms and one font-loading
+  fallback use them.
+
+With these, the practical floor for the modern build is about Chrome 125, where CSS
+`round()` sets the limit and no polyfill helps. One gap is left open on purpose:
+`Response.bytes()` (Chrome 132) has no core-js polyfill. PDF.js catches that failure
+while saving and writes the affected streams uncompressed, so a file saved from an
+older browser can come out larger. Nothing breaks.
+
 ## [26.4.2] - 2026-07-25
 
 ### Added
