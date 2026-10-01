@@ -18,12 +18,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Uint8Array.prototype.toBase64` and `Uint8Array.fromBase64` (Chrome 140) are
   polyfilled too. Saved signatures, base64 images in XFA forms and one font-loading
   fallback use them.
+- `bytes()` on `Response`, `Blob` and `Request` (Chrome 132) is polyfilled by hand,
+  since core-js has no module for it. PDF.js uses it to fetch standard font data
+  (Symbol, ZapfDingbats) and built-in CJK CMaps, so on older engines those fonts fell
+  back to substitutes and CJK text using a predefined CMap didn't render at all. It
+  also backs inserting pages from another PDF and compressing streams on save.
+  Thanks to @delagen for spotting it and suggesting the fix. (#445)
 
 With these, the practical floor for the modern build is about Chrome 125, where CSS
-`round()` sets the limit and no polyfill helps. One gap is left open on purpose:
-`Response.bytes()` (Chrome 132) has no core-js polyfill. PDF.js catches that failure
-while saving and writes the affected streams uncompressed, so a file saved from an
-older browser can come out larger. Nothing breaks.
+`round()` sets the limit and no polyfill helps.
 
 ## [26.4.2] - 2026-07-25
 
