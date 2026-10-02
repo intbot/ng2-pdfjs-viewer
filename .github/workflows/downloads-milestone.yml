@@ -1,9 +1,10 @@
 name: downloads milestone
 
-# Weekly: when all-time npm downloads pass the next million (or the banner's "N yrs" ticks over),
-# scripts/downloads-milestone.mjs updates the static copies of the figure and re-renders the
-# README banner, and this opens a PR with the result. The README badge, docs pages and playground
-# read docs-website/api/downloads.ts live and don't need this.
+# Weekly: when all-time npm downloads pass the next million (or "N yrs" ticks over),
+# scripts/downloads-milestone.mjs updates every static copy of the figure and re-renders the README
+# banner; this job then re-renders the infographic sample PDF and the showcase screenshot of the
+# demo, and opens a PR. The README badge, docs pages and playground hero read
+# docs-website/api/downloads.ts live and don't need this.
 on:
   schedule:
     - cron: '23 6 * * 1'
@@ -25,6 +26,17 @@ jobs:
           node-version: '24.x'
       - id: bump
         run: node --no-warnings scripts/downloads-milestone.mjs
+      # These two need a browser that waits for the page, so install the playground's puppeteer
+      # (without its bundled Chrome download) only when a figure changed.
+      - name: Re-render the sample PDF and the showcase screenshot
+        if: steps.bump.outputs.changed == 'true'
+        working-directory: playground
+        env:
+          PUPPETEER_EXECUTABLE_PATH: C:/Program Files/Google/Chrome/Application/chrome.exe
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          node e2e/gen-samples.mjs infographic.pdf
+          node e2e/showcase-shot.mjs
       - name: Open a PR
         shell: bash
         env:
@@ -39,10 +51,10 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -am "Downloads: $MILESTONE in static text and the README banner"
+          git commit -am "Downloads: $MILESTONE in static text and images"
           git push --force origin "HEAD:$branch"
           gh pr create --base master --head "$branch" \
-            --title "Downloads: $MILESTONE in static text and the README banner" \
-            --body "All-time npm downloads passed $MILESTONE (summed by docs-website/api/downloads.ts). This updates the whole-million figure in the files that can't fetch it live and re-renders lib/pdf-viewer-banner.png. npm picks up the package description on publish.
+            --title "Downloads: $MILESTONE in static text and images" \
+            --body "All-time npm downloads passed $MILESTONE (summed by docs-website/api/downloads.ts). This updates the whole-million figure in the files that can't fetch it live and re-renders the README banner, the infographic sample PDF and the showcase screenshot of the demo. npm shows the new README and description once the package is published.
 
           Checks don't start on PRs opened with the workflow token. Close and reopen this PR to run them."

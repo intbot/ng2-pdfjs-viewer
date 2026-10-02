@@ -1,9 +1,12 @@
 // Generates license-clean sample PDFs from hand-authored HTML (our own content).
-// Output: src/assets/samples/*.pdf   Run: node e2e/gen-samples.mjs
+// Output: src/assets/samples/*.pdf   Run: node e2e/gen-samples.mjs [file.pdf ...]
+// (names limit the run to those files; the downloads-milestone workflow regenerates infographic.pdf)
 import puppeteer from 'puppeteer';
 import { mkdirSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
-const OUT = 'C:/Code/ng2-pdfjs-viewer/playground/src/assets/samples';
+const OUT = fileURLToPath(new URL('../src/assets/samples', import.meta.url));
+const ONLY = process.argv.slice(2);
 mkdirSync(OUT, { recursive: true });
 
 const base = `
@@ -111,6 +114,7 @@ const DOCS = {
 
 const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
 for (const [file, html] of Object.entries(DOCS)) {
+  if (ONLY.length && !ONLY.includes(file)) continue;
   const page = await browser.newPage();
   await page.setContent(`<!doctype html><html><body>${html}</body></html>`, { waitUntil: 'networkidle0' });
   await page.pdf({ path: `${OUT}/${file}`, format: 'A4', printBackground: true, margin: { top: '0', bottom: '0', left: '0', right: '0' } });

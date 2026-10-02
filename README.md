@@ -33,7 +33,7 @@ Drop a production PDF viewer into any Angular app with a single tag. ng2-pdfjs-v
 search, printing, theming, annotations, e-signatures, AcroForms, read-aloud, and a bring-your-own
 AI assistant — all driven by typed `@Input()`s and `@Output()` events, no iframe plumbing of your own.
 
-Shipping since **2018**, **8.3+ million downloads**, mobile-first, and built & verified on **Angular 22**
+Shipping since **2018**, **9M+ downloads**, mobile-first, and built & verified on **Angular 22**
 while keeping a wide `>=10` peer range so existing apps upgrade without churn.
 
 From France's data-protection regulator to Switzerland's federal tech institute, it's in
@@ -246,7 +246,7 @@ Using it somewhere that won't show up in public code — an internal tool, a hos
 ## 🙏 Acknowledgments
 
 Built on the excellent [Mozilla PDF.js](https://github.com/mozilla/pdf.js), and shaped over the
-years by a community of contributors and 8.3+ million downloads' worth of real-world use.
+years by a community of contributors and 9M+ downloads' worth of real-world use.
 
 ---
 
