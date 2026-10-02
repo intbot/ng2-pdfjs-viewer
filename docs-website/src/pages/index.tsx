@@ -4,6 +4,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import { useColorMode } from '@docusaurus/theme-common';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import Downloads from '@site/src/components/Downloads';
 
 import styles from './home.module.css';
 
@@ -38,7 +39,7 @@ function Hero() {
         <div className={styles.hero}>
           <div>
             <span className={styles.eyebrow}>
-              <span className={styles.live} /> 8.3M+ downloads · since 2018 · Angular 10–22
+              <span className={styles.live} /> <Downloads /> downloads · since 2018 · Angular 10–22
             </span>
             <h1 className={styles.title}>
               The Angular PDF viewer you can<br />
@@ -141,7 +142,7 @@ export default function Home(): JSX.Element {
   return (
     <Layout
       title={`${siteConfig.title} - Angular PDF Viewer`}
-      description="The most comprehensive Angular PDF viewer powered by Mozilla PDF.js. 8.3M+ downloads, mobile-first, production-ready.">
+      description="The most comprehensive Angular PDF viewer powered by Mozilla PDF.js. 9M+ downloads, mobile-first, production-ready.">
       <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link

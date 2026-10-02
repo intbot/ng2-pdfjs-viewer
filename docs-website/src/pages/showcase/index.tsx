@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@theme/Layout';
 import projectsData from '@site/data/projects.json';
+import Downloads from '@site/src/components/Downloads';
 import styles from './showcase.module.css';
 
 interface Project {
@@ -82,7 +83,7 @@ export default function Showcase() {
                 <span>countries</span>
               </div>
               <div>
-                <b>8.3M+</b>
+                <b><Downloads /></b>
                 <span>downloads</span>
               </div>
             </div>
