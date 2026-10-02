@@ -1,0 +1,48 @@
+name: downloads milestone
+
+# Weekly: when all-time npm downloads pass the next million (or the banner's "N yrs" ticks over),
+# scripts/downloads-milestone.mjs updates the static copies of the figure and re-renders the
+# README banner, and this opens a PR with the result. The README badge, docs pages and playground
+# read docs-website/api/downloads.ts live and don't need this.
+on:
+  schedule:
+    - cron: '23 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  bump:
+    name: Bump download milestone
+    # Windows ships Segoe UI and Consolas, the fonts the banner was designed with, plus Chrome.
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        with:
+          node-version: '24.x'
+      - id: bump
+        run: node --no-warnings scripts/downloads-milestone.mjs
+      - name: Open a PR
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MILESTONE: ${{ steps.bump.outputs.millions }}
+        run: |
+          if git diff --quiet; then echo "Nothing to update."; exit 0; fi
+          branch=bot/downloads-milestone
+          # Don't push over an open PR: it would reset checks someone already started.
+          if [ -n "$(gh pr list --head "$branch" --state open --json number --jq '.[].number')" ]; then
+            echo "A milestone PR is already open."; exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Downloads: $MILESTONE in static text and the README banner"
+          git push --force origin "HEAD:$branch"
+          gh pr create --base master --head "$branch" \
+            --title "Downloads: $MILESTONE in static text and the README banner" \
+            --body "All-time npm downloads passed $MILESTONE (summed by docs-website/api/downloads.ts). This updates the whole-million figure in the files that can't fetch it live and re-renders lib/pdf-viewer-banner.png. npm picks up the package description on publish.
+
+          Checks don't start on PRs opened with the workflow token. Close and reopen this PR to run them."

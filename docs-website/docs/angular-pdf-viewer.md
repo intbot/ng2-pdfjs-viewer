@@ -12,12 +12,14 @@ keywords:
 slug: /angular-pdf-viewer
 ---
 
+import Downloads from '@site/src/components/Downloads';
+
 # Angular PDF Viewer
 
 `ng2-pdfjs-viewer` is an Angular PDF viewer component built on Mozilla PDF.js. One tag,
 `<ng2-pdfjs-viewer>`, renders a document and gives you annotations, signatures, AcroForm
 filling, search, page editing, printing, theming, and read-aloud through declarative inputs and
-events. It has been on npm since 2018, passed 8.3M+ downloads, and supports Angular 10 through 22
+events. It has been on npm since 2018, passed <Downloads /> downloads, and supports Angular 10 through 22
 with zero runtime dependencies.
 
 This page answers the questions people ask when they pick an Angular PDF viewer. Each one links to

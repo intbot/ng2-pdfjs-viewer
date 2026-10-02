@@ -97,7 +97,7 @@ const DOCS = {
         </div>
       </div>
       <span class="igchip"><span class="p">$</span> <span class="cmd">npm i</span> <span class="pkg">ng2-pdfjs-viewer</span></span>
-      <div class="ighero">8.3M+</div>
+      <div class="ighero">9M+</div>
       <div class="igherol">downloads and counting</div>
       <div class="igcards">
         <div class="igcard"><div class="n">0</div><div class="l">runtime dependencies</div></div>

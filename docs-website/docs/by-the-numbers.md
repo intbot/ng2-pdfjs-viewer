@@ -1,7 +1,9 @@
 ---
-description: "ng2-pdfjs-viewer by the numbers: 8.3M+ downloads, on npm since 2018, Angular 10 through 22 in one package, PDF.js 6 bundled, zero runtime dependencies, 30+ inputs and 24+ events."
+description: "ng2-pdfjs-viewer by the numbers: 9M+ downloads, on npm since 2018, Angular 10 through 22 in one package, PDF.js 6 bundled, zero runtime dependencies, 30+ inputs and 24+ events."
 keywords: [ng2-pdfjs-viewer stats, angular pdf viewer downloads, angular pdf viewer versions supported, angular pdf viewer dependencies]
 ---
+
+import Downloads from '@site/src/components/Downloads';
 
 # ng2-pdfjs-viewer by the numbers
 
@@ -11,7 +13,7 @@ counts come from the npm registry.
 | Metric | Value |
 | --- | --- |
 | On npm since | 2018 |
-| Total downloads | 8.3M+ |
+| Total downloads | <Downloads /> |
 | Weekly downloads | ~52,000 (June 2026) |
 | Angular versions supported | 10 through 22, from one package (peer range `>=10`) |
 | PDF.js engine | [PDF.js](https://github.com/mozilla/pdf.js) 6.x, bundled (no separate `pdfjs-dist` to manage) |

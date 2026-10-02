@@ -3,6 +3,8 @@ title: Press & Media
 description: Press kit for ng2-pdfjs-viewer — boilerplate, key facts, logo, and copy-paste descriptions for writers and editors covering the Angular PDF viewer.
 ---
 
+import Downloads from '@site/src/components/Downloads';
+
 # Press & Media
 
 A kit for writers, editors, and maintainers of "best Angular PDF viewer" lists. Copy anything here as-is; corrections are welcome as a GitHub issue.
@@ -13,7 +15,7 @@ ng2-pdfjs-viewer is an open-source Angular component that wraps Mozilla PDF.js i
 
 ## One paragraph
 
-ng2-pdfjs-viewer is an open-source Angular component that wraps Mozilla PDF.js in one `<ng2-pdfjs-viewer>` tag: viewing, printing, annotation editing and e-signatures, AcroForm filling, full-text search, page organization, read-aloud, and a bring-your-own AI assistant. First published in 2018, it has passed 8.3M+ npm downloads and supports Angular 10 through 22 from a single package, with zero runtime dependencies.
+ng2-pdfjs-viewer is an open-source Angular component that wraps Mozilla PDF.js in one `<ng2-pdfjs-viewer>` tag: viewing, printing, annotation editing and e-signatures, AcroForm filling, full-text search, page organization, read-aloud, and a bring-your-own AI assistant. First published in 2018, it has passed <Downloads /> npm downloads and supports Angular 10 through 22 from a single package, with zero runtime dependencies.
 
 ## Key facts
 
@@ -22,7 +24,7 @@ ng2-pdfjs-viewer is an open-source Angular component that wraps Mozilla PDF.js i
 | Name | ng2-pdfjs-viewer (lower case) |
 | What it is | An Angular PDF viewer component built on Mozilla PDF.js |
 | On npm since | 2018 |
-| Downloads | 8.3M+ |
+| Downloads | <Downloads /> |
 | Angular support | 10 through 22, one package (peer range `>=10`) |
 | PDF.js | 6.x, bundled |
 | Runtime dependencies | 0 |

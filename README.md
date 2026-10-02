@@ -1,12 +1,12 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/intbot/ng2-pdfjs-viewer/master/lib/pdf-viewer-banner.png" alt="#1 Angular PDF Viewer — ng2-pdfjs-viewer: AI-enabled, feature-rich and comprehensive. 8.3M+ downloads, 0 runtime dependencies, 8 years (since 2018), Angular 10–22." width="880" />
+<img src="https://raw.githubusercontent.com/intbot/ng2-pdfjs-viewer/master/lib/pdf-viewer-banner.png" alt="#1 Angular PDF Viewer — ng2-pdfjs-viewer: AI-enabled, feature-rich and comprehensive. 9M+ downloads, 0 runtime dependencies, 8 years (since 2018), Angular 10–22." width="880" />
 
 # ng2-pdfjs-viewer
 
 **A complete PDF experience in one Angular component — view, annotate, sign, fill forms, search, and read aloud, powered by Mozilla PDF.js.**
 
-[![total downloads](https://img.shields.io/badge/total%20downloads-8.3M%2B-22c55e?style=flat-square&logo=npm)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
+[![total downloads](https://img.shields.io/endpoint?url=https%3A%2F%2Fangularpdf.com%2Fapi%2Fdownloads&style=flat-square)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
 [![npm version](https://img.shields.io/npm/v/ng2-pdfjs-viewer?style=flat-square&logo=npm&color=2563eb)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
 [![downloads / month](https://img.shields.io/npm/dm/ng2-pdfjs-viewer?style=flat-square&color=f97316)](https://www.npmjs.com/package/ng2-pdfjs-viewer)
 [![runtime dependencies](https://img.shields.io/badge/runtime%20deps-0-success?style=flat-square)](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/BILL-OF-MATERIALS.md)
@@ -63,7 +63,7 @@ PDFs with ng2-pdfjs-viewer — on five continents. Among them:
 | <img src="https://flagcdn.com/20x15/es.png" width="20" alt="Spain"> **Spain's Ministry of Culture** | the Travesía cultural-heritage platform |
 | <img src="https://flagcdn.com/20x15/us.png" width="20" alt="United States"> **University of Virginia** | the Supporting Transformative Autism Research (DRIVE) program |
 
-Part of **8.3M+ installs** worldwide. [See the full showcase →](https://angularpdf.com/showcase)
+Part of **9M+ installs** worldwide. [See the full showcase →](https://angularpdf.com/showcase)
 
 ## ✨ Highlights
 
