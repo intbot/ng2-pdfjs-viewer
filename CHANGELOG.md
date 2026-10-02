@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [26.4.4] - 2026-10-01
+
+### Changed
+- The README's total-downloads badge is live now. It reads an endpoint on
+  angularpdf.com that adds up npm's download history in 18-month pieces (npm returns
+  no more than that per request, which is why the stock `npm/dt` badge undercounts),
+  so the npm page no longer shows a count frozen at publish time. The fixed counts in
+  the README text and the package description move from 8.3M+ to 9M+.
+
+No library code changed in this release; it ships the updated README and description to npm.
+
 ## [26.4.3] - 2026-10-01
 
 ### Fixed
