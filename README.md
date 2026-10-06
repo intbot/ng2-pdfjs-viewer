@@ -64,6 +64,7 @@ PDFs with ng2-pdfjs-viewer — on five continents. Among them:
 | <img src="https://flagcdn.com/20x15/us.png" width="20" alt="United States"> **University of Virginia** | the Supporting Transformative Autism Research (DRIVE) program |
 
 Part of **9M+ installs** worldwide. [See the full showcase →](https://angularpdf.com/showcase)
+Using it too? Leave one line in [Who's using ng2-pdfjs-viewer?](https://github.com/intbot/ng2-pdfjs-viewer/discussions/450).
 
 ## ✨ Highlights
 
@@ -235,7 +236,7 @@ See [CONTRIBUTING.md](https://github.com/intbot/ng2-pdfjs-viewer/blob/master/CON
 
 ## 🏗️ Showcase
 
-Shipped something with ng2-pdfjs-viewer? [Add it to the showcase](https://angularpdf.com/showcase) — submitted projects are listed next to other production apps using the viewer.
+Shipped something with ng2-pdfjs-viewer? The quickest way to tell me is a one-line comment in [Who's using ng2-pdfjs-viewer?](https://github.com/intbot/ng2-pdfjs-viewer/discussions/450): the company or project, and what the viewer does there. You can also [add it to the showcase](https://angularpdf.com/showcase) with a link and a screenshot.
 
 Using it somewhere that won't show up in public code — an internal tool, a hospital system, a government portal? I'd like to hear about it: email **codehippie1@gmail.com** with a line about what you're building. Teams in healthcare, finance, education, and public-sector software already have. (Bugs and feature requests are best filed as [an issue](https://github.com/intbot/ng2-pdfjs-viewer/issues).)
 
