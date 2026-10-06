@@ -27,6 +27,7 @@ interface Project {
 }
 
 const DEPENDENTS_URL = 'https://github.com/intbot/ng2-pdfjs-viewer/network/dependents';
+const WHO_USES_URL = 'https://github.com/intbot/ng2-pdfjs-viewer/discussions/450';
 
 const monogram = (name: string) =>
   name.replace(/[^A-Za-z0-9 ]/g, '').trim().split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
@@ -148,10 +149,18 @@ export default function Showcase() {
 
           <div className={styles.cta}>
             <h2>Shipped something with it?</h2>
-            <p>Add your project — send the URL, we'll do the rest.</p>
+            <p>Leave one line in the discussion: the company or project, and what the viewer does there.</p>
             <div className={styles.btnRow}>
-              <a href="/showcase/submit" className={`${styles.btn} ${styles.btnP}`}>
-                Add your project →
+              <a
+                href={WHO_USES_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${styles.btn} ${styles.btnP}`}
+              >
+                Tell us in Discussions →
+              </a>
+              <a href="/showcase/submit" className={`${styles.btn} ${styles.btnG}`}>
+                Add your project
               </a>
               <a
                 href={DEPENDENTS_URL}
