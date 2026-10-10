@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Layout from '@theme/Layout';
 import projectsData from '@site/data/projects.json';
 import Downloads from '@site/src/components/Downloads';
-import styles from './showcase.module.css';
+import styles from './showcase/showcase.module.css';
 
 interface Project {
   id: string;
