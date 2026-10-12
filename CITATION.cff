@@ -9,6 +9,7 @@ abstract: >-
 authors:
   - family-names: Gopalakrishnan
     given-names: Aneesh
+    orcid: "https://orcid.org/0009-0004-9633-4837"
     email: codehippie1@gmail.com
     alias: intbot
 repository-code: "https://github.com/intbot/ng2-pdfjs-viewer"
