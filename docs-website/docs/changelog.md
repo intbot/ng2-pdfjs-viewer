@@ -4,6 +4,8 @@ This page highlights what's new. The full, version-by-version record (including 
 
 ## Latest release
 
+**26.5.0** moves the bundled engine to **PDF.js 6.4.299** (from 6.0.227), which includes Mozilla's security fixes since 6.0.227, so upgrade from any earlier 26.x. It also ships a CycloneDX `sbom.json` in the package that lists the bundled PDF.js and its sub-components, and `customCSS` no longer needs a CSP nonce.
+
 The current line upgrades the engine and turns the viewer into a full editing surface:
 
 - **PDF.js 6.x bundled** (up from the 5.x line); existing component APIs are unchanged. The PDF.js 6 modern build raises the browser floor: Safari needs PDF.js's legacy build, which this package doesn't ship.
