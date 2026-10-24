@@ -244,7 +244,7 @@ export interface ThemeConfig {
   textColor?: string;
   borderRadius?: string;
   customCSS?: string;
-  cspNonce?: string; // CSP nonce for customCSS (optional)
+  cspNonce?: string; // Ignored since 26.5.0: customCSS uses a constructable stylesheet, which CSP doesn't restrict
   iframeTitle?: string; // Accessible title for the iframe (optional)
 }
 

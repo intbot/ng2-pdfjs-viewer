@@ -110,14 +110,14 @@ No inline style injection that would violate strict CSP policies.
 
 ### Using customCSS with Strict CSP
 
-When using `customCSS` with strict CSP, provide a nonce:
+Since 26.5.0, `customCSS` needs no nonce under a strict CSP. It's applied as a constructable
+stylesheet, which CSP doesn't restrict, and `cspNonce` is ignored:
 
 ```typescript
 themeConfig: ThemeConfig = {
   theme: 'dark',
   primaryColor: '#ff6b6b',
   customCSS: '.page { box-shadow: 0 4px 8px rgba(0,0,0,0.2); }',
-  cspNonce: 'your-random-nonce'  // Match your CSP policy
 };
 ```
 

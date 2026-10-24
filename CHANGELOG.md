@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [26.5.0] - 2026-10-24
+
+Bundled PDF.js: **6.4.299** (was 6.0.227).
+
+### Security
+- The bundled PDF.js moves from 6.0.227 to 6.4.299, which includes Mozilla's security
+  fixes from the 6.1 to 6.4 releases. Every earlier 26.x release bundles 6.0.227, so
+  please upgrade. Mozilla's release notes:
+  https://github.com/mozilla/pdf.js/releases
+
+### Changed
+- `customCSS` is now applied with a constructable stylesheet (`adoptedStyleSheets`) inside
+  the viewer instead of a `<style>` element. The viewer page's Content Security Policy in
+  PDF.js 6.4 no longer allows inline `<style>` elements (PDF.js moved its own print styles
+  the same way), so the old approach would have been blocked. CSP doesn't apply to
+  constructable stylesheets, so `cspNonce` is no longer needed for `customCSS` and is
+  ignored. One limit: `@import` rules inside `customCSS` aren't supported there.
+- The polyfills injected into the bundled PDF.js now also cover `Map`/`WeakMap`
+  `getOrInsert` and `WeakMap.getOrInsertComputed`, which PDF.js 6.4 calls in the worker
+  and the viewer.
+
+### Fixed
+- The CHANGELOG entry for the PDF.js 5.3.93 upgrade was headed "20.4.0 - 2024-12-07";
+  it is 25.0.0, published 2025-09-08, and the upgrade was from PDF.js 2.2.171.
+- `BILL-OF-MATERIALS.md` lists the bundled components and licences as they are: the
+  Liberation Sans fonts PDF.js ships are version 1.07.4 under the Liberation font licence
+  (GPL-2.0 with a font exception), not the SIL OFL, and the JBIG2 decoder is Apache-2.0.
+
 ## [26.4.4] - 2026-10-01
 
 ### Changed
@@ -301,7 +329,11 @@ With these, the practical floor for the modern build is about Chrome 125, where 
 
 - The bundled sample PDF (`web/compressed.tracemonkey-pldi-09.pdf`) no longer ships in the package — apps that referenced it from `assets/pdfjs/web/` should bundle their own copy
 
-## [20.4.0] - 2024-12-07
+## [25.0.0] - 2025-09-08
+
+This entry used to be headed 20.4.0, a version that was never published. The release
+that shipped these changes is 25.0.0. Within the same series, 25.0.4 dropped `ng-packagr`
+from the peer dependencies and 25.0.6 set the Angular peer range to `>=10`.
 
 ### Added
 
@@ -351,7 +383,8 @@ With these, the practical floor for the modern build is about Chrome 125, where 
 
 #### 🔄 PDF.js Upgrade
 
-- **BREAKING**: Upgraded from PDF.js v4.0.x to v5.3.93
+- **BREAKING**: Upgraded from PDF.js 2.2.171 to 5.3.93 (a 4.10.38 step was committed
+  on the way but never released)
 - Improved rendering performance and security
 - Enhanced event system and API compatibility
 - Better mobile device support
@@ -426,7 +459,7 @@ With these, the practical floor for the modern build is about Chrome 125, where 
 
 - Complete README rewrite with SEO optimization
 - Comprehensive API reference with examples
-- Migration guide from v19.x to v20.4.0
+- Migration guide from v20.x to v25.0.0
 - Enhanced code examples and tutorials
 - Better troubleshooting and FAQ sections
 
