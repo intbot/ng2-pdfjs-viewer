@@ -264,7 +264,7 @@ ng2-pdfjs-viewer is fully compliant with strict Content Security Policy (`style-
 - ✅ **External Stylesheets** - All static styles loaded from external CSS files
 - ✅ **CSS Custom Properties** - Dynamic styling via `element.style.setProperty()`
 - ✅ **CSS Classes** - Visibility and layout via class toggles
-- ✅ **Optional Nonce Support** - For `customCSS` with strict CSP
+- ✅ **Constructable stylesheet for `customCSS`** - CSP doesn't restrict it, so no nonce is needed (since 26.5.0)
 
 ### Using with Strict CSP
 
@@ -283,35 +283,19 @@ The viewer works with strict CSP policies:
 
 ### Custom CSS with CSP
 
-When using `customCSS` with strict CSP, provide a nonce:
+Since 26.5.0, `customCSS` works under a strict CSP with no extra setup. The viewer applies it
+as a constructable stylesheet (`document.adoptedStyleSheets`), the same way PDF.js 6.4 adds its
+own print styles, and CSP doesn't restrict those. The `cspNonce` input is ignored now.
 
 ```typescript
-// Component
 customCSS = '.page { box-shadow: 0 4px 8px rgba(0,0,0,0.2); }';
-cspNonce = 'your-random-nonce'; // Must match CSP policy
 ```
 
-```html
-<!-- index.html -->
-<meta http-equiv="Content-Security-Policy" 
-      content="style-src 'self' 'nonce-your-random-nonce';">
-
-<!-- Template -->
-<ng2-pdfjs-viewer
-  [customCSS]="customCSS"
-  [cspNonce]="cspNonce">
-</ng2-pdfjs-viewer>
-```
-
-### CSP Best Practices
-
-1. **Default Usage** - No nonce needed for standard theming
-2. **Custom CSS** - Only provide nonce when using `customCSS`
-3. **Server-Generated Nonce** - Generate unique nonce per request
-4. **Test Thoroughly** - Verify zero CSP violations in console
+Up to 26.4.x, `customCSS` used an inline `<style>` element, so a strict CSP needed a matching
+`cspNonce`. One limit of constructable stylesheets: `@import` rules inside `customCSS` don't load.
 
 :::tip
-The viewer is CSP-compliant by default. You only need the `cspNonce` input when using `customCSS` with strict CSP policies.
+The viewer is CSP-compliant by default. Check the browser console for CSP violations after you change your policy.
 :::
 
 ## 🚨 Reporting Security Vulnerabilities

@@ -32,7 +32,7 @@ const FeatureList: FeatureItem[] = [
     title: 'Current by design',
     description: (
       <>
-        Built on <strong>PDF.js 6.0.227</strong> and verified on <strong>Angular 22</strong>, with a
+        Built on <strong>PDF.js 6.4.299</strong> and verified on <strong>Angular 22</strong>, with a
         wide <code>&gt;=10</code> peer range so existing apps upgrade without churn.
       </>
     ),

@@ -428,23 +428,10 @@ customCSS = '.page { box-shadow: 0 4px 8px rgba(0,0,0,0.2); }';
 #### `cspNonce`
 - **Type**: `string`
 - **Default**: `undefined`
-- **Description**: CSP nonce for customCSS when using strict Content Security Policy
-
-```typescript
-// Only needed with strict CSP and customCSS
-cspNonce = 'random-nonce-value';
-```
-
-```html
-<!-- With strict CSP -->
-<ng2-pdfjs-viewer
-  [customCSS]="customStyles"
-  [cspNonce]="cspNonce">
-</ng2-pdfjs-viewer>
-```
+- **Description**: No longer needed, and ignored, since 26.5.0. Up to 26.4.x, `customCSS` went into an inline `<style>` element, and a strict CSP needed this nonce to allow it. From 26.5.0 `customCSS` is applied as a constructable stylesheet, which CSP doesn't restrict. The input stays so existing templates keep compiling.
 
 :::info CSP Compliance
-The viewer is CSP-compliant by default. The `cspNonce` input is only needed when using `customCSS` with strict Content Security Policy that requires nonces for inline styles.
+The viewer is CSP-compliant by default, including `customCSS`, with no nonce.
 :::
 
 #### `iframeTitle`
