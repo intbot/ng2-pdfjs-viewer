@@ -43,6 +43,13 @@ jobs:
       # No NODE_AUTH_TOKEN: auth comes from the OIDC id-token above, once a
       # GitHub Actions trusted publisher is configured for this package on npm
       # (npmjs.com -> package settings -> Trusted Publisher). See CONTRIBUTING.md.
+      # A pre-release version (e.g. 26.5.1-rc.0) goes out under the `next` dist-tag,
+      # so `npm install ng2-pdfjs-viewer` keeps resolving to the last stable release.
       - name: Publish to npm
         working-directory: ./lib/dist
-        run: npm publish --provenance --access public
+        run: |
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then
+            npm publish --provenance --access public --tag next
+          else
+            npm publish --provenance --access public
+          fi

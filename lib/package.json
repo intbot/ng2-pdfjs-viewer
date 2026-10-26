@@ -1,6 +1,6 @@
 {
   "name": "ng2-pdfjs-viewer",
-  "version": "26.5.0",
+  "version": "26.5.1-rc.1",
   "description": "The most comprehensive Angular PDF viewer, powered by Mozilla PDF.js 6 — view, annotate, sign, fill forms, search, and read aloud from one component. 9M+ downloads, mobile-first, production-ready.",
   "author": {
     "name": "Aneesh Gopalakrishnan",
@@ -75,7 +75,7 @@
     "remove-source-maps": "shx rm -f dist/pdfjs/build/*.map dist/pdfjs/web/*.map dist/fesm2022/*.map && node -e \"const fs=require('fs'),p='dist/fesm2022/ng2-pdfjs-viewer.mjs';fs.writeFileSync(p,fs.readFileSync(p,'utf8').replace(/\\/\\/# sourceMappingURL=\\S+\\s*$/,''))\"",
     "polyfill-pdfjs": "esbuild pdfjs/build/pdf.mjs --bundle --minify --inject:src/polyfill.js --format=esm --target=es2022 --out-extension:.js=.mjs --outdir=dist/pdfjs/build && esbuild pdfjs/build/pdf.worker.mjs --bundle --minify --inject:src/polyfill.js --format=esm --target=es2022 --out-extension:.js=.mjs --outdir=dist/pdfjs/build",
     "minify-pdfjs": "terser dist/pdfjs/build/pdf.mjs --compress --mangle --module --output dist/pdfjs/build/pdf.mjs && terser dist/pdfjs/build/pdf.sandbox.mjs --compress --mangle --module --output dist/pdfjs/build/pdf.sandbox.mjs && terser dist/pdfjs/build/pdf.worker.mjs --compress --mangle --module --output dist/pdfjs/build/pdf.worker.mjs && terser dist/pdfjs/web/viewer.mjs --compress --mangle --module --output dist/pdfjs/web/viewer.mjs && terser dist/pdfjs/web/postmessage-wrapper.js --compress --mangle --output dist/pdfjs/web/postmessage-wrapper.js",
-    "minify-css": "esbuild dist/pdfjs/web/viewer.css --minify --outfile=dist/pdfjs/web/viewer.css --allow-overwrite",
+    "minify-css": "node scripts/light-dark-fallback.mjs && esbuild dist/pdfjs/web/viewer.css --minify --outfile=dist/pdfjs/web/viewer.css --allow-overwrite",
     "package": "npm run build && cd dist && npm pack",
     "bump": "npm version patch --no-git-tag-version",
     "test": "vitest run"

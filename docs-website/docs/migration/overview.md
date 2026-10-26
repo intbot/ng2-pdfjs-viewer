@@ -69,7 +69,7 @@ this.pdfViewer.setSpinnerHtml('<div>Loading...</div>');
   <div>Error occurred</div>
 </ng-template>
 
-<ng2-pdfjs-viewer [customErrorTpl]="errorTemplate">
+<ng2-pdfjs-viewer [errorOverride]="true" [customErrorTpl]="errorTemplate">
 </ng2-pdfjs-viewer>
 ```
 

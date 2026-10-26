@@ -14,7 +14,7 @@ Get ng2-pdfjs-viewer up and running in your Angular application in just a few mi
 - **TypeScript**: 5.0+
 
 :::note Browser support
-The bundled PDF.js 6.x modern build targets current evergreen browsers. Safari is supported by PDF.js only via its legacy build, which this package does not ship — test your Safari requirements before upgrading.
+The bundled PDF.js 6.x targets current browsers and uses JavaScript features that only arrived in Safari 18.4. The package fills those in with polyfills, so Safari and iOS 17 and later can run it. Safari and iOS 16 or older can't run PDF.js 6.x at all (Mozilla's own legacy build needs Safari 17 too). There the viewer stops loading and fires `onDocumentError` with `name: 'UnsupportedBrowser'`, so your app decides what those users see; see [error handling](./features/loading-documents.md#error-handling).
 :::
 
 ## Installation
