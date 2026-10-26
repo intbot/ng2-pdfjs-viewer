@@ -16,6 +16,14 @@ Bundled PDF.js: **6.4.299** (unchanged).
   "Loading PDF...". The polyfills injected into the bundled PDF.js now add the iterator
   helpers, `AbortSignal.any()` and async iteration of `ReadableStream`, which covers Safari
   and iOS 17 and 18.0 to 18.3.
+- On Safari and iOS 17.0 to 17.3, pages kept their loading spinner and never drew. The PDF.js
+  worker packs every font with `ArrayBuffer.prototype.transferToFixedLength()` (Safari 17.4),
+  so no font reached the page; it's polyfilled now.
+- On Safari and iOS older than 17.5 the toolbar icons were invisible and fields and menus lost
+  their colours, because PDF.js sets them with CSS `light-dark()`. The build now appends plain
+  fallback values for PDF.js's top-level colour variables, used only by browsers without
+  `light-dark()` and following the component's `theme`. Some sidebar and dialog colours there
+  still fall back to browser defaults.
 - When PDF.js can't start at all, the loading spinner no longer runs forever. That happens on
   Safari and iOS 16 or older (no build of PDF.js 6.x supports them, Mozilla's legacy build
   included) or when a viewer file fails to load. The component now stops loading and fires
