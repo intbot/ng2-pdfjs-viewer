@@ -1205,6 +1205,8 @@ export class PdfJsViewerComponent
   // Internal error state for error display
   public hasError: boolean = false;
   public currentErrorMessage: string = "";
+  // DocumentError.name of the current error ('UnsupportedBrowser', 'FetchError', ...)
+  public currentErrorName: string = "";
   public errorTemplateData: any = {};
 
   // Kept for API compatibility; the template binds errorTemplateData directly
@@ -1216,6 +1218,7 @@ export class PdfJsViewerComponent
   private updateErrorTemplateData(): void {
     this.errorTemplateData = {
       errorMessage: this.currentErrorMessage,
+      errorName: this.currentErrorName,
       errorClass: this.errorClass,
     };
   }
@@ -1712,6 +1715,7 @@ export class PdfJsViewerComponent
         this.isLoading = true;
         this.hasError = false;
         this.currentErrorMessage = "";
+        this.currentErrorName = "";
 
         // Don't wait for the new document's documentInit relay (it is
         // enablement-gated and can race a fast local load): the AI panel's
@@ -2003,6 +2007,7 @@ export class PdfJsViewerComponent
       if (value) {
         this.hasError = false;
         this.currentErrorMessage = "";
+        this.currentErrorName = "";
       }
       // Trigger change detection for OnPush scenarios (PostMessage runs outside Angular zone)
       this.cdr.markForCheck();
@@ -2114,6 +2119,10 @@ export class PdfJsViewerComponent
     // consumer awaits don't hang forever.
     if (eventName === "documentError") {
       this.documentLoadFailed = true;
+      // Lets a customErrorTpl tell e.g. 'UnsupportedBrowser' from a bad file
+      this.currentErrorName = eventData?.name || "";
+      this.updateErrorTemplateData();
+      this.cdr.markForCheck();
       this.actionQueueManager.failDocumentActions(
         "Document failed to load: " + (eventData?.message || "unknown error"),
       );
@@ -2989,6 +2998,7 @@ export class PdfJsViewerComponent
     this.isLoading = true;
     this.hasError = false;
     this.currentErrorMessage = "";
+    this.currentErrorName = "";
     // A new load lifts the failed-document latch (the documentInit relay
     // also clears it, but that is enablement-gated and can race fast loads)
     this.documentLoadFailed = false;
@@ -3068,6 +3078,7 @@ export class PdfJsViewerComponent
       this.currentErrorMessage = this.composeErrorMessage(
         `Failed to fetch PDF: ${message}`
       );
+      this.currentErrorName = "FetchError";
       this.updateErrorTemplateData();
       this.onDocumentError.emit({
         message: this.currentErrorMessage,

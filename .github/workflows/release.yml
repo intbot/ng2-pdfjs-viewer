@@ -25,13 +25,15 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ver="${GITHUB_REF_NAME#v}"
+          pre=""
+          [[ "$ver" == *-* ]] && pre="--prerelease"
           awk -v start="## [${ver}]" \
             'index($0,start)==1{c=1;next} c&&index($0,"## [")==1{exit} c{print}' \
             CHANGELOG.md > notes.md
           if [ -s notes.md ]; then
-            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" \
+            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" $pre \
               --title "Release $GITHUB_REF_NAME" --notes-file notes.md
           else
-            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" \
+            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" $pre \
               --title "Release $GITHUB_REF_NAME" --generate-notes
           fi

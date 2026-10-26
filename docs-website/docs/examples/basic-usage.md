@@ -78,6 +78,7 @@ Use Angular templates for loading and error states:
 <ng2-pdfjs-viewer
   pdfSrc="assets/sample.pdf"
   [customSpinnerTpl]="loadingTemplate"
+  [errorOverride]="true"
   [customErrorTpl]="errorTemplate">
 </ng2-pdfjs-viewer>
 ```
