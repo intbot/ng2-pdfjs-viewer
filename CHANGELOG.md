@@ -24,6 +24,11 @@ Bundled PDF.js: **6.4.299** (unchanged).
   fallback values for PDF.js's top-level colour variables, used only by browsers without
   `light-dark()` and following the component's `theme`. Some sidebar and dialog colours there
   still fall back to browser defaults.
+- On Safari and iOS 17.0 and 17.1, pages were drawn about three times too large and cut off, and
+  zooming or scrolling never showed the rest. PDF.js writes its stylesheet with CSS nesting, and
+  those versions drop a nested rule that starts with an element name (Safari 17.2 relaxed that),
+  including the one that fits each page's canvas to its box. The build now flattens the nesting
+  in `viewer.css`, which also adds `-webkit-backdrop-filter` for Safari before 18.
 - When PDF.js can't start at all, the loading spinner no longer runs forever. That happens on
   Safari and iOS 16 or older (no build of PDF.js 6.x supports them, Mozilla's legacy build
   included) or when a viewer file fails to load. The component now stops loading and fires
