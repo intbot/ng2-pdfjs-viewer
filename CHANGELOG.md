@@ -29,6 +29,11 @@ Bundled PDF.js: **6.4.299** (unchanged).
   those versions drop a nested rule that starts with an element name (Safari 17.2 relaxed that),
   including the one that fits each page's canvas to its box. The build now flattens the nesting
   in `viewer.css`, which also adds `-webkit-backdrop-filter` for Safari before 18.
+- A numeric `zoom` set before the document's first view came out 100 times too small: `"1.4"`
+  showed the page at 1.4% instead of 140%. PDF.js reads its initial zoom as a percentage, while
+  `zoom` and `zoomChange` use scale factors, so an app that saved `zoomChange` and set it again
+  on the next document lost the page. The value is now converted on that path. Thanks to
+  @jhthompson for the fix. (#459)
 - When PDF.js can't start at all, the loading spinner no longer runs forever. That happens on
   Safari and iOS 16 or older (no build of PDF.js 6.x supports them, Mozilla's legacy build
   included) or when a viewer file fails to load. The component now stops loading and fires
