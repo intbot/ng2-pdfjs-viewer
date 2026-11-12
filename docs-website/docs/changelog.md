@@ -4,6 +4,8 @@ This page highlights what's new. The full, version-by-version record (including 
 
 ## Latest release
 
+**26.5.2** makes percentage zooms work after a document is showing: `setZoom('150%')` now zooms to 150%, the same as `'1.5'`.
+
 **26.5.1** runs the viewer on Safari and iOS 17 and 18.0 to 18.3. PDF.js 6.4.299 uses JavaScript and CSS those versions lack, so the package now polyfills the JavaScript and flattens and backfills the stylesheet at build time. Safari and iOS 16 or older still can't run PDF.js 6.x; there the viewer stops loading and fires `onDocumentError` with `name: 'UnsupportedBrowser'`. It also fixes a numeric `zoom` set before the document's first view, which showed the page at a hundredth of the size.
 
 **26.5.0** moved the bundled engine to **PDF.js 6.4.299** (from 6.0.227), which includes Mozilla's security fixes since 6.0.227, so upgrade from any earlier 26.x. It also ships a CycloneDX `sbom.json` in the package that lists the bundled PDF.js and its sub-components, and `customCSS` no longer needs a CSP nonce.
