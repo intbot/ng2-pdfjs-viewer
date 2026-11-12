@@ -73,7 +73,7 @@ async navigateToPage(pageNumber: number) {
 ### `setZoom(zoom: string)`
 - **Type**: `Promise<ActionExecutionResult>`
 - **Description**: Set zoom level
-- **Parameters**: `zoom` - Zoom level ('auto', 'page-width', 'page-height', 'page-fit', 'actual', or percentage like '150%')
+- **Parameters**: `zoom` - Zoom level: 'auto', 'page-width', 'page-height', 'page-fit', 'page-actual', a scale factor like '1.5', or a percentage like '150%'
 - **Returns**: Promise with execution result
 
 ```typescript
