@@ -572,19 +572,20 @@ autoActions: AutoActionConfig = {
 #### `customErrorTpl`
 - **Type**: `TemplateRef<any>`
 - **Default**: `undefined`
-- **Description**: Custom Angular template for error display
+- **Description**: Custom Angular template for error display. Only shown when `errorOverride` is `true`. The template receives `errorMessage`, `errorName` (`UnsupportedBrowser`, `ViewerLoadError`, `FetchError`, or PDF.js's error name) and `errorClass`.
 
 ```html
-<ng-template #errorTemplate>
+<ng-template #errorTemplate let-errorName="errorName" let-errorMessage="errorMessage">
   <div class="error-display">
     <mat-icon>error_outline</mat-icon>
-    <h3>Failed to load PDF</h3>
-    <p>Please check the file and try again.</p>
+    <h3 *ngIf="errorName === 'UnsupportedBrowser'; else failed">Please update your browser to view this PDF</h3>
+    <ng-template #failed><h3>Failed to load PDF</h3></ng-template>
+    <p>{{ errorMessage }}</p>
     <button mat-button (click)="retry()">Retry</button>
   </div>
 </ng-template>
 
-<ng2-pdfjs-viewer [customErrorTpl]="errorTemplate">
+<ng2-pdfjs-viewer [errorOverride]="true" [customErrorTpl]="errorTemplate">
 </ng2-pdfjs-viewer>
 ```
 
@@ -903,7 +904,7 @@ These properties are deprecated and will be removed in future versions. Use the 
   [errorHtml]="'<div>Error</div>'"
   
   // New
-  [customErrorTpl]="errorTemplate"
+  [errorOverride]="true" [customErrorTpl]="errorTemplate"
   ```
 
 #### `spinnerHtml` ⚠️
@@ -1037,6 +1038,7 @@ export class PdfViewerComponent {
   [autoActions]="autoActions"
   [themeConfig]="themeConfig"
   [customSpinnerTpl]="loadingTemplate"
+  [errorOverride]="true"
   [customErrorTpl]="errorTemplate">
 </ng2-pdfjs-viewer>
 ```

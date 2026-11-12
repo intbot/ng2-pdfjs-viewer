@@ -267,6 +267,18 @@ describe("wrapper event names map to component outputs", () => {
   });
 });
 
+describe("error name reaches customErrorTpl (#457)", () => {
+  it("documentError's name is in the template context and the output", () => {
+    const comp = makeComponent();
+    const seen: any[] = [];
+    comp.onDocumentError.subscribe((e) => seen.push(e));
+    const error = { message: "x", source: "viewer", name: "UnsupportedBrowser" };
+    (comp as any).handleEventNotification({ eventName: "documentError", eventData: error });
+    expect(comp.errorTemplateData.errorName).toBe("UnsupportedBrowser");
+    expect(seen).toEqual([error]);
+  });
+});
+
 describe("toolbar button hide survives PDF.js (#373)", () => {
   // PDF.js re-asserts its own `hidden` class on the print button on every
   // document load (its `printingallowed` handler), which wiped a plain

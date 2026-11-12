@@ -5,6 +5,52 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [26.5.1] - 2026-11-11
+
+Bundled PDF.js: **6.4.299** (unchanged).
+
+### Fixed
+- Safari and iOS older than 18.4 couldn't start the viewer
+  ([#457](https://github.com/intbot/ng2-pdfjs-viewer/issues/457)). PDF.js 6.4.299 touches
+  the `Iterator` global as soon as it loads, so on those versions the page stayed on
+  "Loading PDF...". The polyfills injected into the bundled PDF.js now add the iterator
+  helpers, `AbortSignal.any()` and async iteration of `ReadableStream`, which covers Safari
+  and iOS 17 and 18.0 to 18.3.
+- On Safari and iOS 17.0 to 17.3, pages kept their loading spinner and never drew. The PDF.js
+  worker packs every font with `ArrayBuffer.prototype.transferToFixedLength()` (Safari 17.4),
+  so no font reached the page; it's polyfilled now.
+- On Safari and iOS older than 17.5 the toolbar icons were invisible and fields and menus lost
+  their colours, because PDF.js sets them with CSS `light-dark()`. The build now appends plain
+  fallback values for PDF.js's top-level colour variables, used only by browsers without
+  `light-dark()` and following the component's `theme`. Some sidebar and dialog colours there
+  still fall back to browser defaults.
+- On Safari and iOS 17.0 and 17.1, pages were drawn about three times too large and cut off, and
+  zooming or scrolling never showed the rest. PDF.js writes its stylesheet with CSS nesting, and
+  those versions drop a nested rule that starts with an element name (Safari 17.2 relaxed that),
+  including the one that fits each page's canvas to its box. The build now flattens the nesting
+  in `viewer.css`, which also adds `-webkit-backdrop-filter` for Safari before 18.
+- A numeric `zoom` set before the document's first view came out 100 times too small: `"1.4"`
+  showed the page at 1.4% instead of 140%. PDF.js reads its initial zoom as a percentage, while
+  `zoom` and `zoomChange` use scale factors, so an app that saved `zoomChange` and set it again
+  on the next document lost the page. The value is now converted on that path. Thanks to
+  @jhthompson for the fix. (#459)
+- When PDF.js can't start at all, the loading spinner no longer runs forever. That happens on
+  Safari and iOS 16 or older (no build of PDF.js 6.x supports them, Mozilla's legacy build
+  included) or when a viewer file fails to load. The component now stops loading and fires
+  `onDocumentError` with `name: 'UnsupportedBrowser'` or `name: 'ViewerLoadError'`, so the
+  app decides what its users see.
+
+### Added
+- `customErrorTpl` templates receive `errorName` alongside `errorMessage` and `errorClass`, so
+  a template can show its own message for an unsupported browser.
+
+### Docs
+- `Error-Display-Examples.md` described built-in error templates (`errorTemplate="basic"` and
+  others) that were deprecated in 25.0.0 and are no longer in the package, and its custom
+  template example read a context variable that doesn't exist. It now documents
+  `customErrorTpl` as it works. Several docs-site examples left out `[errorOverride]="true"`,
+  without which `customErrorTpl` never shows.
+
 ## [26.5.0] - 2026-10-24
 
 Bundled PDF.js: **6.4.299** (was 6.0.227).

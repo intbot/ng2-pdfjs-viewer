@@ -141,28 +141,33 @@ A loading spinner is shown by default (`[showSpinner]="true"`). Replace it with 
 
 ## Error Handling
 
-When a document fails to load, `(onDocumentError)` fires with a `DocumentError` (`{ message, source?, name? }`). You can also shape the message the user sees:
+When a document fails to load, `(onDocumentError)` fires with a `DocumentError` (`{ message, source?, name? }`) and the loading spinner stops. The component shows nothing of its own unless you turn on `errorOverride`; then it shows your `customErrorTpl` (or a plain message box):
 
 ```html
-<ng-template #errorTpl>
+<ng-template #errorTpl let-errorName="errorName" let-errorMessage="errorMessage">
   <div class="error">
-    <h3>Couldn't load this document</h3>
-    <p>Please check your connection and try again.</p>
+    <h3 *ngIf="errorName === 'UnsupportedBrowser'; else failed">This document needs Safari 17 or later</h3>
+    <ng-template #failed><h3>Couldn't load this document</h3></ng-template>
+    <p>{{ errorMessage }}</p>
     <button (click)="retry()">Retry</button>
   </div>
 </ng-template>
 
 <ng2-pdfjs-viewer
   [pdfSrc]="src"
+  [errorOverride]="true"
   [customErrorTpl]="errorTpl"
   (onDocumentError)="logError($event)">
 </ng2-pdfjs-viewer>
 ```
 
-- **`errorMessage`** — your custom error text.
-- **`errorOverride`** — replace the default error message entirely with `errorMessage` (default `false`).
-- **`errorAppend`** — append `errorMessage` to the default message (default `true`).
-- **`customErrorTpl`** — full Angular template control over the error state (with `errorClass` for styling).
+- **`errorOverride`**: show the component's error overlay (default `false`). `customErrorTpl` only appears when this is on.
+- **`customErrorTpl`**: your template for the overlay. It receives `errorMessage`, `errorName` and `errorClass`.
+- **`errorMessage`**: your text, added to the viewer's message.
+- **`errorAppend`**: append `errorMessage` (default `true`), or `false` to replace the viewer's message with it.
+- **`errorClass`**: a CSS class for the overlay.
+
+`errorName` (also on the event) tells failures apart: `UnsupportedBrowser` when the browser can't run PDF.js at all (Safari and iOS 16 or older), `ViewerLoadError` when a viewer file didn't load (check the asset path, and that `.mjs` is served as JavaScript), `FetchError` when the component's own download failed, otherwise PDF.js's name for the document error.
 
 ## Large Documents
 
