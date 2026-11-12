@@ -279,6 +279,49 @@ describe("error name reaches customErrorTpl (#457)", () => {
   });
 });
 
+describe("wrapper updateZoom (#459, percent zoom)", () => {
+  // Runs the wrapper's own updateZoom against a fake PDFViewerApplication.
+  async function loadUpdateZoom(isInitialViewSet: boolean) {
+    const { readFileSync } = await import("node:fs");
+    const { resolve } = await import("node:path");
+    const src = readFileSync(resolve(process.cwd(), "pdfjs/web/postmessage-wrapper.js"), "utf8");
+    const fn = src.slice(src.indexOf("function updateZoom"), src.indexOf("function updateCursor"));
+    const options: Record<string, string> = {};
+    const dispatched: unknown[] = [];
+    const app = {
+      isInitialViewSet,
+      pdfViewer: {},
+      toolbar: {},
+      eventBus: { dispatch: (name: string, e: any) => dispatched.push([name, e.value]) },
+    };
+    const appOptions = { set: (k: string, v: string) => { options[k] = v; } };
+    const tracker = { markZoomCommandStart() {}, markZoomCommandEnd() {} };
+    const updateZoom = new Function(
+      "PDFViewerApplication", "PDFViewerApplicationOptions", "ZoomCommandTracker", "log",
+      `${fn}; return updateZoom;`,
+    )(app, appOptions, tracker, () => {});
+    return { updateZoom, options, dispatched };
+  }
+
+  it("hands PDF.js's initial zoom a percentage", async () => {
+    const z = await loadUpdateZoom(false);
+    for (const [input, expected] of [["1.4", "140"], ["150%", "150"], ["page-fit", "page-fit"]]) {
+      z.updateZoom(input);
+      expect(z.options.defaultZoomValue, input).toBe(expected);
+    }
+  });
+
+  it("turns '150%' into scale 1.5 after the first view", async () => {
+    const z = await loadUpdateZoom(true);
+    for (const input of ["150%", "1.25", "page-width", "bogus"]) z.updateZoom(input);
+    expect(z.dispatched).toEqual([
+      ["scalechanged", "1.5"],
+      ["scalechanged", "1.25"],
+      ["scalechanged", "page-width"],
+    ]);
+  });
+});
+
 describe("toolbar button hide survives PDF.js (#373)", () => {
   // PDF.js re-asserts its own `hidden` class on the print button on every
   // document load (its `printingallowed` handler), which wiped a plain

@@ -22,8 +22,10 @@ if "!build_lib!"=="true" (
     if not exist "node_modules" ( call npm install || goto :fail )
     call npm run build || goto :fail
     echo === Publishing the build to yalc ===
+    REM Publish dist\, the package npm gets: lib\pdfjs is the unbuilt PDF.js
+    cd dist
     call yalc publish || goto :fail
-    cd ..
+    cd ..\..
 )
 
 echo === 2/3 Linking the local build into the playground ===

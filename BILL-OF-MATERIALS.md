@@ -5,7 +5,7 @@ A component and license inventory of the **published npm package** `ng2-pdfjs-vi
 | | |
 | --- | --- |
 | **Package** | `ng2-pdfjs-viewer` |
-| **Version** | 26.5.1 |
+| **Version** | 26.5.2 |
 | **License** | Apache-2.0 |
 | **Runtime npm dependencies** | **none** (zero) |
 | **Peer dependencies** | `@angular/common` `>=10`, `@angular/core` `>=10` |
