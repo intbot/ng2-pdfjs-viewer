@@ -4,11 +4,13 @@ This page highlights what's new. The full, version-by-version record (including 
 
 ## Latest release
 
-**26.5.0** moves the bundled engine to **PDF.js 6.4.299** (from 6.0.227), which includes Mozilla's security fixes since 6.0.227, so upgrade from any earlier 26.x. It also ships a CycloneDX `sbom.json` in the package that lists the bundled PDF.js and its sub-components, and `customCSS` no longer needs a CSP nonce.
+**26.5.1** runs the viewer on Safari and iOS 17 and 18.0 to 18.3. PDF.js 6.4.299 uses JavaScript and CSS those versions lack, so the package now polyfills the JavaScript and flattens and backfills the stylesheet at build time. Safari and iOS 16 or older still can't run PDF.js 6.x; there the viewer stops loading and fires `onDocumentError` with `name: 'UnsupportedBrowser'`. It also fixes a numeric `zoom` set before the document's first view, which showed the page at a hundredth of the size.
+
+**26.5.0** moved the bundled engine to **PDF.js 6.4.299** (from 6.0.227), which includes Mozilla's security fixes since 6.0.227, so upgrade from any earlier 26.x. It also ships a CycloneDX `sbom.json` in the package that lists the bundled PDF.js and its sub-components, and `customCSS` no longer needs a CSP nonce.
 
 The current line upgrades the engine and turns the viewer into a full editing surface:
 
-- **PDF.js 6.x bundled** (up from the 5.x line); existing component APIs are unchanged. The PDF.js 6 modern build raises the browser floor: Safari needs PDF.js's legacy build, which this package doesn't ship.
+- **PDF.js 6.x bundled** (up from the 5.x line); existing component APIs are unchanged. The PDF.js 6 modern build raises the browser floor to Safari 18.4; since 26.5.1 the package polyfills it back to Safari and iOS 17. See [browser support](./getting-started.md).
 - **Built and tested on Angular 22** (ng-packagr 22 / TypeScript 6); the peer range stays wide at `>=10`.
 - **[Annotation editing & eSign](./features/annotation-editing)**: highlight, text, draw, stamp, plus opt-in signature and comment editors. `getAnnotations()`/`setAnnotations()` persistence and download-with-edits via `getDocumentAsBlob()`.
 - **[Forms](./features/forms)**: `[(formData)]` two-way binding and programmatic field access.
