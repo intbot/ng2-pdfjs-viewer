@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [26.6.0] - 2026-11-18
+
+Bundled PDF.js: **6.5.438** (from 6.4.299).
+
+### Changed
+- The bundled engine is now PDF.js 6.5.438, Mozilla's current stable release. It carries their
+  fixes since 6.4.299: JPEG 2000 images with subsampled components, radio button, checkbox and
+  choice-field scripting, truncated Flate streams, page trees with a broken entry, and text
+  selection after a pointer release, among others. The full list is in the
+  [PDF.js 6.5.438 release notes](https://github.com/mozilla/pdf.js/releases/tag/v6.5.438).
+  Inputs, outputs and methods are unchanged, and no new polyfills were needed for Safari and
+  iOS 17.
+- PDF.js 6.5 adds a second worker file, `pdfjs/build/pdf.renderer.mjs`, that can draw pages off
+  the main thread. Mozilla ships it switched off in the viewer and the component leaves it
+  off, so pages are drawn the way they were in 26.5.x and nothing requests the file. It's in
+  the package with the same polyfills as `pdf.mjs` and `pdf.worker.mjs`, and `sbom.json` lists it.
+
 ## [26.5.2] - 2026-11-11
 
 Bundled PDF.js: **6.4.299** (unchanged).

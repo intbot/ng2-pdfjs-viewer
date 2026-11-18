@@ -5,7 +5,7 @@ A component and license inventory of the **published npm package** `ng2-pdfjs-vi
 | | |
 | --- | --- |
 | **Package** | `ng2-pdfjs-viewer` |
-| **Version** | 26.5.2 |
+| **Version** | 26.6.0 |
 | **License** | Apache-2.0 |
 | **Runtime npm dependencies** | **none** (zero) |
 | **Peer dependencies** | `@angular/common` `>=10`, `@angular/core` `>=10` |
@@ -24,14 +24,14 @@ The package vendors Mozilla **PDF.js** and its native sub-components under `pdfj
 
 | Component | Role | License (as bundled) |
 | --- | --- | --- |
-| Mozilla **PDF.js** 6.4.299 | PDF rendering engine + viewer UI | Apache-2.0 |
+| Mozilla **PDF.js** 6.5.438 | PDF rendering engine + viewer UI | Apache-2.0 |
 | **OpenJPEG** `8314119b` (`openjpeg.wasm`) | JPEG 2000 image decoding | BSD-2-Clause |
 | **QCMS** (`qcms_bg.wasm`) | Color management | MIT |
 | **JBIG2** from PDFium `bb1f9f71` (`jbig2.wasm`) | JBIG2 image decoding | Apache-2.0 |
 | **QuickJS** `3d5e064e` (`quickjs-eval.wasm`) | Sandboxed JS for AcroForm scripting | MIT |
 | **Foxit** standard fonts (`Foxit*.pfb`) | Standard 14 fallback fonts | BSD-3-Clause (PDFium) |
 | **Liberation Sans** 1.07.4 (`LiberationSans-*.ttf`) | Fallback fonts for XFA forms | Liberation font licence 1.x: GPL-2.0 with a font exception |
-| **core-js** 3.49.0 | Polyfills compiled into `pdf.mjs` and `pdf.worker.mjs` (`lib/src/polyfill.js`) | MIT |
+| **core-js** 3.49.0 | Polyfills compiled into `pdf.mjs`, `pdf.worker.mjs` and `pdf.renderer.mjs` (`lib/src/polyfill.js`) | MIT |
 
 The Liberation Sans files are the only copyleft component. Their licence's font exception
 means a document that embeds the font isn't covered by the GPL; the files themselves stay
