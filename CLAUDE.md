@@ -64,7 +64,7 @@ npm run build          # clean → ng-packagr → strip source maps → minify p
 npm run package        # build + npm pack (produces the publishable tarball)
 ```
 `npm run build` output lands in `lib/dist/`. The build also minifies the bundled PDF.js
-(`pdf.mjs`, `pdf.sandbox.mjs`, `pdf.worker.mjs`) with terser and removes `.map` files.
+(`pdf.mjs`, `pdf.renderer.mjs`, `pdf.sandbox.mjs`, `pdf.worker.mjs`) with terser and removes `.map` files.
 
 **Run the demo app against your local lib** (full loop, from repo root):
 ```

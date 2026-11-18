@@ -4,6 +4,8 @@ This page highlights what's new. The full, version-by-version record (including 
 
 ## Latest release
 
+**26.6.0** moves the bundled engine to **PDF.js 6.5.438** (from 6.4.299), Mozilla's current stable release, with their fixes for JPEG 2000 images, form scripting and damaged files. The component API is unchanged, and Safari and iOS 17 are still covered.
+
 **26.5.2** makes percentage zooms work after a document is showing: `setZoom('150%')` now zooms to 150%, the same as `'1.5'`.
 
 **26.5.1** runs the viewer on Safari and iOS 17 and 18.0 to 18.3. PDF.js 6.4.299 uses JavaScript and CSS those versions lack, so the package now polyfills the JavaScript and flattens and backfills the stylesheet at build time. Safari and iOS 16 or older still can't run PDF.js 6.x; there the viewer stops loading and fires `onDocumentError` with `name: 'UnsupportedBrowser'`. It also fixes a numeric `zoom` set before the document's first view, which showed the page at a hundredth of the size.
