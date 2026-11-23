@@ -65,6 +65,7 @@ const sidebars: SidebarsConfig = {
       ],
     },
     'by-the-numbers',
+    'state-of-pdfjs',
     'changelog',
     'faq',
   ],
