@@ -95,8 +95,8 @@ const DOCS = {
       <div class="ighead">
         <svg class="igmark" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ig" x1="0" y1="0" x2=".55" y2="1"><stop offset="0" stop-color="#E40035"/><stop offset=".24" stop-color="#F60A48"/><stop offset=".352" stop-color="#F20755"/><stop offset=".494" stop-color="#DC087D"/><stop offset=".745" stop-color="#9717E7"/><stop offset="1" stop-color="#6C00F5"/></linearGradient></defs><path d="M28 12 H56 L74 30 V80 A4 4 0 0 1 70 84 H28 A4 4 0 0 1 24 80 V16 A4 4 0 0 1 28 12 Z" fill="url(#ig)"/><path d="M56 12 V26 A4 4 0 0 0 60 30 H74 Z" fill="#fff" fill-opacity=".4"/><path d="M40 12 H50 V34 L45 29 L40 34 Z" fill="#fff" fill-opacity=".9"/><text x="49" y="73" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="17" fill="#fff" letter-spacing="-.5">PDF</text></svg>
         <div>
-          <div class="igtitle"><span class="one">#1</span> Angular PDF Viewer</div>
-          <div class="igsub">AI-enabled, feature-rich and comprehensive</div>
+          <div class="igtitle"><span class="one">#1</span> AI-enabled Angular PDF viewer*</div>
+          <div class="igsub">Feature-rich and comprehensive</div>
         </div>
       </div>
       <span class="igchip"><span class="p">$</span> <span class="cmd">npm i</span> <span class="pkg">ng2-pdfjs-viewer</span></span>
@@ -108,7 +108,7 @@ const DOCS = {
         <div class="igcard"><div class="n">10 &rarr; 22</div><div class="l">Angular versions</div></div>
       </div>
       <div class="igfeat"><b>Everything in one component:</b> view &middot; print &middot; search &middot; annotate &amp; sign &middot; fill forms &middot; read aloud &middot; organize pages &middot; zoom &middot; rotate &middot; theme &mdash; fully declarative, mobile-first, production-ready.</div>
-      <div class="igfoot">npmjs.com/package/ng2-pdfjs-viewer &middot; Apache-2.0 &middot; powered by Mozilla PDF.js</div>
+      <div class="igfoot">*Of three open-source Angular PDF viewer packages on npm compared on 24 Nov 2026, the only one with a built-in AI assistant.<br>npmjs.com/package/ng2-pdfjs-viewer &middot; Apache-2.0 &middot; powered by Mozilla PDF.js</div>
     </div>`,
 };
 

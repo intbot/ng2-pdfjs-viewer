@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/intbot/ng2-pdfjs-viewer/master/lib/pdf-viewer-banner.png" alt="#1 Angular PDF Viewer — ng2-pdfjs-viewer: AI-enabled, feature-rich and comprehensive. 9M+ downloads, 0 runtime dependencies, 8 years (since 2018), Angular 10–22." width="880" />
+<img src="https://raw.githubusercontent.com/intbot/ng2-pdfjs-viewer/master/lib/pdf-viewer-banner.png" alt="#1 AI-enabled Angular PDF viewer* — ng2-pdfjs-viewer: feature-rich and comprehensive. 9M+ downloads, 0 runtime dependencies, 8 years (since 2018), Angular 10–22. *Of three open-source Angular PDF viewer packages on npm compared on 24 Nov 2026, the only one with a built-in AI assistant." width="880" />
 
 # ng2-pdfjs-viewer
 
